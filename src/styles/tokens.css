@@ -1,0 +1,153 @@
+/* Design Tokens for Roamstead v2 */
+
+/* Typography - Font Families */
+:root {
+  --font-heading: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Funnel Sans', sans-serif;
+  
+  /* Font Weights */
+  --font-regular: 400;
+  --font-bold: 500;
+  
+  /* Desktop Typography Sizes */
+  --text-display: 72px;
+  --text-display-lh: 80px;
+  
+  --text-h1: 64px;
+  --text-h1-lh: 72px;
+  
+  --text-h2: 48px;
+  --text-h2-lh: 54px;
+  
+  --text-h3: 44px;
+  --text-h3-lh: 48px;
+  
+  --text-h4: 36px;
+  --text-h4-lh: 44px;
+  
+  --text-xl: 20px;
+  --text-xl-lh: 32px;
+  
+  --text-lg: 18px;
+  --text-lg-lh: 28px;
+  
+  --text-md: 16px;
+  --text-md-lh: 24px;
+  
+  --text-sm: 14px;
+  --text-sm-lh: 18px;
+  
+  --text-xs: 12px;
+  --text-xs-lh: 16px;
+  
+  /* Spacing - 8px grid system */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --space-9: 72px;
+  --space-10: 80px;
+  
+  /* Radius */
+  --radius-1: 4px;
+  --radius-2: 8px;
+  --radius-3: 12px;
+  --radius-4: 16px;
+}
+
+/* Base Theme (Neutral Foundation) */
+[data-theme="base"],
+:root {
+  /* Background Colors */
+  --color-bg-canvas: #fffcfb;
+  --color-bg-subtle: #fbf8f7;
+  --color-bg-surface: #f4efec;
+  --color-bg-surface-hover: #eee7e3;
+  --color-bg-second-surface: #382f29;
+  
+  /* Border Colors */
+  --color-border-subtle: #e7dfdb;
+  --color-border-default: #e1d7d1;
+  --color-border-strong: #d8ccc4;
+  
+  /* Text Colors */
+  --color-text-primary: #291d16;
+  --color-text-secondary: #6d6057;
+  --color-text-muted: #8f7e73;
+  --color-text-disabled: #9b887d;
+  
+  /* Dark Text Colors (for dark backgrounds) */
+  --color-text-dark-primary: #fffcfb;
+  --color-text-dark-secondary: #fbf8f7;
+  --color-text-dark-muted: #f4efec;
+  --color-text-dark-disabled: #eee7e3;
+  
+  /* Brand Colors */
+  --color-brand-subtle: #e8f5ec;
+  --color-brand-default: #4a6e57;
+  --color-brand-hover: #3c6049;
+  --color-brand-active: #4a6e57;
+  --color-brand-text: #1f3125;
+}
+
+/* Winter Theme Override */
+[data-theme="winter"] {
+  /* Brand Colors - Winter palette */
+  --color-brand-subtle: #eaf2f9;
+  --color-brand-default: #3d5a75;
+  --color-brand-hover: #2f4b65;
+  --color-brand-active: #4b6984;
+  --color-brand-text: #172735;
+  
+  /* Second Surface - Winter dark blue */
+  --color-bg-second-surface: #1b3d54;
+}
+
+/* Responsive Typography Scaling */
+@media (max-width: 1024px) {
+  :root {
+    --text-display: 56px;
+    --text-display-lh: 64px;
+    
+    --text-h1: 48px;
+    --text-h1-lh: 56px;
+    
+    --text-h2: 40px;
+    --text-h2-lh: 48px;
+    
+    --text-h3: 36px;
+    --text-h3-lh: 42px;
+    
+    --text-h4: 28px;
+    --text-h4-lh: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --text-display: 44px;
+    --text-display-lh: 52px;
+    
+    --text-h1: 36px;
+    --text-h1-lh: 44px;
+    
+    --text-h2: 32px;
+    --text-h2-lh: 40px;
+    
+    --text-h3: 28px;
+    --text-h3-lh: 36px;
+    
+    --text-h4: 24px;
+    --text-h4-lh: 32px;
+    
+    --text-xl: 18px;
+    --text-xl-lh: 28px;
+    
+    --text-lg: 16px;
+    --text-lg-lh: 24px;
+  }
+}
