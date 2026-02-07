@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Container } from './Container';
 import { Button } from '../ui/Button';
 
 export const Navigation: React.FC = () => {
@@ -9,8 +8,8 @@ export const Navigation: React.FC = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-bg-canvas backdrop-blur-sm border-b border-border-subtle">
-      <Container>
-        <div className="flex items-center justify-between h-12">
+      <div className="max-w-[1145px] mx-auto px-0">
+        <div className="flex items-center justify-between h-12 px-2 md:px-3 lg:px-4">
           {/* Logo */}
           <a href="/" className="flex items-center">
             <img 
@@ -62,7 +61,7 @@ export const Navigation: React.FC = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border-subtle">
+          <div className="md:hidden py-4 border-t border-border-subtle px-2 md:px-3 lg:px-4">
             <div className="flex flex-col gap-4">
               <a href="/properties" className="text-md text-text-secondary hover:text-text-primary transition-colors py-2">
                 Properties
@@ -76,7 +75,7 @@ export const Navigation: React.FC = () => {
             </div>
           </div>
         )}
-      </Container>
+      </div>
     </nav>
   );
 };
