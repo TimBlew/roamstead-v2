@@ -8,7 +8,7 @@ export const FeaturedHomes: React.FC = () => {
     <Section background="canvas">
       <Container>
         {/* Section Header */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-4 mb-6">
           <h2 className="text-h2 font-heading font-medium text-text-primary">Our featured homes</h2>
           <a 
             href="/properties" 
@@ -35,7 +35,7 @@ export const FeaturedHomes: React.FC = () => {
           <PropertyCard
             image="/images/hugge-house.jpg"
             location="Midway, UT"
-            name="Hygge House"
+            name="Hugge House"
             sleeps={10}
             bedrooms={4}
             baths={3}

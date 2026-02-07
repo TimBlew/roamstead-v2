@@ -16,9 +16,9 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const baseStyles = `
     inline-flex items-center justify-center
-    px-6 py-3
+    px-5 py-2.5
     font-body font-medium
-    text-md
+    text-sm
     transition-colors duration-200
     cursor-pointer
     no-underline
@@ -35,17 +35,17 @@ export const Button: React.FC<ButtonProps> = ({
     `,
   };
 
-  // Use button-specific color tokens
+  // Use button-specific color tokens - no border radius (square corners)
   const primaryStyle = variant === 'primary' ? {
     backgroundColor: 'var(--color-button-primary-bg)',
     color: 'var(--color-button-primary-text)',
-    borderRadius: '6px', // Slightly rounded, not too much
+    borderRadius: '0',
     ...style
   } : {
     backgroundColor: 'var(--color-button-secondary-bg)',
     color: 'var(--color-button-secondary-text)',
     borderColor: 'var(--color-border-strong)',
-    borderRadius: '6px',
+    borderRadius: '0',
     ...style
   };
 
