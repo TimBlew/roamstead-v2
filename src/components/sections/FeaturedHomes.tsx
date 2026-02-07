@@ -35,7 +35,7 @@ export const FeaturedHomes: React.FC = () => {
           <PropertyCard
             image="/images/hugge-house.jpg"
             location="Midway, UT"
-            name="Hugge House"
+            name="Hygge House"
             sleeps={10}
             bedrooms={4}
             baths={3}
