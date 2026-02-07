@@ -98,7 +98,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <a href="tel:+15551234567" className="text-sm text-text-dark-secondary hover:text-text-dark-primary transition-colors">
-                  +1 (435) 243-5670
+                  (435) 243-5670
                 </a>
               </li>
             </ul>
