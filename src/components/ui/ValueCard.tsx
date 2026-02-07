@@ -13,21 +13,21 @@ export const ValueCard: React.FC<ValueCardProps> = ({
 }) => {
   return (
     <div className="flex flex-col">
-      {/* Image */}
-      <div className="mb-4 overflow-hidden rounded-3">
+      {/* Image - Taller */}
+      <div className="mb-3 overflow-hidden rounded-3">
         <img
           src={image}
           alt={title}
-          className="w-full h-64 object-cover"
+          className="w-full h-72 object-cover"
         />
       </div>
 
       {/* Content */}
       <div>
-        <h3 className="text-h4 text-text-primary mb-2">
+        <h3 className="text-h4 font-heading font-medium text-text-primary mb-2">
           {title}
         </h3>
-        <p className="text-md text-text-secondary">
+        <p className="text-sm text-text-secondary leading-relaxed">
           {description}
         </p>
       </div>
