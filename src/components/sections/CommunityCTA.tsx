@@ -43,11 +43,23 @@ export const CommunityCTA: React.FC = () => {
             </p>
           </div>
 
-
-
           <a
             href="/collective"
-            className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-white text-text-primary border border-border-default hover:bg-bg-canvas transition-colors"
+            className="
+              inline-flex
+              items-center
+              justify-center
+              px-5
+              py-2
+              text-[15px]
+              font-medium
+              bg-white
+              text-text-primary
+              border
+              border-border-default
+              hover:bg-bg-canvas
+              transition-colors
+            "
           >
             Join the Waitlist
           </a>
