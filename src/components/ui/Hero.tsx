@@ -30,7 +30,8 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="absolute inset-0 bg-black/20" />
 
         {/* Content - Centered vertically and horizontally */}
-        <div className="absolute inset-0 flex items-center justify-center px-4">
+        <div className="absolute inset-0 flex items-start justify-center px-4 pt-24 md:pt-32">
+
           <div className="text-center max-w-xl mx-auto">
             <h1 className="text-h3 md:text-h2 font-heading font-medium text-text-dark-primary mb-4 leading-tight antialiased">
               {headline}
