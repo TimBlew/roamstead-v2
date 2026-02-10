@@ -8,7 +8,7 @@ export const Navigation: React.FC = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-bg-canvas backdrop-blur-sm border-b border-border-subtle">
-      <div className="max-w-[1145px] mx-auto px-0">
+      <div className="max-w-[7xl] mx-auto px-0">
         <div className="flex items-center justify-between h-12 px-2 md:px-3 lg:px-4">
           {/* Logo */}
           <a href="/" className="flex items-center">

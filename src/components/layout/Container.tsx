@@ -12,8 +12,8 @@ export const Container: React.FC<ContainerProps> = ({
   maxWidth = 'default'
 }) => {
   const maxWidthStyles = {
-    default: 'max-w-6xl',
-    wide: 'max-w-7xl',
+    default: 'max-w-7xl',
+    wide: 'max-w-[1400px]',
     full: 'max-w-full',
   };
 

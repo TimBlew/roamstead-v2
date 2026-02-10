@@ -17,7 +17,7 @@ export const Hero: React.FC<HeroProps> = ({
   ctaHref,
 }) => {
   return (
-    <div className="w-full max-w-6xl mx-auto">
+    <div className="w-full max-w-[1630px] mx-auto">
       <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden">
         {/* Background Image - Full height cover */}
         <img
