@@ -12,10 +12,7 @@ export default async function Home() {
 
   return (
     <>
-      <pre style={{ padding: 16, fontSize: 12 }}>
-        {JSON.stringify(data, null, 2)}
-      </pre>
-
+    
       <HeroSection />
       <ValueStatement />
       <ValueCards />
