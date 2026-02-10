@@ -51,7 +51,7 @@ export const CommunityCTA: React.FC = () => {
               justify-center
               px-5
               py-2
-              text-[15px]
+              text-[19px]
               font-medium
               bg-white
               text-text-primary
