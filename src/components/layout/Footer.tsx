@@ -64,12 +64,12 @@ export const Footer: React.FC = () => {
             <ul className="mt-4 space-y-4">
               <li>
                 <a href="mailto:name@roamstead-co.com" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">
-                  name@roamstead-co.com
+                  chirs@roamstead-co.com
                 </a>
               </li>
               <li>
                 <a href="tel:+15551234567" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">
-                  +1 (555) 123-4567
+                  (555) 123-4567
                 </a>
               </li>
             </ul>
