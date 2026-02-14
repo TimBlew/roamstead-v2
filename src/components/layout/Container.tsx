@@ -3,7 +3,7 @@ import React from 'react';
 interface ContainerProps {
   children: React.ReactNode;
   className?: string;
-  maxWidth?: 'default' | 'wide' | 'full';
+  maxWidth?: 'default' | 'wide' | 'full' | 'figma';
 }
 
 export const Container: React.FC<ContainerProps> = ({ 
@@ -12,13 +12,17 @@ export const Container: React.FC<ContainerProps> = ({
   maxWidth = 'default'
 }) => {
   const maxWidthStyles = {
-    default: 'max-w-7xl',
-    wide: 'max-w-[1400px]',
-    full: 'max-w-full',
+    // Keep existing behavior (so nothing else breaks)
+    default: 'max-w-7xl px-2 md:px-3 lg:px-4',
+    wide: 'max-w-[1400px] px-2 md:px-3 lg:px-4',
+    full: 'max-w-full px-2 md:px-3 lg:px-4',
+
+    // New: Figma-locked container (1280 width + 24px padding)
+    figma: 'max-w-[1280px] px-6',
   };
 
   return (
-    <div className={`mx-auto px-2 md:px-3 lg:px-4 ${maxWidthStyles[maxWidth]} ${className}`}>
+    <div className={`mx-auto ${maxWidthStyles[maxWidth]} ${className}`}>
       {children}
     </div>
   );
@@ -42,6 +46,7 @@ export const Section: React.FC<SectionProps> = ({
     'second-surface': 'bg-bg-second-surface',
   };
 
+  // KEEP your current behavior here too (so nothing else changes)
   return (
     <section className={`py-8 ${backgroundStyles[background]} ${className}`}>
       {children}

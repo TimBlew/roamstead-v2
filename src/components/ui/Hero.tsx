@@ -1,6 +1,5 @@
-import React from 'react';
-import Image from 'next/image';
-import { Button } from './Button';
+import React from "react";
+import Image from "next/image";
 
 interface HeroProps {
   backgroundImage: string;
@@ -18,40 +17,86 @@ export const Hero: React.FC<HeroProps> = ({
   ctaHref,
 }) => {
   return (
-    <div className="w-full max-w-[1645px] mx-auto">
-      <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden">
-        {/* Background Image */}
-        <Image
-          src={backgroundImage}
-          alt=""
-          fill
-          priority
-          fetchPriority="high"
-          sizes="(max-width: 768px) 100vw, 1645px"
-          className="object-cover"
-        />
+    <section className="relative w-full overflow-hidden h-[75vh] min-h-[520px] max-h-[820px]">
+      {/* Background Image */}
+      <Image
+        src={backgroundImage}
+        alt=""
+        fill
+        priority
+        fetchPriority="high"
+        sizes="100vw"
+        className="object-cover"
+      />
 
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/20" />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/15" />
 
-        {/* Content */}
-        <div className="absolute inset-0 flex items-start justify-center px-4 pt-24 md:pt-32">
-          <div className="text-center max-w-xl mx-auto">
-            <h1 className="text-h3 md:text-h2 font-heading font-medium text-text-dark-primary mb-4 leading-tight antialiased">
+      {/* content */}
+      <div className="relative z-10 h-full">
+        <div className="container-figma h-full flex flex-col items-center justify-start pt-16 md:pt-20">
+          <div className="text-center max-w-[760px] mx-auto">
+
+            {/* Headline */}
+            <h1
+              className="
+                font-heading
+                font-medium
+                text-[44px]
+                md:text-[72px]
+                leading-[48px]
+                md:leading-[72px]
+                tracking-[-0.04em]
+                text-text-dark-primary
+                antialiased
+              "
+            >
               {headline}
             </h1>
-            <p className="text-sm md:text-md font-body font-normal text-text-dark-secondary mb-6 antialiased">
+
+            {/* Body */}
+            <p
+              className="
+                mt-6
+                text-[14px]
+                md:text-[16px]
+                leading-[20px]
+                md:leading-[24px]
+                text-text-dark-secondary
+                antialiased
+              "
+            >
               {description}
             </p>
+
+            {/* CTA — Exact Figma Hug */}
             <a
               href={ctaHref}
-              className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium bg-white text-text-primary hover:bg-bg-subtle transition-colors"
+              className="
+              mt-5
+              inline-flex
+              items-center
+              justify-center
+              bg-white
+              text-text-primary
+              border
+              border-border-default
+              text-[14px]
+              leading-[20px]
+              font-medium
+              tracking-[-0.02em]
+              px-3
+              py-1.5
+              hover:bg-bg-subtle
+              transition-colors
+            "
             >
               {ctaText}
             </a>
+
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
