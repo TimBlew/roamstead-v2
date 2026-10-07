@@ -15,38 +15,38 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="w-full bg-[#382F29] font-body text-[#FFFCFB]">
-      <div className="px-5 py-4 md:hidden">
-        <div className="h-[36px] w-[121px] overflow-hidden">
+      <div className="px-5 py-3 md:hidden">
+        <div className="h-[34px] w-[114px] overflow-hidden">
           <img src="/roamstead-logo-light.svg" alt="Roamstead" className="block h-full w-full max-w-none" />
         </div>
 
-        <p className="mt-1.5 max-w-[250px] font-body text-[12.5px] font-normal leading-[18px] tracking-[-0.26px] text-[#F4EFEC]">
+        <p className="mt-1 max-w-[238px] font-body text-[11.5px] font-normal leading-[16px] tracking-[-0.23px] text-[#F4EFEC]">
           Modern mountain hospitality across Heber Valley and Park City.
         </p>
 
-        <div className="mt-3 grid grid-cols-[0.78fr_1.22fr] gap-4 border-t border-white/20 pt-3">
+        <div className="mt-2.5 grid grid-cols-[0.8fr_1.2fr] gap-3 border-t border-white/20 pt-2.5">
           <div>
             <p className="font-body text-[13px] font-medium leading-[18px] tracking-[-0.28px] text-[#FBF8F7]">Explore</p>
-            <div className="mt-1.5 space-y-0.5">
+            <div className="mt-1 space-y-0">
               <a href="/properties" className="block text-[12.5px] leading-[18px] text-[#FFFCFB]">Properties</a>
               <a href="/about" className="block text-[12.5px] leading-[18px] text-[#FFFCFB]">About</a>
-              <a href="/properties" className="block text-[14px] leading-5 text-[#FFFCFB]">Book Direct</a>
+              <a href="/properties" className="block text-[12.5px] leading-[18px] text-[#FFFCFB]">Book Direct</a>
             </div>
           </div>
           <div>
-            <p className="font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#FBF8F7]">Contact</p>
+            <p className="font-body text-[13px] font-medium leading-[18px] tracking-[-0.26px] text-[#FBF8F7]">Contact</p>
             <div className="mt-1.5 space-y-0.5">
               <a href="mailto:chris@roamstead-co.com" className="block whitespace-nowrap text-[10.5px] leading-[18px] tracking-[-0.21px] text-[#FFFCFB]">
                 chris@roamstead-co.com
               </a>
-              <a href="tel:+14352435670" className="block text-[14px] leading-5 text-[#FFFCFB]">
+              <a href="tel:+14352435670" className="block text-[12.5px] leading-[18px] text-[#FFFCFB]">
                 (435) 243-5670
               </a>
             </div>
           </div>
         </div>
 
-        <p className="mt-3 border-t border-white/20 pt-2.5 font-body text-[11px] font-normal leading-[17px] tracking-[-0.24px] text-[#F4EFEC]">
+        <p className="mt-2.5 border-t border-white/20 pt-2 font-body text-[10.5px] font-normal leading-[15px] tracking-[-0.21px] text-[#F4EFEC]">
           © Roamstead Collective 2026. All rights reserved.
         </p>
       </div>
