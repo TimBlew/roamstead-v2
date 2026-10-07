@@ -18,7 +18,7 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
         </h2>
         <a
           href="/properties"
-          className="shrink-0 pb-0.5 font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#4A6E57] transition-colors hover:text-[#3C6049] md:inline-flex md:h-10 md:items-center md:justify-center md:border md:border-[#D8CCC4] md:bg-[#FEFDFC] md:px-4 md:py-2 md:text-[16px] md:leading-6 md:tracking-[-0.32px] md:text-[#291D16] md:hover:bg-[#F4EFEC]"
+          className="inline-flex min-h-8 shrink-0 items-center justify-center rounded-full border border-[#D8CCC4] bg-[#FBF8F7] px-3 py-1 font-body text-[12.5px] font-medium leading-5 tracking-[-0.25px] text-[#4A6E57] shadow-[0_4px_14px_rgba(41,29,22,0.05)] transition-all hover:bg-[#F4EFEC] hover:text-[#3C6049] md:inline-flex md:h-10 md:items-center md:justify-center md:border md:border-[#D8CCC4] md:bg-[#FEFDFC] md:px-4 md:py-2 md:text-[16px] md:leading-6 md:tracking-[-0.32px] md:text-[#291D16] md:hover:bg-[#F4EFEC]"
         >
           View all
         </a>
@@ -35,7 +35,7 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
         />
       </div>
 
-      <div className="-mx-5 mt-5 flex w-[calc(100%+2.5rem)] snap-x snap-mandatory gap-4 overflow-x-auto pl-9 pr-6 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-0 md:grid md:w-full md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3">
+      <div className="-mx-5 mt-5 flex w-[calc(100%+2.5rem)] snap-x snap-mandatory gap-4 overflow-x-auto pl-12 pr-7 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-0 md:grid md:w-full md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3">
         <PropertyCard image="/images/hygge-house.jpg" location="Midway" name="Hygge House" sleeps={10} bedrooms={4} baths={3} href="/properties/hygge-house" />
         <PropertyCard image="/images/granary.jpg" location="Midway" name="Granary" sleeps={4} bedrooms={1} baths={1} href="/properties/granary" />
         <PropertyCard image="/images/daystar.jpg" location="Deer Valley, Park City" name="Daystar" sleeps={12} bedrooms={6} baths={6} href="/properties/daystar" />
