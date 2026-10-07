@@ -28,7 +28,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   ].filter(Boolean).join(" · ");
 
   return (
-    <article className="flex w-[78vw] max-w-[300px] shrink-0 snap-start flex-col md:h-[500px] md:w-auto md:max-w-none md:items-start md:justify-end md:gap-6">
+    <article className="flex w-[76vw] max-w-[292px] shrink-0 snap-start flex-col md:h-[500px] md:w-auto md:max-w-none md:items-start md:justify-end md:gap-6">
       <a href={href} className="relative h-[190px] w-full shrink-0 overflow-hidden rounded-[16px] md:h-[256px] md:rounded-2 md:border md:border-[#D8CCC4]">
         <Image
           src={image}
