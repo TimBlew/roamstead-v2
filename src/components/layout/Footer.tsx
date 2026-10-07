@@ -22,7 +22,7 @@ export const Footer: React.FC = () => {
               <img
                 src="/roamstead-logo-light.svg"
                 alt="Roamstead"
-                className="block h-full w-full max-w-none scale-x-[1.185]"
+                className="block h-full w-full max-w-none"
               />
             </div>
 
