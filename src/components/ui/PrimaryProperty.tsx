@@ -59,7 +59,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
           {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
           className="mt-3 inline-flex h-9 items-center justify-center rounded-[10px] bg-[#4A6E57] px-4 font-body text-[12.5px] font-medium leading-5 tracking-[-0.28px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:h-10 md:w-fit md:px-5 md:text-[15px] md:leading-6 md:tracking-[-0.3px]"
         >
-          See the stay
+          Check availability
         </a>
       </div>
     </article>
