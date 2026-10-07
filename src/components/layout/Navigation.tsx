@@ -7,7 +7,7 @@ export const Navigation: React.FC = () => {
       <div className="grid h-full grid-cols-[1fr_96px_118px] sm:flex sm:items-stretch sm:justify-end">
         <a
           href="/"
-          className="flex min-w-0 items-center px-3"
+          className="flex min-w-0 items-center pl-2 pr-2 sm:px-3"
           aria-label="Roamstead home"
         >
           <Image
@@ -22,7 +22,7 @@ export const Navigation: React.FC = () => {
 
         <a
           href="/properties"
-          className="flex items-center justify-center font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#4A6E57] sm:hidden"
+          className="mx-1 my-1.5 flex items-center justify-center rounded-[8px] bg-[#EEE7E3] font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#4A6E57] sm:hidden"
         >
           Properties
         </a>
