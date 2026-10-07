@@ -64,7 +64,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           href={href}
           className="mt-2 inline-flex items-center font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#4A6E57] md:mt-0 md:flex md:h-10 md:w-fit md:items-center md:justify-center md:border md:border-[#D8CCC4] md:bg-[#FEFDFC] md:px-4 md:py-2 md:text-[16px] md:leading-6 md:tracking-[-0.32px] md:text-[#291D16] md:hover:bg-[#F4EFEC]"
         >
-          View property <span className="ml-1 md:hidden">→</span>
+          See the stay <span className="ml-1 md:hidden">→</span>
         </a>
       </div>
     </article>
