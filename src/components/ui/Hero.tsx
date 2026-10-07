@@ -7,6 +7,7 @@ interface HeroProps {
   description: string;
   ctaText: string;
   ctaHref: string;
+  mobileSupplement?: string;
 }
 
 export const Hero: React.FC<HeroProps> = ({
@@ -15,9 +16,10 @@ export const Hero: React.FC<HeroProps> = ({
   description,
   ctaText,
   ctaHref,
+  mobileSupplement,
 }) => {
   return (
-    <section className="relative flex h-[752px] w-full flex-col items-center gap-6 overflow-hidden px-6 py-16 text-center">
+    <section className="relative flex h-[600px] w-full flex-col items-center gap-6 overflow-hidden px-6 py-16 text-center md:h-[752px]">
       <Image
         src={backgroundImage}
         alt=""
@@ -30,7 +32,7 @@ export const Hero: React.FC<HeroProps> = ({
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent" />
 
       <h1
-        className="relative z-10 w-full max-w-[720px] font-heading text-[72px] font-medium leading-[72px] tracking-[-2.88px] text-[#E8F5EC]"
+        className="relative z-10 w-full max-w-[720px] font-heading text-[48px] font-medium leading-[54px] tracking-[-1.92px] text-[#E8F5EC] md:text-[72px] md:leading-[72px] md:tracking-[-2.88px]"
         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
       >
         {headline}
@@ -38,6 +40,12 @@ export const Hero: React.FC<HeroProps> = ({
 
       <p className="relative z-10 w-full max-w-[720px] font-body text-[18px] font-normal leading-7 tracking-[-0.36px] text-[#E8F5EC]">
         {description}
+        {mobileSupplement ? (
+          <span className="md:hidden">
+            <br />
+            {mobileSupplement}
+          </span>
+        ) : null}
       </p>
 
       <a
