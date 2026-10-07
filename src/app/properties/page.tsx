@@ -55,7 +55,7 @@ export default function PropertiesPage() {
         <div className="mx-auto max-w-[1440px]">
           <div className="mb-5 max-w-[720px] md:mb-14">
             <h2
-              className="font-heading text-[32px] font-medium leading-[35px] tracking-[-1.28px] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]" text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
+              className="font-heading text-[32px] font-medium leading-[35px] tracking-[-1.28px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
               Find your place
