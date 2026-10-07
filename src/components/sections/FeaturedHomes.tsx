@@ -20,7 +20,7 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
           href="/properties"
           className="inline-flex min-h-8 shrink-0 items-center justify-center rounded-full border border-[#D8CCC4] bg-[#FBF8F7] px-3 py-1 font-body text-[12.5px] font-medium leading-5 tracking-[-0.25px] text-[#4A6E57] shadow-[0_4px_14px_rgba(41,29,22,0.05)] transition-all hover:bg-[#F4EFEC] hover:text-[#3C6049] md:inline-flex md:h-10 md:items-center md:justify-center md:border md:border-[#D8CCC4] md:bg-[#FEFDFC] md:px-4 md:py-2 md:text-[16px] md:leading-6 md:tracking-[-0.32px] md:text-[#291D16] md:hover:bg-[#F4EFEC]"
         >
-          View all
+          View All Properties
         </a>
       </div>
 
