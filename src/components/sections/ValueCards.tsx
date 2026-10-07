@@ -25,16 +25,16 @@ export const ValueCards: React.FC = () => {
 
   return (
     <section className="bg-[#FFFCFB] px-6 pb-16">
-      <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-3 md:gap-4">
+      <div className="flex w-full flex-col gap-4 md:grid md:grid-cols-3">
         {values.map((value) => (
           <ValueCard key={value.title} {...value} />
         ))}
       </div>
 
-      <div className="mt-6 text-center">
+      <div className="mt-6">
         <a
           href="/properties"
-          className="inline-flex h-10 items-center justify-center bg-[#4A6E57] px-6 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049]"
+          className="flex h-10 w-full items-center justify-center bg-[#4A6E57] px-6 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:mx-auto md:w-fit"
         >
           Check availability
         </a>
