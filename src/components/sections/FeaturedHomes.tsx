@@ -8,23 +8,23 @@ interface FeaturedHomesProps {
 
 export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false }) => {
   return (
-    <section className="w-full bg-[#FFFCFB] px-5 py-6 md:px-6 md:py-16">
-      <div className="mx-auto flex w-full max-w-[1440px] items-center gap-6">
+    <section className="w-full bg-[#FFFCFB] px-5 py-5 md:px-6 md:py-16">
+      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-3">
         <h2
-          className="font-heading text-[32px] font-medium leading-[35px] tracking-[-1.28px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
+          className="max-w-[190px] font-heading text-[31px] font-medium leading-[33px] tracking-[-1.24px] text-[#1F3125] md:max-w-none md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
           Our featured homes
         </h2>
         <a
           href="/properties"
-          className="inline-flex h-10 shrink-0 items-center justify-center border border-[#D8CCC4] bg-[#FEFDFC] px-4 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#291D16] transition-colors hover:bg-[#F4EFEC]"
+          className="inline-flex h-8 shrink-0 items-center justify-center rounded-[8px] border border-[#D8CCC4] bg-[#FEFDFC] px-3 font-body text-[11.5px] font-medium leading-none tracking-[-0.2px] text-[#291D16] shadow-[0_2px_8px_rgba(41,29,22,0.035)] transition-colors hover:bg-[#F4EFEC] md:h-10 md:rounded-none md:px-4 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
         >
           View All Properties
         </a>
       </div>
 
-      <div className="mx-auto mt-10 w-full max-w-[1440px]">
+      <div className="mx-auto mt-5 w-full max-w-[1440px] md:mt-10">
         <PrimaryProperty
           image="/images/senator-main.jpg"
           location="Heber City"
@@ -35,12 +35,22 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
         />
       </div>
 
-      <div className="mx-auto mt-10 flex w-full max-w-[1440px] snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 lg:grid-cols-3">
-        <PropertyCard image="/images/hygge-house.jpg" location="Midway" name="Hygge House" sleeps={10} bedrooms={4} baths={3} href="/properties/hygge-house" />
-        <PropertyCard image="/images/granary.jpg" location="Midway" name="Granary" sleeps={4} bedrooms={1} baths={1} href="/properties/granary" />
-        <PropertyCard image="/images/daystar.jpg" location="Deer Valley, Park City" name="Daystar" sleeps={12} bedrooms={6} baths={6} href="/properties/daystar" />
-        <PropertyCard image="/images/lowell/exterior.jpg" location="Park City" name="The Lowell" sleeps={8} bedrooms={2} baths={2} href="/properties/lowell" />
-        <PropertyCard image="/images/powder-room/resort-base.jpg" location="Park City" name="Powder Room" sleeps={4} baths={1} href="/properties/powder-room" />
+      <div className="mx-auto mt-6 w-full max-w-[1440px] md:mt-10">
+        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 lg:grid-cols-3">
+          <PropertyCard image="/images/hygge-house.jpg" location="Midway" name="Hygge House" sleeps={10} bedrooms={4} baths={3} href="/properties/hygge-house" />
+          <PropertyCard image="/images/granary.jpg" location="Midway" name="Granary" sleeps={4} bedrooms={1} baths={1} href="/properties/granary" />
+          <PropertyCard image="/images/daystar.jpg" location="Deer Valley, Park City" name="Daystar" sleeps={12} bedrooms={6} baths={6} href="/properties/daystar" />
+          <PropertyCard image="/images/lowell/exterior.jpg" location="Park City" name="The Lowell" sleeps={8} bedrooms={2} baths={2} href="/properties/lowell" />
+          <PropertyCard image="/images/powder-room/resort-base.jpg" location="Park City" name="Powder Room" sleeps={4} baths={1} href="/properties/powder-room" />
+        </div>
+
+        <div className="mt-4 flex items-center justify-center gap-1.5 md:hidden" aria-label="Swipe to view more properties">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#4A6E57]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-[#D8CCC4]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-[#D8CCC4]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-[#D8CCC4]" />
+          <span className="h-1.5 w-1.5 rounded-full bg-[#D8CCC4]" />
+        </div>
       </div>
     </section>
   );
