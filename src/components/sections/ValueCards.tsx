@@ -1,7 +1,5 @@
 import React from "react";
-import { Container } from "../layout/Container";
 import { ValueCard } from "../ui/ValueCard";
-import { Button } from "../ui/Button";
 
 export const ValueCards: React.FC = () => {
   const values = [
@@ -26,20 +24,21 @@ export const ValueCards: React.FC = () => {
   ];
 
   return (
-    <section className="bg-bg-canvas pb-20 pt-0 md:pb-24">
-      <Container maxWidth="figma">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-5">
-          {values.map((value) => (
-            <ValueCard key={value.title} {...value} />
-          ))}
-        </div>
+    <section className="bg-[#FFFCFB] px-6 pb-16">
+      <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-3 md:gap-4">
+        {values.map((value) => (
+          <ValueCard key={value.title} {...value} />
+        ))}
+      </div>
 
-        <div className="mt-8 text-center md:mt-10">
-          <Button variant="primary" href="/properties">
-            Check availability
-          </Button>
-        </div>
-      </Container>
+      <div className="mt-6 text-center">
+        <a
+          href="/properties"
+          className="inline-flex h-10 items-center justify-center bg-[#4A6E57] px-6 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049]"
+        >
+          Check availability
+        </a>
+      </div>
     </section>
   );
 };
