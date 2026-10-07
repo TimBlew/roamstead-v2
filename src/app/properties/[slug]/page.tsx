@@ -123,18 +123,18 @@ export default async function PropertyPage({ params }: PageProps) {
             </p>
 
             <h1
-              className="mt-2 font-heading text-[50px] font-medium leading-[52px] tracking-[-2px] text-white md:text-[70px] md:leading-[70px] md:tracking-[-2.8px]"
+              className="mt-1.5 font-heading text-[50px] font-medium leading-[50px] tracking-[-2px] text-white md:text-[70px] md:leading-[68px] md:tracking-[-2.8px]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
               {hero.title}
             </h1>
 
-            <p className="mt-4 max-w-[720px] font-body text-[17px] font-normal leading-7 tracking-[-0.34px] text-white/90 md:text-[19px]">
+            <p className="mt-3 max-w-[720px] font-body text-[17px] font-normal leading-7 tracking-[-0.34px] text-white/90 md:text-[19px]">
               {hero.subtitle}
             </p>
 
             {highlights.primary.length > 0 ? (
-              <div className="mt-6 border-y border-white/20 py-4">
+              <div className="mt-5 border-y border-white/20 py-3.5">
                 <div className="flex flex-wrap items-center gap-y-3">
                   {highlights.primary.map((item, index) => (
                     <div
@@ -147,7 +147,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 </div>
 
                 {highlights.secondary.length > 0 ? (
-                  <p className="mt-3 font-body text-[14px] font-normal leading-6 tracking-[-0.28px] text-white/72 md:text-[15px]">
+                  <p className="mt-2.5 font-body text-[14px] font-normal leading-5 tracking-[-0.28px] text-[#F4EFEC] md:text-[15px]">
                     {highlights.secondary.join("  ·  ")}
                   </p>
                 ) : null}
@@ -157,7 +157,7 @@ export default async function PropertyPage({ params }: PageProps) {
             <a
               href={bookingHref}
               {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-2 bg-white px-5 py-2.5 font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-[#291D16] shadow-sm transition-all hover:-translate-y-px hover:bg-[#F4EFEC]"
+              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-2 bg-white px-5 py-2.5 font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-[#291D16] shadow-sm transition-all hover:-translate-y-px hover:bg-[#F4EFEC]"
             >
               See available dates
             </a>
