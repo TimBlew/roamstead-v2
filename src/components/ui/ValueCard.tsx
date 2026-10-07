@@ -9,25 +9,25 @@ interface ValueCardProps {
 
 export const ValueCard: React.FC<ValueCardProps> = ({ image, title, description }) => {
   return (
-    <article className="flex h-[452px] flex-col items-start justify-end gap-4 rounded-4 md:h-[460px]">
-      <div className="relative h-[320px] w-full shrink-0 overflow-hidden rounded-3">
+    <article className="grid grid-cols-[112px_1fr] gap-4 md:flex md:h-[460px] md:flex-col md:items-start md:justify-end md:gap-4">
+      <div className="relative h-[112px] w-[112px] shrink-0 overflow-hidden rounded-[14px] md:h-[320px] md:w-full md:rounded-3">
         <Image
           src={image}
           alt={title}
           fill
-          sizes="(min-width: 768px) 33vw, 100vw"
+          sizes="(min-width: 768px) 33vw, 112px"
           className="object-cover"
         />
       </div>
 
-      <div className="flex w-full flex-col items-start gap-2">
+      <div className="flex min-w-0 flex-col justify-center">
         <h3
-          className="w-full font-heading text-[28px] font-medium leading-[36px] tracking-[-1.12px] text-[#1F3125] md:text-[36px] md:leading-[44px] md:tracking-[-1.44px]"
+          className="font-heading text-[24px] font-medium leading-[28px] tracking-[-0.96px] text-[#1F3125] md:text-[36px] md:leading-[44px] md:tracking-[-1.44px]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
           {title}
         </h3>
-        <p className="w-full font-body text-[16px] font-normal leading-6 tracking-[-0.32px] text-[#6D6057]">
+        <p className="mt-1.5 font-body text-[14px] font-normal leading-5 tracking-[-0.28px] text-[#6D6057] md:mt-2 md:text-[16px] md:leading-6 md:tracking-[-0.32px]">
           {description}
         </p>
       </div>
