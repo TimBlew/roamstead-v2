@@ -21,22 +21,22 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
   external = false,
 }) => {
   return (
-    <article className="flex w-full flex-col gap-2.5 md:grid md:grid-cols-[2fr_1fr] md:items-end md:gap-6 md:rounded-[12px] md:border md:border-[#E1D7D1] md:bg-[#FBF8F7] md:p-4">
+    <article className="flex w-full flex-col gap-2.5 md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-end md:gap-6 md:rounded-[12px] md:border md:border-[#E1D7D1] md:bg-[#FBF8F7] md:p-4">
       <a
         href={href}
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-        className="relative h-[185px] w-full shrink-0 overflow-hidden rounded-[18px] md:h-[500px] md:w-full md:rounded-[8px] md:border md:border-[#D8CCC4]"
+        className="relative h-[185px] w-full shrink-0 overflow-hidden rounded-[18px] md:h-[500px] md:rounded-[8px] md:border md:border-[#D8CCC4]"
       >
         <Image
           src={image}
           alt={name}
           fill
           sizes="(min-width: 1024px) 66vw, 100vw"
-          className="object-cover md:object-top"
+          className="object-cover md:scale-[1.12] md:object-center"
         />
       </a>
 
-      <div className="flex min-w-0 flex-1 flex-col items-start justify-center md:gap-2 md:p-0">
+      <div className="flex min-w-0 flex-1 flex-col items-start md:gap-2">
         <p className="font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#8F7E73] md:w-full md:text-[16px] md:leading-6 md:tracking-[-0.32px] md:text-[#6D6057]">
           {location.replace(", Utah", "")}
         </p>
@@ -57,7 +57,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
         <a
           href={href}
           {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          className="mt-3 inline-flex h-9 items-center justify-center rounded-[10px] bg-[#4A6E57] px-4 font-body text-[12.5px] font-medium leading-5 tracking-[-0.28px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:mt-0 md:h-10 md:w-fit md:rounded-none md:px-6 md:py-2 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
+          className="mt-3 inline-flex h-9 items-center justify-center rounded-[10px] bg-[#4A6E57] px-4 font-body text-[12.5px] font-medium leading-5 tracking-[-0.28px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:mt-0 md:h-10 md:w-auto md:rounded-none md:px-6 md:py-2 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
         >
           Check availability
         </a>
