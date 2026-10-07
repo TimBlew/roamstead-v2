@@ -31,10 +31,10 @@ export const ValueCards: React.FC = () => {
         ))}
       </div>
 
-      <div className="mx-auto mt-3 w-full max-w-[1440px] md:mt-8">
+      <div className="mx-auto mt-2.5 flex w-full max-w-[1440px] justify-center md:mt-8">
         <a
           href="/properties"
-          className="inline-flex min-h-9 items-center justify-center rounded-[12px] bg-[#4A6E57] px-4 py-1.5 font-body text-[13px] shadow-[0_8px_20px_rgba(74,110,87,0.16)] font-medium leading-6 tracking-[-0.3px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:mx-auto md:flex md:h-[60px] md:min-w-[196px] md:w-fit md:rounded-none md:px-8 md:text-[16px] md:tracking-[-0.32px]"
+          className="inline-flex h-9 min-w-[164px] items-center justify-center rounded-[10px] bg-[#4A6E57] px-4 font-body text-[12.5px] font-medium leading-5 tracking-[-0.25px] text-[#FFFCFB] shadow-[0_7px_18px_rgba(74,110,87,0.16)] transition-all hover:-translate-y-px hover:bg-[#3C6049] md:mx-auto md:flex md:h-[60px] md:min-w-[196px] md:w-fit md:rounded-none md:px-8 md:text-[16px] md:tracking-[-0.32px]"
         >
           Check availability
         </a>
