@@ -18,57 +18,31 @@ const hostawayListingIds: Record<string, number> = {
   "powder-room": 455633,
 };
 
-const propertyHighlights: Record<string, string[]> = {
-  "hygge-house": [
-    "Sleeps 10",
-    "4 Bedrooms",
-    "3 Baths",
-    "Private sauna",
-    "Dedicated office",
-    "Gym + gear garage",
-    "Fenced yard + fire pit",
-    "Pets allowed",
-  ],
-  granary: [
-    "Sleeps 4",
-    "1 Bedroom",
-    "1 Bath",
-    "Gas fireplace",
-    "Mountain views",
-    "Walkable Midway location",
-  ],
-  daystar: [
-    "Sleeps 12",
-    "6 Bedrooms",
-    "6 Baths",
-    "Hot tub",
-    "Indoor sauna",
-    "Sport court",
-    "Pool table",
-  ],
-  lowell: [
-    "Sleeps 8",
-    "2 Bedrooms",
-    "2 Baths",
-    "Steps from the snow",
-    "Steam shower",
-    "Pool + hot tub",
-    "Ski storage",
-  ],
-  "powder-room": [
-    "Sleeps 4",
-    "King bed",
-    "Private bath",
-    "Pool + hot tub",
-    "Fitness center",
-    "Ski storage",
-  ],
-  senator: [
-    "10 Rooms",
-    "Historic 1902 home",
-    "Cooked-to-order breakfast",
-    "3 blocks from Main Street",
-  ],
+const propertyHighlights: Record<string, { primary: string[]; secondary: string[] }> = {
+  "hygge-house": {
+    primary: ["Sleeps 10", "4 Bedrooms", "3 Baths", "Private sauna"],
+    secondary: ["Dedicated office", "Gym + gear garage", "Fenced yard + fire pit", "Pets allowed"],
+  },
+  granary: {
+    primary: ["Sleeps 4", "1 Bedroom", "1 Bath", "Gas fireplace"],
+    secondary: ["Mountain views", "Full kitchen", "In-unit laundry", "Walkable Midway location"],
+  },
+  daystar: {
+    primary: ["Sleeps 12", "6 Bedrooms", "6 Baths", "Hot tub"],
+    secondary: ["Indoor sauna", "Sport court", "Pool table", "Two living rooms"],
+  },
+  lowell: {
+    primary: ["Sleeps 8", "2 Bedrooms", "2 Baths", "Steps from the snow"],
+    secondary: ["Steam shower", "Pool + hot tub", "Ski storage", "Underground parking"],
+  },
+  "powder-room": {
+    primary: ["Sleeps 4", "King bed", "Private bath", "At the resort base"],
+    secondary: ["Pool + hot tub", "Fitness center", "Ski storage", "Kitchenette"],
+  },
+  senator: {
+    primary: ["10 Rooms", "Historic 1902 home", "Cooked-to-order breakfast", "Heber City"],
+    secondary: ["Three floors", "Shared gathering spaces", "Garden + porch", "3 blocks from Main Street"],
+  },
 };
 
 export const dynamicParams = false;
@@ -123,7 +97,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
   const { hero, stats, stories, details, location, bookingUrl } = property;
   const listingId = hostawayListingIds[slug];
-  const highlights = propertyHighlights[slug] ?? [];
+  const highlights = propertyHighlights[slug] ?? { primary: [], secondary: [] };
   const isSenator = slug === "senator";
   const bookingHref = isSenator ? bookingUrl : "#availability";
 
@@ -139,11 +113,11 @@ export default async function PropertyPage({ params }: PageProps) {
           sizes="100vw"
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/15 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/34 via-black/8 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/22 via-transparent to-transparent" />
 
         <div className="relative z-10 w-full px-6 pb-10 pt-24 md:px-10 md:pb-12 lg:px-12">
-          <div className="max-w-[900px] rounded-[20px] border border-white/20 bg-black/18 p-5 backdrop-blur-[2px] md:p-7">
+          <div className="max-w-[940px] rounded-[22px] bg-black/42 p-5 shadow-[0_20px_70px_rgba(0,0,0,0.16)] backdrop-blur-[5px] md:p-8">
             <p className="font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-white/85 md:text-[17px]">
               {hero.locationLabel}
             </p>
@@ -159,25 +133,33 @@ export default async function PropertyPage({ params }: PageProps) {
               {hero.subtitle}
             </p>
 
-            {highlights.length > 0 ? (
-              <div className="mt-5 flex flex-wrap gap-2">
-                {highlights.map((item) => (
-                  <span
-                    key={item}
-                    className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-3.5 py-1.5 font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-white backdrop-blur-sm"
-                  >
-                    {item}
-                  </span>
-                ))}
+            {highlights.primary.length > 0 ? (
+              <div className="mt-6 border-y border-white/20 py-4">
+                <div className="flex flex-wrap items-center gap-y-3">
+                  {highlights.primary.map((item, index) => (
+                    <div
+                      key={item}
+                      className={`pr-4 font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-white md:text-[16px] ${index > 0 ? "border-l border-white/20 pl-4" : ""}`}
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+
+                {highlights.secondary.length > 0 ? (
+                  <p className="mt-3 font-body text-[14px] font-normal leading-6 tracking-[-0.28px] text-white/72 md:text-[15px]">
+                    {highlights.secondary.join("  ·  ")}
+                  </p>
+                ) : null}
               </div>
             ) : null}
 
             <a
               href={bookingHref}
               {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-2 bg-white px-5 py-2.5 font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-[#291D16] transition-colors hover:bg-[#F4EFEC]"
+              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-2 bg-white px-5 py-2.5 font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-[#291D16] shadow-sm transition-all hover:-translate-y-px hover:bg-[#F4EFEC]"
             >
-              Check availability
+              See available dates
             </a>
           </div>
         </div>
