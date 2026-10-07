@@ -15,28 +15,28 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="w-full bg-[#382F29] font-body text-[#FFFCFB]">
-      <div className="px-5 py-6 md:hidden">
-        <div className="h-[42px] w-[141px] overflow-hidden">
+      <div className="px-5 py-4 md:hidden">
+        <div className="h-[36px] w-[121px] overflow-hidden">
           <img src="/roamstead-logo-light.svg" alt="Roamstead" className="block h-full w-full max-w-none" />
         </div>
 
-        <p className="mt-2 max-w-[250px] font-body text-[13px] font-normal leading-5 tracking-[-0.26px] text-[#F4EFEC]">
+        <p className="mt-1.5 max-w-[250px] font-body text-[12.5px] font-normal leading-[18px] tracking-[-0.26px] text-[#F4EFEC]">
           Modern mountain hospitality across Heber Valley and Park City.
         </p>
 
-        <div className="mt-4 grid grid-cols-[0.8fr_1.2fr] gap-5 border-t border-white/20 pt-4">
+        <div className="mt-3 grid grid-cols-[0.78fr_1.22fr] gap-4 border-t border-white/20 pt-3">
           <div>
-            <p className="font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#FBF8F7]">Explore</p>
-            <div className="mt-2 space-y-1">
-              <a href="/properties" className="block text-[14px] leading-5 text-[#FFFCFB]">Properties</a>
-              <a href="/about" className="block text-[14px] leading-5 text-[#FFFCFB]">About</a>
+            <p className="font-body text-[13px] font-medium leading-[18px] tracking-[-0.28px] text-[#FBF8F7]">Explore</p>
+            <div className="mt-1.5 space-y-0.5">
+              <a href="/properties" className="block text-[12.5px] leading-[18px] text-[#FFFCFB]">Properties</a>
+              <a href="/about" className="block text-[12.5px] leading-[18px] text-[#FFFCFB]">About</a>
               <a href="/properties" className="block text-[14px] leading-5 text-[#FFFCFB]">Book Direct</a>
             </div>
           </div>
           <div>
             <p className="font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#FBF8F7]">Contact</p>
-            <div className="mt-2.5 space-y-1.5">
-              <a href="mailto:chris@roamstead-co.com" className="block whitespace-nowrap text-[11px] leading-5 tracking-[-0.22px] text-[#FFFCFB]">
+            <div className="mt-1.5 space-y-0.5">
+              <a href="mailto:chris@roamstead-co.com" className="block whitespace-nowrap text-[10.5px] leading-[18px] tracking-[-0.21px] text-[#FFFCFB]">
                 chris@roamstead-co.com
               </a>
               <a href="tel:+14352435670" className="block text-[14px] leading-5 text-[#FFFCFB]">
@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <p className="mt-4 border-t border-white/20 pt-3 font-body text-[12px] font-normal leading-5 tracking-[-0.24px] text-[#F4EFEC]">
+        <p className="mt-3 border-t border-white/20 pt-2.5 font-body text-[11px] font-normal leading-[17px] tracking-[-0.24px] text-[#F4EFEC]">
           © Roamstead Collective 2026. All rights reserved.
         </p>
       </div>
