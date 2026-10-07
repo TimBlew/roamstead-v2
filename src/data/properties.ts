@@ -10,6 +10,8 @@ export interface PropertyStat {
 
 export interface PropertyStory {
   image: PropertyImage;
+  eyebrow: string;
+  title: string;
   paragraphs: string[];
 }
 
@@ -74,9 +76,11 @@ export const properties: Property[] = [
           src: "/images/senator/room-bright.jpg",
           alt: "A bright top-floor guest room with a coffered ceiling and gilded mirror",
         },
+        eyebrow: "Breakfast & workspace",
+        title: "A slower start, with room to settle in",
         paragraphs: [
-          "Mornings start in the dining room. A full cooked-to-order breakfast, house-made crepes, something warm, the menu changes, while the valley is still quiet and Timpanogos catches the first light through the windows.",
-          "Most people open a laptop afterward. The Wi-Fi is fast, each room has its own workspace, and the commons area has room to spread out if your room starts to feel small.",
+          "A full cooked-to-order breakfast is part of the stay, with house-made crepes and a rotating menu served in the dining room.",
+          "Fast Wi-Fi, in-room workspaces, and the commons area make it easy to get a little work done when needed without giving up the character of the house.",
         ],
       },
       {
@@ -84,8 +88,10 @@ export const properties: Property[] = [
           src: "/images/senator/room-sunlit.jpg",
           alt: "A sunlit guest room with a sleigh bed and a reading chair by the windows",
         },
+        eyebrow: "Shared spaces",
+        title: "A house that gives everyone room",
         paragraphs: [
-          "Coming back from a trail run on the Provo River or an afternoon at Deer Valley, the house absorbs you again. Central heating through the whole building, the living room commons with its fireplace, the feeling of a place that was built to hold a family of thirteen and still knows how to hold people.",
+          "The Senator was built to hold people. The living room commons, fireplace, and shared spaces give guests room to spread out, regroup, or simply stay in for a while between plans.",
         ],
       },
       {
@@ -93,8 +99,10 @@ export const properties: Property[] = [
           src: "/images/senator/room-green.jpg",
           alt: "A guest room with green damask wallpaper and a carved wooden bed",
         },
+        eyebrow: "Porch, garden & fire",
+        title: "Plenty of places to linger",
         paragraphs: [
-          "Evenings move outside to the fire pit, or stay in the commons. This is where the B&B does something a hotel can't: strangers start talking because the house makes it easy, not because anyone forces it. The wraparound porch in summer. The garden when the light goes long.",
+          "The wraparound porch, garden, fire pit, and commons create easy places to spend time outside the room. The setting leaves room for conversation when it happens, and quiet when it does not.",
         ],
       },
     ],
@@ -188,9 +196,11 @@ export const properties: Property[] = [
           src: "/images/hygge-house/kitchen.jpg",
           alt: "Open kitchen with a large butcher-block island and stools",
         },
+        eyebrow: "Kitchen, dining & workspace",
+        title: "Space to gather, with room to get things done",
         paragraphs: [
-          "Mornings start upstairs in the open kitchen. The island seats eight, the dining table expands, and the deck is a step away for grilling and mountain air.",
-          "Most people open a laptop afterward. The office has a standing desk and monitor, the bedrooms have desks and monitors of their own, and the Wi-Fi is fast.",
+          "The open kitchen is built for a full house, with an island that seats eight, an expandable dining table, and the deck just outside for grilling and mountain air.",
+          "A dedicated office with a standing desk and monitor, plus desks and monitors in the bedrooms, makes the home work just as well for longer stays and remote work.",
         ],
       },
       {
@@ -198,8 +208,11 @@ export const properties: Property[] = [
           src: "/images/hygge-house/garage-gym.jpg",
           alt: "Two-car garage set up as a gym with a squat rack and bench",
         },
+        eyebrow: "Garage, gym & gear",
+        title: "Built for everything you bring with you",
         paragraphs: [
-          "Coming back from the day, the gear has somewhere to go. The two-car garage is set up to store bikes, skis and boards, and it doubles as a private gym with a rack, bench, dumbbells and yoga mats. The driveway fits four cars, with room for a trailer, boat or RV.",
+          "The two-car garage is set up for bikes, skis, boards, and other mountain gear, while also doubling as a private gym with a rack, bench, dumbbells, and yoga mats.",
+          "The driveway fits four cars, with additional room for a trailer, boat, or RV.",
         ],
       },
       {
@@ -207,8 +220,11 @@ export const properties: Property[] = [
           src: "/images/hygge-house/backyard-sauna.jpg",
           alt: "Fenced backyard lawn with the private barrel sauna",
         },
+        eyebrow: "Sauna, yard & second living room",
+        title: "Room to unwind your own way",
         paragraphs: [
-          "Evenings move to the backyard. Patio dining for six, lounge chairs, a lush lawn, and a five-chair fire pit, all inside a fully fenced yard for kids and pets. The private four-person sauna is tucked away for post-adventure recovery. Downstairs, the second living room is made for movie nights, with an electric piano and a game table that seats eight.",
+          "The fenced backyard brings together patio dining, lounge seating, a lawn, a five-chair fire pit, and the private four-person sauna.",
+          "Inside, the second living room adds another place to spread out, with an electric piano and a game table that seats eight.",
         ],
       },
     ],
@@ -298,9 +314,11 @@ export const properties: Property[] = [
           src: "/images/granary/exterior.jpg",
           alt: "The Granary building in Midway with the mountains behind",
         },
+        eyebrow: "Kitchen & workspace",
+        title: "Everything you need in a smaller footprint",
         paragraphs: [
-          "Mornings start at the Keurig. The kitchen is fully stocked, with a dishwasher and a dining table for four, and the open floor plan looks out to the mountains.",
-          "If the day starts with a laptop, there's a dedicated workspace and fast Wi-Fi.",
+          "The fully stocked kitchen includes a Keurig, dishwasher, and dining table for four, all within an open floor plan with mountain views.",
+          "A dedicated workspace and fast Wi-Fi make the condo easy to use for longer stays or a little work between plans.",
         ],
       },
       {
@@ -308,8 +326,11 @@ export const properties: Property[] = [
           src: "/images/granary/dining.jpg",
           alt: "Dining table for four beside a bright window",
         },
+        eyebrow: "Midway at your doorstep",
+        title: "Walk to town, drive to the mountains",
         paragraphs: [
-          "Afternoons go wherever you want them to. Midway's restaurants and shops are within walking distance, and Utah's best outdoor adventures are a drive away. One covered parking spot comes with the condo, with more available on request.",
+          "Midway's restaurants and shops are within walking distance, while the valley's outdoor access is an easy drive away.",
+          "One covered parking spot comes with the condo, with additional parking available on request.",
         ],
       },
       {
@@ -317,8 +338,11 @@ export const properties: Property[] = [
           src: "/images/granary/fireplace.jpg",
           alt: "Living room seating around the gas fireplace",
         },
+        eyebrow: "Fireplace & living space",
+        title: "A comfortable place to come back to",
         paragraphs: [
-          "Evenings settle around the gas fireplace. The living room has fireplace seating and a smart TV, and the pull-out couch makes room for two more. The bedroom has a king bed and ample closet space.",
+          "The living room centers on the gas fireplace and smart TV, with a pull-out couch that adds room for two more guests.",
+          "The bedroom has a king bed and ample closet space, keeping the stay comfortable without overcomplicating it.",
         ],
       },
     ],
@@ -398,9 +422,11 @@ export const properties: Property[] = [
           src: "/images/daystar/kitchen.jpg",
           alt: "Large kitchen with a granite island, timber beams and tile floors",
         },
+        eyebrow: "Kitchen & gathering space",
+        title: "Made for a full house",
         paragraphs: [
-          "Mornings start on the main level, an open layout with a large kitchen and two dining areas, so everyone has a seat.",
-          "When it's time to ski, the neighborhood's free shuttle to Deer Valley comes at the touch of a button, running from 7 AM to 4:30 PM.",
+          "The open main level brings together a large kitchen, two dining areas, and plenty of room for everyone to gather without feeling crowded.",
+          "For ski days, the neighborhood's free Deer Valley shuttle runs from 7 AM to 4:30 PM and can be called with the touch of a button.",
         ],
       },
       {
@@ -408,8 +434,11 @@ export const properties: Property[] = [
           src: "/images/daystar/hot-tub.jpg",
           alt: "Deck with lounge chairs and the outdoor hot tub",
         },
+        eyebrow: "Hot tub, sauna & soaking tubs",
+        title: "Plenty of ways to slow down",
         paragraphs: [
-          "After a day on the slopes, the house takes care of recovery: an outdoor hot tub, an indoor sauna, and three soaking tubs. If you'd rather head into town, the free public bus from the Deer Valley base reaches all of Park City, Main Street included, with frequent service.",
+          "The outdoor hot tub, indoor sauna, and three soaking tubs give the house several ways to recharge between mountain days.",
+          "For time in town, the free public bus from the Deer Valley base connects to Park City and Main Street with frequent service.",
         ],
       },
       {
@@ -417,8 +446,10 @@ export const properties: Property[] = [
           src: "/images/daystar/pool-table.jpg",
           alt: "Pool table on the main level beside the kitchen bar",
         },
+        eyebrow: "Living rooms, games & sport court",
+        title: "Enough space for everyone to find their corner",
         paragraphs: [
-          "Evenings spread out. Two distinct living rooms give everyone their own place to hang out, there's a fireplace and a pool table on the main level, and the indoor sport court invites some friendly competition.",
+          "Two distinct living rooms give larger groups options for gathering or spreading out. The main level adds a fireplace and pool table, while the indoor sport court creates another place to play.",
         ],
       },
     ],
@@ -507,8 +538,10 @@ export const properties: Property[] = [
           src: "/images/lowell/kitchen.jpg",
           alt: "Full kitchen with a granite island and bar stools",
         },
+        eyebrow: "At the mountain base",
+        title: "About thirty steps from the snow",
         paragraphs: [
-          "Mornings start with the walk to the lifts, about thirty steps from the building. Ski storage is in the building, and there's an on-site rental and tuning shop for everything else.",
+          "The location does most of the work: the building sits about thirty steps from the snow, with ski storage and an on-site rental and tuning shop close at hand.",
         ],
       },
       {
@@ -516,9 +549,11 @@ export const properties: Property[] = [
           src: "/images/lowell/pool.jpg",
           alt: "Heated outdoor pool beside the building at dusk",
         },
+        eyebrow: "Pool, hot tub & steam shower",
+        title: "Comfort built into the return",
         paragraphs: [
-          "After a day outside, there's the steam shower and a soak in the bathtub. The building has a heated outdoor pool, a hot tub and a fitness center.",
-          "For town, the nearby resort bus stop runs frequently and reaches Historic Main Street in about three to five minutes, or it's about fifteen minutes on foot.",
+          "A steam shower and bathtub inside the condo pair with the building's heated outdoor pool, hot tub, and fitness center.",
+          "Historic Main Street is about three to five minutes away by the frequent resort bus, or roughly fifteen minutes on foot.",
         ],
       },
       {
@@ -526,8 +561,11 @@ export const properties: Property[] = [
           src: "/images/lowell/dining.jpg",
           alt: "Large dining table beside floor-to-ceiling windows",
         },
+        eyebrow: "Dining & downtime",
+        title: "Room to gather without leaving the condo",
         paragraphs: [
-          "Evenings come together around the large dining table, which seats about ten, with the full kitchen close by. There's a piano and a chess table, and flat-screen TVs in both bedrooms.",
+          "The large dining table seats about ten with the full kitchen close by, giving groups an easy place to come together.",
+          "A piano, chess table, and flat-screen TVs in both bedrooms add quieter options when everyone wants something different.",
         ],
       },
     ],
@@ -617,9 +655,11 @@ export const properties: Property[] = [
           src: "/images/powder-room/exterior.jpg",
           alt: "The building at the resort base under a blue sky",
         },
+        eyebrow: "At the resort base",
+        title: "Simple access to the mountain",
         paragraphs: [
-          "Mornings start close to the lifts. The building is at the base area, with quick access to the mountain and its services.",
-          "In winter, guests get equipment discounts and nightly ski storage through Park City Sport, right on site.",
+          "The building sits at the Park City Mountain Resort base, with quick access to the lifts and mountain services.",
+          "In winter, guests receive equipment discounts and nightly ski storage through Park City Sport on site.",
         ],
       },
       {
@@ -627,8 +667,11 @@ export const properties: Property[] = [
           src: "/images/powder-room/pool.jpg",
           alt: "Outdoor pool and lounge chairs with the mountains beyond",
         },
+        eyebrow: "Pool, hot tub & town access",
+        title: "Easy options beyond the room",
         paragraphs: [
-          "After exploring the resort or town, there's the outdoor pool and hot tub, or a quick workout in the fitness center. The free bus stop nearby runs about every five minutes and typically reaches Historic Main Street in three to five.",
+          "The building includes an outdoor pool, hot tub, and fitness center for time off the mountain.",
+          "A nearby free bus stop runs about every five minutes and typically reaches Historic Main Street in three to five.",
         ],
       },
       {
@@ -636,8 +679,11 @@ export const properties: Property[] = [
           src: "/images/powder-room/bedroom.jpg",
           alt: "King bed and futon in the studio",
         },
+        eyebrow: "Studio essentials",
+        title: "Everything needed for an easy stay",
         paragraphs: [
-          "Evenings keep it simple. The kitchenette has a microwave, a mini fridge, and a coffee maker and kettle, and the building has an outdoor BBQ grill. Then it's back to the king bed.",
+          "The kitchenette includes a microwave, mini fridge, coffee maker, and kettle, while an outdoor BBQ grill adds another simple meal option.",
+          "Inside, the king bed and futon keep the studio straightforward and comfortable.",
         ],
       },
     ],
