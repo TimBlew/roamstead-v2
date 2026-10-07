@@ -8,7 +8,7 @@ interface FeaturedHomesProps {
 
 export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false }) => {
   return (
-    <section className="flex w-full flex-col items-start bg-[#FFFCFB] px-5 py-7 md:gap-10 md:px-6 md:py-16">
+    <section className="flex w-full flex-col items-start bg-[#FFFCFB] px-5 pb-6 pt-5 md:gap-10 md:px-6 md:py-16">
       <div className="flex w-full items-end justify-between gap-4 md:justify-start md:gap-6">
         <h2
           className="font-heading text-[32px] font-medium leading-[35px] tracking-[-1.28px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
@@ -24,7 +24,7 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
         </a>
       </div>
 
-      <div className="mt-4 w-full md:mt-0">
+      <div className="mt-3 w-full md:mt-0">
         <PrimaryProperty
           image="/images/senator-main.jpg"
           location="Heber City"
@@ -35,7 +35,7 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
         />
       </div>
 
-      <div className="-mx-5 mt-5 flex w-[calc(100%+2.5rem)] snap-x snap-mandatory gap-4 overflow-x-auto pl-12 pr-7 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-0 md:grid md:w-full md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3">
+      <div className="-mx-5 mt-4 flex w-[calc(100%+2.5rem)] snap-x snap-mandatory gap-4 overflow-x-auto pl-12 pr-7 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-0 md:grid md:w-full md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3">
         <PropertyCard image="/images/hygge-house.jpg" location="Midway" name="Hygge House" sleeps={10} bedrooms={4} baths={3} href="/properties/hygge-house" />
         <PropertyCard image="/images/granary.jpg" location="Midway" name="Granary" sleeps={4} bedrooms={1} baths={1} href="/properties/granary" />
         <PropertyCard image="/images/daystar.jpg" location="Deer Valley, Park City" name="Daystar" sleeps={12} bedrooms={6} baths={6} href="/properties/daystar" />
