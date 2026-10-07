@@ -15,21 +15,51 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="w-full bg-[#382F29] font-body text-[#FFFCFB]">
-      <div className="flex w-full flex-col gap-10 px-6 py-8">
+      <div className="px-5 py-8 md:hidden">
+        <div className="h-[48px] w-[161px] overflow-hidden">
+          <img src="/roamstead-logo-light.svg" alt="Roamstead" className="block h-full w-full max-w-none" />
+        </div>
+
+        <p className="mt-3 max-w-[250px] font-body text-[13px] font-normal leading-5 tracking-[-0.26px] text-[#F4EFEC]">
+          Modern mountain hospitality across Heber Valley and Park City.
+        </p>
+
+        <div className="mt-6 grid grid-cols-2 gap-6 border-t border-white/20 pt-5">
+          <div>
+            <p className="font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#FBF8F7]">Explore</p>
+            <div className="mt-2.5 space-y-1.5">
+              <a href="/properties" className="block text-[14px] leading-5 text-[#FFFCFB]">Properties</a>
+              <a href="/about" className="block text-[14px] leading-5 text-[#FFFCFB]">About</a>
+              <a href="/properties" className="block text-[14px] leading-5 text-[#FFFCFB]">Book Direct</a>
+            </div>
+          </div>
+          <div>
+            <p className="font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#FBF8F7]">Contact</p>
+            <div className="mt-2.5 space-y-1.5">
+              <a href="mailto:chris@roamstead-co.com" className="block break-all text-[13px] leading-5 text-[#FFFCFB]">
+                chris@roamstead-co.com
+              </a>
+              <a href="tel:+14352435670" className="block text-[14px] leading-5 text-[#FFFCFB]">
+                (435) 243-5670
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <p className="mt-6 border-t border-white/20 pt-4 font-body text-[12px] font-normal leading-5 tracking-[-0.24px] text-[#F4EFEC]">
+          © Roamstead Collective 2026. All rights reserved.
+        </p>
+      </div>
+
+      <div className="hidden w-full flex-col gap-10 px-6 py-8 md:flex">
         <div className="flex w-full flex-col gap-4 lg:grid lg:grid-cols-[608px_192px_193px_192px] lg:gap-4">
           <div className="flex w-full flex-col items-center gap-2 lg:items-start">
             <div className="h-[64px] w-[215px] overflow-hidden lg:h-[80px] lg:w-[269px]">
-              <img
-                src="/roamstead-logo-light.svg"
-                alt="Roamstead"
-                className="block h-full w-full max-w-none"
-              />
+              <img src="/roamstead-logo-light.svg" alt="Roamstead" className="block h-full w-full max-w-none" />
             </div>
-
             <p className="w-full text-center font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7] lg:text-left">
               Roamstead Collective
             </p>
-
             <p className="w-full font-body text-[14px] font-normal leading-[18px] tracking-[-0.28px] text-[#FFFCFB] lg:text-[16px] lg:leading-[24px] lg:tracking-[-0.32px]">
               Modern mountain hospitality for travelers who value community, adventure, and authentic experiences.
             </p>
@@ -37,41 +67,24 @@ export const Footer: React.FC = () => {
 
           <div className="grid w-full grid-cols-2 gap-x-4 gap-y-8 lg:contents">
             <div className="flex w-full flex-col items-start gap-2">
-              <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
-                Properties
-              </p>
+              <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">Properties</p>
               {propertyLinks.map(([label, href]) => (
-                <a key={href} href={href} className={linkClass}>
-                  {label}
-                </a>
+                <a key={href} href={href} className={linkClass}>{label}</a>
               ))}
             </div>
-
             <div className="flex w-full flex-col items-start gap-2">
-              <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
-                Company
-              </p>
-              <a href="/about" className={linkClass}>
-                About
-              </a>
+              <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">Company</p>
+              <a href="/about" className={linkClass}>About</a>
             </div>
-
             <div className="col-span-2 flex w-full flex-col items-start gap-2 lg:col-auto">
-              <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#E8F5EC] lg:text-[#FBF8F7]">
-                Contact
-              </p>
-              <a href="mailto:chris@roamstead-co.com" className={linkClass}>
-                chris@roamstead-co.com
-              </a>
-              <a href="tel:+14352435670" className={linkClass}>
-                (435) 243-5670
-              </a>
+              <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#E8F5EC] lg:text-[#FBF8F7]">Contact</p>
+              <a href="mailto:chris@roamstead-co.com" className={linkClass}>chris@roamstead-co.com</a>
+              <a href="tel:+14352435670" className={linkClass}>(435) 243-5670</a>
             </div>
           </div>
         </div>
 
         <div className="h-px w-full bg-[#E7DFDB]" />
-
         <p className="font-body text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-[#F4EFEC]">
           © Copyright Roamstead Collective 2026. All rights reserved.
         </p>
