@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
 
 export const metadata: Metadata = {
@@ -44,48 +43,53 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="container-figma flex flex-col items-center gap-3 py-8">
-        <p className="border border-border-strong px-3 py-1 text-sm font-medium tracking-body text-brand-text">
-          About Roamstead Collective
-        </p>
-        <h1 className="w-full max-w-content-medium text-left font-heading text-h1 font-medium tracking-display text-brand-text md:text-center">
+      <section className="flex w-full flex-col items-center gap-6 bg-[#FFFCFB] px-6 py-16">
+        <div className="inline-flex h-[34px] items-center justify-center border border-[#D8CCC4] px-6 py-2">
+          <p className="font-body text-[14px] font-medium leading-[18px] tracking-[-0.28px] text-[#1F3125]">
+            About Roamstead Collective
+          </p>
+        </div>
+
+        <h1
+          className="w-full max-w-[720px] text-center font-heading text-[64px] font-medium leading-[72px] tracking-[-2.56px] text-[#1F3125]"
+          style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+        >
           We believe mountains are better when we share them
         </h1>
-        <div className="w-full max-w-content-medium space-y-[var(--text-xl-lh)] text-xl tracking-body text-text-secondary">
-          {story.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
+
+        <div className="w-full max-w-[720px] space-y-8 font-body text-[20px] font-normal leading-8 tracking-[-0.4px] text-[#6D6057]">
+          {story.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         </div>
       </section>
 
-      {/* What we care about */}
-      <section className="container-figma flex flex-col items-center gap-3 py-8">
-        <h2 className="w-full max-w-content-narrow text-center font-heading text-h2 font-medium tracking-display text-brand-text">
+      <section className="flex w-full flex-col items-center gap-6 bg-[#FFFCFB] px-6 py-16">
+        <h2
+          className="w-full max-w-[816px] text-center font-heading text-[48px] font-medium leading-[54px] tracking-[-1.92px] text-[#1F3125]"
+          style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+        >
           What we care about
         </h2>
-        <p className="w-full max-w-content-narrow text-xl tracking-body text-text-secondary">
-          Roamstead is a growing collection of places to stay in Heber Valley and the surrounding
-          mountains. Each property is shaped by its setting, designed to feel intentional, welcoming,
-          and easy to return to.
+
+        <p className="w-full max-w-[816px] font-body text-[20px] font-normal leading-8 tracking-[-0.4px] text-[#6D6057]">
+          Roamstead is a growing collection of places to stay in Heber Valley and the surrounding mountains. Each property is shaped by its setting, designed to feel intentional, welcoming, and easy to return to.
         </p>
-        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3 md:gap-2">
+
+        <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-3 md:gap-4">
           {values.map((value) => (
-            <div key={value.title} className="flex flex-col gap-2">
-              <div className="relative h-value-card-image w-full overflow-hidden rounded-3">
-                <Image
-                  src={value.image}
-                  alt={value.alt}
-                  fill
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                  className="object-cover"
-                />
+            <div key={value.title} className="flex h-[460px] flex-col gap-4">
+              <div className="relative h-[320px] w-full overflow-hidden rounded-3">
+                <Image src={value.image} alt={value.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
               </div>
-              <div className="flex flex-col gap-1">
-                <h3 className="font-heading text-h4 font-medium tracking-display text-brand-text">
+              <div className="flex flex-col gap-2">
+                <h3
+                  className="font-heading text-[36px] font-medium leading-[44px] tracking-[-1.44px] text-[#1F3125]"
+                  style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+                >
                   {value.title}
                 </h3>
-                <p className="text-md tracking-body text-text-secondary">{value.description}</p>
+                <p className="font-body text-[16px] font-normal leading-6 tracking-[-0.32px] text-[#6D6057]">
+                  {value.description}
+                </p>
               </div>
             </div>
           ))}
