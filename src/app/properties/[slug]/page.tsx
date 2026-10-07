@@ -95,7 +95,7 @@ export default async function PropertyPage({ params }: PageProps) {
   const property = getProperty(slug);
   if (!property) notFound();
 
-  const { hero, stories, details, location, bookingUrl } = property;
+  const { hero, stats, stories, details, location, bookingUrl } = property;
   const listingId = hostawayListingIds[slug];
   const highlights = propertyHighlights[slug] ?? { primary: [], secondary: [] };
   const isSenator = slug === "senator";
@@ -166,22 +166,36 @@ export default async function PropertyPage({ params }: PageProps) {
       </section>
 
       <section className="bg-[#FFFCFB] px-6 py-14 md:py-16">
-        <div className="mx-auto grid max-w-[1180px] gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-          <p className="font-body text-[20px] font-normal leading-8 tracking-[-0.4px] text-[#6D6057] md:text-[22px] md:leading-9">
-            {property.intro}
-          </p>
+        <div className="mx-auto grid max-w-[1180px] gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+          <div>
+            <p className="font-body text-[20px] font-normal leading-8 tracking-[-0.4px] text-[#6D6057] md:text-[22px] md:leading-9">
+              {property.intro}
+            </p>
+          </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            {highlights.primary.map((item) => (
-              <div
-                key={item}
-                className="rounded-3 border border-[#E1D7D1] bg-[#FBF8F7] px-4 py-4"
-              >
-                <p className="font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-[#291D16] md:text-[16px]">
-                  {item}
-                </p>
-              </div>
-            ))}
+          <div className="rounded-[20px] bg-[#F4EFEC] px-5 py-5 md:px-6 md:py-6">
+            <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.1em] text-[#8F7E73]">
+              At a glance
+            </p>
+
+            <dl className="mt-4 grid grid-cols-2">
+              {stats.map((stat, index) => (
+                <div
+                  key={stat.label}
+                  className={`py-3.5 ${index % 2 === 0 ? "pr-5" : "border-l border-[#D8CCC4] pl-5"} ${index > 1 ? "border-t border-[#D8CCC4]" : ""}`}
+                >
+                  <dd
+                    className="font-heading text-[28px] font-medium leading-[32px] tracking-[-1.12px] text-[#1F3125] md:text-[32px] md:leading-[36px] md:tracking-[-1.28px]"
+                    style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+                  >
+                    {stat.value}
+                  </dd>
+                  <dt className="mt-1 font-body text-[14px] font-normal leading-5 tracking-[-0.28px] text-[#6D6057]">
+                    {stat.label}
+                  </dt>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
       </section>
@@ -233,10 +247,16 @@ export default async function PropertyPage({ params }: PageProps) {
                     className={`flex items-center p-6 md:p-8 lg:p-10 ${index % 2 === 1 ? "md:order-2" : ""}`}
                   >
                     <div className="max-w-[520px]">
-                      <p className="mb-4 font-body text-[12px] font-medium uppercase leading-5 tracking-[0.08em] text-[#8F7E73]">
-                        {index === 0 ? "Mornings" : index === 1 ? "After the day" : "Evenings"}
+                      <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.08em] text-[#8F7E73]">
+                        {story.eyebrow}
                       </p>
-                      <div className="font-body text-[17px] font-normal leading-7 tracking-[-0.34px] text-[#5F534B] md:text-[18px] md:leading-8">
+                      <h3
+                        className="mt-2 font-heading text-[30px] font-medium leading-[34px] tracking-[-1.2px] text-[#1F3125] md:text-[34px] md:leading-[38px] md:tracking-[-1.36px]"
+                        style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+                      >
+                        {story.title}
+                      </h3>
+                      <div className="mt-4 font-body text-[17px] font-normal leading-7 tracking-[-0.34px] text-[#5F534B] md:text-[18px] md:leading-8">
                         {story.paragraphs.map((paragraph) => (
                           <p key={paragraph} className="mb-5 last:mb-0">
                             {paragraph}
