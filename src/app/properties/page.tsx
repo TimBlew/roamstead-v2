@@ -70,7 +70,10 @@ export default function PropertiesPage() {
               if (!property) return null;
 
               const href = "/properties/" + property.slug;
-              const facts = property.stats.slice(0, 3).map((stat) => stat.value + " " + stat.label);
+              const facts = property.stats.slice(0, 3).map((stat) => {
+                if (stat.label.toLowerCase() === "sleeps") return "Sleeps " + stat.value;
+                return stat.value + " " + stat.label;
+              });
 
               return (
                 <article key={property.slug} className="group">
