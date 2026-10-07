@@ -172,10 +172,10 @@ export const properties: Property[] = [
       locationLabel: "Midway, Utah",
       title: "Hygge House",
       subtitle:
-        "A spacious four-bedroom mountain home with a private sauna, a dedicated office, and a garage gym built around your gear.",
+        "Spacious 4BR mountain home w/ sauna, office, gym + gear garage",
     },
     intro:
-      "Hygge House is a spacious four-bedroom home in Midway, built for families, remote workers, and groups who want comfort and convenience near some of Utah's best adventures. Two living rooms, a dedicated office, a desk and monitor in the bedrooms, and a two-car garage set up to store bikes, skis and boards. It sleeps ten.",
+      "The ideal Utah mountain escape: a spacious 4-bedroom home built for families, remote workers, and groups who want comfort and convenience near Utah's best adventures. Enjoy two cozy living rooms, a dedicated office, desks and monitors in each bedroom, and a 2-car garage set up to store bikes, skis, boards, and more. Finish your day with the private 4-person sauna, then hang outside with the BBQ and fire pit in the fenced backyard.",
     stats: [
       { value: "10", label: "Sleeps" },
       { value: "4", label: "Bedrooms" },
@@ -282,10 +282,10 @@ export const properties: Property[] = [
       locationLabel: "Midway, Utah",
       title: "Granary",
       subtitle:
-        "A ground-floor condo with mountain views and a gas fireplace, a walk from Midway's restaurants and shops.",
+        "Charming 1BD/1BA ground-floor condo with mountain views, full kitchen, gas fireplace, and in-unit washer/dryer, walkable to Midway's restaurants and shops and a drive from Utah's best outdoor adventures.",
     },
     intro:
-      "Granary is a newly renovated one-bedroom, ground-floor condo in Midway that blends old-world character with modern comfort. An open floor plan with mountain views, a full kitchen, a gas fireplace, and an in-unit washer and dryer. A king bed and a pull-out sofa mean it sleeps up to four.",
+      "This charming 1BD/1BA ground-floor condo sleeps up to 4 and blends old-world character with modern comfort. Enjoy mountain views from the spacious open floor plan with a full kitchen and gas fireplace. Newly renovated with ample closet space, a pull-out sofa for extra sleeping space, and in-unit washer and dryer.",
     stats: [
       { value: "4", label: "Sleeps" },
       { value: "1", label: "Bedroom" },
@@ -382,10 +382,10 @@ export const properties: Property[] = [
       locationLabel: "Deer Valley, Park City, Utah",
       title: "Daystar",
       subtitle:
-        "A family-friendly Deer Valley retreat in Solamere, minutes from the resort base, with a hot tub, a sauna and an indoor sport court.",
+        "Family-friendly Deer Valley retreat in Solamere, just minutes from the resort base. After a day on the slopes, unwind in the outdoor hot tub, indoor sauna, or one of three soaking tubs. The main level features an open floor plan with a pool table, large kitchen, and two dining areas. Two living rooms and an indoor sport court provide space for everyone to relax and play.",
     },
     intro:
-      "Daystar is a spacious, family-friendly home in Solamere, just minutes from the Deer Valley resort base. Six bedrooms, six private bathrooms, two living rooms, two dining areas, and an indoor sport court, with the entire property available to guests. It sleeps twelve.",
+      "Make unforgettable memories at this spacious Deer Valley home in Solamere, just minutes from the resort base. After skiing, relax in the outdoor hot tub, indoor sauna, or one of the soaking tubs. The main level offers an open layout with a pool table, living room, large kitchen, and two dining areas so everyone has a seat to gather. Two distinct living rooms create separate hangout spaces, while the indoor sport court invites friendly competition. The entire property is available for guest access.",
     stats: [
       { value: "12", label: "Sleeps" },
       { value: "6", label: "Bedrooms" },
@@ -491,10 +491,10 @@ export const properties: Property[] = [
       locationLabel: "Park City, Utah",
       title: "The Lowell",
       subtitle:
-        "A brand-new condo at the base of Park City Mountain Resort, about thirty steps from the snow.",
+        "Brand-new condo at the base of Park City Mountain Resort, walk about 30 steps and you're on the snow. Enjoy a steam shower and bathtub, a piano and chess table, and a full kitchen. Building amenities include a fitness center, hot tub, heated pool, underground parking, ski storage, and an on-site rental and tuning shop. Easy access to Main Street via the resort bus hub.",
     },
     intro:
-      "The Lowell is a brand-new two-bedroom condo at the base of Park City Mountain Resort. Walk about thirty steps and you're on the snow. Inside there's a full kitchen, a large dining table, a steam shower and bathtub, a piano and a chess table. It sleeps eight.",
+      "This spacious, modern condo is located steps from the base of Park City Mountain Resort with unbeatable walkability to the lifts and snow. Inside you'll find a full kitchen, in-unit washer and dryer, large dining table, piano, chess table, complimentary Wi-Fi, and flat-screen TVs in both bedrooms. After a day outside, unwind with a steam shower and soak in the bathtub. Guests also have access to the building's heated outdoor pool, hot tub, fitness center, elevator, underground parking, and ski storage. Keyless entry is available for self check-in, and local recommendations are available for guides, drivers, restaurants, and activities.",
     stats: [
       { value: "8", label: "Sleeps" },
       { value: "2", label: "Bedrooms" },
@@ -601,10 +601,10 @@ export const properties: Property[] = [
       locationLabel: "Park City, Utah",
       title: "Powder Room",
       subtitle:
-        "A hotel-style studio at the base of Park City Mountain Resort, with a king bed, a futon, and a pool and hot tub in the building.",
+        "Hotel-style ski-base studio w/ king bed, futon, pool + hot tub",
     },
     intro:
-      "Powder Room is a hotel-style studio at the base of Park City Mountain Resort, steps from the snow and built for easy mountain days. A California king, a full/queen futon, a full private bathroom and a kitchenette. It sleeps four, and is the best fit for two adults and two small children, or three adults.",
+      "Located at the base of Park City Mountain Resort, this hotel-style unit is steps from the snow and built for easy mountain days. After exploring the resort or town, unwind in the outdoor pool and hot tub, or get a quick workout in the fitness center. The unit features a comfy king bed, a queen futon, and a full private bathroom, plus a kitchenette with a microwave, mini fridge, and kettle and coffee maker. In the winter, guests receive equipment discounts and nightly ski storage through Park City Sport on site.",
     stats: [
       { value: "4", label: "Sleeps" },
       { value: "Studio", label: "Layout" },
