@@ -39,7 +39,7 @@ export const Hero: React.FC<HeroProps> = ({
           {headline}
         </h1>
 
-        <p className="mt-4 w-full max-w-[346px] font-body text-[15px] font-normal leading-[23px] tracking-[-0.3px] text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.42)] sm:max-w-[560px] md:mt-6 md:max-w-none md:text-[20px] md:leading-8 md:tracking-[-0.4px] md:text-[#E8F5EC]">
+        <p className="mt-4 w-full max-w-[322px] font-body text-[14.5px] font-normal leading-[22px] tracking-[-0.3px] text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.42)] sm:max-w-[560px] md:mt-6 md:max-w-none md:text-[20px] md:leading-8 md:tracking-[-0.4px] md:text-[#E8F5EC]">
           {description}
         </p>
 
