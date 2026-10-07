@@ -54,7 +54,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           href={href}
           className="flex h-10 w-full items-center justify-center border border-[#D8CCC4] bg-[#FEFDFC] px-4 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#291D16] transition-colors hover:bg-[#F4EFEC] md:w-fit"
         >
-          Explore the stay
+          View property
         </a>
       </div>
     </article>
