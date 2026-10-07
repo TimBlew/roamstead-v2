@@ -57,7 +57,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
         <a
           href={href}
           {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          className="mt-2 inline-flex min-h-9 items-center justify-center rounded-2 bg-[#4A6E57] px-3.5 py-1.5 font-body text-[13px] font-medium leading-5 tracking-[-0.28px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:h-10 md:w-fit md:rounded-none md:px-6 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
+          className="mt-1.5 inline-flex min-h-8 items-center justify-center rounded-[10px] bg-[#4A6E57] px-3 py-1 font-body text-[12.5px] font-medium leading-5 tracking-[-0.28px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:h-10 md:w-fit md:rounded-none md:px-6 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
         >
           See the stay
         </a>
