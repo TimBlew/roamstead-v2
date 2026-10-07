@@ -276,8 +276,8 @@ export const properties: Property[] = [
     },
     hero: {
       image: {
-        src: "/images/granary/exterior.jpg",
-        alt: "The Granary building in Midway with the mountains behind",
+        src: "/images/granary/kitchen.jpg",
+        alt: "Granary kitchen with a granite island and stainless appliances",
       },
       locationLabel: "Midway, Utah",
       title: "Granary",
@@ -295,8 +295,8 @@ export const properties: Property[] = [
     stories: [
       {
         image: {
-          src: "/images/granary/kitchen.jpg",
-          alt: "Kitchen with a granite island and stainless appliances",
+          src: "/images/granary/exterior.jpg",
+          alt: "The Granary building in Midway with the mountains behind",
         },
         paragraphs: [
           "Mornings start at the Keurig. The kitchen is fully stocked, with a dishwasher and a dining table for four, and the open floor plan looks out to the mountains.",
