@@ -1,19 +1,20 @@
 import React from "react";
-import { Container } from "../layout/Container";
 
 export const ValueStatement: React.FC = () => {
   return (
-    <section className="bg-bg-canvas pb-8 pt-20 md:pb-10 md:pt-24">
-      <Container maxWidth="figma">
-        <div className="mx-auto max-w-[920px] text-center">
-          <h2 className="font-heading text-h2 font-medium tracking-display text-text-primary">
-            Where Mountain Life Slows Down
-          </h2>
-          <p className="mx-auto mt-5 max-w-[860px] text-base leading-7 tracking-body text-text-secondary md:text-lg md:leading-8">
-            Roamstead is a growing collection of places to stay in Heber Valley and the surrounding mountains. Each property is shaped by its setting, designed to feel intentional, welcoming, and easy to return to.
-          </p>
-        </div>
-      </Container>
+    <section className="bg-[#FFFCFB] px-6 pt-16">
+      <div className="mx-auto flex w-full max-w-[816px] flex-col items-center gap-6 text-center">
+        <h2
+          className="w-full font-heading text-[48px] font-medium leading-[54px] tracking-[-1.92px] text-[#1F3125]"
+          style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+        >
+          Where Mountain Life Slows Down
+        </h2>
+        <p className="w-full font-body text-[20px] font-normal leading-8 tracking-[-0.4px] text-[#6D6057]">
+          Roamstead is a growing collection of places to stay in Heber Valley and the surrounding mountains. Each property is shaped by its setting, designed to feel intentional, welcoming, and easy to return to.
+        </p>
+      </div>
+      <div className="h-6" />
     </section>
   );
 };
