@@ -16,9 +16,9 @@ export const Footer: React.FC = () => {
   return (
     <footer className="w-full bg-[#382F29] font-body text-[#FFFCFB]">
       <div className="flex w-full flex-col gap-10 px-6 py-8">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-10 lg:grid-cols-[608px_192px_193px_192px] lg:gap-4">
-          <div className="flex flex-col items-start gap-2 md:col-span-2 lg:col-span-1">
-            <div className="h-[80px] w-[269px] overflow-hidden">
+        <div className="flex w-full flex-col gap-4 lg:grid lg:grid-cols-[608px_192px_193px_192px] lg:gap-4">
+          <div className="flex w-full flex-col items-center gap-2 lg:items-start">
+            <div className="h-[64px] w-[215px] overflow-hidden lg:h-[80px] lg:w-[269px]">
               <img
                 src="/roamstead-logo-light.svg"
                 alt="Roamstead"
@@ -26,51 +26,53 @@ export const Footer: React.FC = () => {
               />
             </div>
 
-            <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
+            <p className="w-full text-center font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7] lg:text-left">
               Roamstead Collective
             </p>
 
-            <p className="w-full font-body text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-[#FFFCFB]">
+            <p className="w-full font-body text-[14px] font-normal leading-[18px] tracking-[-0.28px] text-[#FFFCFB] lg:text-[16px] lg:leading-[24px] lg:tracking-[-0.32px]">
               Modern mountain hospitality for travelers who value community, adventure, and authentic experiences.
             </p>
           </div>
 
-          <div className="flex flex-col items-start gap-2">
-            <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
-              Properties
-            </p>
-            {propertyLinks.map(([label, href]) => (
-              <a key={href} href={href} className={linkClass}>
-                {label}
+          <div className="grid w-full grid-cols-2 gap-x-4 gap-y-8 lg:contents">
+            <div className="flex w-full flex-col items-start gap-2">
+              <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
+                Properties
+              </p>
+              {propertyLinks.map(([label, href]) => (
+                <a key={href} href={href} className={linkClass}>
+                  {label}
+                </a>
+              ))}
+            </div>
+
+            <div className="flex w-full flex-col items-start gap-2">
+              <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
+                Company
+              </p>
+              <a href="/about" className={linkClass}>
+                About
               </a>
-            ))}
-          </div>
+            </div>
 
-          <div className="flex flex-col items-start gap-2">
-            <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
-              Company
-            </p>
-            <a href="/about" className={linkClass}>
-              About
-            </a>
-          </div>
-
-          <div className="flex flex-col items-start gap-2">
-            <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
-              Contact
-            </p>
-            <a href="mailto:chris@roamstead-co.com" className={linkClass}>
-              chris@roamstead-co.com
-            </a>
-            <a href="tel:+14352435670" className={linkClass}>
-              (435) 243-5670
-            </a>
+            <div className="col-span-2 flex w-full flex-col items-start gap-2 lg:col-auto">
+              <p className="w-full font-body text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#E8F5EC] lg:text-[#FBF8F7]">
+                Contact
+              </p>
+              <a href="mailto:chris@roamstead-co.com" className={linkClass}>
+                chris@roamstead-co.com
+              </a>
+              <a href="tel:+14352435670" className={linkClass}>
+                (435) 243-5670
+              </a>
+            </div>
           </div>
         </div>
 
         <div className="h-px w-full bg-[#E7DFDB]" />
 
-        <p className="whitespace-nowrap font-body text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-[#F4EFEC]">
+        <p className="font-body text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-[#F4EFEC]">
           © Copyright Roamstead Collective 2026. All rights reserved.
         </p>
       </div>
