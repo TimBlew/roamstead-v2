@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import { Button } from "./Button";
 
 interface HeroProps {
   backgroundImage: string;
@@ -18,7 +17,7 @@ export const Hero: React.FC<HeroProps> = ({
   ctaHref,
 }) => {
   return (
-    <section className="relative min-h-[680px] w-full overflow-hidden md:min-h-[760px] lg:min-h-[820px]">
+    <section className="relative flex h-[752px] w-full flex-col items-center gap-6 overflow-hidden px-6 py-16 text-center">
       <Image
         src={backgroundImage}
         alt=""
@@ -28,27 +27,25 @@ export const Hero: React.FC<HeroProps> = ({
         sizes="100vw"
         className="object-cover object-center"
       />
-      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent" />
 
-      <div className="container-figma relative z-10 flex min-h-[680px] items-start justify-center pt-14 text-center md:min-h-[760px] md:pt-16 lg:min-h-[820px] lg:pt-18">
-        <div className="mx-auto max-w-[900px]">
-          <h1 className="font-heading text-[48px] font-medium leading-[1.02] tracking-display text-white sm:text-[58px] md:text-[68px] lg:text-[76px]">
-            {headline}
-          </h1>
-          <p className="mx-auto mt-7 max-w-[760px] text-base leading-7 tracking-body text-white/95 md:text-[18px] md:leading-8">
-            {description}
-          </p>
-          <div className="mt-7">
-            <Button
-              href={ctaHref}
-              variant="secondary"
-              className="border-white bg-white text-text-primary hover:bg-bg-subtle"
-            >
-              {ctaText}
-            </Button>
-          </div>
-        </div>
-      </div>
+      <h1
+        className="relative z-10 w-full max-w-[720px] font-heading text-[72px] font-medium leading-[72px] tracking-[-2.88px] text-[#E8F5EC]"
+        style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+      >
+        {headline}
+      </h1>
+
+      <p className="relative z-10 w-full max-w-[720px] font-body text-[18px] font-normal leading-7 tracking-[-0.36px] text-[#E8F5EC]">
+        {description}
+      </p>
+
+      <a
+        href={ctaHref}
+        className="relative z-10 inline-flex h-10 items-center justify-center border border-[#D8CCC4] bg-[#FEFDFC] px-4 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#291D16] transition-colors hover:bg-[#F4EFEC]"
+      >
+        {ctaText}
+      </a>
     </section>
   );
 };
