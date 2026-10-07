@@ -25,16 +25,16 @@ export const ValueCards: React.FC = () => {
 
   return (
     <section className="bg-[#FFFCFB] px-6 pb-16">
-      <div className="flex w-full flex-col gap-4 md:grid md:grid-cols-3">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 md:grid md:grid-cols-3 md:items-start md:gap-8">
         {values.map((value) => (
           <ValueCard key={value.title} {...value} />
         ))}
       </div>
 
-      <div className="mt-6">
+      <div className="mx-auto mt-8 w-full max-w-[1440px]">
         <a
           href="/properties"
-          className="flex h-10 w-full items-center justify-center bg-[#4A6E57] px-6 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:mx-auto md:w-fit"
+          className="flex h-10 w-full items-center justify-center bg-[#4A6E57] px-6 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:mx-auto md:h-[60px] md:min-w-[196px] md:w-fit md:px-8"
         >
           Check availability
         </a>
