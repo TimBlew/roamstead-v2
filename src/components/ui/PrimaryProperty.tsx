@@ -21,11 +21,11 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
   external = false,
 }) => {
   return (
-    <article className="flex w-full flex-col gap-2.5 md:h-[532px] md:flex-row md:items-end md:gap-6 md:rounded-3 md:border md:border-[#E1D7D1] md:bg-[#FBF8F7] md:p-4">
+    <article className="flex w-full flex-col gap-2.5 md:grid md:grid-cols-[1.45fr_0.8fr] md:items-stretch md:gap-0 md:overflow-hidden md:rounded-[22px] md:border md:border-[#E1D7D1] md:bg-[#FBF8F7]">
       <a
         href={href}
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-        className="relative h-[185px] w-full shrink-0 overflow-hidden rounded-[18px] md:h-[500px] md:w-[66.23%] md:rounded-2 md:border md:border-[#D8CCC4]"
+        className="relative h-[185px] w-full shrink-0 overflow-hidden rounded-[18px] md:h-[360px] md:w-full md:rounded-none"
       >
         <Image
           src={image}
@@ -36,7 +36,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
         />
       </a>
 
-      <div className="flex min-w-0 flex-1 flex-col items-start">
+      <div className="flex min-w-0 flex-1 flex-col items-start justify-center md:p-8 lg:p-10">
         <p className="font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#8F7E73] md:w-full md:text-[16px] md:leading-6 md:tracking-[-0.32px] md:text-[#6D6057]">
           {location.replace(", Utah", "")}
         </p>
@@ -57,7 +57,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
         <a
           href={href}
           {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          className="mt-1.5 inline-flex min-h-8 items-center justify-center rounded-[10px] bg-[#4A6E57] px-3 py-1 font-body text-[12.5px] font-medium leading-5 tracking-[-0.28px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:h-10 md:w-fit md:rounded-none md:px-6 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
+          className="mt-3 inline-flex h-9 items-center justify-center rounded-[10px] bg-[#4A6E57] px-4 font-body text-[12.5px] font-medium leading-5 tracking-[-0.28px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:h-10 md:w-fit md:px-5 md:text-[15px] md:leading-6 md:tracking-[-0.3px]"
         >
           See the stay
         </a>
