@@ -173,24 +173,26 @@ export default async function PropertyPage({ params }: PageProps) {
             </p>
           </div>
 
-          <div className="rounded-[20px] bg-[#F4EFEC] px-5 py-5 md:px-6 md:py-6">
-            <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.1em] text-[#8F7E73]">
-              At a glance
-            </p>
+          <div className="overflow-hidden rounded-[22px] bg-[#F4EFEC]">
+            <div className="px-6 pb-4 pt-5 md:px-7 md:pt-6">
+              <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.11em] text-[#8F7E73]">
+                At a glance
+              </p>
+            </div>
 
-            <dl className="mt-4 grid grid-cols-2">
+            <dl className="grid grid-cols-2 border-t border-[#D8CCC4]/70">
               {stats.map((stat, index) => (
                 <div
                   key={stat.label}
-                  className={`py-3.5 ${index % 2 === 0 ? "pr-5" : "border-l border-[#D8CCC4] pl-5"} ${index > 1 ? "border-t border-[#D8CCC4]" : ""}`}
+                  className={`flex min-h-[118px] flex-col justify-center px-6 py-5 md:min-h-[132px] md:px-7 ${index % 2 === 1 ? "border-l border-[#D8CCC4]/70" : ""} ${index > 1 ? "border-t border-[#D8CCC4]/70" : ""}`}
                 >
                   <dd
-                    className="font-heading text-[28px] font-medium leading-[32px] tracking-[-1.12px] text-[#1F3125] md:text-[32px] md:leading-[36px] md:tracking-[-1.28px]"
+                    className="font-heading text-[30px] font-medium leading-[34px] tracking-[-1.2px] text-[#1F3125] md:text-[34px] md:leading-[38px] md:tracking-[-1.36px]"
                     style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
                   >
                     {stat.value}
                   </dd>
-                  <dt className="mt-1 font-body text-[14px] font-normal leading-5 tracking-[-0.28px] text-[#6D6057]">
+                  <dt className="mt-1.5 font-body text-[14px] font-normal leading-5 tracking-[-0.28px] text-[#6D6057]">
                     {stat.label}
                   </dt>
                 </div>
