@@ -5,10 +5,7 @@ import { Footer } from '@/components/layout/Footer'
 
 export const metadata: Metadata = {
   title: 'Roamstead - Modern Mountain Hospitality',
-  robots: {
-    index: false,
-    follow: false,
-  },
+  robots: 'noindex, nofollow',
   description: 'A growing collection of places to stay in Heber Valley and the surrounding mountains. Each one is shaped by its setting and designed for the way people actually live while traveling.',
 }
 
