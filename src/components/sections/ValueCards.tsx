@@ -25,16 +25,16 @@ export const ValueCards: React.FC = () => {
 
   return (
     <section className="bg-[#FFFCFB] px-5 pb-7 md:px-6 md:pb-16">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 md:grid md:grid-cols-3 md:items-start md:gap-8">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-3.5 md:grid md:grid-cols-3 md:items-start md:gap-8">
         {values.map((value) => (
           <ValueCard key={value.title} {...value} />
         ))}
       </div>
 
-      <div className="mx-auto mt-5 w-full max-w-[1440px] md:mt-8">
+      <div className="mx-auto mt-4 w-full max-w-[1440px] md:mt-8">
         <a
           href="/properties"
-          className="inline-flex min-h-10 items-center justify-center rounded-2 bg-[#4A6E57] px-4 py-2 font-body text-[14px] font-medium leading-6 tracking-[-0.3px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:mx-auto md:flex md:h-[60px] md:min-w-[196px] md:w-fit md:rounded-none md:px-8 md:text-[16px] md:tracking-[-0.32px]"
+          className="inline-flex min-h-9 items-center justify-center rounded-[12px] bg-[#4A6E57] px-4 py-1.5 font-body text-[13px] shadow-[0_8px_20px_rgba(74,110,87,0.16)] font-medium leading-6 tracking-[-0.3px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:mx-auto md:flex md:h-[60px] md:min-w-[196px] md:w-fit md:rounded-none md:px-8 md:text-[16px] md:tracking-[-0.32px]"
         >
           Check availability
         </a>
