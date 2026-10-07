@@ -41,20 +41,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 function DetailList({ heading, items }: { heading: string; items: string[] }) {
   return (
-    <div className="flex w-full flex-col items-start">
-      <div className="flex h-12 w-full items-center border-b border-[#E1D7D1] py-2">
-        <h3 className="w-full font-body text-[20px] font-medium leading-8 tracking-[-0.4px] text-[#6D6057]">
+    <div className="overflow-hidden rounded-3 border border-[#E1D7D1] bg-[#FBF8F7]">
+      <div className="border-b border-[#E1D7D1] px-5 py-4 md:px-6">
+        <h3
+          className="font-heading text-[26px] font-medium leading-[32px] tracking-[-1.04px] text-[#1F3125]"
+          style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+        >
           {heading}
         </h3>
       </div>
 
-      {items.map((item) => (
-        <div key={item} className="flex min-h-14 w-full items-center border-b border-[#E7DFDB] py-4">
-          <p className="w-full font-body text-[16px] font-normal leading-6 tracking-[-0.32px] text-[#291D16]">
-            {item}
-          </p>
-        </div>
-      ))}
+      <div className="divide-y divide-[#E7DFDB]">
+        {items.map((item) => (
+          <div key={item} className="px-5 py-3.5 md:px-6 md:py-4">
+            <p className="font-body text-[15px] font-normal leading-6 tracking-[-0.3px] text-[#4E433C] md:text-[16px] md:tracking-[-0.32px]">
+              {item}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -187,11 +192,25 @@ export default async function PropertyPage({ params }: PageProps) {
         ))}
       </section>
 
-      <section className="bg-[#FFFCFB] px-6 py-16">
-        <div className="grid w-full grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2">
-          {details.map((list) => (
-            <DetailList key={list.heading} heading={list.heading} items={list.items} />
-          ))}
+      <section className="bg-[#FFFCFB] px-6 py-14 md:py-16">
+        <div className="mx-auto w-full max-w-[1280px]">
+          <div className="mb-8 max-w-[720px]">
+            <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
+              Property details
+            </p>
+            <h2
+              className="mt-2 font-heading text-[36px] font-medium leading-[40px] tracking-[-1.44px] text-[#1F3125] md:text-[44px] md:leading-[48px] md:tracking-[-1.76px]"
+              style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+            >
+              Everything in one place
+            </h2>
+          </div>
+
+          <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2">
+            {details.map((list) => (
+              <DetailList key={list.heading} heading={list.heading} items={list.items} />
+            ))}
+          </div>
         </div>
       </section>
 
