@@ -45,7 +45,7 @@ export const Hero: React.FC<HeroProps> = ({
 
         <a
           href={ctaHref}
-          className="mt-5 inline-flex min-h-10 items-center justify-center rounded-2 border border-white/70 bg-white/95 px-5 py-2 font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#291D16] shadow-[0_8px_24px_rgba(0,0,0,0.16)] transition-colors hover:bg-white md:mt-8 md:h-[56px] md:min-w-[188px] md:rounded-none md:border-[#D8CCC4] md:bg-[#FEFDFC] md:px-6 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
+          className="mt-4 inline-flex min-h-9 items-center justify-center rounded-[12px] border border-white/80 bg-white/90 px-4 py-1.5 font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#291D16] shadow-[0_10px_28px_rgba(0,0,0,0.18)] backdrop-blur-sm transition-all hover:-translate-y-px hover:bg-white md:mt-8 md:h-[56px] md:min-w-[188px] md:rounded-none md:border-[#D8CCC4] md:bg-[#FEFDFC] md:px-6 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
         >
           {ctaText}
         </a>
