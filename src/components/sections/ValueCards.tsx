@@ -8,7 +8,7 @@ export const ValueCards: React.FC = () => {
     {
       image: '/images/community-first.jpg',
       title: 'Community first',
-      description: 'We design spaces that encourage gathering — around a table, a fire, or a shared plan for tomorrow. The best days leave room for people.',
+      description: 'We design spaces that encourage gathering, around a table, a fire, or a shared plan for tomorrow. The best days leave room for people.',
     },
     {
       image: '/images/four-season.jpg',

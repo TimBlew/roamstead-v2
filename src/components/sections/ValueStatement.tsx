@@ -10,7 +10,7 @@ export const ValueStatement: React.FC = () => {
             Where Mountain Life Slows Down
           </h2>
           <p className="text-md text-text-secondary leading-relaxed">
-            Roamstead is a growing collection of places to stay in Heber Valley and the surrounding mountains. Each property is shaped by its setting — designed to feel intentional, welcoming, and easy to return to.
+            Roamstead is a growing collection of places to stay in Heber Valley and the surrounding mountains. Each property is shaped by its setting, designed to feel intentional, welcoming, and easy to return to.
           </p>
         </div>
       </Container>

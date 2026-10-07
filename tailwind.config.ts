@@ -36,6 +36,19 @@ const config: Config = {
         '9': 'var(--space-9)',
         '10': 'var(--space-10)',
       },
+      letterSpacing: {
+        'body': 'var(--tracking-body)',
+        'display': 'var(--tracking-display)',
+      },
+      height: {
+        'property-hero': 'var(--property-hero-h)',
+        'story-image': 'var(--story-image-h)',
+        'map': 'var(--map-h)',
+      },
+      maxWidth: {
+        'content-narrow': 'var(--content-narrow-max)',
+        'property-hero-text': 'var(--property-hero-text-max)',
+      },
       borderRadius: {
         '1': 'var(--radius-1)',
         '2': 'var(--radius-2)',

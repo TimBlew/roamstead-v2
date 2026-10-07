@@ -69,7 +69,7 @@ export const Hero: React.FC<HeroProps> = ({
               {description}
             </p>
 
-            {/* CTA — Exact Figma Hug */}
+            {/* CTA: exact Figma hug */}
             <a
               href={ctaHref}
               className="

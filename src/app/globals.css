@@ -62,6 +62,17 @@
   --container-max: 1280px;
   --container-pad-x: 24px; /* Figma: 24px left/right */
   --footer-logo-width: 280px; /* tweak 260–300px to match Figma exactly */
+
+  /* Letter spacing (Figma: paragraphs -2%, display -4%) */
+  --tracking-body: -0.02em;
+  --tracking-display: -0.04em;
+
+  /* Property template */
+  --property-hero-h: 720px;
+  --property-hero-text-max: 720px;
+  --content-narrow-max: 816px;
+  --story-image-h: 379px;
+  --map-h: 400px;
 }
 
 /* Base Theme (Neutral Foundation) */
@@ -174,6 +185,8 @@
 
     --text-lg: 18px;
     --text-lg-lh: 28px;
+
+    --property-hero-h: 600px;
   }
 }
 

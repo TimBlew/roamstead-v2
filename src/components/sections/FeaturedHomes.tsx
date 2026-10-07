@@ -26,8 +26,7 @@ export const FeaturedHomes: React.FC = () => {
             name="The Heber Senator"
             description="A restored 1902 home three blocks from Main Street, with 10 rooms and suites and cooked to order breakfast. Rated 9.8 out of 10 by guests."
             badge="Winner of 2024 and 2025 Best of State"
-            href="https://hebersenator.com"
-            external
+            href="/properties/senator"
           />
         </div>
 
