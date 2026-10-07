@@ -44,10 +44,12 @@ const config: Config = {
         'property-hero': 'var(--property-hero-h)',
         'story-image': 'var(--story-image-h)',
         'map': 'var(--map-h)',
+        'value-card-image': 'var(--value-card-image-h)',
       },
       maxWidth: {
         'content-narrow': 'var(--content-narrow-max)',
         'property-hero-text': 'var(--property-hero-text-max)',
+        'content-medium': 'var(--content-medium-max)',
       },
       borderRadius: {
         '1': 'var(--radius-1)',

@@ -1,7 +1,9 @@
 import React from 'react';
 
-// About is left out until Task 3 builds that page.
-const links = [{ label: 'Locations', href: '/properties' }];
+const links = [
+  { label: 'Locations', href: '/properties' },
+  { label: 'About', href: '/about' },
+];
 
 export const Navigation: React.FC = () => {
   return (

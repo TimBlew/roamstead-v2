@@ -73,6 +73,10 @@
   --content-narrow-max: 816px;
   --story-image-h: 379px;
   --map-h: 400px;
+
+  /* About */
+  --content-medium-max: 720px;
+  --value-card-image-h: 320px;
 }
 
 /* Base Theme (Neutral Foundation) */
