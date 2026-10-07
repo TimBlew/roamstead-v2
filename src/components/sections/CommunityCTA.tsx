@@ -2,7 +2,7 @@ import React from "react";
 
 export const CommunityCTA: React.FC = () => {
   return (
-    <section className="flex w-full flex-col items-center gap-4 bg-[#F4EFEC] px-6 py-16 text-center">
+    <section className="flex w-full flex-col items-center gap-6 bg-[#F4EFEC] px-6 py-16 text-left md:gap-4 md:text-center">
       <div className="flex w-full max-w-[816px] flex-col items-center gap-2">
         <div className="h-[80px] w-[269px] overflow-hidden">
           <img
@@ -13,7 +13,7 @@ export const CommunityCTA: React.FC = () => {
         </div>
 
         <p
-          className="w-full font-heading text-[20px] font-medium leading-none tracking-[18px] text-[#4A6E57]"
+          className="w-full text-center font-heading text-[20px] font-medium leading-none tracking-[18px] text-[#4A6E57]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
           COLLECTIVE
@@ -21,19 +21,19 @@ export const CommunityCTA: React.FC = () => {
       </div>
 
       <h2
-        className="w-full max-w-[816px] font-heading text-[48px] font-medium leading-[54px] tracking-[-1.92px] text-[#291D16]"
+        className="w-full max-w-[816px] text-center font-heading text-[40px] font-medium leading-[44px] tracking-[-1.6px] text-[#291D16] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
       >
         A new community is forming
       </h2>
 
-      <p className="w-full max-w-[816px] font-body text-[20px] font-normal leading-[32px] tracking-[-0.4px] text-[#6D6057]">
+      <p className="w-full max-w-[816px] font-body text-[20px] font-normal leading-[32px] tracking-[-0.4px] text-[#6D6057] md:text-center">
         Roamstead Collective is for the 4-Seasoners. The ones who know that familiarity beats novelty. That the best places are the ones you return to. If that sounds like you, you’re already part of it.
       </p>
 
       <a
         href="mailto:chris@roamstead-co.com?subject=Roamstead%20Collective"
-        className="inline-flex items-center justify-center border border-[#D8CCC4] bg-[#FEFDFC] px-4 py-2 font-body text-[16px] font-medium leading-[24px] tracking-[-0.32px] text-[#291D16] transition-colors hover:bg-[#F4EFEC]"
+        className="flex h-10 w-full max-w-[816px] items-center justify-center border border-[#D8CCC4] bg-[#FEFDFC] px-4 py-2 font-body text-[16px] font-medium leading-[24px] tracking-[-0.32px] text-[#291D16] transition-colors hover:bg-[#F4EFEC] md:w-fit"
       >
         Join the Waitlist
       </a>
