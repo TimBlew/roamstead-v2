@@ -55,7 +55,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
           {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
           className="flex h-10 w-full items-center justify-center bg-[#4A6E57] px-6 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#FFFCFB] transition-colors hover:bg-[#3C6049] md:w-fit"
         >
-          Explore the stay
+          View property
         </a>
       </div>
     </article>
