@@ -64,7 +64,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           href={href}
           className="mt-2 inline-flex items-center font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#4A6E57] md:mt-2 md:text-[14px] md:leading-5 md:tracking-[-0.28px]"
         >
-          See the stay <span className="ml-1">→</span>
+          Check availability
         </a>
       </div>
     </article>
