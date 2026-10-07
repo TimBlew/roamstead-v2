@@ -35,7 +35,7 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
         />
       </div>
 
-      <div className="-mx-5 mt-4 flex w-[calc(100%+2.5rem)] snap-x snap-mandatory gap-4 overflow-x-auto pl-16 pr-8 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-0 md:grid md:w-full md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3">
+      <div className="mt-4 flex w-full snap-x snap-mandatory gap-4 overflow-x-auto pr-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-0 md:grid md:w-full md:grid-cols-2 md:overflow-visible md:pr-0 md:pb-0 lg:grid-cols-3">
         <PropertyCard image="/images/hygge-house.jpg" location="Midway" name="Hygge House" sleeps={10} bedrooms={4} baths={3} href="/properties/hygge-house" />
         <PropertyCard image="/images/granary.jpg" location="Midway" name="Granary" sleeps={4} bedrooms={1} baths={1} href="/properties/granary" />
         <PropertyCard image="/images/daystar.jpg" location="Deer Valley, Park City" name="Daystar" sleeps={12} bedrooms={6} baths={6} href="/properties/daystar" />
