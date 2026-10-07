@@ -10,7 +10,7 @@ export default function PropertiesPage() {
         description="Roamstead is a growing collection of places to stay across Heber Valley and nearby mountain towns. Each one is different, but all are designed with the same belief: place comes first."
         tagline="These are homes meant to be lived into, not just staged."
       />
-      <FeaturedHomes />
+      <FeaturedHomes showAll />
       <CommunityCTA />
     </>
   );

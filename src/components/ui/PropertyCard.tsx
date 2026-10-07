@@ -39,8 +39,8 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         {(sleeps || bedrooms || baths) && (
           <div className="text-sm text-text-muted mb-4 space-y-0.5">
             {sleeps && <p>Sleeps {sleeps}</p>}
-            {bedrooms && <p>{bedrooms} Bedrooms</p>}
-            {baths && <p>{baths} Baths</p>}
+            {bedrooms && <p>{bedrooms} {bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}</p>}
+            {baths && <p>{baths} {baths === 1 ? 'Bath' : 'Baths'}</p>}
           </div>
         )}
 

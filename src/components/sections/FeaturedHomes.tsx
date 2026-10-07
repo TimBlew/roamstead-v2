@@ -3,7 +3,12 @@ import { Container, Section } from '../layout/Container';
 import { PrimaryProperty } from '../ui/PrimaryProperty';
 import { PropertyCard } from '../ui/PropertyCard';
 
-export const FeaturedHomes: React.FC = () => {
+interface FeaturedHomesProps {
+  // Properties page lists every home; the home page keeps the featured three
+  showAll?: boolean;
+}
+
+export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false }) => {
   return (
     <Section background="canvas">
       <Container>
@@ -59,6 +64,27 @@ export const FeaturedHomes: React.FC = () => {
             baths={6}
             href="/properties/daystar"
           />
+          {showAll && (
+            <>
+              <PropertyCard
+                image="/images/lowell/exterior.jpg"
+                location="Park City, UT"
+                name="The Lowell"
+                sleeps={8}
+                bedrooms={2}
+                baths={2}
+                href="/properties/lowell"
+              />
+              <PropertyCard
+                image="/images/powder-room/resort-base.jpg"
+                location="Park City, UT"
+                name="Powder Room"
+                sleeps={4}
+                baths={1}
+                href="/properties/powder-room"
+              />
+            </>
+          )}
         </div>
       </Container>
     </Section>

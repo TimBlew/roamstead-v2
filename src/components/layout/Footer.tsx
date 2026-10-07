@@ -39,7 +39,7 @@ export const Footer: React.FC = () => {
               <li><a href="/properties/lowell" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">The Lowell</a></li>
               <li><a href="/properties/hygge-house" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">Hygge House</a></li>
               <li><a href="/properties/powder-room" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">Powder Room</a></li>
-              <li><a href="https://hebersenator.com" target="_blank" rel="noopener noreferrer" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">The Senator</a></li>
+              <li><a href="/properties/senator" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">The Senator</a></li>
             </ul>
           </div>
 

@@ -20,13 +20,13 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
   external = false,
 }) => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-0 bg-white overflow-hidden max-h-[380px]">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-0 bg-white overflow-hidden lg:min-h-[380px]">
       {/* Main Image - Rounded, fills space */}
-      <div className="overflow-hidden rounded-2">
+      <div className="relative h-72 lg:h-auto overflow-hidden rounded-2">
         <img
           src={image}
           alt={name}
-          className="w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
       </div>
 

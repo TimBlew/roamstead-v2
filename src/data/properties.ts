@@ -367,6 +367,332 @@ export const properties: Property[] = [
     },
     bookingUrl: "https://www.roamstead-co.com/listings/granary-midway",
   },
+  {
+    slug: 'daystar',
+    seo: {
+      title: "Daystar | Roamstead",
+      description:
+        "A family-friendly six-bedroom home in Solamere, minutes from the Deer Valley resort base, with an outdoor hot tub, an indoor sauna and an indoor sport court.",
+    },
+    hero: {
+      image: {
+        src: "/images/daystar/exterior.jpg",
+        alt: "Daystar among aspens and pines with Deer Valley's ski runs behind",
+      },
+      locationLabel: "Deer Valley, Park City, Utah",
+      title: "Daystar",
+      subtitle:
+        "A family-friendly Deer Valley retreat in Solamere, minutes from the resort base, with a hot tub, a sauna and an indoor sport court.",
+    },
+    intro:
+      "Daystar is a spacious, family-friendly home in Solamere, just minutes from the Deer Valley resort base. Six bedrooms, six private bathrooms, two living rooms, two dining areas, and an indoor sport court, with the entire property available to guests. It sleeps twelve.",
+    stats: [
+      { value: "12", label: "Sleeps" },
+      { value: "6", label: "Bedrooms" },
+      { value: "6", label: "Baths" },
+      { value: "Indoor", label: "Sport court" },
+    ],
+    stories: [
+      {
+        image: {
+          src: "/images/daystar/kitchen.jpg",
+          alt: "Large kitchen with a granite island, timber beams and tile floors",
+        },
+        paragraphs: [
+          "Mornings start on the main level, an open layout with a large kitchen and two dining areas, so everyone has a seat.",
+          "When it's time to ski, the neighborhood's free shuttle to Deer Valley comes at the touch of a button, running from 7 AM to 4:30 PM.",
+        ],
+      },
+      {
+        image: {
+          src: "/images/daystar/hot-tub.jpg",
+          alt: "Deck with lounge chairs and the outdoor hot tub",
+        },
+        paragraphs: [
+          "After a day on the slopes, the house takes care of recovery: an outdoor hot tub, an indoor sauna, and three soaking tubs. If you'd rather head into town, the free public bus from the Deer Valley base reaches all of Park City, Main Street included, with frequent service.",
+        ],
+      },
+      {
+        image: {
+          src: "/images/daystar/pool-table.jpg",
+          alt: "Pool table on the main level beside the kitchen bar",
+        },
+        paragraphs: [
+          "Evenings spread out. Two distinct living rooms give everyone their own place to hang out, there's a fireplace and a pool table on the main level, and the indoor sport court invites some friendly competition.",
+        ],
+      },
+    ],
+    details: [
+      {
+        heading: "The Home",
+        items: [
+          "6 bedrooms, 6 private baths",
+          "Open main level with pool table",
+          "Large, chef-ready kitchen",
+          "Two dining areas",
+          "Two living rooms",
+          "Fireplace",
+          "Three soaking tubs",
+          "Washer and dryer",
+          "Smart TV and fast Wi-Fi",
+        ],
+      },
+      {
+        heading: "Sleeping arrangements",
+        items: [
+          "6 bedrooms, 8 beds",
+          "2 King beds",
+          "2 Queen beds",
+          "Full bunk beds",
+        ],
+      },
+      {
+        heading: "Grounds & shared spaces",
+        items: [
+          "Outdoor hot tub",
+          "Indoor sauna",
+          "Indoor sport court",
+          "Pool table",
+          "Outdoor grill",
+        ],
+      },
+      {
+        heading: "Practical notes",
+        items: [
+          "Free parking",
+          "Free Deer Valley shuttle, 7 AM to 4:30 PM",
+          "Entire property available to guests",
+          "Family-friendly",
+          "Smoke detector, carbon monoxide detector, fire extinguisher, first aid kit",
+        ],
+      },
+    ],
+    location: {
+      paragraphs: [
+        "Daystar is in Solamere, a Deer Valley neighborhood just minutes from the resort base. The neighborhood runs a free shuttle to Deer Valley with one touch of a button, from 7 AM to 4:30 PM.",
+        "From the Deer Valley base, the free public bus system reaches all areas of Park City, including Main Street, with frequent service.",
+      ],
+      mapQuery: "Deer Valley Resort, Park City, UT",
+    },
+    bookingUrl: "https://www.roamstead-co.com/listings/daystar-deer-valley",
+  },
+  {
+    slug: 'lowell',
+    seo: {
+      title: "The Lowell | Roamstead",
+      description:
+        "A brand-new two-bedroom condo at the base of Park City Mountain Resort, about thirty steps from the snow, with a steam shower, heated pool and hot tub.",
+    },
+    hero: {
+      image: {
+        src: "/images/lowell/exterior.jpg",
+        alt: "The Lowell building at the base of Park City Mountain Resort",
+      },
+      locationLabel: "Park City, Utah",
+      title: "The Lowell",
+      subtitle:
+        "A brand-new condo at the base of Park City Mountain Resort, about thirty steps from the snow.",
+    },
+    intro:
+      "The Lowell is a brand-new two-bedroom condo at the base of Park City Mountain Resort. Walk about thirty steps and you're on the snow. Inside there's a full kitchen, a large dining table, a steam shower and bathtub, a piano and a chess table. It sleeps eight.",
+    stats: [
+      { value: "8", label: "Sleeps" },
+      { value: "2", label: "Bedrooms" },
+      { value: "2", label: "Baths" },
+      { value: "30 steps", label: "To the snow" },
+    ],
+    stories: [
+      {
+        image: {
+          src: "/images/lowell/kitchen.jpg",
+          alt: "Full kitchen with a granite island and bar stools",
+        },
+        paragraphs: [
+          "Mornings start with the walk to the lifts, about thirty steps from the building. Ski storage is in the building, and there's an on-site rental and tuning shop for everything else.",
+        ],
+      },
+      {
+        image: {
+          src: "/images/lowell/pool.jpg",
+          alt: "Heated outdoor pool beside the building at dusk",
+        },
+        paragraphs: [
+          "After a day outside, there's the steam shower and a soak in the bathtub. The building has a heated outdoor pool, a hot tub and a fitness center.",
+          "For town, the nearby resort bus stop runs frequently and reaches Historic Main Street in about three to five minutes, or it's about fifteen minutes on foot.",
+        ],
+      },
+      {
+        image: {
+          src: "/images/lowell/dining.jpg",
+          alt: "Large dining table beside floor-to-ceiling windows",
+        },
+        paragraphs: [
+          "Evenings come together around the large dining table, which seats about ten, with the full kitchen close by. There's a piano and a chess table, and flat-screen TVs in both bedrooms.",
+        ],
+      },
+    ],
+    details: [
+      {
+        heading: "The Home",
+        items: [
+          "Brand-new condo",
+          "2 bedrooms, 2 private baths",
+          "Full kitchen",
+          "Large dining table (seats about 10)",
+          "Piano and chess table",
+          "Steam shower and bathtub",
+          "In-unit washer and dryer",
+          "Flat-screen TVs in both bedrooms",
+          "Air conditioning and heating",
+          "Fast Wi-Fi",
+        ],
+      },
+      {
+        heading: "Sleeping arrangements",
+        items: [
+          "Bedroom 1: King bed and twin daybed",
+          "Bedroom 2: 2 Queen beds and full-size futon",
+        ],
+      },
+      {
+        heading: "Grounds & shared spaces",
+        items: [
+          "Heated outdoor pool",
+          "Outdoor hot tub",
+          "Fitness center",
+          "Elevator",
+          "Underground parking",
+          "Ski storage",
+          "On-site ski rental and tuning shop",
+        ],
+      },
+      {
+        heading: "Practical notes",
+        items: [
+          "Keyless self check-in",
+          "Underground parking",
+          "Host reachable by call or text 24/7",
+          "Local recommendations for guides, drivers, restaurants and activities",
+          "Smoke detector, carbon monoxide detector, fire extinguisher, first aid kit",
+        ],
+      },
+    ],
+    location: {
+      paragraphs: [
+        "The Lowell sits at the base area of Park City Mountain Resort. Walk out and you're right by the mountain, with a resort bus stop nearby.",
+        "The bus runs frequently and reaches Historic Main Street in about three to five minutes. Main Street is also walkable, about fifteen minutes on foot.",
+      ],
+      mapQuery: "Park City Mountain Resort, Park City, UT",
+    },
+    bookingUrl: "https://www.roamstead-co.com/listings/lowell-302",
+  },
+  {
+    slug: 'powder-room',
+    seo: {
+      title: "Powder Room | Roamstead",
+      description:
+        "A hotel-style studio at the base of Park City Mountain Resort, steps from the snow, with a king bed, an outdoor pool and hot tub, and a fitness center.",
+    },
+    hero: {
+      image: {
+        src: "/images/powder-room/resort-base.jpg",
+        alt: "Aerial view of the Park City Mountain Resort base area in winter",
+      },
+      locationLabel: "Park City, Utah",
+      title: "Powder Room",
+      subtitle:
+        "A hotel-style studio at the base of Park City Mountain Resort, with a king bed, a futon, and a pool and hot tub in the building.",
+    },
+    intro:
+      "Powder Room is a hotel-style studio at the base of Park City Mountain Resort, steps from the snow and built for easy mountain days. A California king, a full/queen futon, a full private bathroom and a kitchenette. It sleeps four, and is the best fit for two adults and two small children, or three adults.",
+    stats: [
+      { value: "4", label: "Sleeps" },
+      { value: "Studio", label: "Layout" },
+      { value: "1", label: "Bath" },
+      { value: "Ski base", label: "Steps from the snow" },
+    ],
+    stories: [
+      {
+        image: {
+          src: "/images/powder-room/exterior.jpg",
+          alt: "The building at the resort base under a blue sky",
+        },
+        paragraphs: [
+          "Mornings start close to the lifts. The building is at the base area, with quick access to the mountain and its services.",
+          "In winter, guests get equipment discounts and nightly ski storage through Park City Sport, right on site.",
+        ],
+      },
+      {
+        image: {
+          src: "/images/powder-room/pool.jpg",
+          alt: "Outdoor pool and lounge chairs with the mountains beyond",
+        },
+        paragraphs: [
+          "After exploring the resort or town, there's the outdoor pool and hot tub, or a quick workout in the fitness center. The free bus stop nearby runs about every five minutes and typically reaches Historic Main Street in three to five.",
+        ],
+      },
+      {
+        image: {
+          src: "/images/powder-room/bedroom.jpg",
+          alt: "King bed and futon in the studio",
+        },
+        paragraphs: [
+          "Evenings keep it simple. The kitchenette has a microwave, a mini fridge, and a coffee maker and kettle, and the building has an outdoor BBQ grill. Then it's back to the king bed.",
+        ],
+      },
+    ],
+    details: [
+      {
+        heading: "The Home",
+        items: [
+          "Hotel-style studio",
+          "1 private full bath",
+          "Kitchenette: microwave, mini fridge, coffee maker and kettle",
+          "Cups, mugs and flatware",
+          "Air conditioning and heating",
+          "Fast Wi-Fi",
+        ],
+      },
+      {
+        heading: "Sleeping arrangements",
+        items: [
+          "1 California King",
+          "1 full/queen futon (sleeps 2)",
+          "Best fit: 2 adults and 2 small children, or 3 adults",
+        ],
+      },
+      {
+        heading: "Grounds & shared spaces",
+        items: [
+          "Outdoor pool",
+          "Outdoor hot tub",
+          "Fitness center",
+          "Outdoor BBQ grill",
+          "Elevator",
+          "Underground parking",
+          "On-site ski rental and tuning (Park City Sport)",
+          "Ski gear storage",
+        ],
+      },
+      {
+        heading: "Practical notes",
+        items: [
+          "Winter equipment discounts and nightly ski storage through Park City Sport",
+          "Optional daily maid and concierge services, extra cost, subject to availability",
+          "Host reachable by call or text 24/7",
+          "Smoke detector, carbon monoxide detector",
+        ],
+      },
+    ],
+    location: {
+      paragraphs: [
+        "Powder Room is at the base area of Park City Mountain Resort, with quick access to the lifts and mountain services.",
+        "The base is a hub for many bus routes, so it's simple to get around Park City without a car. The free bus stop nearby runs about every five minutes and typically reaches Historic Main Street in three to five.",
+      ],
+      mapQuery: "Park City Mountain Resort, Park City, UT",
+    },
+    bookingUrl: "https://www.roamstead-co.com/listings/powder-room",
+  },
 ];
 
 export function getProperty(slug: string): Property | undefined {
