@@ -42,12 +42,14 @@ export const Navigation: React.FC = () => {
           </a>
         </div>
 
-        <a
-          href="/properties"
-          className="mx-1.5 my-1.5 flex h-[36px] items-center justify-center rounded-[10px] border border-[#3C6049]/20 bg-[#4A6E57] px-3 font-body text-[12.5px] font-medium leading-5 tracking-[-0.25px] text-[#FFFCFB] shadow-[0_5px_14px_rgba(74,110,87,0.20)] transition-all hover:-translate-y-px hover:bg-[#3C6049] sm:mx-0 sm:my-0 sm:h-full sm:rounded-none sm:border-l sm:px-6 sm:text-[16px] sm:leading-6 sm:tracking-[-0.32px]"
-        >
-          Book Direct
-        </a>
+        <div className="flex h-full items-center justify-center px-1.5 sm:p-0">
+          <a
+            href="/properties"
+            className="inline-flex h-8 whitespace-nowrap items-center justify-center rounded-[8px] bg-[#4A6E57] px-3 font-body text-[12px] font-medium leading-none tracking-[-0.2px] text-[#FFFCFB] shadow-[0_3px_10px_rgba(74,110,87,0.14)] transition-colors hover:bg-[#3C6049] sm:h-full sm:rounded-none sm:border-l sm:border-[#3C6049]/25 sm:px-6 sm:text-[16px] sm:leading-6 sm:tracking-[-0.32px]"
+          >
+            Book Direct
+          </a>
+        </div>
       </div>
     </nav>
   );
