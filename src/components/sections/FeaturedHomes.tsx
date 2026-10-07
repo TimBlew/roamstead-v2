@@ -29,8 +29,8 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
           image="/images/senator-main.jpg"
           location="Heber City"
           name="The Heber Senator"
-          description="A restored 1902 home three blocks from Main Street, with 10 rooms and suites and cooked-to-order breakfast. Rated 9.8 out of 10 by guests."
-          badge="Historic 10-room bed and breakfast"
+          description="A historic bed & breakfast shaped by the pace of Heber Valley and the mountains that surround it."
+          badge="Winner of 2024 and 2025 Best of State"
           href="/properties/senator"
         />
       </div>
