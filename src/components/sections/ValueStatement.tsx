@@ -2,7 +2,7 @@ import React from "react";
 
 export const ValueStatement: React.FC = () => {
   return (
-    <section className="bg-[#FFFCFB] px-6 pt-16">
+    <section className="bg-[#FFFCFB] px-6 pt-16 md:pt-16">
       <div className="mx-auto flex w-full max-w-[816px] flex-col items-center gap-6 text-center">
         <h2
           className="w-full font-heading text-[40px] font-medium leading-[44px] tracking-[-1.6px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
