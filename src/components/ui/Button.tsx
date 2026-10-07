@@ -1,46 +1,39 @@
-import React from 'react';
+import React from "react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary';
+  variant?: "primary" | "secondary";
   children: React.ReactNode;
   href?: string;
   external?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
-  variant = 'primary',
+  variant = "primary",
   children,
   href,
   external = false,
-  className = '',
+  className = "",
   ...props
 }) => {
-  // Figma button: 16px x 8px padding, p-md-bold, square corners
   const baseStyles =
-    'inline-flex items-center justify-center px-2 py-1 font-body font-medium text-md tracking-body transition-colors duration-200 cursor-pointer no-underline';
+    "inline-flex min-h-10 items-center justify-center rounded-2 px-4 py-2 font-body text-sm font-medium tracking-body transition-all duration-200 cursor-pointer no-underline";
 
   const variantStyles = {
-    primary: 'bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover',
-    secondary: 'bg-bg-canvas text-button-secondary-text border border-border-strong hover:bg-bg-subtle',
+    primary:
+      "bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-default",
+    secondary:
+      "border border-border-default bg-bg-canvas text-button-secondary-text hover:bg-bg-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-default",
   };
 
   const combinedClassName = `${baseStyles} ${variantStyles[variant]} ${className}`.trim();
 
   if (href) {
     return (
-      <a
-        href={href}
-        className={combinedClassName}
-        {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
-      >
+      <a href={href} className={combinedClassName} {...(external && { target: "_blank", rel: "noopener noreferrer" })}>
         {children}
       </a>
     );
   }
 
-  return (
-    <button className={combinedClassName} {...props}>
-      {children}
-    </button>
-  );
+  return <button className={combinedClassName} {...props}>{children}</button>;
 };
