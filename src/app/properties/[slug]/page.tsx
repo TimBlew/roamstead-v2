@@ -71,7 +71,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
   return (
     <>
-      <section className="relative flex h-[720px] w-full flex-col items-start justify-end gap-4 overflow-hidden px-6 py-16">
+      <section className="relative flex h-[600px] w-full flex-col items-start justify-end gap-4 overflow-hidden px-6 py-16 md:h-[720px]">
         <Image
           src={hero.image.src}
           alt={hero.image.alt}
@@ -87,7 +87,7 @@ export default async function PropertyPage({ params }: PageProps) {
         </p>
 
         <h1
-          className="relative z-10 w-full max-w-[720px] font-heading text-[72px] font-medium leading-[72px] tracking-[-2.88px] text-[#FFFCFB]"
+          className="relative z-10 w-full max-w-[720px] font-heading text-[48px] font-medium leading-[54px] tracking-[-1.92px] text-[#FFFCFB] md:text-[72px] md:leading-[72px] md:tracking-[-2.88px]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
           {hero.title}
@@ -111,7 +111,7 @@ export default async function PropertyPage({ params }: PageProps) {
           {property.intro}
         </p>
 
-        <dl className="grid w-full max-w-[816px] grid-cols-2 gap-6 border-t border-[#E7DFDB] py-4 md:grid-cols-4">
+        <dl className="grid w-full max-w-[816px] grid-cols-2 gap-x-2 gap-y-2 border-t border-[#E7DFDB] py-4 md:grid-cols-4 md:gap-6">
           {stats.map((stat) => (
             <div key={stat.label} className="flex min-w-0 flex-col items-start">
               <dd
@@ -133,7 +133,7 @@ export default async function PropertyPage({ params }: PageProps) {
           <div className="mx-auto w-full max-w-[816px]">
             <div className="mb-6">
               <h2
-                className="font-heading text-[48px] font-medium leading-[54px] tracking-[-1.92px] text-[#291D16]"
+                className="font-heading text-[40px] font-medium leading-[44px] tracking-[-1.6px] text-[#291D16] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
                 Check availability
@@ -152,9 +152,12 @@ export default async function PropertyPage({ params }: PageProps) {
 
       <section className="w-full bg-[#FFFCFB]">
         {stories.map((story, index) => (
-          <div key={story.image.src} className="grid min-h-[507px] w-full items-center md:grid-cols-2">
+          <div
+            key={story.image.src}
+            className="flex w-full flex-col gap-4 px-6 py-8 md:grid md:min-h-[507px] md:grid-cols-2 md:gap-0 md:px-0 md:py-0"
+          >
             <div
-              className={`flex h-full items-center px-6 py-16 ${index % 2 === 1 ? "md:order-2" : ""}`}
+              className={`flex items-center md:h-full md:px-6 md:py-16 ${index % 2 === 1 ? "md:order-2" : ""}`}
             >
               <div className="w-full font-body text-[18px] font-normal leading-7 tracking-[-0.36px] text-[#6D6057]">
                 {story.paragraphs.map((paragraph) => (
@@ -166,7 +169,7 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
 
             <div
-              className={`flex h-full items-center px-6 py-16 ${index % 2 === 1 ? "md:order-1" : ""}`}
+              className={`flex items-center md:h-full md:px-6 md:py-16 ${index % 2 === 1 ? "md:order-1" : ""}`}
             >
               <div className="relative h-[379px] w-full overflow-hidden">
                 <Image
