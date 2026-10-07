@@ -29,7 +29,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
 
   return (
     <article className="flex w-[76vw] max-w-[292px] shrink-0 snap-start flex-col md:w-auto md:max-w-none md:items-start md:gap-6">
-      <a href={href} className="relative h-[190px] w-full shrink-0 overflow-hidden rounded-[16px] md:aspect-[25/16] md:h-auto md:rounded-[8px] md:border md:border-[#D8CCC4]">
+      <a href={href} className="relative h-[190px] w-full shrink-0 overflow-hidden rounded-[16px] md:aspect-auto md:h-[256px] md:rounded-[8px] md:border md:border-[#D8CCC4]">
         <Image
           src={image}
           alt={name}
