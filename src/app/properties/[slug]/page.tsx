@@ -18,6 +18,59 @@ const hostawayListingIds: Record<string, number> = {
   "powder-room": 455633,
 };
 
+const propertyHighlights: Record<string, string[]> = {
+  "hygge-house": [
+    "Sleeps 10",
+    "4 Bedrooms",
+    "3 Baths",
+    "Private sauna",
+    "Dedicated office",
+    "Gym + gear garage",
+    "Fenced yard + fire pit",
+    "Pets allowed",
+  ],
+  granary: [
+    "Sleeps 4",
+    "1 Bedroom",
+    "1 Bath",
+    "Gas fireplace",
+    "Mountain views",
+    "Walkable Midway location",
+  ],
+  daystar: [
+    "Sleeps 12",
+    "6 Bedrooms",
+    "6 Baths",
+    "Hot tub",
+    "Indoor sauna",
+    "Sport court",
+    "Pool table",
+  ],
+  lowell: [
+    "Sleeps 8",
+    "2 Bedrooms",
+    "2 Baths",
+    "Steps from the snow",
+    "Steam shower",
+    "Pool + hot tub",
+    "Ski storage",
+  ],
+  "powder-room": [
+    "Sleeps 4",
+    "King bed",
+    "Private bath",
+    "Pool + hot tub",
+    "Fitness center",
+    "Ski storage",
+  ],
+  senator: [
+    "10 Rooms",
+    "Historic 1902 home",
+    "Cooked-to-order breakfast",
+    "3 blocks from Main Street",
+  ],
+};
+
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -41,25 +94,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 function DetailList({ heading, items }: { heading: string; items: string[] }) {
   return (
-    <div className="overflow-hidden rounded-3 border border-[#E1D7D1] bg-[#FBF8F7]">
-      <div className="border-b border-[#E1D7D1] px-5 py-4 md:px-6">
-        <h3
-          className="font-heading text-[26px] font-medium leading-[32px] tracking-[-1.04px] text-[#1F3125]"
-          style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
-        >
-          {heading}
-        </h3>
-      </div>
+    <div className="border-t border-[#D8CCC4] pt-4">
+      <h3
+        className="font-heading text-[26px] font-medium leading-[32px] tracking-[-1.04px] text-[#1F3125]"
+        style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+      >
+        {heading}
+      </h3>
 
-      <div className="divide-y divide-[#E7DFDB]">
+      <ul className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2">
         {items.map((item) => (
-          <div key={item} className="px-5 py-3.5 md:px-6 md:py-4">
-            <p className="font-body text-[15px] font-normal leading-6 tracking-[-0.3px] text-[#4E433C] md:text-[16px] md:tracking-[-0.32px]">
-              {item}
-            </p>
-          </div>
+          <li
+            key={item}
+            className="border-b border-[#E7DFDB] py-2.5 font-body text-[15px] font-normal leading-6 tracking-[-0.3px] text-[#4E433C]"
+          >
+            {item}
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
@@ -71,130 +123,69 @@ export default async function PropertyPage({ params }: PageProps) {
 
   const { hero, stats, stories, details, location, bookingUrl } = property;
   const listingId = hostawayListingIds[slug];
+  const highlights = propertyHighlights[slug] ?? [];
   const isSenator = slug === "senator";
   const bookingHref = isSenator ? bookingUrl : "#availability";
 
   return (
     <>
-      <section className="relative flex h-[600px] w-full flex-col items-start justify-end gap-4 overflow-hidden px-6 py-16 md:h-[720px]">
+      <section className="relative flex min-h-[620px] w-full items-end overflow-hidden md:min-h-[720px]">
         <Image
           src={hero.image.src}
           alt={hero.image.alt}
           fill
           priority
-          quality={95}
+          quality={100}
           sizes="100vw"
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/15 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
 
-        <p className="relative z-10 w-full max-w-[680px] font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-white/85 md:text-[18px] md:leading-7 md:tracking-[-0.36px]">
-          {hero.locationLabel}
-        </p>
+        <div className="relative z-10 w-full px-6 pb-10 pt-24 md:px-10 md:pb-12 lg:px-12">
+          <div className="max-w-[900px] rounded-[20px] border border-white/20 bg-black/18 p-5 backdrop-blur-[2px] md:p-7">
+            <p className="font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-white/85 md:text-[17px]">
+              {hero.locationLabel}
+            </p>
 
-        <h1
-          className="relative z-10 w-full max-w-[680px] font-heading text-[48px] font-medium leading-[52px] tracking-[-1.92px] text-white md:text-[72px] md:leading-[72px] md:tracking-[-2.88px]"
-          style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
-        >
-          {hero.title}
-        </h1>
-
-        <p className="relative z-10 w-full max-w-[620px] font-body text-[18px] font-normal leading-7 tracking-[-0.36px] text-white/90">
-          {hero.subtitle}
-        </p>
-
-        <a
-          href={bookingHref}
-          {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          className="relative z-10 inline-flex h-10 items-center justify-center border border-white/70 bg-white/95 px-5 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#291D16] backdrop-blur-sm transition-colors hover:bg-white"
-        >
-          Check availability
-        </a>
-      </section>
-
-      <section className="flex w-full flex-col items-center gap-6 bg-[#FFFCFB] px-6 py-16">
-        <p className="w-full max-w-[816px] font-body text-[20px] font-normal leading-8 tracking-[-0.4px] text-[#6D6057]">
-          {property.intro}
-        </p>
-
-        <dl className="grid w-full max-w-[816px] grid-cols-2 gap-x-2 gap-y-2 border-t border-[#E7DFDB] py-4 md:grid-cols-4 md:gap-6">
-          {stats.map((stat) => (
-            <div key={stat.label} className="flex min-w-0 flex-col items-start">
-              <dd
-                className="w-full font-heading text-[36px] font-medium leading-[48px] tracking-[-0.72px] text-[#291D16]"
-                style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
-              >
-                {stat.value}
-              </dd>
-              <dt className="w-full font-body text-[16px] font-normal leading-6 tracking-[-0.32px] text-[#6D6057]">
-                {stat.label}
-              </dt>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      {listingId ? (
-        <section id="availability" className="scroll-mt-16 bg-[#F4EFEC] px-6 py-16">
-          <div className="mx-auto w-full max-w-[816px]">
-            <div className="mb-6">
-              <h2
-                className="font-heading text-[40px] font-medium leading-[44px] tracking-[-1.6px] text-[#291D16] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
-                style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
-              >
-                Check availability
-              </h2>
-              <p className="mt-4 font-body text-[16px] font-normal leading-6 tracking-[-0.32px] text-[#6D6057]">
-                Choose your dates to continue into Roamstead’s direct booking flow.
-              </p>
-            </div>
-
-            <div className="border border-[#E1D7D1] bg-[#FFFCFB] p-4 md:p-6">
-              <HostawayBooking listingId={listingId} />
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      <section className="w-full bg-[#FFFCFB]">
-        {stories.map((story, index) => (
-          <div
-            key={story.image.src}
-            className="flex w-full flex-col gap-4 px-6 py-8 md:grid md:min-h-[507px] md:grid-cols-2 md:gap-0 md:px-0 md:py-0"
-          >
-            <div
-              className={`flex items-center md:h-full md:px-6 md:py-16 ${index % 2 === 1 ? "md:order-2" : ""}`}
+            <h1
+              className="mt-2 font-heading text-[50px] font-medium leading-[52px] tracking-[-2px] text-white md:text-[70px] md:leading-[70px] md:tracking-[-2.8px]"
+              style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
-              <div className="w-full font-body text-[18px] font-normal leading-7 tracking-[-0.36px] text-[#6D6057]">
-                {story.paragraphs.map((paragraph) => (
-                  <p key={paragraph} className="mb-7 last:mb-0">
-                    {paragraph}
-                  </p>
+              {hero.title}
+            </h1>
+
+            <p className="mt-4 max-w-[720px] font-body text-[17px] font-normal leading-7 tracking-[-0.34px] text-white/90 md:text-[19px]">
+              {hero.subtitle}
+            </p>
+
+            {highlights.length > 0 ? (
+              <div className="mt-5 flex flex-wrap gap-2">
+                {highlights.map((item) => (
+                  <span
+                    key={item}
+                    className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-3.5 py-1.5 font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-white backdrop-blur-sm"
+                  >
+                    {item}
+                  </span>
                 ))}
               </div>
-            </div>
+            ) : null}
 
-            <div
-              className={`flex items-center md:h-full md:px-6 md:py-16 ${index % 2 === 1 ? "md:order-1" : ""}`}
+            <a
+              href={bookingHref}
+              {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-2 bg-white px-5 py-2.5 font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-[#291D16] transition-colors hover:bg-[#F4EFEC]"
             >
-              <div className="relative h-[379px] w-full overflow-hidden">
-                <Image
-                  src={story.image.src}
-                  alt={story.image.alt}
-                  fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="object-cover"
-                />
-              </div>
-            </div>
+              Check availability
+            </a>
           </div>
-        ))}
+        </div>
       </section>
 
       <section className="bg-[#FFFCFB] px-6 py-14 md:py-16">
-        <div className="mx-auto w-full max-w-[1280px]">
-          <div className="mb-8 max-w-[720px]">
+        <div className="mx-auto max-w-[1280px]">
+          <div className="mb-8">
             <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
               Property details
             </p>
@@ -202,11 +193,11 @@ export default async function PropertyPage({ params }: PageProps) {
               className="mt-2 font-heading text-[36px] font-medium leading-[40px] tracking-[-1.44px] text-[#1F3125] md:text-[44px] md:leading-[48px] md:tracking-[-1.76px]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
-              Everything in one place
+              What to know before you stay
             </h2>
           </div>
 
-          <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-8 lg:grid-cols-2">
             {details.map((list) => (
               <DetailList key={list.heading} heading={list.heading} items={list.items} />
             ))}
