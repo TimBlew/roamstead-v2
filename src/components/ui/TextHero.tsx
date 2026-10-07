@@ -22,7 +22,7 @@ export const TextHero: React.FC<TextHeroProps> = ({
       </div>
 
       <h1
-        className="w-full max-w-[720px] font-heading text-[72px] font-medium leading-[72px] tracking-[-2.88px] text-[#1F3125]"
+        className="w-full max-w-[720px] font-heading text-[48px] font-medium leading-[54px] tracking-[-1.92px] text-[#1F3125] md:text-[72px] md:leading-[72px] md:tracking-[-2.88px]"
         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
       >
         {title}
