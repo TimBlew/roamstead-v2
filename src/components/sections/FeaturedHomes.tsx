@@ -24,22 +24,23 @@ export const FeaturedHomes: React.FC = () => {
             image="/images/senator-main.jpg"
             location="Heber City, UT"
             name="The Heber Senator"
-            description="Lorem ipsum dolor sit amet consectetur. Sapien dictum ut urna et hendrerit nam convallis suspendisse."
+            description="A restored 1902 home three blocks from Main Street, with 10 rooms and suites and cooked to order breakfast. Rated 9.8 out of 10 by guests."
             badge="Winner of 2024 and 2025 Best of State"
-            href="/properties/senator"
+            href="https://hebersenator.com"
+            external
           />
         </div>
 
         {/* Secondary Properties Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <PropertyCard
-            image="/images/hugge-house.jpg"
+            image="/images/hygge-house.jpg"
             location="Midway, UT"
             name="Hygge House"
             sleeps={10}
             bedrooms={4}
             baths={3}
-            href="/properties/hugge-house"
+            href="/properties/hygge-house"
           />
           <PropertyCard
             image="/images/granary.jpg"

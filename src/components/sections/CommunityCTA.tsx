@@ -44,7 +44,7 @@ export const CommunityCTA: React.FC = () => {
           </div>
 
           <a
-            href="/collective"
+            href="mailto:chris@roamstead-co.com?subject=Roamstead%20Collective"
             className="
               inline-flex
               items-center

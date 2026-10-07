@@ -10,7 +10,7 @@ export const Footer: React.FC = () => {
             - tablet: 2 columns (breathes better)
             - desktop (lg+): exact Figma fixed columns + 16px gaps
         */}
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-10 lg:gap-4 lg:grid-cols-[minmax(0,608px)_192px_192px_192px]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-10 lg:gap-4 lg:grid-cols-[minmax(0,608px)_192px_192px]">
           {/* Brand */}
           <div className="flex flex-col items-start gap-2 md:col-span-2 lg:col-span-1">
             <img
@@ -39,20 +39,7 @@ export const Footer: React.FC = () => {
               <li><a href="/properties/lowell" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">The Lowell</a></li>
               <li><a href="/properties/hygge-house" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">Hygge House</a></li>
               <li><a href="/properties/powder-room" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">Powder Room</a></li>
-              <li><a href="/properties/senator" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">The Senator</a></li>
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4 className="text-[18px] leading-[28px] font-medium tracking-[-0.36px] text-text-dark-primary">
-              Company
-            </h4>
-            <ul className="mt-4 space-y-4">
-              <li><a href="/about" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">About</a></li>
-              <li><a href="/mission" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">Mission</a></li>
-              <li><a href="/careers" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">Careers</a></li>
-              <li><a href="/ventures" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">Roamstead Ventures</a></li>
+              <li><a href="https://hebersenator.com" target="_blank" rel="noopener noreferrer" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">The Senator</a></li>
             </ul>
           </div>
 
@@ -63,13 +50,13 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="mt-4 space-y-4">
               <li>
-                <a href="mailto:name@roamstead-co.com" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">
-                  chirs@roamstead-co.com
+                <a href="mailto:chris@roamstead-co.com" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">
+                  chris@roamstead-co.com
                 </a>
               </li>
               <li>
-                <a href="tel:+15551234567" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">
-                  (555) 123-4567
+                <a href="tel:+14352435670" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">
+                  (435) 243-5670
                 </a>
               </li>
             </ul>

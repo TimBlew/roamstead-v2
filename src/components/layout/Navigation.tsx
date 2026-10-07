@@ -33,18 +33,12 @@ export const Navigation: React.FC = () => {
             >
               Properties
             </a>
-            <a
-              href="/about"
-              className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-            >
-              About
-            </a>
           </div>
         </div>
 
         {/* Book Now pinned to viewport edge (no whitespace possible) */}
         <a
-          href="/book"
+          href="/properties"
           className="absolute right-0 top-0 h-12 px-4 flex items-center justify-center text-sm font-medium bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover transition-colors"
         >
           Book Now

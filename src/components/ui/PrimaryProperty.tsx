@@ -7,6 +7,7 @@ interface PrimaryPropertyProps {
   description: string;
   badge?: string;
   href: string;
+  external?: boolean;
 }
 
 export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
@@ -16,6 +17,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
   description,
   badge,
   href,
+  external = false,
 }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-0 bg-white overflow-hidden max-h-[380px]">
@@ -45,6 +47,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
         <div>
           <a 
             href={href}
+            {...(external && { target: "_blank", rel: "noopener noreferrer" })}
             className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium bg-button-primary-bg text-white hover:bg-button-primary-hover transition-colors"
           >
             Check availability
