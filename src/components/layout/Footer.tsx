@@ -1,75 +1,46 @@
+import Image from "next/image";
 import React from "react";
 
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-bg-second-surface text-text-dark-primary">
-      {/* Figma container: 1280 width + 24px side padding */}
-      <div className="container-figma py-8">
-        {/* Responsive grid:
-            - mobile: 1 column
-            - tablet: 2 columns (breathes better)
-            - desktop (lg+): exact Figma fixed columns + 16px gaps
-        */}
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-10 lg:gap-4 lg:grid-cols-[minmax(0,608px)_192px_192px]">
-          {/* Brand */}
-          <div className="flex flex-col items-start gap-2 md:col-span-2 lg:col-span-1">
-            <img
-              src="/roamstead-logo-light.svg"
-              alt="Roamstead"
-              className="block w-[240px] sm:w-[270px] md:w-[300px] h-auto md:-ml-2"
-            />
-
-            <p className="text-[16px] leading-[24px] font-medium tracking-[-0.32px] text-text-dark-primary">
-              Roamstead Collective
-            </p>
-
-            <p className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary max-w-[520px]">
-              Modern mountain hospitality for travelers who value community, adventure, and authentic experiences.
+      <div className="container-figma py-14 md:py-16">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_200px_220px] lg:gap-10">
+          <div className="md:col-span-2 lg:col-span-1">
+            <Image src="/roamstead-logo-light.svg" alt="Roamstead" width={300} height={56} className="h-auto w-[240px] md:w-[280px]" />
+            <p className="mt-5 max-w-[500px] text-base leading-7 tracking-body text-text-dark-secondary">
+              Modern mountain hospitality across Heber Valley and Park City, built around thoughtful stays and reasons to return.
             </p>
           </div>
 
-          {/* Properties */}
-          <div className="self-stretch">
-            <h4 className="text-[18px] leading-[28px] font-medium tracking-[-0.36px] text-text-dark-primary">
-              Properties
-            </h4>
-            <ul className="mt-4 space-y-4">
-              <li><a href="/properties/granary" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">Granary</a></li>
-              <li><a href="/properties/daystar" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">Daystar</a></li>
-              <li><a href="/properties/lowell" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">The Lowell</a></li>
-              <li><a href="/properties/hygge-house" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">Hygge House</a></li>
-              <li><a href="/properties/powder-room" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">Powder Room</a></li>
-              <li><a href="/properties/senator" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">The Senator</a></li>
+          <div>
+            <h4 className="text-sm font-medium uppercase tracking-[0.12em] text-text-dark-primary">Properties</h4>
+            <ul className="mt-5 space-y-3">
+              {[
+                ["Hygge House", "/properties/hygge-house"],
+                ["Granary", "/properties/granary"],
+                ["Daystar", "/properties/daystar"],
+                ["The Lowell", "/properties/lowell"],
+                ["Powder Room", "/properties/powder-room"],
+                ["The Senator", "/properties/senator"],
+              ].map(([label, href]) => (
+                <li key={href}><a href={href} className="text-sm tracking-body text-text-dark-secondary transition-colors hover:text-text-dark-primary">{label}</a></li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
-            <h4 className="text-[18px] leading-[28px] font-medium tracking-[-0.36px] text-text-dark-primary">
-              Contact
-            </h4>
-            <ul className="mt-4 space-y-4">
-              <li>
-                <a href="mailto:chris@roamstead-co.com" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">
-                  chris@roamstead-co.com
-                </a>
-              </li>
-              <li>
-                <a href="tel:+14352435670" className="text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-secondary hover:text-text-dark-primary transition-colors">
-                  (435) 243-5670
-                </a>
-              </li>
+            <h4 className="text-sm font-medium uppercase tracking-[0.12em] text-text-dark-primary">Contact</h4>
+            <ul className="mt-5 space-y-3">
+              <li><a href="mailto:chris@roamstead-co.com" className="text-sm tracking-body text-text-dark-secondary transition-colors hover:text-text-dark-primary">chris@roamstead-co.com</a></li>
+              <li><a href="tel:+14352435670" className="text-sm tracking-body text-text-dark-secondary transition-colors hover:text-text-dark-primary">(435) 243-5670</a></li>
             </ul>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="mt-10 h-px w-full bg-border-subtle" />
-
-        {/* Copyright */}
-        <p className="mt-6 text-[16px] leading-[24px] font-normal tracking-[-0.32px] text-text-dark-muted">
-          © Copyright Roamstead Collective 2026. All rights reserved.
-        </p>
+        <div className="mt-12 border-t border-white/15 pt-6">
+          <p className="text-xs tracking-body text-text-dark-muted">© Roamstead Collective 2026. All rights reserved.</p>
+        </div>
       </div>
     </footer>
   );
