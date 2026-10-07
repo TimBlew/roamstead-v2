@@ -8,7 +8,7 @@ export const CommunityCTA: React.FC = () => {
           <img
             src="/roamstead-collective-logo.svg"
             alt="Roamstead"
-            className="block h-full w-full max-w-none scale-x-[1.185]"
+            className="block h-full w-full max-w-none"
           />
         </div>
 
