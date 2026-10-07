@@ -282,7 +282,7 @@ export const properties: Property[] = [
       locationLabel: "Midway, Utah",
       title: "Granary",
       subtitle:
-        "Charming 1BD/1BA ground-floor condo with mountain views, full kitchen, gas fireplace, and in-unit washer/dryer, walkable to Midway's restaurants and shops and a drive from Utah's best outdoor adventures.",
+        "Charming 1BD/1BA ground-floor condo with mountain views, full kitchen, gas fireplace, and in-unit washer/dryer, walkable to Midway's restaurants and shops and a drive to Utah's best outdoor adventures.",
     },
     intro:
       "This charming 1BD/1BA ground-floor condo sleeps up to 4 and blends old-world character with modern comfort. Enjoy mountain views from the spacious open floor plan with a full kitchen and gas fireplace. Newly renovated with ample closet space, a pull-out sofa for extra sleeping space, and in-unit washer and dryer.",
