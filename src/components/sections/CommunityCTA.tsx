@@ -2,7 +2,7 @@ import React from "react";
 
 export const CommunityCTA: React.FC = () => {
   return (
-    <section className="flex w-full flex-col items-center bg-[#F4EFEC] px-5 py-5.5 text-center md:gap-4 md:px-6 md:py-16">
+    <section className="flex w-full flex-col items-center bg-[#F4EFEC] px-5 pb-7 pt-5 text-center md:gap-4 md:px-6 md:py-16">
       <div className="flex w-full max-w-[816px] flex-col items-center gap-1.5 md:gap-2">
         <div className="h-[44px] w-[148px] overflow-hidden md:h-[80px] md:w-[269px]">
           <img
@@ -33,7 +33,7 @@ export const CommunityCTA: React.FC = () => {
 
       <a
         href="mailto:chris@roamstead-co.com?subject=Roamstead%20Collective"
-        className="mt-3 inline-flex h-9 items-center justify-center rounded-[10px] border border-[#D8CCC4] bg-[#FEFDFC] px-4 font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#291D16] shadow-[0_5px_14px_rgba(41,29,22,0.05)] transition-all hover:-translate-y-px hover:bg-white md:mt-0 md:h-10 md:w-fit md:rounded-none md:px-4 md:py-2 md:text-[16px] md:tracking-[-0.32px]"
+        className="mt-3 inline-flex h-8 items-center justify-center rounded-[8px] border border-[#D8CCC4] bg-[#FEFDFC] px-3.5 font-body text-[12px] font-medium leading-none tracking-[-0.22px] text-[#291D16] shadow-[0_3px_10px_rgba(41,29,22,0.04)] transition-colors hover:bg-white md:mt-0 md:h-10 md:w-fit md:rounded-none md:px-4 md:py-2 md:text-[16px] md:tracking-[-0.32px]"
       >
         Join the Waitlist
       </a>
