@@ -1,4 +1,6 @@
-import React from 'react';
+import React from "react";
+import Image from "next/image";
+import { Button } from "./Button";
 
 interface PrimaryPropertyProps {
   image: string;
@@ -11,49 +13,22 @@ interface PrimaryPropertyProps {
 }
 
 export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
-  image,
-  location,
-  name,
-  description,
-  badge,
-  href,
-  external = false,
+  image, location, name, description, badge, href, external = false,
 }) => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-0 bg-white overflow-hidden lg:min-h-[380px]">
-      {/* Main Image - Rounded, fills space */}
-      <div className="relative h-72 lg:h-auto overflow-hidden rounded-2">
-        <img
-          src={image}
-          alt={name}
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        />
+    <article className="grid overflow-hidden rounded-4 bg-bg-subtle lg:grid-cols-[1.35fr_0.65fr]">
+      <div className="relative min-h-[340px] md:min-h-[480px]">
+        <Image src={image} alt={name} fill sizes="(min-width: 1024px) 65vw, 100vw" className="object-cover" />
       </div>
-
-      {/* Content Section - More Compact */}
-      <div className="p-6 flex flex-col justify-end bg-bg-subtle">
-        <p className="text-xs text-text-primary mb-1.5 uppercase tracking-wide">{location}</p>
-        <h2 className="text-h3 font-heading font-medium text-text-primary mb-2.5">{name}</h2>
-        <p className="text-sm text-text-secondary mb-4 leading-relaxed">{description}</p>
-
-        {/* Badge - Plain text, not button-like */}
-        {badge && (
-          <p className="text-sm text-text-primary mb-4 font-medium">
-            {badge}
-          </p>
-        )}
-
-        {/* CTA */}
+      <div className="flex flex-col justify-between p-7 sm:p-9 lg:p-10">
         <div>
-          <a 
-            href={href}
-            {...(external && { target: "_blank", rel: "noopener noreferrer" })}
-            className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium bg-button-primary-bg text-white hover:bg-button-primary-hover transition-colors"
-          >
-            Check availability
-          </a>
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-text-muted">{location}</p>
+          <h3 className="mt-3 font-heading text-[40px] font-medium leading-[1.02] tracking-display text-text-primary md:text-[48px]">{name}</h3>
+          <p className="mt-5 text-base leading-7 tracking-body text-text-secondary">{description}</p>
+          {badge && <p className="mt-5 text-sm font-medium tracking-body text-brand-default">{badge}</p>}
         </div>
+        <div className="mt-8"><Button href={href} external={external}>Explore the stay</Button></div>
       </div>
-    </div>
+    </article>
   );
 };
