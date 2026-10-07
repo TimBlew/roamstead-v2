@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import Image from "next/image";
 
 interface PropertyCardProps {
   image: string;
@@ -8,52 +9,36 @@ interface PropertyCardProps {
   bedrooms?: number;
   baths?: number;
   href: string;
+  eyebrow?: string;
 }
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({
-  image,
-  location,
-  name,
-  sleeps,
-  bedrooms,
-  baths,
-  href,
+  image, location, name, sleeps, bedrooms, baths, href, eyebrow,
 }) => {
+  const facts = [
+    sleeps ? `Sleeps ${sleeps}` : null,
+    bedrooms ? `${bedrooms} ${bedrooms === 1 ? "bedroom" : "bedrooms"}` : null,
+    baths ? `${baths} ${baths === 1 ? "bath" : "baths"}` : null,
+  ].filter(Boolean);
+
   return (
-    <div className="flex flex-col bg-white overflow-hidden">
-      {/* Image - Rounded */}
-      <div className="w-full h-56 overflow-hidden rounded-2">
-        <img
-          src={image}
-          alt={name}
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      {/* Content */}
-      <div className="p-5 flex flex-col flex-grow">
-        <p className="text-xs text-text-primary mb-1 uppercase tracking-wide">{location}</p>
-        <h3 className="text-h3 font-heading font-medium mb-3" style={{ color: '#4a6e57' }}>{name}</h3>
-
-        {/* Property Details */}
-        {(sleeps || bedrooms || baths) && (
-          <div className="text-sm text-text-muted mb-4 space-y-0.5">
-            {sleeps && <p>Sleeps {sleeps}</p>}
-            {bedrooms && <p>{bedrooms} {bedrooms === 1 ? 'Bedroom' : 'Bedrooms'}</p>}
-            {baths && <p>{baths} {baths === 1 ? 'Bath' : 'Baths'}</p>}
-          </div>
-        )}
-
-        {/* CTA */}
-        <div className="mt-auto">
-          <a 
-            href={href}
-            className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium bg-white text-text-primary border border-border-default hover:bg-bg-canvas transition-colors"
-          >
-            Check availability
-          </a>
+    <article className="group flex h-full flex-col">
+      <a href={href} className="block">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-3 bg-bg-surface">
+          <Image src={image} alt={name} fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.025]" />
         </div>
+      </a>
+      <div className="flex flex-1 flex-col pt-5">
+        <p className="text-xs font-medium uppercase tracking-[0.12em] text-text-muted">{location}</p>
+        <h3 className="mt-2 font-heading text-[32px] font-medium leading-[1.05] tracking-display text-text-primary md:text-[36px]">
+          <a href={href} className="transition-colors hover:text-brand-default">{name}</a>
+        </h3>
+        {eyebrow && <p className="mt-3 max-w-[34ch] text-sm leading-6 tracking-body text-text-secondary">{eyebrow}</p>}
+        {facts.length > 0 && <p className="mt-4 text-sm tracking-body text-text-muted">{facts.join(" · ")}</p>}
+        <a href={href} className="mt-5 inline-flex items-center gap-2 self-start text-sm font-medium tracking-body text-brand-default transition-colors hover:text-brand-hover">
+          Explore the stay <span aria-hidden="true">→</span>
+        </a>
       </div>
-    </div>
+    </article>
   );
 };
