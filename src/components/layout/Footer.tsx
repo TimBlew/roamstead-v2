@@ -10,88 +10,65 @@ export const Footer: React.FC = () => {
     ["The Senator", "/properties/senator"],
   ];
 
+  const linkClass =
+    "text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-[#FFFCFB] transition-colors hover:text-[#FBF8F7]";
+
   return (
-    <footer className="bg-bg-second-surface text-text-dark-primary">
-      <div className="container-figma py-8">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-10 lg:grid-cols-[608px_192px_192px_192px] lg:gap-4">
+    <footer className="bg-[#382F29] text-[#FFFCFB]">
+      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-10 px-6 py-8">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-10 lg:grid-cols-[608px_192px_193px_192px] lg:gap-4">
           <div className="flex flex-col items-start gap-2 md:col-span-2 lg:col-span-1">
             <img
               src="/roamstead-logo-light.svg"
               alt="Roamstead"
-              className="block h-auto w-[240px] sm:w-[270px] md:-ml-2 md:w-[300px]"
+              className="block h-auto w-[240px] sm:w-[269px]"
             />
 
-            <p className="text-[16px] font-medium leading-[24px] tracking-[-0.32px] text-text-dark-primary">
+            <p className="text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
               Roamstead Collective
             </p>
 
-            <p className="max-w-[520px] text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-text-dark-secondary">
+            <p className="w-full max-w-[608px] text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-[#FFFCFB]">
               Modern mountain hospitality for travelers who value community, adventure, and authentic experiences.
             </p>
           </div>
 
-          <div className="self-stretch">
-            <h4 className="text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-text-dark-primary">
+          <div className="flex flex-col items-start gap-2">
+            <p className="w-full text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
               Properties
-            </h4>
-            <ul className="mt-4 space-y-4">
-              {propertyLinks.map(([label, href]) => (
-                <li key={href}>
-                  <a
-                    href={href}
-                    className="text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-text-dark-secondary transition-colors hover:text-text-dark-primary"
-                  >
-                    {label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            </p>
+            {propertyLinks.map(([label, href]) => (
+              <a key={href} href={href} className={`block w-full ${linkClass}`}>
+                {label}
+              </a>
+            ))}
           </div>
 
-          <div className="self-stretch">
-            <h4 className="text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-text-dark-primary">
+          <div className="flex flex-col items-start gap-2">
+            <p className="w-full text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
               Company
-            </h4>
-            <ul className="mt-4 space-y-4">
-              <li>
-                <a
-                  href="/about"
-                  className="text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-text-dark-secondary transition-colors hover:text-text-dark-primary"
-                >
-                  About
-                </a>
-              </li>
-            </ul>
+            </p>
+            <a href="/about" className={`block w-full ${linkClass}`}>
+              About
+            </a>
           </div>
 
-          <div className="self-stretch">
-            <h4 className="text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-text-dark-primary">
+          <div className="flex flex-col items-start gap-2">
+            <p className="w-full text-[18px] font-medium leading-[28px] tracking-[-0.36px] text-[#FBF8F7]">
               Contact
-            </h4>
-            <ul className="mt-4 space-y-4">
-              <li>
-                <a
-                  href="mailto:chris@roamstead-co.com"
-                  className="text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-text-dark-secondary transition-colors hover:text-text-dark-primary"
-                >
-                  chris@roamstead-co.com
-                </a>
-              </li>
-              <li>
-                <a
-                  href="tel:+14352435670"
-                  className="text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-text-dark-secondary transition-colors hover:text-text-dark-primary"
-                >
-                  (435) 243-5670
-                </a>
-              </li>
-            </ul>
+            </p>
+            <a href="mailto:chris@roamstead-co.com" className={`block w-full ${linkClass}`}>
+              chris@roamstead-co.com
+            </a>
+            <a href="tel:+14352435670" className={`block w-full ${linkClass}`}>
+              (435) 243-5670
+            </a>
           </div>
         </div>
 
-        <div className="mt-10 h-px w-full bg-border-subtle" />
+        <div className="h-px w-full bg-[#E7DFDB]" />
 
-        <p className="mt-6 text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-text-dark-muted">
+        <p className="whitespace-nowrap text-[16px] font-normal leading-[24px] tracking-[-0.32px] text-[#F4EFEC]">
           © Copyright Roamstead Collective 2026. All rights reserved.
         </p>
       </div>
