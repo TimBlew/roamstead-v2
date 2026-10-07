@@ -319,7 +319,7 @@ export default async function PropertyPage({ params }: PageProps) {
             <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
               Location
             </p>
-            <div className="mt-3 space-y-3 font-body text-[16px] font-normal leading-6 md:mt-4 md:space-y-6 md:text-[18px] md:leading-8" tracking-[-0.36px] text-[#6D6057]">
+            <div className="mt-3 space-y-3 font-body text-[16px] font-normal leading-6 tracking-[-0.36px] text-[#6D6057] md:mt-4 md:space-y-6 md:text-[18px] md:leading-8">
               {location.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
