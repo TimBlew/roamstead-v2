@@ -95,7 +95,7 @@ export default async function PropertyPage({ params }: PageProps) {
   const property = getProperty(slug);
   if (!property) notFound();
 
-  const { hero, stats, stories, details, location, bookingUrl } = property;
+  const { hero, stories, details, location, bookingUrl } = property;
   const listingId = hostawayListingIds[slug];
   const highlights = propertyHighlights[slug] ?? { primary: [], secondary: [] };
   const isSenator = slug === "senator";
@@ -166,6 +166,106 @@ export default async function PropertyPage({ params }: PageProps) {
       </section>
 
       <section className="bg-[#FFFCFB] px-6 py-14 md:py-16">
+        <div className="mx-auto grid max-w-[1180px] gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+          <p className="font-body text-[20px] font-normal leading-8 tracking-[-0.4px] text-[#6D6057] md:text-[22px] md:leading-9">
+            {property.intro}
+          </p>
+
+          <div className="grid grid-cols-2 gap-3">
+            {highlights.primary.map((item) => (
+              <div
+                key={item}
+                className="rounded-3 border border-[#E1D7D1] bg-[#FBF8F7] px-4 py-4"
+              >
+                <p className="font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-[#291D16] md:text-[16px]">
+                  {item}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {listingId ? (
+        <section id="availability" className="scroll-mt-16 bg-[#F4EFEC] px-6 py-14 md:py-16">
+          <div className="mx-auto max-w-[980px]">
+            <div className="mb-6">
+              <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
+                Book direct
+              </p>
+              <h2
+                className="mt-2 font-heading text-[38px] font-medium leading-[42px] tracking-[-1.52px] text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
+                style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+              >
+                Find your dates
+              </h2>
+            </div>
+
+            <div className="rounded-[20px] border border-[#E1D7D1] bg-[#FFFCFB] p-4 md:p-6">
+              <HostawayBooking listingId={listingId} />
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {stories.length > 0 ? (
+        <section className="bg-[#FFFCFB] px-6 py-14 md:py-20">
+          <div className="mx-auto max-w-[1280px]">
+            <div className="mb-8 max-w-[760px] md:mb-10">
+              <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
+                The stay
+              </p>
+              <h2
+                className="mt-2 font-heading text-[38px] font-medium leading-[42px] tracking-[-1.52px] text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
+                style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
+              >
+                Settle into the rhythm of the place
+              </h2>
+            </div>
+
+            <div className="space-y-6 md:space-y-8">
+              {stories.map((story, index) => (
+                <article
+                  key={story.image.src}
+                  className="grid overflow-hidden rounded-[24px] border border-[#E7DFDB] bg-[#FBF8F7] shadow-[0_14px_40px_rgba(41,29,22,0.045)] md:grid-cols-[0.92fr_1.08fr]"
+                >
+                  <div
+                    className={`flex items-center p-6 md:p-8 lg:p-10 ${index % 2 === 1 ? "md:order-2" : ""}`}
+                  >
+                    <div className="max-w-[520px]">
+                      <p className="mb-4 font-body text-[12px] font-medium uppercase leading-5 tracking-[0.08em] text-[#8F7E73]">
+                        {index === 0 ? "Mornings" : index === 1 ? "After the day" : "Evenings"}
+                      </p>
+                      <div className="font-body text-[17px] font-normal leading-7 tracking-[-0.34px] text-[#5F534B] md:text-[18px] md:leading-8">
+                        {story.paragraphs.map((paragraph) => (
+                          <p key={paragraph} className="mb-5 last:mb-0">
+                            {paragraph}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    className={`relative min-h-[320px] md:min-h-[420px] ${index % 2 === 1 ? "md:order-1" : ""}`}
+                  >
+                    <Image
+                      src={story.image.src}
+                      alt={story.image.alt}
+                      fill
+                      quality={95}
+                      sizes="(min-width: 768px) 55vw, 100vw"
+                      className="object-cover"
+                    />
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <section className="bg-[#FFFCFB] px-6 py-14 md:py-16">
         <div className="mx-auto max-w-[1280px]">
           <div className="mb-8">
             <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
@@ -187,20 +287,27 @@ export default async function PropertyPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="flex w-full flex-col items-center gap-6 bg-[#FFFCFB] px-6 py-16">
-        <div className="w-full max-w-[816px] space-y-8 font-body text-[20px] font-normal leading-8 tracking-[-0.4px] text-[#6D6057]">
-          {location.paragraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </div>
+      <section className="bg-[#FFFCFB] px-6 py-14 md:py-16">
+        <div className="mx-auto grid max-w-[1180px] gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
+          <div>
+            <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
+              Location
+            </p>
+            <div className="mt-4 space-y-6 font-body text-[18px] font-normal leading-8 tracking-[-0.36px] text-[#6D6057]">
+              {location.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
 
-        <iframe
-          title={`Map of ${location.mapQuery}`}
-          src={`https://www.google.com/maps?q=${encodeURIComponent(location.mapQuery)}&output=embed`}
-          className="h-[400px] w-full max-w-[816px] border-0"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
+          <iframe
+            title={`Map of ${location.mapQuery}`}
+            src={`https://www.google.com/maps?q=${encodeURIComponent(location.mapQuery)}&output=embed`}
+            className="h-[420px] w-full rounded-[20px] border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
       </section>
 
       <CommunityCTA />
@@ -209,9 +316,9 @@ export default async function PropertyPage({ params }: PageProps) {
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#E1D7D1] bg-[#FFFCFB]/95 p-3 backdrop-blur-md md:hidden">
           <a
             href="#availability"
-            className="flex min-h-11 items-center justify-center bg-[#4A6E57] px-5 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#FFFCFB]"
+            className="flex min-h-11 items-center justify-center rounded-2 bg-[#4A6E57] px-5 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#FFFCFB]"
           >
-            Check availability
+            See available dates
           </a>
         </div>
       ) : null}
