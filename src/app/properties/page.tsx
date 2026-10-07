@@ -25,13 +25,20 @@ export default function PropertiesPage() {
               Homes for Those Who Roam
             </h1>
 
-            <p className="mt-6 max-w-[560px] font-body text-[20px] font-normal leading-8 tracking-[-0.4px] text-[#6D6057]">
-              Roamstead is a growing collection of places to stay across Heber Valley and nearby mountain towns. Each one is different, but all are designed with the same belief: place comes first.
-            </p>
+            <div className="mt-7 max-w-[570px] border-l border-[#4A6E57]/40 pl-5 md:pl-6">
+              <p className="font-body text-[18px] font-normal leading-8 tracking-[-0.36px] text-[#6D6057] md:text-[19px]">
+                Roamstead is a growing collection of places to stay across Heber Valley and nearby mountain towns.
+              </p>
 
-            <p className="mt-6 max-w-[520px] font-body text-[18px] font-normal leading-7 tracking-[-0.36px] text-[#8F7E73]">
-              These are homes meant to feel settled into, not staged.
-            </p>
+              <p className="mt-3 font-body text-[18px] font-medium leading-8 tracking-[-0.36px] text-[#291D16] md:text-[19px]">
+                Each one is different, but all are designed with the same belief:
+                <span className="text-[#4A6E57]"> place comes first.</span>
+              </p>
+
+              <p className="mt-5 font-body text-[15px] font-normal leading-6 tracking-[-0.3px] text-[#8F7E73]">
+                These are homes meant to feel settled into, not staged.
+              </p>
+            </div>
           </div>
         </div>
 
