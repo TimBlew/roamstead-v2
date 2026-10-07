@@ -121,7 +121,7 @@ export default async function PropertyPage({ params }: PageProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/22 via-transparent to-transparent" />
 
         <div className="relative z-10 w-full px-4 pb-5 pt-8 md:px-10 md:pb-12 md:pt-24 lg:px-12">
-          <div className="max-w-[940px] rounded-[18px] bg-black/48 p-4 shadow-[0_16px_48px_rgba(0,0,0,0.18)] backdrop-blur-[4px] md:rounded-[22px] md:bg-black/42 md:p-8 md:backdrop-blur-[5px]">
+          <div className="max-w-[940px] rounded-[18px] border border-white/10 bg-black/56 p-4 shadow-[0_18px_48px_rgba(0,0,0,0.2)] backdrop-blur-[5px] md:rounded-[22px] md:bg-black/46 md:p-8 md:backdrop-blur-[6px]">
             <p className="font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-white/85 md:text-[17px] md:leading-6 md:tracking-[-0.3px]">
               {hero.locationLabel}
             </p>
@@ -133,17 +133,17 @@ export default async function PropertyPage({ params }: PageProps) {
               {hero.title}
             </h1>
 
-            <p className="mt-2 max-w-[720px] font-body text-[15px] font-normal leading-[22px] tracking-[-0.3px] text-white/92 md:mt-3 md:text-[19px] md:leading-7 md:tracking-[-0.34px]">
+            <p className="mt-2 max-w-[700px] font-body text-[15.5px] font-medium leading-[22px] tracking-[-0.28px] text-[#FFFCFB] drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)] md:mt-3 md:text-[19px] md:leading-7 md:tracking-[-0.3px]">
               {hero.subtitle}
             </p>
 
             {highlights.primary.length > 0 ? (
-              <div className="mt-3 border-y border-white/20 py-2.5 md:mt-5 md:py-3.5">
-                <div className="grid grid-cols-2 md:flex md:flex-wrap md:items-center md:gap-y-3">
+              <div className="mt-2.5 border-y border-white/24 py-1.5 md:mt-4 md:py-3">
+                <div className="grid grid-cols-2 md:flex md:flex-wrap md:items-center md:gap-y-2">
                   {highlights.primary.map((item, index) => (
                     <div
                       key={item}
-                      className={`py-1.5 font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-white md:py-0 md:pr-4 md:text-[16px] md:leading-6 md:tracking-[-0.3px] ${index % 2 === 1 ? "border-l border-white/20 pl-3 md:pl-4" : "pr-3"} ${index > 1 ? "border-t border-white/15 pt-2 md:border-t-0 md:pt-0" : ""}`}
+                      className={`py-1 font-body text-[13.5px] font-medium leading-[18px] tracking-[-0.24px] text-[#FFFCFB] md:py-0 md:pr-4 md:text-[16px] md:leading-6 md:tracking-[-0.28px] ${index % 2 === 1 ? "border-l border-white/18 pl-3 md:pl-4" : "pr-3"} ${index > 1 ? "border-t border-white/12 pt-1.5 md:border-t-0 md:pt-0" : ""}`}
                     >
                       {item}
                     </div>
@@ -151,7 +151,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 </div>
 
                 {highlights.secondary.length > 0 ? (
-                  <p className="mt-2 font-body text-[12.5px] font-normal leading-[19px] tracking-[-0.25px] text-[#F4EFEC] md:mt-2.5 md:text-[15px] md:leading-5 md:tracking-[-0.28px]">
+                  <p className="mt-1.5 font-body text-[13.5px] font-medium leading-[20px] tracking-[-0.24px] text-[#FFFCFB] md:mt-2 md:text-[15.5px] md:leading-5 md:tracking-[-0.26px]">
                     {highlights.secondary.join("  ·  ")}
                   </p>
                 ) : null}
@@ -161,7 +161,7 @@ export default async function PropertyPage({ params }: PageProps) {
             <a
               href={bookingHref}
               {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="mt-3 inline-flex min-h-10 items-center justify-center rounded-2 bg-white px-4 py-2 font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#291D16] shadow-sm transition-all hover:-translate-y-px hover:bg-[#F4EFEC] md:mt-5 md:min-h-11 md:px-5 md:py-2.5 md:text-[15px] md:leading-6 md:tracking-[-0.3px]"
+              className="mt-2.5 inline-flex min-h-10 items-center justify-center rounded-[10px] border border-white/55 bg-[#FFFCFB] px-5 py-2 font-body text-[14px] font-medium leading-5 tracking-[-0.24px] text-[#291D16] shadow-[0_8px_22px_rgba(0,0,0,0.16)] transition-all hover:-translate-y-px hover:bg-white md:mt-4 md:min-h-11 md:px-6 md:py-2.5 md:text-[15px] md:leading-6 md:tracking-[-0.28px]"
             >
               See available dates
             </a>
