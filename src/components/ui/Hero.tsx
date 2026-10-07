@@ -19,7 +19,7 @@ export const Hero: React.FC<HeroProps> = ({
   mobileSupplement,
 }) => {
   return (
-    <section className="relative flex h-[600px] w-full flex-col items-center gap-6 overflow-hidden px-6 py-16 text-center md:h-[752px]">
+    <section className="relative flex h-[600px] w-full flex-col items-center overflow-hidden px-6 text-center md:h-[752px]">
       <Image
         src={backgroundImage}
         alt=""
@@ -31,14 +31,15 @@ export const Hero: React.FC<HeroProps> = ({
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent" />
 
+      <div className="relative z-10 flex w-full max-w-[1040px] flex-col items-center pt-[52px] md:pt-[54px]">
       <h1
-        className="relative z-10 w-full max-w-[720px] font-heading text-[48px] font-medium leading-[54px] tracking-[-1.92px] text-[#E8F5EC] md:text-[72px] md:leading-[72px] md:tracking-[-2.88px]"
+        className="w-full max-w-[820px] font-heading text-[48px] font-medium leading-[50px] tracking-[-1.92px] text-[#E8F5EC] md:text-[72px] md:leading-[72px] md:tracking-[-2.88px]"
         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
       >
         {headline}
       </h1>
 
-      <p className="relative z-10 w-full max-w-[720px] font-body text-[18px] font-normal leading-7 tracking-[-0.36px] text-[#E8F5EC]">
+      <p className="mt-7 w-full max-w-[1000px] font-body text-[18px] font-normal leading-7 tracking-[-0.36px] text-[#E8F5EC] md:mt-8 md:text-[20px] md:leading-8 md:tracking-[-0.4px]">
         {description}
         {mobileSupplement ? (
           <span className="md:hidden">
@@ -50,10 +51,11 @@ export const Hero: React.FC<HeroProps> = ({
 
       <a
         href={ctaHref}
-        className="relative z-10 inline-flex h-10 items-center justify-center border border-[#D8CCC4] bg-[#FEFDFC] px-4 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#291D16] transition-colors hover:bg-[#F4EFEC]"
+        className="mt-8 inline-flex h-[60px] min-w-[196px] items-center justify-center border border-[#D8CCC4] bg-[#FEFDFC] px-8 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#291D16] transition-colors hover:bg-[#F4EFEC] md:mt-9"
       >
         {ctaText}
       </a>
+      </div>
     </section>
   );
 };
