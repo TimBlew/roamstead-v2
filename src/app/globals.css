@@ -217,3 +217,120 @@ a {
     display: block;
   }
 }
+
+
+/* Site navigation */
+.site-nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: 52px;
+  border-bottom: 1px solid var(--color-border-default);
+  background: var(--color-bg-surface);
+}
+
+.site-nav__inner {
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 104px 104px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.site-nav__brand {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-right: 6px;
+}
+
+.site-nav__logo {
+  display: block;
+  width: 108px;
+  height: auto;
+}
+
+.site-nav__action {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.2px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-nav__action--properties {
+  border: 1px solid var(--color-border-default);
+  background: #efe9e5;
+  color: var(--color-brand-default);
+}
+
+.site-nav__action--book {
+  border: 1px solid rgba(60, 96, 73, 0.2);
+  background: var(--color-brand-default);
+  color: var(--color-button-primary-text);
+  box-shadow: 0 2px 8px rgba(41, 29, 22, 0.08);
+}
+
+.site-nav__desktop-links {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .site-nav__inner {
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+  }
+
+  .site-nav__brand {
+    margin-right: auto;
+    padding: 0 12px;
+  }
+
+  .site-nav__logo {
+    width: 123px;
+  }
+
+  .site-nav__action--properties {
+    display: none;
+  }
+
+  .site-nav__desktop-links {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .site-nav__desktop-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    color: var(--color-brand-default);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-decoration: none;
+  }
+
+  .site-nav__action--book {
+    height: 100%;
+    border-radius: 0;
+    border-top: 0;
+    border-bottom: 0;
+    border-right: 0;
+    padding: 0 24px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
