@@ -11,26 +11,26 @@ export default function PropertiesPage() {
 
   return (
     <>
-      <section className="grid min-h-[560px] overflow-hidden bg-[#F4EFEC] lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="flex items-center px-6 py-16 md:px-10 lg:px-16">
+      <section className="grid overflow-hidden bg-[#F4EFEC] lg:min-h-[560px] lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="flex items-center px-5 py-8 md:px-10 md:py-12 lg:px-16 lg:py-16">
           <div className="max-w-[620px]">
             <p className="font-body text-[14px] font-medium leading-[18px] tracking-[-0.28px] text-[#4A6E57]">
               Our Properties
             </p>
 
             <h1
-              className="mt-5 font-heading text-[52px] font-medium leading-[54px] tracking-[-2.08px] text-[#1F3125] md:text-[68px] md:leading-[70px] md:tracking-[-2.72px]"
+              className="mt-3 font-heading text-[40px] font-medium leading-[42px] tracking-[-1.6px] md:mt-5 text-[#1F3125] md:text-[68px] md:leading-[70px] md:tracking-[-2.72px]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
               Homes for Those Who Roam
             </h1>
 
-            <div className="mt-7 max-w-[570px] border-l border-[#4A6E57]/40 pl-5 md:pl-6">
-              <p className="font-body text-[18px] font-normal leading-8 tracking-[-0.36px] text-[#6D6057] md:text-[19px]">
+            <div className="mt-4 max-w-[570px] border-l border-[#4A6E57]/30 pl-4 md:mt-7 md:pl-6">
+              <p className="font-body text-[15px] font-normal leading-[22px] tracking-[-0.3px] text-[#6D6057] md:text-[19px] md:leading-8 md:tracking-[-0.36px]">
                 Roamstead is a growing collection of places to stay across Heber Valley and nearby mountain towns.
               </p>
 
-              <p className="mt-3 font-body text-[18px] font-medium leading-8 tracking-[-0.36px] text-[#291D16] md:text-[19px]">
+              <p className="mt-2 font-body text-[15px] font-medium leading-[22px] tracking-[-0.3px] text-[#291D16] md:mt-3 md:text-[19px] md:leading-8 md:tracking-[-0.36px]">
                 Each one is different, but all are designed with the same belief:
                 <span className="font-medium text-[#291D16]"> place comes first.</span>
               </p>
@@ -38,7 +38,7 @@ export default function PropertiesPage() {
           </div>
         </div>
 
-        <div className="relative min-h-[420px] lg:min-h-[560px]">
+        <div className="relative min-h-[230px] md:min-h-[320px] lg:min-h-[560px]">
           <Image
             src="/images/local-nature.jpg"
             alt="Heber Valley in winter"
@@ -51,21 +51,21 @@ export default function PropertiesPage() {
         </div>
       </section>
 
-      <section className="bg-[#FFFCFB] px-6 py-16 md:px-8 md:py-20">
+      <section className="bg-[#FFFCFB] px-5 py-8 md:px-8 md:py-20">
         <div className="mx-auto max-w-[1440px]">
-          <div className="mb-10 max-w-[720px] md:mb-14">
+          <div className="mb-5 max-w-[720px] md:mb-14">
             <h2
-              className="font-heading text-[40px] font-medium leading-[44px] tracking-[-1.6px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
+              className="font-heading text-[32px] font-medium leading-[35px] tracking-[-1.28px] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]" text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
               Find your place
             </h2>
-            <p className="mt-4 font-body text-[18px] font-normal leading-7 tracking-[-0.36px] text-[#6D6057]">
+            <p className="mt-2.5 font-body text-[15px] font-normal leading-[22px] tracking-[-0.3px] text-[#6D6057] md:mt-4 md:text-[18px] md:leading-7 md:tracking-[-0.36px]">
               From a quiet Midway condo to a six-bedroom Deer Valley home, each property has its own rhythm, setting, and reason to return.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-x-6 gap-y-14 lg:grid-cols-2 lg:gap-y-16">
+          <div className="grid grid-cols-1 gap-y-3 md:gap-y-8 lg:grid-cols-2 lg:gap-x-6 lg:gap-y-16">
             {collection.map((property) => {
               if (!property) return null;
 
@@ -76,27 +76,30 @@ export default function PropertiesPage() {
               });
 
               return (
-                <article key={property.slug} className="group">
+                <article
+                  key={property.slug}
+                  className="group grid grid-cols-[118px_1fr] gap-4 rounded-[16px] bg-[#FBF8F7] p-3 md:block md:rounded-none md:bg-transparent md:p-0"
+                >
                   <a href={href} className="block">
-                    <div className="relative aspect-[16/10] overflow-hidden rounded-3 bg-[#F4EFEC]">
+                    <div className="relative h-full min-h-[118px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[16/10] md:h-auto md:rounded-3">
                       <Image
                         src={property.hero.image.src}
                         alt={property.hero.image.alt}
                         fill
-                        sizes="(min-width: 1024px) 50vw, 100vw"
+                        sizes="(min-width: 1024px) 50vw, (min-width: 768px) 100vw, 118px"
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                       />
                     </div>
                   </a>
 
-                  <div className="pt-5">
-                    <p className="font-body text-[14px] font-medium leading-[18px] tracking-[-0.28px] text-[#8F7E73]">
+                  <div className="flex min-w-0 flex-col justify-center md:pt-5">
+                    <p className="font-body text-[12px] font-medium leading-4 tracking-[-0.24px] text-[#8F7E73] md:text-[14px] md:leading-[18px] md:tracking-[-0.28px]">
                       {property.hero.locationLabel.replace(", Utah", "")}
                     </p>
 
-                    <div className="mt-2 flex items-start justify-between gap-4">
+                    <div className="mt-0.5 md:mt-2 md:flex md:items-start md:justify-between md:gap-4">
                       <h3
-                        className="font-heading text-[36px] font-medium leading-[40px] tracking-[-1.44px] text-[#1F3125] md:text-[42px] md:leading-[46px] md:tracking-[-1.68px]"
+                        className="font-heading text-[24px] font-medium leading-[27px] tracking-[-0.96px] text-[#1F3125] md:text-[42px] md:leading-[46px] md:tracking-[-1.68px]"
                         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
                       >
                         <a href={href} className="transition-colors hover:text-[#4A6E57]">
@@ -106,17 +109,25 @@ export default function PropertiesPage() {
 
                       <a
                         href={href}
-                        className="mt-1 shrink-0 font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-[#4A6E57] transition-colors hover:text-[#3C6049]"
+                        className="mt-2 hidden shrink-0 font-body text-[15px] font-medium leading-6 tracking-[-0.3px] text-[#4A6E57] transition-colors hover:text-[#3C6049] md:block"
                       >
-                        View property →
+                        See the stay →
                       </a>
                     </div>
 
-                    <p className="mt-4 max-w-[62ch] font-body text-[16px] font-normal leading-7 tracking-[-0.32px] text-[#6D6057]">
-                      {property.intro}
+                    <p className="mt-1.5 font-body text-[12.5px] font-normal leading-[18px] tracking-[-0.25px] text-[#6D6057] md:mt-4 md:max-w-[62ch] md:text-[16px] md:leading-7 md:tracking-[-0.32px]">
+                      <span className="md:hidden">{facts.join(" · ")}</span>
+                      <span className="hidden md:inline">{property.intro}</span>
                     </p>
 
-                    <p className="mt-4 font-body text-[14px] font-normal leading-6 tracking-[-0.28px] text-[#8F7E73]">
+                    <a
+                      href={href}
+                      className="mt-2 inline-flex items-center font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#4A6E57] md:hidden"
+                    >
+                      See the stay →
+                    </a>
+
+                    <p className="mt-4 hidden font-body text-[14px] font-normal leading-6 tracking-[-0.28px] text-[#8F7E73] md:block">
                       {facts.join("  ·  ")}
                     </p>
                   </div>
