@@ -16,13 +16,13 @@ export const Footer: React.FC = () => {
   return (
     <footer className="w-full bg-[#382F29] font-body text-[#FFFCFB]">
       <div className="flex w-full flex-col gap-10 px-6 py-8">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-10 lg:grid-cols-[49.35fr_15.58fr_15.67fr_15.58fr] lg:gap-4">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-10 lg:grid-cols-[608px_192px_193px_192px] lg:gap-4">
           <div className="flex flex-col items-start gap-2 md:col-span-2 lg:col-span-1">
-            <div className="h-[80px] w-[269px] shrink-0">
+            <div className="h-[80px] w-[269px] overflow-hidden">
               <img
                 src="/roamstead-logo-light.svg"
                 alt="Roamstead"
-                className="block h-full w-full max-w-none"
+                className="block h-full w-full max-w-none scale-x-[1.185]"
               />
             </div>
 
