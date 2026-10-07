@@ -1,13 +1,13 @@
-import React from 'react';
-import { Hero } from '../ui/Hero';
+import React from "react";
+import { Hero } from "../ui/Hero";
 
 export const HeroSection: React.FC = () => {
   return (
     <Hero
       backgroundImage="/images/hero-mountain-optimized.jpg"
       headline="Modern mountain hospitality"
-      description="Roamstead is a growing collection of places to stay in Heber Valley and the surrounding mountains. Each one is shaped by its setting and designed for the way people actually live while traveling."
-      ctaText="Book your stay"
+      description="Thoughtful homes across Heber Valley and Park City, made for ski weekends, slow mornings, long stays, and the kind of trips you want to repeat."
+      ctaText="Find your stay"
       ctaHref="/properties"
     />
   );
