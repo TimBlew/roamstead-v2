@@ -77,30 +77,32 @@ export default async function PropertyPage({ params }: PageProps) {
           alt={hero.image.alt}
           fill
           priority
+          quality={95}
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent from-50% to-[#4A6E57]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/10" />
 
-        <p className="relative z-10 w-full max-w-[720px] font-body text-[18px] font-medium leading-7 tracking-[-0.36px] text-[#FBF8F7]">
+        <p className="relative z-10 w-full max-w-[680px] font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-white/85 md:text-[18px] md:leading-7 md:tracking-[-0.36px]">
           {hero.locationLabel}
         </p>
 
         <h1
-          className="relative z-10 w-full max-w-[720px] font-heading text-[48px] font-medium leading-[54px] tracking-[-1.92px] text-[#FFFCFB] md:text-[72px] md:leading-[72px] md:tracking-[-2.88px]"
+          className="relative z-10 w-full max-w-[680px] font-heading text-[48px] font-medium leading-[52px] tracking-[-1.92px] text-white md:text-[72px] md:leading-[72px] md:tracking-[-2.88px]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
           {hero.title}
         </h1>
 
-        <p className="relative z-10 w-full max-w-[720px] font-body text-[18px] font-normal leading-7 tracking-[-0.36px] text-[#FBF8F7]">
+        <p className="relative z-10 w-full max-w-[620px] font-body text-[18px] font-normal leading-7 tracking-[-0.36px] text-white/90">
           {hero.subtitle}
         </p>
 
         <a
           href={bookingHref}
           {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          className="relative z-10 inline-flex h-10 items-center justify-center border border-[#D8CCC4] bg-[#FEFDFC] px-4 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#291D16] transition-colors hover:bg-[#F4EFEC]"
+          className="relative z-10 inline-flex h-10 items-center justify-center border border-white/70 bg-white/95 px-5 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#291D16] backdrop-blur-sm transition-colors hover:bg-white"
         >
           Check availability
         </a>
