@@ -11,9 +11,9 @@ export default function PropertiesPage() {
 
   return (
     <>
-      <section className="grid overflow-hidden bg-[#F4EFEC] lg:min-h-[560px] lg:grid-cols-[0.9fr_1.1fr]">
+      <section className="grid overflow-hidden bg-[#F4EFEC] lg:min-h-[560px] lg:grid-cols-[1fr_1fr]">
         <div className="flex items-center px-5 py-8 md:px-10 md:py-12 lg:px-16 lg:py-16">
-          <div className="max-w-[620px]">
+          <div className="w-full max-w-[700px]">
             <p className="font-body text-[14px] font-medium leading-[18px] tracking-[-0.28px] text-[#4A6E57]">
               Our Properties
             </p>
@@ -25,14 +25,16 @@ export default function PropertiesPage() {
               Homes for Those Who Roam
             </h1>
 
-            <div className="mt-4 max-w-[570px] border-l border-[#4A6E57]/30 pl-4 md:mt-7 md:pl-6">
+            <div className="mt-4 max-w-[640px] border-l border-[#4A6E57]/30 pl-4 md:mt-7 md:pl-6">
               <p className="font-body text-[15px] font-normal leading-[22px] tracking-[-0.3px] text-[#6D6057] md:text-[19px] md:leading-8 md:tracking-[-0.36px]">
                 Roamstead is a growing collection of places to stay across Heber Valley and nearby mountain towns.
               </p>
 
-              <p className="mt-2 font-body text-[15px] font-medium leading-[22px] tracking-[-0.3px] text-[#291D16] md:mt-3 md:text-[19px] md:leading-8 md:tracking-[-0.36px]">
-                Each one is different, but all are designed with the same belief:
-                <span className="font-medium text-[#291D16]"> place comes first.</span>
+              <p className="mt-2 font-body text-[15px] font-normal leading-[22px] tracking-[-0.3px] text-[#6D6057] md:mt-3 md:text-[19px] md:leading-8 md:tracking-[-0.36px]">
+                Each one is different, but all are designed with the same belief.
+              </p>
+              <p className="mt-2 font-heading text-[22px] font-medium leading-[24px] tracking-[-0.88px] text-[#1F3125] md:mt-3 md:text-[30px] md:leading-[32px] md:tracking-[-1.2px]">
+                Place comes first.
               </p>
             </div>
           </div>
@@ -51,9 +53,9 @@ export default function PropertiesPage() {
         </div>
       </section>
 
-      <section className="bg-[#FFFCFB] px-5 py-8 md:px-8 md:py-20">
-        <div className="mx-auto max-w-[1440px]">
-          <div className="mb-5 max-w-[720px] md:mb-14">
+      <section className="bg-[#FFFCFB] px-5 py-8 md:px-10 md:py-16">
+        <div className="mx-auto max-w-[1360px]">
+          <div className="mb-5 max-w-[760px] md:mb-10">
             <h2
               className="font-heading text-[32px] font-medium leading-[35px] tracking-[-1.28px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
@@ -65,7 +67,7 @@ export default function PropertiesPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-y-3 md:gap-y-8 lg:grid-cols-2 lg:gap-x-6 lg:gap-y-16">
+          <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-12">
             {collection.map((property) => {
               if (!property) return null;
 
@@ -78,28 +80,28 @@ export default function PropertiesPage() {
               return (
                 <article
                   key={property.slug}
-                  className="group grid grid-cols-[118px_1fr] gap-4 rounded-[16px] bg-[#FBF8F7] p-3 md:block md:rounded-none md:bg-transparent md:p-0"
+                  className="group grid grid-cols-[128px_1fr] gap-4 rounded-[16px] bg-[#FBF8F7] p-3 md:block md:overflow-hidden md:rounded-[20px] md:border md:border-[#E7DFDB] md:bg-[#FBF8F7] md:p-3"
                 >
                   <a href={href} className="block">
-                    <div className="relative h-full min-h-[118px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[16/10] md:h-auto md:rounded-3">
+                    <div className="relative h-full min-h-[128px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[16/9] md:h-auto md:rounded-[16px]">
                       <Image
                         src={property.hero.image.src}
                         alt={property.hero.image.alt}
                         fill
-                        sizes="(min-width: 1024px) 50vw, (min-width: 768px) 100vw, 118px"
+                        sizes="(min-width: 1024px) 640px, (min-width: 768px) 100vw, 128px"
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                       />
                     </div>
                   </a>
 
-                  <div className="flex min-w-0 flex-col justify-center md:pt-5">
+                  <div className="flex min-w-0 flex-col justify-center md:px-2 md:pb-3 md:pt-4">
                     <p className="font-body text-[12px] font-medium leading-4 tracking-[-0.24px] text-[#8F7E73] md:text-[14px] md:leading-[18px] md:tracking-[-0.28px]">
                       {property.hero.locationLabel.replace(", Utah", "")}
                     </p>
 
                     <div className="mt-0.5 md:mt-2 md:flex md:items-start md:justify-between md:gap-4">
                       <h3
-                        className="font-heading text-[24px] font-medium leading-[27px] tracking-[-0.96px] text-[#1F3125] md:text-[42px] md:leading-[46px] md:tracking-[-1.68px]"
+                        className="font-heading text-[24px] font-medium leading-[27px] tracking-[-0.96px] text-[#1F3125] md:text-[38px] md:leading-[42px] md:tracking-[-1.52px]"
                         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
                       >
                         <a href={href} className="transition-colors hover:text-[#4A6E57]">
@@ -115,7 +117,7 @@ export default function PropertiesPage() {
                       </a>
                     </div>
 
-                    <p className="mt-1.5 font-body text-[12.5px] font-normal leading-[18px] tracking-[-0.25px] text-[#6D6057] md:mt-4 md:max-w-[62ch] md:text-[16px] md:leading-7 md:tracking-[-0.32px]">
+                    <p className="mt-1.5 font-body text-[12.5px] font-normal leading-[18px] tracking-[-0.25px] text-[#6D6057] md:mt-3 md:max-w-[58ch] md:text-[15px] md:leading-6 md:tracking-[-0.32px]">
                       <span className="md:hidden">{facts.join(" · ")}</span>
                       <span className="hidden md:inline">{property.intro}</span>
                     </p>
@@ -127,7 +129,7 @@ export default function PropertiesPage() {
                       See the stay →
                     </a>
 
-                    <p className="mt-4 hidden font-body text-[14px] font-normal leading-6 tracking-[-0.28px] text-[#8F7E73] md:block">
+                    <p className="mt-3 hidden border-t border-[#E7DFDB] pt-3 font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#6D6057] md:block">
                       {facts.join("  ·  ")}
                     </p>
                   </div>
