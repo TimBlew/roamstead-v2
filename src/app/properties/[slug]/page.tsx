@@ -133,10 +133,9 @@ export default async function PropertyPage({ params }: PageProps) {
 
       {/* Details */}
       <section className="container-figma grid grid-cols-1 gap-x-2 gap-y-4 py-8 md:grid-cols-2">
-        <DetailList heading="The House" items={details.house} />
-        <DetailList heading="Every Room Includes" items={details.roomIncludes} />
-        <DetailList heading="Grounds & shared spaces" items={details.grounds} />
-        <DetailList heading="Practical notes" items={details.practicalNotes} />
+        {details.map((list) => (
+          <DetailList key={list.heading} heading={list.heading} items={list.items} />
+        ))}
       </section>
 
       {/* Location */}
@@ -147,8 +146,8 @@ export default async function PropertyPage({ params }: PageProps) {
           ))}
         </div>
         <iframe
-          title={`Map of ${location.address}`}
-          src={`https://www.google.com/maps?q=${encodeURIComponent(location.address)}&output=embed`}
+          title={`Map of ${location.mapQuery}`}
+          src={`https://www.google.com/maps?q=${encodeURIComponent(location.mapQuery)}&output=embed`}
           className="h-map w-full max-w-content-narrow border-0"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
