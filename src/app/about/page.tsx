@@ -51,7 +51,7 @@ export default function AboutPage() {
         </div>
 
         <h1
-          className="w-full max-w-[720px] text-center font-heading text-[64px] font-medium leading-[72px] tracking-[-2.56px] text-[#1F3125]"
+          className="w-full max-w-[720px] text-center font-heading text-[44px] font-medium leading-[48px] tracking-[-1.76px] text-[#1F3125] md:text-[64px] md:leading-[72px] md:tracking-[-2.56px]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
           We believe mountains are better when we share them
@@ -64,7 +64,7 @@ export default function AboutPage() {
 
       <section className="flex w-full flex-col items-center gap-6 bg-[#FFFCFB] px-6 py-16">
         <h2
-          className="w-full max-w-[816px] text-center font-heading text-[48px] font-medium leading-[54px] tracking-[-1.92px] text-[#1F3125]"
+          className="w-full max-w-[816px] text-center font-heading text-[40px] font-medium leading-[44px] tracking-[-1.6px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
           What we care about
@@ -76,13 +76,13 @@ export default function AboutPage() {
 
         <div className="grid w-full grid-cols-1 gap-10 md:grid-cols-3 md:gap-4">
           {values.map((value) => (
-            <div key={value.title} className="flex h-[460px] flex-col gap-4">
+            <div key={value.title} className="flex h-[452px] flex-col gap-4 md:h-[460px]">
               <div className="relative h-[320px] w-full overflow-hidden rounded-3">
                 <Image src={value.image} alt={value.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
               </div>
               <div className="flex flex-col gap-2">
                 <h3
-                  className="font-heading text-[36px] font-medium leading-[44px] tracking-[-1.44px] text-[#1F3125]"
+                  className="font-heading text-[28px] font-medium leading-[36px] tracking-[-1.12px] text-[#1F3125] md:text-[36px] md:leading-[44px] md:tracking-[-1.44px]"
                   style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
                 >
                   {value.title}
