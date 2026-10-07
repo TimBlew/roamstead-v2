@@ -3,11 +3,11 @@ import React from "react";
 
 export const Navigation: React.FC = () => {
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 h-12 border-b border-[#E1D7D1] bg-[#F4EFEC]">
-      <div className="grid h-full grid-cols-[1fr_108px_108px] items-center gap-1 px-1.5 sm:flex sm:items-stretch sm:justify-end sm:gap-0 sm:px-0">
+    <nav className="fixed inset-x-0 top-0 z-50 h-[52px] border-b border-[#E1D7D1] bg-[#F4EFEC]">
+      <div className="grid h-full grid-cols-[1fr_104px_104px] items-center gap-2 px-2.5 sm:flex sm:items-stretch sm:justify-end sm:gap-0 sm:px-0">
         <a
           href="/"
-          className="flex min-w-0 items-center pl-1 pr-2 sm:px-3"
+          className="flex min-w-0 items-center pl-0.5 pr-2 sm:px-3"
           aria-label="Roamstead home"
         >
           <Image
@@ -15,14 +15,14 @@ export const Navigation: React.FC = () => {
             alt="Roamstead"
             width={112}
             height={22}
-            className="h-[22px] w-[112px] sm:h-6 sm:w-[123px]"
+            className="h-[21px] w-[108px] sm:h-6 sm:w-[123px]"
             priority
           />
         </a>
 
         <a
           href="/properties"
-          className="flex h-8 items-center justify-center rounded-[8px] border border-[#E1D7D1] bg-[#FBF8F7] px-2 font-body text-[12.5px] font-medium leading-none tracking-[-0.2px] text-[#4A6E57] shadow-[0_2px_8px_rgba(41,29,22,0.04)] transition-colors hover:bg-[#F4EFEC] sm:hidden"
+          className="flex h-9 items-center justify-center rounded-[9px] border border-[#E1D7D1] bg-[#EFE9E5] px-2 font-body text-[12.5px] font-medium leading-none tracking-[-0.2px] text-[#4A6E57] shadow-[0_2px_7px_rgba(41,29,22,0.035)] transition-colors hover:bg-[#E9E1DC] sm:hidden"
         >
           Properties
         </a>
@@ -32,7 +32,7 @@ export const Navigation: React.FC = () => {
             href="/properties"
             className="flex items-center justify-center px-4 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#4A6E57] transition-colors hover:text-[#3C6049]"
           >
-            Locations
+            Properties
           </a>
           <a
             href="/about"
@@ -44,7 +44,7 @@ export const Navigation: React.FC = () => {
 
         <a
           href="/properties"
-          className="flex h-8 whitespace-nowrap items-center justify-center rounded-[8px] bg-[#4A6E57] px-2 font-body text-[12.5px] font-medium leading-none tracking-[-0.2px] text-[#FFFCFB] shadow-[0_3px_10px_rgba(74,110,87,0.12)] transition-colors hover:bg-[#3C6049] sm:h-full sm:rounded-none sm:border-l sm:border-[#3C6049]/25 sm:px-6 sm:text-[16px] sm:leading-6 sm:tracking-[-0.32px]"
+          className="flex h-9 items-center justify-center rounded-[9px] border border-[#3C6049]/20 bg-[#4A6E57] px-2 font-body text-[12.5px] font-medium leading-none tracking-[-0.2px] text-[#FFFCFB] shadow-[0_3px_10px_rgba(74,110,87,0.1)] transition-colors hover:bg-[#3C6049] sm:h-full sm:rounded-none sm:border-y-0 sm:border-r-0 sm:px-6 sm:text-[16px] sm:leading-6 sm:tracking-[-0.32px]"
         >
           Book Direct
         </a>
