@@ -138,20 +138,20 @@ export default async function PropertyPage({ params }: PageProps) {
             </p>
 
             {highlights.primary.length > 0 ? (
-              <div className="mt-3 rounded-[14px] border border-white/16 bg-white/[0.045] p-3 md:mt-4 md:rounded-[16px] md:p-4">
-                <div className="grid grid-cols-2 overflow-hidden rounded-[10px] border border-white/12 bg-black/10">
+              <div className="mt-2.5 border-y border-white/24 py-1.5 md:mt-4 md:py-3">
+                <div className="grid grid-cols-2">
                   {highlights.primary.map((item, index) => (
                     <div
                       key={item}
-                      className={`flex min-h-[52px] items-center px-3 py-2 font-body text-[13.5px] font-semibold leading-[18px] tracking-[-0.22px] text-[#FFFCFB] md:min-h-[58px] md:px-4 md:text-[16px] md:leading-6 md:tracking-[-0.26px] ${index % 2 === 1 ? "border-l border-white/14" : ""} ${index > 1 ? "border-t border-white/14" : ""}`}
+                      className={`flex min-h-[46px] items-center px-3 py-1.5 font-body text-[13.5px] font-medium leading-[18px] tracking-[-0.24px] text-[#FFFCFB] md:min-h-[50px] md:px-4 md:text-[16px] md:leading-6 md:tracking-[-0.28px] ${index % 2 === 1 ? "border-l border-white/18" : ""} ${index > 1 ? "border-t border-white/12" : ""}`}
                     >
-                      {item}
+                      <span className="block w-full text-left">{item}</span>
                     </div>
                   ))}
                 </div>
 
                 {highlights.secondary.length > 0 ? (
-                  <p className="mt-2.5 border-t border-white/12 pt-2.5 font-body text-[13.5px] font-semibold leading-[20px] tracking-[-0.22px] text-[#F7F2EE] md:mt-3 md:pt-3 md:text-[15.5px] md:leading-5 md:tracking-[-0.24px]">
+                  <p className="mt-1.5 border-t border-white/12 pt-2 font-body text-[13.5px] font-medium leading-[20px] tracking-[-0.24px] text-[#FFFCFB] md:mt-2 md:text-[15.5px] md:leading-5 md:tracking-[-0.26px]">
                     {highlights.secondary.join("  ·  ")}
                   </p>
                 ) : null}
