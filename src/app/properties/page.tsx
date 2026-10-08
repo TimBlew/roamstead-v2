@@ -53,7 +53,7 @@ export default function PropertiesPage() {
         </div>
       </section>
 
-      <section className="bg-[#FFFCFB] px-3 py-7 md:px-8 md:py-12 lg:px-10">
+      <section className="bg-[#FFFCFB] px-2 py-7 md:px-8 md:py-12 lg:px-10">
         <div className="mx-auto max-w-[1440px]">
           <div className="mb-5 px-1 md:mb-8 md:px-0">
             <h2
@@ -80,10 +80,10 @@ export default function PropertiesPage() {
               return (
                 <article
                   key={property.slug}
-                  className="group grid w-full grid-cols-[42%_1fr] gap-4 rounded-[16px] bg-[#FBF8F7] p-3 md:flex md:flex-col md:overflow-hidden md:rounded-[20px] md:border md:border-[#E7DFDB] md:bg-[#FBF8F7] md:p-0"
+                  className="group grid w-full grid-cols-[46%_1fr] gap-3 rounded-[16px] bg-[#FBF8F7] p-2.5 md:flex md:flex-col md:overflow-hidden md:rounded-[20px] md:border md:border-[#E7DFDB] md:bg-[#FBF8F7] md:p-0"
                 >
                   <a href={href} className="block min-w-0">
-                    <div className="relative h-full min-h-[158px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[4/3] md:h-auto md:rounded-none">
+                    <div className="relative h-full min-h-[168px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[4/3] md:h-auto md:rounded-none">
                       <Image
                         src={property.hero.image.src}
                         alt={property.hero.image.alt}
@@ -94,14 +94,14 @@ export default function PropertiesPage() {
                     </div>
                   </a>
 
-                  <div className="flex min-w-0 flex-col justify-center py-1 md:px-5 md:pb-5 md:pt-4">
+                  <div className="flex min-w-0 flex-col justify-center py-0.5 pr-1 md:px-5 md:pb-5 md:pt-4">
                     <p className="font-body text-[12px] font-medium leading-4 tracking-[-0.24px] text-[#8F7E73] md:text-[14px] md:leading-[18px] md:tracking-[-0.28px]">
                       {property.hero.locationLabel.replace(", Utah", "")}
                     </p>
 
                     <div className="mt-0.5 md:mt-2 md:flex md:items-start md:justify-between md:gap-4">
                       <h3
-                        className="font-heading text-[26px] font-medium leading-[28px] tracking-[-1.04px] text-[#1F3125] md:text-[34px] md:leading-[38px] md:tracking-[-1.36px]"
+                        className="font-heading text-[27px] font-medium leading-[29px] tracking-[-1.08px] text-[#1F3125] md:text-[34px] md:leading-[38px] md:tracking-[-1.36px]"
                         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
                       >
                         <a href={href} className="transition-colors hover:text-[#4A6E57]">
