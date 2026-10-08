@@ -60,7 +60,7 @@ export function HostawayBooking({ listingId }: { listingId: number }) {
         baseUrl: HOSTAWAY_BASE_URL,
         listingId,
         numberOfMonths: months,
-        openInNewTab: true,
+        openInNewTab: false,
         rounded: true,
         button: { action: "checkout", text: "Continue to booking" },
         clearButtonText: "Clear dates",
