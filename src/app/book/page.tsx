@@ -27,13 +27,13 @@ export default function BookPage() {
           </p>
           <a href="#choose-your-stay" className="mt-6 inline-flex min-h-11 items-center justify-center bg-[#4A6E57] px-6 font-body text-[14px] font-medium text-white transition-colors hover:bg-[#3C6049] md:mt-7 md:text-[15px]">
             Choose your stay <span aria-hidden="true" className="ml-3">↓</span>
-          </a>\n          </div>\n          <div className="relative hidden lg:block">\n            <div className="relative aspect-[1.35] overflow-hidden rounded-[10px]">\n              <Image src="/images/senator-main.jpg" alt="Mountain hospitality at Roamstead" fill priority sizes="(min-width: 1024px) 500px, 100vw" className="object-cover object-[center_46%]" />\n            </div>\n            <div className="absolute -bottom-5 -left-5 rounded-[8px] border border-[#E1D7D1] bg-[#FFFCFB] px-5 py-3 shadow-[0_10px_30px_rgba(41,29,22,0.08)]">\n              <p className="font-body text-[11px] font-medium uppercase tracking-[0.12em] text-[#8F7E73]">THE ROAMSTEAD COLLECTION</p>\n              <p className="mt-1 font-heading text-[20px] font-medium text-[#1F3125]">Stay a little longer.</p>\n            </div>\n          </div>\n        </div>\n      </section>
+          </a>\n          </div>\n          <div className="relative hidden lg:block">\n            <div className="relative aspect-[1.18] overflow-hidden rounded-[10px]">\n              <Image src={stays[0].hero.image.src} alt={stays[0].hero.image.alt} fill priority sizes="(min-width: 1024px) 500px, 100vw" className="object-cover object-[center_46%]" />\n            </div>\n            <div className="absolute -bottom-5 -left-5 rounded-[8px] border border-[#E1D7D1] bg-[#FFFCFB] px-5 py-3 shadow-[0_10px_30px_rgba(41,29,22,0.08)]">\n              <p className="font-body text-[11px] font-medium uppercase tracking-[0.12em] text-[#8F7E73]">THE ROAMSTEAD COLLECTION</p>\n              <p className="mt-1 font-heading text-[20px] font-medium text-[#1F3125]">Stay a little longer.</p>\n            </div>\n          </div>\n        </div>\n      </section>
 
       <section id="choose-your-stay" className="scroll-mt-16 mx-auto max-w-[1280px] px-4 pb-14 pt-10 md:px-8 md:pb-20 md:pt-16">
         <div className="mb-5 md:mb-8">
           <p className="font-body text-[12px] font-medium uppercase tracking-[0.1em] text-[#4A6E57] md:text-[13px]">Choose your property</p>
           <h2 className="mt-2 font-heading text-[32px] font-medium leading-[1.1] tracking-[-0.04em] text-[#1F3125] md:text-[44px]">
-            Where will you stay?
+            Find your kind of getaway.
           </h2>
           <p className="mt-2 font-body text-[14px] leading-6 text-[#6D6057] md:text-[16px]">
             Explore the collection and select your stay to see available dates.
