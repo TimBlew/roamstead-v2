@@ -19,6 +19,15 @@ const hostawayListingIds: Record<string, number> = {
   "powder-room": 455633,
 };
 
+const staySectionTitles: Record<string, string> = {
+  "hygge-house": "Space for every side of your stay",
+  granary: "A little place to feel at home",
+  daystar: "Room to gather, space to unwind",
+  lowell: "Come in from the mountain",
+  "powder-room": "Your mountain basecamp",
+  senator: "A stay steeped in character",
+};
+
 const propertyHighlights: Record<string, { primary: string[]; secondary: string[] }> = {
   "hygge-house": {
     primary: ["Sleeps 10", "4 Bedrooms", "3 Baths", "Private sauna"],
@@ -213,7 +222,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 className="mt-1.5 font-heading text-[32px] font-medium leading-[36px] tracking-[-1.28px] md:mt-2 text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
-                Settle into the rhythm of the place
+                {staySectionTitles[slug] ?? "Explore the stay"}
               </h2>
             </div>
 
