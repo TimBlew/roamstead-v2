@@ -88,7 +88,7 @@ export function HostawayBooking({ listingId, fallbackUrl }: { listingId: number;
   }, [containerId, listingId, months, ready]);
 
   return (
-    <div ref={wrapperRef} className="w-full">
+    <div ref={wrapperRef} className="roamstead-booking-widget w-full">
       <div id={containerId} />
       {failed ? (
         <div className="py-5 text-center">
