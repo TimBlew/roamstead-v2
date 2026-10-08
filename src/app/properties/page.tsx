@@ -82,10 +82,12 @@ export default function PropertiesPage() {
               if (!property) return null;
 
               const href = "/properties/" + property.slug;
-              const facts = property.stats.slice(0, 3).map((stat) => {
-                if (stat.label.toLowerCase() === "sleeps") return "Sleeps " + stat.value;
-                return stat.value + " " + stat.label;
-              });
+              const facts = property.slug === "senator"
+                ? ["Historic bed & breakfast", "Individual guest rooms", "Book by room"]
+                : property.stats.slice(0, 3).map((stat) => {
+                    if (stat.label.toLowerCase() === "sleeps") return "Sleeps " + stat.value;
+                    return stat.value + " " + stat.label;
+                  });
 
               return (
                 <article
