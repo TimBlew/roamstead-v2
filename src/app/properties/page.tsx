@@ -95,8 +95,8 @@ export default function PropertiesPage() {
                   <a href={href} className="block min-w-0">
                     <div className="relative h-full min-h-[168px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[1.58] md:h-auto md:rounded-[10px]">
                       <Image
-                        src={property.hero.image.src}
-                        alt={property.hero.image.alt}
+                        src={property.slug === "hygge-house" ? "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" : property.hero.image.src}
+                        alt={property.slug === "hygge-house" ? "Front exterior of Hygge House in Midway, Utah" : property.hero.image.alt}
                         fill
                         sizes="(min-width: 1024px) 640px, (min-width: 768px) 100vw, 44vw"
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
