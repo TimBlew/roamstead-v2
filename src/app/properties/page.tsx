@@ -12,36 +12,36 @@ export default function PropertiesPage() {
 
   return (
     <>
-      <section className="grid overflow-hidden bg-[#F4EFEC] lg:min-h-[560px] lg:grid-cols-[1fr_1fr]">
-        <div className="flex items-center px-4 pb-4 pt-5 md:px-10 md:py-12 lg:px-16 lg:py-16">
-          <div className="w-full max-w-[720px]">
+      <section className="grid overflow-hidden bg-[#F4EFEC] lg:min-h-[590px] lg:grid-cols-[minmax(0,0.96fr)_minmax(0,1.04fr)]">
+        <div className="flex items-center px-4 pb-4 pt-5 md:px-10 md:py-12 lg:px-12 lg:py-16 xl:px-16">
+          <div className="w-full max-w-[650px]">
             <p className="font-body text-[13px] font-medium leading-[18px] tracking-[-0.26px] text-[#4A6E57] md:text-[14px] md:tracking-[-0.28px]">
               Our Properties
             </p>
 
             <h1
-              className="mt-2 max-w-[680px] font-heading text-[40px] font-medium leading-[41px] tracking-[-1.6px] text-[#1F3125] md:mt-5 md:text-[68px] md:leading-[70px] md:tracking-[-2.72px]"
+              className="mt-2 max-w-[680px] font-heading text-[40px] font-medium leading-[41px] tracking-[-1.6px] text-[#1F3125] md:mt-5 md:text-[60px] md:leading-[1.05] md:tracking-[-2.4px] xl:text-[66px]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
               Homes for Those Who Roam
             </h1>
 
-            <div className="mt-4 max-w-[680px] border-l border-[#4A6E57]/30 pl-3 md:mt-7 md:pl-6">
-              <p className="max-w-none font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:text-[19px] md:leading-8 md:tracking-[-0.36px]">
+            <div className="mt-4 max-w-[680px] border-l border-[#4A6E57]/30 pl-3 md:mt-7 md:pl-6 lg:mt-8 lg:max-w-[560px]">
+              <p className="max-w-none font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:text-[17px] md:leading-[29px] md:tracking-[-0.32px]">
                 Roamstead is a growing collection of places to stay across Heber Valley and nearby mountain towns.
               </p>
 
-              <p className="mt-2 max-w-none font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:mt-3 md:text-[19px] md:leading-8 md:tracking-[-0.36px]">
+              <p className="mt-2 max-w-none font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:mt-4 md:text-[17px] md:leading-[29px] md:tracking-[-0.32px]">
                 Each one is different, but all are designed with the same belief.
               </p>
-              <p className="mt-1 font-heading text-[23px] font-medium leading-[25px] tracking-[-0.92px] text-[#1F3125] md:mt-3 md:text-[30px] md:leading-[32px] md:tracking-[-1.2px]">
+              <p className="mt-1 font-heading text-[23px] font-medium leading-[25px] tracking-[-0.92px] text-[#1F3125] md:mt-4 md:text-[28px] md:leading-[32px] md:tracking-[-1.2px]">
                 Place comes first.
               </p>
             </div>
           </div>
         </div>
 
-        <div className="relative min-h-[220px] overflow-hidden md:min-h-[320px] lg:min-h-[560px]">
+        <div className="relative min-h-[220px] overflow-hidden md:min-h-[320px] lg:min-h-[590px]">
           <Image
             src="/images/local-nature.jpg"
             alt="Heber Valley in winter"
