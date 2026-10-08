@@ -24,7 +24,7 @@ export const Navigation: React.FC = () => {
           <a href="/properties">Properties</a>
         </div>
 
-        <a href="/properties" className="site-nav__action site-nav__action--book">
+        <a href="/book" className="site-nav__action site-nav__action--book">
           Book Direct
         </a>
       </div>
