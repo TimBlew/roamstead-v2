@@ -5,6 +5,16 @@ import { properties } from "@/data/properties";
 
 const order = ["hygge-house", "granary", "daystar", "lowell", "powder-room", "senator"];
 
+const propertyHighlights: Record<string, string[]> = {
+  "hygge-house": ["Private 4-person sauna", "Dedicated office", "Garage gym & gear storage", "Fenced yard & fire pit"],
+  granary: ["Mountain views", "Gas fireplace", "Full kitchen", "Walkable to Midway"],
+  daystar: ["Outdoor hot tub", "Indoor sauna", "Indoor sport court", "Pool table"],
+  lowell: ["Steps from the slopes", "Steam shower", "Heated pool & hot tub", "Ski storage"],
+  "powder-room": ["At the resort base", "Pool & hot tub", "Fitness center", "Ski storage"],
+  senator: ["Historic 1902 home", "Breakfast included", "Individual guest rooms", "Wraparound porch"],
+};
+
+
 export default function PropertiesPage() {
   const collection = order
     .map((slug) => properties.find((property) => property.slug === slug))
@@ -119,14 +129,24 @@ export default function PropertiesPage() {
                       </a>
                     </div>
 
-                    <p className="mt-2 font-body text-[13px] font-normal leading-[18px] tracking-[-0.26px] text-[#6D6057] md:mt-4 md:max-w-[46ch] md:text-[14px] md:leading-[22px] md:tracking-[-0.28px]">
+                    <p className="mt-2 font-body text-[13px] font-normal leading-[18px] tracking-[-0.26px] text-[#6D6057] md:mt-5 md:max-w-none md:text-[14px] md:leading-[22px] md:tracking-[-0.28px]">
                       <span className="md:hidden">{facts.map((fact, index) => (
                         <Fragment key={fact}>
                           {index > 0 ? " · " : ""}
                           <span className="whitespace-nowrap">{fact}</span>
                         </Fragment>
                       ))}</span>
-                      <span className="hidden md:inline">{property.intro}</span>
+                      <span className="hidden md:block">
+                        <span className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.12em] text-[#8F7E73]">Stay highlights</span>
+                        <span className="grid grid-cols-1 gap-x-3 gap-y-2.5 xl:grid-cols-2">
+                          {(propertyHighlights[property.slug] ?? []).map((highlight) => (
+                            <span key={highlight} className="flex min-w-0 items-start gap-2 text-[14px] leading-[20px] text-[#4D5149]">
+                              <span aria-hidden="true" className="mt-[8px] h-[4px] w-[4px] shrink-0 rounded-full bg-[#4A6E57]" />
+                              <span>{highlight}</span>
+                            </span>
+                          ))}
+                        </span>
+                      </span>
                     </p>
 
                     <a
