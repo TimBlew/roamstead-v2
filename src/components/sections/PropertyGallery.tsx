@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 
 type Photo = { src: string; alt: string };
 const base = "https://www.roamstead-co.com";
@@ -54,18 +54,7 @@ const galleries: Record<string, Photo[]> = {
 export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallback?: Photo[] }) {
   const photos = galleries[slug] ?? fallback;
   const [active, setActive] = useState(0);
-  const [expanded, setExpanded] = useState(false);
-
-  useEffect(() => {
-    if (!expanded) return;
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setExpanded(false);
-      if (event.key === "ArrowRight") setActive((n) => (n + 1) % photos.length);
-      if (event.key === "ArrowLeft") setActive((n) => (n - 1 + photos.length) % photos.length);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [expanded, photos.length]);
+  const touchStart = useRef<number | null>(null);
 
   if (!photos.length) return null;
   const previous = () => setActive((n) => (n - 1 + photos.length) % photos.length);
@@ -81,39 +70,39 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
           </div>
           <span className="font-body text-[13px] tabular-nums text-[#6D6057]">{active + 1} / {photos.length}</span>
         </div>
-        <button type="button" onClick={() => setExpanded(true)} className="group relative block aspect-[4/3] w-full overflow-hidden rounded-[18px] bg-[#F4EFEC] text-left md:aspect-[16/9] md:rounded-[24px]" aria-label="Open full-screen photo gallery">
-          {/* Remote photographs are served from the original Roamstead property site. */}
+        <div
+          className="relative aspect-[4/3] w-full overflow-hidden rounded-[18px] bg-[#F4EFEC] md:aspect-[16/9] md:rounded-[24px]"
+          onTouchStart={(event) => { touchStart.current = event.touches[0]?.clientX ?? null; }}
+          onTouchEnd={(event) => {
+            if (touchStart.current === null) return;
+            const distance = event.changedTouches[0].clientX - touchStart.current;
+            if (Math.abs(distance) > 45) (distance < 0 ? next : previous)();
+            touchStart.current = null;
+          }}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={photos[active].src} alt={photos[active].alt} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.015]" loading="lazy" />
-          <span className="absolute bottom-4 right-4 rounded-full border border-white/60 bg-[#FFFCFB]/95 px-4 py-2 font-body text-[13px] font-medium text-[#1F3125] shadow-sm">View photos ↗</span>
-        </button>
-        <div className="mt-3 flex items-center gap-2 md:gap-3">
-          <button type="button" onClick={previous} aria-label="Previous photo" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#D8CCC4] bg-[#FFFCFB] text-[15px] text-[#1F3125] transition-colors hover:bg-[#F4EFEC] md:h-10 md:w-10">←</button>
-          <div className="flex min-w-0 flex-1 snap-x gap-2 overflow-x-auto py-1 [scrollbar-width:none] md:gap-2.5">
-            {photos.map((item, index) => (
-              <button key={item.src} type="button" onClick={() => setActive(index)} aria-label={`View photo ${index + 1}: ${item.alt}`} aria-current={index === active ? "true" : undefined} className={`relative h-[64px] w-[88px] shrink-0 snap-start overflow-hidden rounded-[9px] border-2 transition-opacity md:h-[84px] md:w-[126px] ${index === active ? "border-[#4A6E57] opacity-100" : "border-transparent opacity-70 hover:opacity-100"}`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={item.src} alt="" loading="lazy" className="h-full w-full object-cover" />
+          <img src={photos[active].src} alt={photos[active].alt} className="h-full w-full object-cover" loading="lazy" />
+          {photos.length > 1 && (
+            <>
+              <button type="button" onClick={previous} aria-label="Previous photo" className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/65 bg-[#FFFCFB]/90 text-[#1F3125] shadow-sm backdrop-blur-sm transition-colors hover:bg-white md:left-5 md:h-10 md:w-10">
+                <span aria-hidden="true" className="text-[20px] leading-none">‹</span>
               </button>
-            ))}
-          </div>
-          <button type="button" onClick={next} aria-label="Next photo" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#D8CCC4] bg-[#FFFCFB] text-[15px] text-[#1F3125] transition-colors hover:bg-[#F4EFEC] md:h-10 md:w-10">→</button>
+              <button type="button" onClick={next} aria-label="Next photo" className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/65 bg-[#FFFCFB]/90 text-[#1F3125] shadow-sm backdrop-blur-sm transition-colors hover:bg-white md:right-5 md:h-10 md:w-10">
+                <span aria-hidden="true" className="text-[20px] leading-none">›</span>
+              </button>
+            </>
+          )}
+        </div>
+        <div className="mt-3 flex snap-x gap-2.5 overflow-x-auto pb-2 [scrollbar-width:none] md:gap-3">
+          {photos.map((item, index) => (
+            <button key={item.src} type="button" onClick={() => setActive(index)} aria-label={`View photo ${index + 1}: ${item.alt}`} aria-current={index === active ? "true" : undefined} className={`relative h-[64px] w-[88px] shrink-0 snap-start overflow-hidden rounded-[9px] border-2 transition-opacity md:h-[84px] md:w-[126px] ${index === active ? "border-[#4A6E57] opacity-100" : "border-transparent opacity-70 hover:opacity-100"}`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={item.src} alt="" loading="lazy" className="h-full w-full object-cover" />
+            </button>
+          ))}
         </div>
       </div>
-      {expanded && (
-        <div role="dialog" aria-modal="true" aria-label="Full-screen property gallery" className="fixed inset-0 z-[100] flex flex-col bg-[#101B15]/98 p-4 text-white md:p-8">
-          <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between gap-4 pb-4">
-            <span className="font-body text-[14px] tabular-nums">{active + 1} / {photos.length} · {photos[active].alt}</span>
-            <button type="button" onClick={() => setExpanded(false)} className="rounded-full border border-white/40 px-4 py-2 font-body text-[14px]">Close ✕</button>
-          </div>
-          <div className="relative mx-auto flex min-h-0 w-full max-w-[1400px] flex-1 items-center justify-center gap-2">
-            <button type="button" onClick={previous} aria-label="Previous photo" className="shrink-0 rounded-full border border-white/30 px-3 py-2">←</button>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photos[active].src} alt={photos[active].alt} className="max-h-full min-w-0 max-w-full flex-1 object-contain" />
-            <button type="button" onClick={next} aria-label="Next photo" className="shrink-0 rounded-full border border-white/30 px-3 py-2">→</button>
-          </div>
-        </div>
-      )}
+
     </section>
   );
 }
