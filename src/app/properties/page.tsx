@@ -79,7 +79,7 @@ export default function PropertiesPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-6 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-7 xl:grid-cols-3 xl:gap-8">
             {collection.map((property) => {
               if (!property) return null;
 
@@ -92,10 +92,10 @@ export default function PropertiesPage() {
               return (
                 <article
                   key={property.slug}
-                  className="group grid w-full grid-cols-[46%_1fr] gap-3 rounded-[16px] bg-[#FBF8F7] p-2.5 md:flex md:h-full md:flex-col md:overflow-hidden md:rounded-[20px] md:border md:border-[#E7DFDB] md:bg-[#FBF8F7] md:p-0"
+                  className="group grid w-full grid-cols-[46%_1fr] gap-3 rounded-[16px] bg-[#FBF8F7] p-2.5 md:flex md:h-full md:flex-col md:overflow-visible md:rounded-none md:border-0 md:bg-transparent md:p-0"
                 >
                   <a href={href} className="block min-w-0">
-                    <div className="relative h-full min-h-[168px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[4/3] md:h-auto md:rounded-none">
+                    <div className="relative h-full min-h-[168px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[1.58] md:h-auto md:rounded-[10px]">
                       <Image
                         src={property.hero.image.src}
                         alt={property.hero.image.alt}
@@ -106,14 +106,14 @@ export default function PropertiesPage() {
                     </div>
                   </a>
 
-                  <div className="flex min-w-0 flex-col justify-center py-0.5 pr-1 md:flex-1 md:justify-start md:px-5 md:pb-5 md:pt-5">
-                    <p className="font-body text-[12px] font-medium leading-4 tracking-[-0.24px] text-[#8F7E73] md:text-[14px] md:leading-[18px] md:tracking-[-0.28px]">
+                  <div className="flex min-w-0 flex-col justify-center py-0.5 pr-1 md:flex-1 md:justify-start md:px-0 md:pb-0 md:pt-5">
+                    <p className="font-body text-[12px] font-medium leading-4 tracking-[-0.24px] text-[#8F7E73] md:text-[14px] md:leading-[20px] md:tracking-[-0.1px]">
                       {property.hero.locationLabel.replace(", Utah", "")}
                     </p>
 
-                    <div className="mt-0.5 md:mt-2 md:flex md:items-start md:justify-between md:gap-4">
+                    <div className="mt-0.5 md:mt-3 md:block">
                       <h3
-                        className="font-heading text-[27px] font-medium leading-[29px] tracking-[-1.08px] text-[#1F3125] md:text-[34px] md:leading-[38px] md:tracking-[-1.36px]"
+                        className="font-heading text-[27px] font-medium leading-[29px] tracking-[-1.08px] text-[#1F3125] md:text-[clamp(31px,2.35vw,43px)] md:leading-[1.12] md:tracking-[-0.04em]"
                         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
                       >
                         <a href={href} className="transition-colors hover:text-[#4A6E57]">
@@ -123,27 +123,22 @@ export default function PropertiesPage() {
 
                       <a
                         href={href}
-                        className="mt-2 hidden shrink-0 font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#4A6E57] transition-colors hover:text-[#3C6049] md:block"
+                        className="hidden"
                       >
                         Check availability →
                       </a>
                     </div>
 
-                    <p className="mt-2 font-body text-[13px] font-normal leading-[18px] tracking-[-0.26px] text-[#6D6057] md:mt-5 md:max-w-none md:text-[14px] md:leading-[22px] md:tracking-[-0.28px]">
+                    <p className="mt-2 font-body text-[13px] font-normal leading-[18px] tracking-[-0.26px] text-[#6D6057] md:mt-4 md:max-w-none md:text-[15px] md:leading-[23px] md:tracking-[-0.15px]">
                       <span className="md:hidden">{facts.map((fact, index) => (
                         <Fragment key={fact}>
                           {index > 0 ? " · " : ""}
                           <span className="whitespace-nowrap">{fact}</span>
                         </Fragment>
                       ))}</span>
-                      <span className="hidden md:block">
-                        <span className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.12em] text-[#8F7E73]">Stay highlights</span>
-                        <span className="grid grid-cols-1 gap-x-3 gap-y-2.5 xl:grid-cols-2">
-                          {(propertyHighlights[property.slug] ?? []).map((highlight) => (
-                            <span key={highlight} className="flex min-w-0 items-start gap-2 text-[14px] leading-[20px] text-[#4D5149]">
-                              <span aria-hidden="true" className="mt-[8px] h-[4px] w-[4px] shrink-0 rounded-full bg-[#4A6E57]" />
-                              <span>{highlight}</span>
-                            </span>
+                      <span className="hidden md:flex md:flex-col md:gap-1 md:text-[15px] md:leading-[23px] md:tracking-[-0.15px]">
+                        {facts.map((fact) => <span key={fact}>{fact}</span>)}
+                      </span>
                           ))}
                         </span>
                       </span>
@@ -156,9 +151,9 @@ export default function PropertiesPage() {
                       Check availability →
                     </a>
 
-                    <p className="mt-4 hidden border-t border-[#E7DFDB] pt-3 font-body md:mt-auto text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#6D6057] md:block">
-                      {facts.join("  ·  ")}
-                    </p>
+                    <a href={href} className="mt-5 hidden w-fit items-center justify-center border border-[#D9CDC6] px-5 py-3 font-body text-[13px] font-medium leading-5 text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:inline-flex">
+                      Check availability
+                    </a>
                   </div>
                 </article>
               );
