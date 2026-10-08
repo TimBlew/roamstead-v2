@@ -9,6 +9,7 @@ interface PrimaryPropertyProps {
   badge?: string;
   href: string;
   external?: boolean;
+  ctaLabel?: string;
 }
 
 export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
@@ -19,6 +20,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
   badge,
   href,
   external = false,
+  ctaLabel = "Check availability",
 }) => {
   return (
     <article className="flex w-full flex-col gap-2 md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:items-end md:gap-6 md:rounded-[12px] md:border md:border-[#E1D7D1] md:bg-[#FBF8F7] md:p-4">
@@ -59,7 +61,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
           {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
           className="mt-2 inline-flex h-8 items-center justify-center rounded-[8px] bg-[#4A6E57] px-3.5 font-body text-[12px] font-medium leading-none tracking-[-0.22px] text-[#FFFCFB] shadow-[0_2px_8px_rgba(74,110,87,0.08)] transition-colors hover:bg-[#3C6049] md:mt-0 md:h-10 md:w-auto md:rounded-none md:px-6 md:py-2 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
         >
-          Check availability
+          {ctaLabel}
         </a>
       </div>
     </article>
