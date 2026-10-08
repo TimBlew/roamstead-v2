@@ -139,9 +139,6 @@ export default function PropertiesPage() {
                       <span className="hidden md:flex md:flex-col md:gap-1 md:text-[15px] md:leading-[23px] md:tracking-[-0.15px]">
                         {facts.map((fact) => <span key={fact}>{fact}</span>)}
                       </span>
-                          ))}
-                        </span>
-                      </span>
                     </p>
 
                     <a
