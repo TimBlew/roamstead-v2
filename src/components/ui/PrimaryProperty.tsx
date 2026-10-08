@@ -59,7 +59,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
         <a
           href={href}
           {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          className="mt-2 inline-flex h-8 items-center justify-center rounded-[8px] bg-[#4A6E57] px-3.5 font-body text-[12px] font-medium leading-none tracking-[-0.22px] text-[#FFFCFB] shadow-[0_2px_8px_rgba(74,110,87,0.08)] transition-colors hover:bg-[#3C6049] md:mt-0 md:h-10 md:w-auto md:rounded-none md:px-6 md:py-2 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
+          className="mt-2 inline-flex h-7 items-center justify-center rounded-[8px] bg-[#4A6E57] px-3.5 font-body text-[12px] font-medium leading-none tracking-[-0.22px] text-[#FFFCFB] shadow-[0_2px_8px_rgba(74,110,87,0.08)] transition-colors hover:bg-[#3C6049] md:mt-0 md:h-10 md:w-auto md:rounded-none md:px-6 md:py-2 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
         >
           {ctaLabel}
         </a>
