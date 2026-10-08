@@ -210,7 +210,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 className="font-heading text-[32px] font-medium leading-[36px] tracking-[-1.28px] text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
-                The Space
+                The Stay
               </h2>
             </div>
 
