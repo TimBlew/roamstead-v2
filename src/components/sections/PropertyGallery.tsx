@@ -84,11 +84,11 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
           <img src={photos[active].src} alt={photos[active].alt} className="h-full w-full object-cover" loading="lazy" />
           {photos.length > 1 && (
             <>
-              <button type="button" onClick={previous} aria-label="Previous photo" className="absolute bottom-3 left-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/80 bg-[#FFFCFB]/95 text-[#1F3125] shadow-[0_2px_10px_rgba(0,0,0,0.22)] backdrop-blur-sm transition-colors hover:bg-white md:bottom-4 md:left-4">
-                <span aria-hidden="true" className="text-[17px] leading-none">‹</span>
+              <button type="button" onClick={previous} aria-label="Previous photo" className="absolute bottom-2 left-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-white/35 bg-[#1F3125]/50 text-white backdrop-blur-[4px] transition-colors hover:bg-[#1F3125]/70 md:bottom-3 md:left-3 md:h-8 md:w-8">
+                <span aria-hidden="true" className="text-[16px] leading-none">‹</span>
               </button>
-              <button type="button" onClick={next} aria-label="Next photo" className="absolute bottom-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/80 bg-[#FFFCFB]/95 text-[#1F3125] shadow-[0_2px_10px_rgba(0,0,0,0.22)] backdrop-blur-sm transition-colors hover:bg-white md:bottom-4 md:right-4">
-                <span aria-hidden="true" className="text-[17px] leading-none">›</span>
+              <button type="button" onClick={next} aria-label="Next photo" className="absolute bottom-2 right-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-white/35 bg-[#1F3125]/50 text-white backdrop-blur-[4px] transition-colors hover:bg-[#1F3125]/70 md:bottom-3 md:right-3 md:h-8 md:w-8">
+                <span aria-hidden="true" className="text-[16px] leading-none">›</span>
               </button>
             </>
           )}
