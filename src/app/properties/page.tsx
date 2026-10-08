@@ -125,7 +125,7 @@ export default function PropertiesPage() {
                         href={href}
                         className="hidden"
                       >
-                        Check availability →
+                        Explore the stay →
                       </a>
                     </div>
 
@@ -145,11 +145,11 @@ export default function PropertiesPage() {
                       href={href}
                       className="mt-3 inline-flex items-center font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#4A6E57] md:hidden"
                     >
-                      Check availability →
+                      Explore the stay →
                     </a>
 
                     <a href={href} className="mt-5 hidden w-fit items-center justify-center border border-[#D9CDC6] px-5 py-3 font-body text-[13px] font-medium leading-5 text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:inline-flex">
-                      Check availability
+                      Explore the stay
                     </a>
                   </div>
                 </article>
