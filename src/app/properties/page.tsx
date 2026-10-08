@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Fragment } from "react";
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
 import { properties } from "@/data/properties";
 
@@ -119,7 +120,12 @@ export default function PropertiesPage() {
                     </div>
 
                     <p className="mt-2 font-body text-[13px] font-normal leading-[18px] tracking-[-0.26px] text-[#6D6057] md:mt-3 md:max-w-[46ch] md:text-[14px] md:leading-[21px] md:tracking-[-0.28px]">
-                      <span className="md:hidden">{facts.join(" · ")}</span>
+                      <span className="md:hidden">{facts.map((fact, index) => (
+                        <Fragment key={fact}>
+                          {index > 0 ? " · " : ""}
+                          <span className="whitespace-nowrap">{fact}</span>
+                        </Fragment>
+                      ))}</span>
                       <span className="hidden md:inline">{property.intro}</span>
                     </p>
 
