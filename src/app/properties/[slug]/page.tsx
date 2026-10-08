@@ -95,7 +95,7 @@ export default async function PropertyPage({ params }: PageProps) {
   const property = getProperty(slug);
   if (!property) notFound();
 
-  const { hero, stats, stories, details, location, bookingUrl } = property;
+  const { hero, stories, details, location, bookingUrl } = property;
   const listingId = hostawayListingIds[slug];
   const highlights = propertyHighlights[slug] ?? { primary: [], secondary: [] };
   const isSenator = slug === "senator";
@@ -171,41 +171,10 @@ export default async function PropertyPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="bg-[#FFFCFB] px-4 pb-5 pt-3 md:px-6 md:py-12">
-        <div className="mx-auto grid max-w-[1180px] gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10">
-          <div className="order-2 lg:order-1">
-            <p className="font-body text-[16px] font-normal leading-6 tracking-[-0.32px] text-[#6D6057] md:text-[22px] md:leading-9 md:tracking-[-0.4px]">
-              {property.intro}
-            </p>
-          </div>
-
-          <div className="order-1 overflow-hidden rounded-[18px] bg-[#F4EFEC] lg:order-2 md:rounded-[22px]">
-            <div className="px-5 pb-3 pt-4 md:px-7 md:pb-4 md:pt-6">
-              <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.11em] text-[#8F7E73]">
-                At a glance
-              </p>
-            </div>
-
-            <dl className="grid grid-cols-2 border-t border-[#D8CCC4]/70">
-              {stats.map((stat, index) => (
-                <div
-                  key={stat.label}
-                  className={`flex min-h-[88px] flex-col justify-center px-5 py-3.5 md:min-h-[132px] md:px-7 md:py-5 ${index % 2 === 1 ? "border-l border-[#D8CCC4]/70" : ""} ${index > 1 ? "border-t border-[#D8CCC4]/70" : ""}`}
-                >
-                  <dd
-                    className="font-heading text-[26px] font-medium leading-[30px] tracking-[-1.04px] text-[#1F3125] md:text-[34px] md:leading-[38px] md:tracking-[-1.36px]"
-                    style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
-                  >
-                    {stat.value}
-                  </dd>
-                  <dt className="mt-1 font-body text-[13px] font-normal leading-[18px] tracking-[-0.26px] text-[#6D6057] md:mt-1.5 md:text-[14px] md:leading-5 md:tracking-[-0.28px]">
-                    {stat.label}
-                  </dt>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
+      <section className="bg-[#FFFCFB] px-4 pb-5 pt-6 md:px-6 md:py-12">
+        <p className="mx-auto max-w-[1180px] font-body text-[16px] font-normal leading-6 tracking-[-0.32px] text-[#6D6057] md:text-[22px] md:leading-9 md:tracking-[-0.4px]">
+          {property.intro}
+        </p>
       </section>
 
       {listingId ? (
