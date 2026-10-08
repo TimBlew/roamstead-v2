@@ -33,7 +33,7 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
 
   return (
     <section className="w-full bg-[#FFFCFB] px-5 py-5 md:px-6 md:py-16">
-      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-3">
+      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-3 md:justify-start md:gap-8">
         <h2
           className="max-w-[190px] font-heading text-[31px] font-medium leading-[33px] tracking-[-1.24px] text-[#1F3125] md:max-w-none md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
