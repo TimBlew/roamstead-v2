@@ -12,7 +12,7 @@ const SCRIPT_SRC = "https://d2q3n06xhbi0am.cloudfront.net/calendar.js";
 const HOSTAWAY_BASE_URL = "https://roamstead_ventures.holidayfuture.com/";
 const TWO_MONTH_MIN_WIDTH = 760;
 
-export function HostawayBooking({ listingId }: { listingId: number }) {
+export function HostawayBooking({ listingId, fallbackUrl }: { listingId: number; fallbackUrl: string }) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const containerId = "hostaway-calendar-widget";
   const [failed, setFailed] = useState(false);
@@ -93,7 +93,7 @@ export function HostawayBooking({ listingId }: { listingId: number }) {
       {failed ? (
         <div className="py-5 text-center">
           <p className="font-body text-[15px] leading-6 text-[#6D6057]">The live calendar is unavailable right now. You can still check dates securely through our booking partner.</p>
-          <a href={`${HOSTAWAY_BASE_URL}listings/${listingId}`} className="mt-4 inline-flex min-h-11 items-center justify-center bg-[#4A6E57] px-6 font-body text-[14px] font-medium text-white">Check dates with Hostaway</a>
+          <a href={fallbackUrl} className="mt-4 inline-flex min-h-11 items-center justify-center bg-[#4A6E57] px-6 font-body text-[14px] font-medium text-white">Check dates with Hostaway</a>
         </div>
       ) : null}
     </div>
