@@ -1,5 +1,14 @@
 import Image from "next/image";
 import { properties } from "@/data/properties";
+import { HostawayBooking } from "@/components/booking/HostawayBooking";
+
+const listingIds: Record<string, number> = {
+  "hygge-house": 455635,
+  granary: 455631,
+  daystar: 455634,
+  lowell: 455632,
+  "powder-room": 455633,
+};
 
 const order = ["hygge-house", "granary", "daystar", "lowell", "powder-room", "senator"];
 
@@ -29,7 +38,7 @@ export default function BookPage() {
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 md:gap-8">
           {stays.map((property) => {
             const senator = property.slug === "senator";
-            const href = senator ? property.bookingUrl : `/properties/${property.slug}#availability`;
+            const href = senator ? property.bookingUrl : `/book/${property.slug}`;
             return (
               <article key={property.slug} className="flex flex-col overflow-hidden rounded-[14px] border border-[#E7DFDB] bg-[#FBF8F7]">
                 <a href={`/properties/${property.slug}`} className="relative block aspect-[1.5] overflow-hidden">
