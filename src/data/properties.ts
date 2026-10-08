@@ -174,7 +174,7 @@ export const properties: Property[] = [
     },
     hero: {
       image: {
-        src: "/images/hygge-house/exterior.jpg",
+        src: "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/e4251f0c-76c0-4125-9077-c6d5063ae636.png",
         alt: "Hygge House among the trees in Midway with the mountains behind",
       },
       locationLabel: "Midway, Utah",
