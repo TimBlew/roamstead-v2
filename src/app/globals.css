@@ -334,3 +334,36 @@ a {
     line-height: 24px;
   }
 }
+
+/* Roamstead booking: visually integrate the third-party Hostaway calendar. */
+.roamstead-booking-widget {
+  max-width: 820px;
+  margin-inline: auto;
+  color: #291d16;
+  font-family: var(--font-body);
+}
+.roamstead-booking-widget #hostaway-calendar-widget {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+.roamstead-booking-widget #hostaway-calendar-widget,
+.roamstead-booking-widget #hostaway-calendar-widget * {
+  font-family: var(--font-body);
+}
+.roamstead-booking-widget #hostaway-calendar-widget button {
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+.roamstead-booking-widget #hostaway-calendar-widget button:focus-visible,
+.roamstead-booking-widget #hostaway-calendar-widget a:focus-visible {
+  outline: 2px solid #4a6e57;
+  outline-offset: 3px;
+}
+@media (max-width: 639px) {
+  .roamstead-booking-widget {
+    margin-inline: -4px;
+  }
+  .roamstead-booking-widget #hostaway-calendar-widget {
+    font-size: 14px;
+  }
+}
