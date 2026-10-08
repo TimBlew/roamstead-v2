@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { PrimaryProperty } from "../ui/PrimaryProperty";
 import { PropertyCard } from "../ui/PropertyCard";
 
@@ -7,6 +9,28 @@ interface FeaturedHomesProps {
 }
 
 export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false }) => {
+  const [activeProperty, setActiveProperty] = useState(0);
+
+  const handleCarouselScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const container = event.currentTarget;
+    const children = Array.from(container.children) as HTMLElement[];
+    if (!children.length) return;
+
+    const containerLeft = container.getBoundingClientRect().left;
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    children.forEach((child, index) => {
+      const distance = Math.abs(child.getBoundingClientRect().left - containerLeft);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    setActiveProperty(closestIndex);
+  };
+
   return (
     <section className="w-full bg-[#FFFCFB] px-5 py-5 md:px-6 md:py-16">
       <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-3">
@@ -32,11 +56,12 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
           description="A historic bed & breakfast shaped by the pace of Heber Valley and the mountains that surround it."
           badge="Winner of 2024 and 2025 Best of State"
           href="/properties/senator"
+          ctaLabel="Book Directly"
         />
       </div>
 
       <div className="mx-auto mt-6 w-full max-w-[1440px] md:mt-10">
-        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 lg:grid-cols-3">
+        <div onScroll={handleCarouselScroll} className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 lg:grid-cols-3">
           <PropertyCard image="/images/hygge-house.jpg" location="Midway" name="Hygge House" sleeps={10} bedrooms={4} baths={3} href="/properties/hygge-house" />
           <PropertyCard image="/images/granary.jpg" location="Midway" name="Granary" sleeps={4} bedrooms={1} baths={1} href="/properties/granary" />
           <PropertyCard image="/images/daystar.jpg" location="Deer Valley, Park City" name="Daystar" sleeps={12} bedrooms={6} baths={6} href="/properties/daystar" />
@@ -45,11 +70,12 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
         </div>
 
         <div className="mt-4 flex items-center justify-center gap-1.5 md:hidden" aria-label="Swipe to view more properties">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#4A6E57]" />
-          <span className="h-1.5 w-1.5 rounded-full bg-[#D8CCC4]" />
-          <span className="h-1.5 w-1.5 rounded-full bg-[#D8CCC4]" />
-          <span className="h-1.5 w-1.5 rounded-full bg-[#D8CCC4]" />
-          <span className="h-1.5 w-1.5 rounded-full bg-[#D8CCC4]" />
+          {[0, 1, 2, 3, 4].map((index) => (
+            <span
+              key={index}
+              className={`h-1.5 rounded-full transition-all duration-200 ${activeProperty === index ? "w-4 bg-[#4A6E57]" : "w-1.5 bg-[#D8CCC4]"}`}
+            />
+          ))}
         </div>
       </div>
     </section>
