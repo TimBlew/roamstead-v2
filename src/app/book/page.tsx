@@ -16,25 +16,26 @@ export default function BookPage() {
 
   return (
     <div className="bg-[#FFFCFB]">
-      <section className="relative overflow-hidden bg-[#F4EFEC] px-5 py-10 md:px-10 md:py-16">
-        <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1fr)] lg:gap-10">
-          <div>
-          <p className="font-body text-[12px] font-medium uppercase tracking-[0.1em] text-[#4A6E57] md:text-[13px]">Book direct with Roamstead</p>
-          <h1 className="mt-3 max-w-[820px] font-heading text-[42px] font-medium leading-[1.06] tracking-[-0.045em] text-[#1F3125] md:mt-4 md:text-[64px]">
-            Your mountain stay is waiting
-          </h1>
-          <p className="mt-4 max-w-[620px] font-body text-[16px] leading-[25px] text-[#6D6057] md:mt-5 md:text-[19px] md:leading-8">
-            A collection of thoughtfully chosen mountain stays. Find the one that feels right, choose your dates, and make it yours.
-          </p>
-          <a href="#choose-your-stay" className="group mt-7 inline-flex min-h-12 items-center justify-center rounded-[5px] bg-[#4A6E57] px-7 font-body text-[14px] font-medium text-white shadow-[0_5px_16px_rgba(74,110,87,0.15)] transition-all hover:bg-[#3C6049] hover:shadow-[0_7px_20px_rgba(74,110,87,0.2)] md:text-[15px]">
-            Explore available stays
-          </a>
-          </div>
-          <div className="relative hidden lg:block">
-            <div className="relative aspect-[1.5] overflow-hidden rounded-[6px] lg:aspect-[1.32]">
-              <Image src="/images/hygge-house/exterior.jpg" alt="Front exterior of Hygge House in Midway" fill priority sizes="(min-width: 1024px) 500px, 100vw" className="object-cover object-center" />
+      <section className="relative overflow-hidden bg-[#F4EFEC]">
+        <div className="mx-auto grid max-w-[1440px] items-stretch lg:min-h-[570px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.94fr)]">
+          <div className="relative z-10 flex flex-col justify-center px-5 pb-9 pt-12 sm:px-10 lg:px-14 lg:py-20 xl:pl-20">
+            <p className="font-body text-[12px] font-medium uppercase tracking-[0.12em] text-[#4A6E57] md:text-[13px]">Book direct with Roamstead</p>
+            <h1 className="mt-5 max-w-[660px] font-heading text-[43px] font-medium leading-[1.04] tracking-[-0.045em] text-[#1F3125] sm:text-[54px] lg:text-[61px]">
+              Your mountain stay is waiting
+            </h1>
+            <p className="mt-5 max-w-[510px] font-body text-[16px] leading-[1.65] text-[#6D6057] lg:text-[18px]">
+              Thoughtfully chosen places to settle in and stay awhile. Explore the collection, choose your dates, and book directly.
+            </p>
+            <div className="mt-7">
+              <a href="#choose-your-stay" className="inline-flex min-h-12 items-center justify-center rounded-[6px] bg-[#4A6E57] px-8 font-body text-[14px] font-medium text-[#FFFCFB] shadow-[0_8px_20px_rgba(31,49,37,0.12)] transition-colors hover:bg-[#3C6049] md:text-[15px]">
+                Choose your stay
+              </a>
             </div>
-
+          </div>
+          <div className="relative min-h-[270px] w-full overflow-hidden sm:min-h-[360px] lg:min-h-full">
+            <Image src="/images/hygge-house/exterior.jpg" alt="Hygge House in Midway, Utah" fill priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-cover object-center" />
+            <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#F4EFEC] via-[#F4EFEC]/20 to-transparent lg:block" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#F4EFEC] to-transparent lg:hidden" />
           </div>
         </div>
       </section>
