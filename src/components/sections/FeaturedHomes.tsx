@@ -56,7 +56,7 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
           description="A historic bed & breakfast shaped by the pace of Heber Valley and the mountains that surround it."
           badge="Winner of 2024 and 2025 Best of State"
           href="/properties/senator"
-          ctaLabel="Book Directly"
+          ctaLabel="Explore the stay"
         />
       </div>
 
