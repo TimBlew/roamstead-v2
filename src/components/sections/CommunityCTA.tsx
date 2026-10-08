@@ -12,7 +12,7 @@ export const CommunityCTA: React.FC = () => {
           />
           <div
             aria-label="Collective"
-            className="mt-[-2px] flex w-full justify-between pl-[3px] pr-[1px] font-body text-[10px] font-medium uppercase leading-none tracking-[0] text-[#4A6E57] md:mt-[-1px] md:pl-[4px] md:text-[12px]"
+            className="mt-[3px] flex w-full justify-between pl-[3px] pr-[1px] font-body text-[12px] font-medium uppercase leading-none tracking-[0] text-[#4A6E57] md:mt-[4px] md:pl-[4px] md:text-[14px]"
           >
             {"COLLECTIVE".split("").map((letter, index) => (
               <span key={index}>{letter}</span>
