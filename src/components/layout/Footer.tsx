@@ -29,7 +29,6 @@ export const Footer: React.FC = () => {
             <p className="font-body text-[13px] font-medium leading-[18px] tracking-[-0.28px] text-[#FBF8F7]">Explore</p>
             <div className="mt-1 space-y-0">
               <a href="/properties" className="block text-[12.5px] leading-[18px] text-[#FFFCFB]">Properties</a>
-              <a href="/about" className="block text-[12.5px] leading-[18px] text-[#FFFCFB]">About</a>
               <a href="/properties" className="block text-[12.5px] leading-[18px] text-[#FFFCFB]">Book Direct</a>
             </div>
           </div>
@@ -74,7 +73,7 @@ export const Footer: React.FC = () => {
             </div>
             <div className="flex w-full flex-col items-start gap-1">
               <p className="w-full font-body text-[15px] font-medium leading-[20px] tracking-[-0.36px] text-[#FBF8F7]">Company</p>
-              <a href="/about" className={linkClass}>About</a>
+              <a href="/properties" className={linkClass}>Explore stays</a>
             </div>
             <div className="col-span-2 flex w-full flex-col items-start gap-2 lg:col-auto">
               <p className="w-full font-body text-[15px] font-medium leading-[20px] tracking-[-0.36px] text-[#E8F5EC] lg:text-[#FBF8F7]">Contact</p>
