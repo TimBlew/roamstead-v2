@@ -27,7 +27,7 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
   return (
     <main className="min-h-[70vh] bg-[#FFFCFB]">
       <section className="bg-[#F4EFEC] px-4 pb-10 pt-7 md:px-8 md:pb-16 md:pt-12">
-        <div className="mx-auto max-w-[1100px]">
+        <div className="mx-auto max-w-[880px]">
           <Link href="/book#choose-your-stay" className="inline-flex items-center gap-2 font-body text-[13px] font-medium text-[#4A6E57] transition-colors hover:text-[#1F3125] md:text-[14px]">
             <span aria-hidden="true">←</span> All stays
           </Link>
@@ -46,7 +46,7 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
             <h2 className="mt-2 font-heading text-[35px] font-medium leading-[1.08] tracking-[-0.045em] text-[#1F3125] md:text-[49px]">Choose your dates</h2>
             <p className="mt-2 font-body text-[14px] leading-6 text-[#6D6057] md:text-[16px]">Select check-in and check-out to continue your reservation.</p>
           </div>
-          <div className="mt-5 overflow-hidden rounded-[16px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 py-5 shadow-[0_12px_32px_rgba(41,29,22,0.035)] sm:px-6 md:mt-7 md:px-8 md:py-8">
+          <div className="mt-5 rounded-[12px] border border-[#E1D7D1] bg-[#FFFCFB] px-2 py-5 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-5 md:mt-7 md:px-7 md:py-7">
             <HostawayBooking listingId={listingId} fallbackUrl={property.bookingUrl} />
           </div>
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
