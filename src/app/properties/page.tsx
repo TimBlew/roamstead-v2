@@ -40,7 +40,7 @@ export default function PropertiesPage() {
           </div>
         </div>
 
-        <div className="relative mx-3 min-h-[230px] overflow-hidden rounded-[20px] shadow-[0_10px_28px_rgba(41,29,22,0.08)] md:mx-6 md:min-h-[320px] lg:mx-0 lg:min-h-[560px] lg:rounded-none lg:shadow-none">
+        <div className="relative min-h-[220px] overflow-hidden md:min-h-[320px] lg:min-h-[560px]">
           <Image
             src="/images/local-nature.jpg"
             alt="Heber Valley in winter"
@@ -50,6 +50,7 @@ export default function PropertiesPage() {
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#F4EFEC]/20" />
+          <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-[#F4EFEC] via-[#F4EFEC]/35 to-transparent md:h-14 lg:hidden" />
         </div>
       </section>
 
