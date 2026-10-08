@@ -196,7 +196,7 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
 
             <div className="rounded-[20px] border border-[#E1D7D1] bg-[#FFFCFB] p-4 md:p-6">
-              <HostawayBooking listingId={listingId} />
+              <HostawayBooking listingId={listingId} fallbackUrl={bookingUrl} />
             </div>
           </div>
         </section>
