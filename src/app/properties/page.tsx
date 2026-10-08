@@ -22,36 +22,36 @@ export default function PropertiesPage() {
 
   return (
     <>
-      <section className="grid overflow-hidden bg-[#F4EFEC] lg:min-h-[610px] lg:grid-cols-[minmax(0,0.93fr)_minmax(0,1.07fr)]">
-        <div className="flex items-center px-4 pb-4 pt-5 md:px-10 md:py-12 lg:px-[clamp(48px,5vw,104px)] lg:py-16">
+      <section className="grid overflow-hidden bg-[#F4EFEC] lg:min-h-[540px] lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)]">
+        <div className="flex items-center px-4 pb-4 pt-5 md:px-10 md:py-12 lg:px-[clamp(48px,5vw,104px)] lg:py-10">
           <div className="w-full max-w-[610px] lg:max-w-[570px]">
             <p className="font-body text-[13px] font-medium leading-[18px] tracking-[0.02em] text-[#4A6E57] md:text-[14px] lg:tracking-[0.1em]">
               Our Properties
             </p>
 
             <h1
-              className="mt-3 max-w-[600px] font-heading text-[40px] font-medium leading-[41px] tracking-[-1.6px] text-[#1F3125] md:mt-5 md:text-[54px] md:leading-[1.08] md:tracking-[-2px] lg:mt-8 lg:max-w-[560px] lg:text-[clamp(46px,3.45vw,64px)] lg:leading-[1.06] lg:tracking-[-0.045em]"
+              className="mt-3 max-w-[600px] font-heading text-[40px] font-medium leading-[41px] tracking-[-1.6px] text-[#1F3125] md:mt-5 md:text-[54px] md:leading-[1.08] md:tracking-[-2px] lg:mt-5 lg:max-w-[560px] lg:text-[clamp(46px,3.45vw,64px)] lg:leading-[1.06] lg:tracking-[-0.045em]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
               Homes for Those Who Roam
             </h1>
 
-            <div className="mt-5 max-w-[680px] border-l border-[#4A6E57]/25 pl-4 md:mt-8 md:pl-6 lg:mt-12 lg:max-w-[485px] lg:pl-7">
-              <p className="max-w-none font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:text-[17px] md:leading-[27px] md:tracking-[-0.22px] lg:leading-[1.65]">
+            <div className="mt-5 max-w-[680px] border-l border-[#4A6E57]/25 pl-4 md:mt-8 md:pl-6 lg:mt-7 lg:max-w-[485px] lg:pl-6">
+              <p className="max-w-none font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:text-[17px] md:leading-[27px] md:tracking-[-0.22px] lg:leading-[1.5]">
                 Roamstead is a growing collection of places to stay across Heber Valley and nearby mountain towns.
               </p>
 
-              <p className="mt-2 max-w-none font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:mt-3 md:text-[17px] md:leading-[29px] md:tracking-[-0.32px] lg:mt-5 lg:leading-[1.65]">
+              <p className="mt-2 max-w-none font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:mt-3 md:text-[17px] md:leading-[29px] md:tracking-[-0.32px] lg:mt-3 lg:leading-[1.5]">
                 Each one is different, but all are designed with the same belief.
               </p>
-              <p className="mt-3 font-heading text-[23px] font-medium leading-[27px] tracking-[-0.7px] text-[#1F3125] md:mt-5 md:text-[26px] md:leading-[31px] md:tracking-[-0.9px] lg:mt-8 lg:text-[27px]">
+              <p className="mt-3 font-heading text-[23px] font-medium leading-[27px] tracking-[-0.7px] text-[#1F3125] md:mt-5 md:text-[26px] md:leading-[31px] md:tracking-[-0.9px] lg:mt-5 lg:text-[27px]">
                 Place comes first.
               </p>
             </div>
           </div>
         </div>
 
-        <div className="relative min-h-[220px] overflow-hidden md:min-h-[320px] lg:m-5 lg:ml-0 lg:min-h-[570px] lg:rounded-[18px] xl:m-6 xl:ml-0">
+        <div className="relative min-h-[220px] overflow-hidden md:min-h-[320px] lg:min-h-[540px] lg:rounded-none">
           <Image
             src="/images/local-nature.jpg"
             alt="Heber Valley in winter"
@@ -60,7 +60,7 @@ export default function PropertiesPage() {
             sizes="(min-width: 1024px) 55vw, 100vw"
             className="object-cover lg:object-[53%_center]"
           />
-          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#F4EFEC]/20 lg:hidden" />
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#F4EFEC]/20 lg:bg-gradient-to-r lg:from-[#F4EFEC]/20 lg:via-transparent lg:to-transparent" />
           <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-[#F4EFEC] via-[#F4EFEC]/35 to-transparent md:h-14 lg:hidden" />
         </div>
       </section>
