@@ -33,7 +33,7 @@ export default function BookPage() {
             </div>
           </div>
           <div className="relative min-h-[270px] w-full overflow-hidden sm:min-h-[360px] lg:min-h-full">
-            <Image src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" alt="Front exterior of Hygge House in Midway, Utah" fill unoptimized priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-cover object-center" />
+            <Image src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/e4251f0c-76c0-4125-9077-c6d5063ae636.png" alt="Aerial view of Hygge House and the surrounding mountains in Midway, Utah" fill unoptimized priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-cover object-center" />
             <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#F4EFEC] via-[#F4EFEC]/20 to-transparent lg:block" />
             <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#F4EFEC] to-transparent lg:hidden" />
           </div>
@@ -63,7 +63,7 @@ export default function BookPage() {
               <article key={property.slug} className="group flex min-w-0 flex-col overflow-hidden rounded-[10px] border border-[#E7DFDB] bg-[#FFFCFB] shadow-[0_8px_26px_rgba(41,29,22,0.045)] transition-all duration-300 hover:-translate-y-1 hover:border-[#A9B9A9] hover:shadow-[0_16px_36px_rgba(41,29,22,0.09)]">
                 <a href={href} {...(senator ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="block" aria-label={`Check availability for ${property.hero.title}`}>
                   <div className="relative aspect-[1.55] overflow-hidden bg-[#F4EFEC] sm:aspect-[1.45]">
-                    <Image src={property.hero.image.src} alt={property.hero.image.alt} fill sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-[1.025]" />
+                    <Image src={property.slug === "hygge-house" ? "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" : property.hero.image.src} alt={property.slug === "hygge-house" ? "Front exterior of Hygge House in Midway, Utah" : property.hero.image.alt} fill unoptimized={property.slug === "hygge-house"} sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-[1.025]" />
                   </div>
                 </a>
                 <div className="flex flex-1 flex-col px-4 pb-5 pt-4 md:px-6 md:pb-6 md:pt-5">
