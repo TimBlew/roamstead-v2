@@ -14,7 +14,7 @@ export const ValueStatement: React.FC = () => {
           Roamstead is a growing collection of places to stay in Heber Valley and the surrounding mountains. Each property is shaped by its setting, designed to feel intentional, welcoming, and easy to return to.
         </p>
       </div>
-      <div className="h-1 md:h-6" />
+      <div className="h-5 md:h-6" />
     </section>
   );
 };
