@@ -33,7 +33,7 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
           </Link>
           <div className="mt-6 flex items-center gap-3 rounded-[12px] border border-[#E1D7D1] bg-[#FFFCFB] p-2.5 sm:gap-4 md:mt-8 md:max-w-[720px] md:p-3">
             <div className="relative h-[66px] w-[88px] shrink-0 overflow-hidden rounded-[7px] bg-[#E7DFDB] sm:h-[82px] sm:w-[118px]">
-              <Image src={property.hero.image.src} alt="" fill sizes="120px" className="object-cover" />
+              <Image src={slug === "hygge-house" ? "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" : property.hero.image.src} alt="" fill unoptimized={slug === "hygge-house"} sizes="120px" className="object-cover" />
             </div>
             <div className="min-w-0">
               <p className="font-body text-[11px] font-medium uppercase tracking-[0.08em] text-[#8F7E73] md:text-[12px]">Your selected stay</p>
