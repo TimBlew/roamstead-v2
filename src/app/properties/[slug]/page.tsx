@@ -122,29 +122,29 @@ export default async function PropertyPage({ params }: PageProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/22 via-transparent to-transparent" />
 
         <div className="relative z-10 w-full px-4 pb-5 pt-8 md:px-10 md:pb-12 md:pt-24 lg:px-12">
-          <div className="max-w-[940px] rounded-[18px] border border-white/20 bg-[linear-gradient(180deg,rgba(18,35,26,0.91)_0%,rgba(21,37,28,0.83)_46%,rgba(21,37,28,0.73)_100%)] p-4 shadow-[0_18px_48px_rgba(0,0,0,0.24)] backdrop-blur-[14px] md:rounded-[22px] md:p-8">
+          <div className="max-w-[940px] rounded-[18px] border border-white/20 bg-[linear-gradient(180deg,rgba(18,35,26,0.91)_0%,rgba(21,37,28,0.83)_46%,rgba(21,37,28,0.73)_100%)] p-4 shadow-[0_18px_48px_rgba(0,0,0,0.24)] backdrop-blur-[14px] md:rounded-[22px] md:px-9 md:py-7">
             <p className="font-body text-[13px] font-semibold leading-5 tracking-[-0.24px] text-[#E6F0E5] drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)] md:text-[17px] md:leading-6 md:tracking-[-0.28px]">
               {hero.locationLabel}
             </p>
 
             <h1
-              className="mt-1 font-heading text-[42px] font-medium leading-[42px] tracking-[-1.68px] text-white md:mt-1.5 md:text-[70px] md:leading-[68px] md:tracking-[-2.8px]"
+              className="mt-1 font-heading text-[42px] font-medium leading-[42px] tracking-[-1.68px] text-white md:mt-1 md:text-[70px] md:leading-[68px] md:tracking-[-2.8px]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
               {hero.title}
             </h1>
 
-            <p className="mt-2 max-w-[700px] font-body text-[15.5px] font-medium leading-[22px] tracking-[-0.28px] text-[#FFFCFB] drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)] md:mt-3 md:text-[19px] md:leading-7 md:tracking-[-0.3px]">
+            <p className="mt-2 max-w-[700px] font-body text-[15.5px] font-medium leading-[22px] tracking-[-0.28px] text-[#FFFCFB] drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)] md:mt-4 md:text-[19px] md:leading-7 md:tracking-[-0.3px]">
               {hero.subtitle}
             </p>
 
             {highlights.primary.length > 0 ? (
-              <div className="mt-2.5 border-y border-white/24 py-1.5 md:mt-4 md:py-3">
+              <div className="mt-2.5 border-y border-white/24 py-1.5 md:mt-5 md:py-2">
                 <div className="grid grid-cols-2">
                   {highlights.primary.map((item, index) => (
                     <div
                       key={item}
-                      className={`flex min-h-[46px] items-center px-3 py-1.5 font-body text-[13.5px] font-medium leading-[18px] tracking-[-0.24px] text-[#FFFCFB] md:min-h-[50px] md:px-4 md:text-[16px] md:leading-6 md:tracking-[-0.28px] ${index % 2 === 1 ? "border-l border-white/18" : ""} ${index > 1 ? "border-t border-white/12" : ""}`}
+                      className={`flex min-h-[46px] items-center px-3 py-1.5 font-body text-[13.5px] font-medium leading-[18px] tracking-[-0.24px] text-[#FFFCFB] md:min-h-[43px] md:px-4 md:text-[16px] md:leading-6 md:tracking-[-0.28px] ${index % 2 === 1 ? "border-l border-white/18" : ""} ${index > 1 ? "border-t border-white/12" : ""}`}
                     >
                       <span className="block w-full text-left">{item}</span>
                     </div>
@@ -152,14 +152,14 @@ export default async function PropertyPage({ params }: PageProps) {
                 </div>
 
                 {highlights.secondary.length > 0 ? (
-                  <p className="mt-1.5 border-t border-white/12 pt-2 font-body text-[13.5px] font-medium leading-[20px] tracking-[-0.24px] text-[#FFFCFB] md:mt-2 md:text-[15.5px] md:leading-5 md:tracking-[-0.26px]">
+                  <p className="mt-1.5 border-t border-white/12 pt-2 font-body text-[13.5px] font-medium leading-[20px] tracking-[-0.24px] text-[#FFFCFB] md:mt-2 md:pt-2.5 md:text-[15.5px] md:leading-5 md:tracking-[-0.26px]">
                     {highlights.secondary.join("  ·  ")}
                   </p>
                 ) : null}
               </div>
             ) : null}
 
-            <div className="mt-3 flex justify-center md:mt-4">
+            <div className="mt-3 flex justify-center md:mt-5">
               <a
                 href={bookingHref}
                 {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
