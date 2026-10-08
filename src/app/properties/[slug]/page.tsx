@@ -122,7 +122,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
         <div className="relative z-10 w-full px-4 pb-5 pt-8 md:px-10 md:pb-12 md:pt-24 lg:px-12">
           <div className="max-w-[940px] rounded-[18px] border border-white/10 bg-black/56 p-4 shadow-[0_18px_48px_rgba(0,0,0,0.2)] backdrop-blur-[5px] md:rounded-[22px] md:bg-black/46 md:p-8 md:backdrop-blur-[6px]">
-            <p className="font-body text-[13px] font-semibold leading-5 tracking-[-0.24px] text-[#DDE9DF] md:text-[17px] md:leading-6 md:tracking-[-0.28px]">
+            <p className="font-body text-[13px] font-semibold leading-5 tracking-[-0.24px] text-[#B9D9BF] md:text-[17px] md:leading-6 md:tracking-[-0.28px]">
               {hero.locationLabel}
             </p>
 
