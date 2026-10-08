@@ -122,7 +122,7 @@ export default async function PropertyPage({ params }: PageProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/22 via-transparent to-transparent" />
 
         <div className="relative z-10 w-full px-4 pb-5 pt-8 md:px-10 md:pb-12 md:pt-24 lg:px-12">
-          <div className="max-w-[940px] rounded-[18px] border border-white/15 bg-[#15251C]/78 p-4 shadow-[0_18px_48px_rgba(0,0,0,0.24)] backdrop-blur-[12px] md:rounded-[22px] md:bg-[#15251C]/75 md:p-8 md:backdrop-blur-[12px]">
+          <div className="max-w-[940px] rounded-[18px] border border-white/20 bg-[linear-gradient(180deg,rgba(18,35,26,0.91)_0%,rgba(21,37,28,0.83)_46%,rgba(21,37,28,0.73)_100%)] p-4 shadow-[0_18px_48px_rgba(0,0,0,0.24)] backdrop-blur-[14px] md:rounded-[22px] md:p-8">
             <p className="font-body text-[13px] font-semibold leading-5 tracking-[-0.24px] text-[#E6F0E5] drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)] md:text-[17px] md:leading-6 md:tracking-[-0.28px]">
               {hero.locationLabel}
             </p>
