@@ -17,7 +17,8 @@ export default function BookPage() {
   return (
     <div className="bg-[#FFFCFB]">
       <section className="relative overflow-hidden bg-[#F4EFEC] px-5 pb-10 pt-10 md:px-10 md:pb-16 md:pt-16">
-        <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.82fr)] lg:gap-14">\n          <div>
+        <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.82fr)] lg:gap-14">
+          <div>
           <p className="font-body text-[12px] font-medium uppercase tracking-[0.1em] text-[#4A6E57] md:text-[13px]">Book direct with Roamstead</p>
           <h1 className="mt-3 max-w-[820px] font-heading text-[42px] font-medium leading-[1.06] tracking-[-0.045em] text-[#1F3125] md:mt-4 md:text-[64px]">
             Your mountain stay is waiting
@@ -27,7 +28,19 @@ export default function BookPage() {
           </p>
           <a href="#choose-your-stay" className="mt-6 inline-flex min-h-11 items-center justify-center bg-[#4A6E57] px-6 font-body text-[14px] font-medium text-white transition-colors hover:bg-[#3C6049] md:mt-7 md:text-[15px]">
             Choose your stay <span aria-hidden="true" className="ml-3">↓</span>
-          </a>\n          </div>\n          <div className="relative hidden lg:block">\n            <div className="relative aspect-[1.18] overflow-hidden rounded-[10px]">\n              <Image src={stays[0].hero.image.src} alt={stays[0].hero.image.alt} fill priority sizes="(min-width: 1024px) 500px, 100vw" className="object-cover object-[center_46%]" />\n            </div>\n            <div className="absolute -bottom-5 -left-5 rounded-[8px] border border-[#E1D7D1] bg-[#FFFCFB] px-5 py-3 shadow-[0_10px_30px_rgba(41,29,22,0.08)]">\n              <p className="font-body text-[11px] font-medium uppercase tracking-[0.12em] text-[#8F7E73]">THE ROAMSTEAD COLLECTION</p>\n              <p className="mt-1 font-heading text-[20px] font-medium text-[#1F3125]">Stay a little longer.</p>\n            </div>\n          </div>\n        </div>\n      </section>
+          </a>
+          </div>
+          <div className="relative hidden lg:block">
+            <div className="relative aspect-[1.18] overflow-hidden rounded-[10px]">
+              <Image src={stays[0].hero.image.src} alt={stays[0].hero.image.alt} fill priority sizes="(min-width: 1024px) 500px, 100vw" className="object-cover object-[center_46%]" />
+            </div>
+            <div className="absolute -bottom-5 -left-5 rounded-[8px] border border-[#E1D7D1] bg-[#FFFCFB] px-5 py-3 shadow-[0_10px_30px_rgba(41,29,22,0.08)]">
+              <p className="font-body text-[11px] font-medium uppercase tracking-[0.12em] text-[#8F7E73]">THE ROAMSTEAD COLLECTION</p>
+              <p className="mt-1 font-heading text-[20px] font-medium text-[#1F3125]">Stay a little longer.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section id="choose-your-stay" className="scroll-mt-16 mx-auto max-w-[1280px] px-4 pb-14 pt-10 md:px-8 md:pb-20 md:pt-16">
         <div className="mb-5 md:mb-8">
