@@ -81,10 +81,10 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
           <img src={photos[active].src} alt={photos[active].alt} className="h-full w-full object-cover" loading="lazy" />
           {photos.length > 1 && (
             <>
-              <button type="button" onClick={previous} aria-label="Previous photo" className="absolute bottom-2 left-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-white/35 bg-[#1F3125]/50 text-white backdrop-blur-[4px] transition-colors hover:bg-[#1F3125]/70 md:bottom-3 md:left-3 md:h-8 md:w-8">
+              <button type="button" onClick={previous} aria-label="Previous photo" className="absolute bottom-2 left-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-white/35 bg-[#1F3125]/50 text-white backdrop-blur-[4px] transition-colors hover:bg-[#1F3125]/70 md:bottom-auto md:top-1/2 md:left-5 md:h-10 md:w-10 md:-translate-y-1/2">
                 <span aria-hidden="true" className="text-[16px] leading-none">‹</span>
               </button>
-              <button type="button" onClick={next} aria-label="Next photo" className="absolute bottom-2 right-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-white/35 bg-[#1F3125]/50 text-white backdrop-blur-[4px] transition-colors hover:bg-[#1F3125]/70 md:bottom-3 md:right-3 md:h-8 md:w-8">
+              <button type="button" onClick={next} aria-label="Next photo" className="absolute bottom-2 right-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-white/35 bg-[#1F3125]/50 text-white backdrop-blur-[4px] transition-colors hover:bg-[#1F3125]/70 md:bottom-auto md:top-1/2 md:right-5 md:h-10 md:w-10 md:-translate-y-1/2">
                 <span aria-hidden="true" className="text-[16px] leading-none">›</span>
               </button>
             </>
