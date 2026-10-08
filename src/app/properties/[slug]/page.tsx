@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
+import { PropertyGallery } from "@/components/sections/PropertyGallery";
 import { HostawayBooking } from "@/components/booking/HostawayBooking";
 import { getProperty, properties } from "@/data/properties";
 
@@ -176,6 +177,8 @@ export default async function PropertyPage({ params }: PageProps) {
           {property.intro}
         </p>
       </section>
+
+      <PropertyGallery slug={slug} fallback={stories.map((story) => ({ src: story.image.src, alt: story.image.alt }))} />
 
       {listingId ? (
         <section id="availability" className="scroll-mt-16 bg-[#F4EFEC] px-4 py-8 md:px-6 md:py-16">
