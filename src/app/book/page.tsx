@@ -19,9 +19,9 @@ export default function BookPage() {
       <section className="bg-[#F4EFEC] px-5 py-12 md:px-10 md:py-20">
         <div className="mx-auto max-w-[1200px]">
           <p className="font-body text-[13px] font-medium tracking-[0.08em] text-[#4A6E57]">BOOK DIRECT</p>
-          <h1 className="mt-3 max-w-[780px] font-heading text-[42px] font-medium leading-[1.06] tracking-[-0.045em] text-[#1F3125] md:text-[66px]">Find your place to stay</h1>
+          <h1 className="mt-3 max-w-[780px] font-heading text-[42px] font-medium leading-[1.06] tracking-[-0.045em] text-[#1F3125] md:text-[66px]">Your next stay starts here</h1>
           <p className="mt-5 max-w-[640px] font-body text-[16px] leading-7 text-[#6D6057] md:text-[19px]">
-            Choose a property to see available dates. Reservations and payments are securely handled by our booking partners.
+            Pick your stay, find your dates, and book direct. The mountains are waiting.
           </p>
         </div>
       </section>
