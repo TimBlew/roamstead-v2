@@ -367,3 +367,34 @@ a {
     font-size: 14px;
   }
 }
+
+/* Calendar refinements. The hosted widget retains control of availability and checkout. */
+.roamstead-booking-widget #hostaway-calendar-widget {
+  margin-inline: auto;
+  border-radius: 10px;
+}
+.roamstead-booking-widget #hostaway-calendar-widget button,
+.roamstead-booking-widget #hostaway-calendar-widget [role="button"] {
+  max-width: 100%;
+  cursor: pointer;
+}
+.roamstead-booking-widget #hostaway-calendar-widget button:not([aria-label]) {
+  border-radius: 7px;
+}
+@media (min-width: 768px) {
+  .roamstead-booking-widget #hostaway-calendar-widget {
+    max-width: 760px;
+  }
+}
+@media (max-width: 639px) {
+  .roamstead-booking-widget,
+  .roamstead-booking-widget #hostaway-calendar-widget {
+    min-width: 0;
+    width: 100%;
+    margin-inline: auto;
+  }
+  .roamstead-booking-widget #hostaway-calendar-widget button {
+    white-space: normal;
+    line-height: 1.35;
+  }
+}
