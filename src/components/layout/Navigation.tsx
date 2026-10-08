@@ -22,7 +22,6 @@ export const Navigation: React.FC = () => {
 
         <div className="site-nav__desktop-links">
           <a href="/properties">Properties</a>
-          <a href="/about">About</a>
         </div>
 
         <a href="/properties" className="site-nav__action site-nav__action--book">
