@@ -4,11 +4,21 @@ export const CommunityCTA: React.FC = () => {
   return (
     <section className="flex w-full flex-col items-center bg-[#F4EFEC] px-5 pb-7 pt-5 text-center md:gap-4 md:px-6 md:py-16">
       <div className="w-full max-w-[320px] md:max-w-[816px]">
-        <img
-          src="/roamstead-collective-logo.svg"
-          alt="Roamstead Collective"
-          className="mx-auto block w-[214px] md:w-[286px]"
-        />
+        <div className="mx-auto w-[226px] md:w-[286px]">
+          <img
+            src="/roamstead-collective-logo.svg"
+            alt="Roamstead"
+            className="block w-full"
+          />
+          <div
+            aria-label="Collective"
+            className="mt-[-2px] flex w-full justify-between pl-[3px] pr-[1px] font-body text-[10px] font-medium uppercase leading-none tracking-[0] text-[#4A6E57] md:mt-[-1px] md:pl-[4px] md:text-[12px]"
+          >
+            {"COLLECTIVE".split("").map((letter, index) => (
+              <span key={index}>{letter}</span>
+            ))}
+          </div>
+        </div>
       </div>
 
       <h2
