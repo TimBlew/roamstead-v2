@@ -1,14 +1,5 @@
 import Image from "next/image";
 import { properties } from "@/data/properties";
-import { HostawayBooking } from "@/components/booking/HostawayBooking";
-
-const listingIds: Record<string, number> = {
-  "hygge-house": 455635,
-  granary: 455631,
-  daystar: 455634,
-  lowell: 455632,
-  "powder-room": 455633,
-};
 
 const order = ["hygge-house", "granary", "daystar", "lowell", "powder-room", "senator"];
 
