@@ -34,7 +34,7 @@ export const PrimaryProperty: React.FC<PrimaryPropertyProps> = ({
           alt={name}
           fill
           sizes="(min-width: 1024px) 66vw, 100vw"
-          className="object-cover md:scale-[1.12] md:object-center"
+          className="object-cover object-center md:object-contain md:bg-[#F4EFEC]"
         />
       </a>
 
