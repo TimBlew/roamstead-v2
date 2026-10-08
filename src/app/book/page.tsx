@@ -33,7 +33,7 @@ export default function BookPage() {
             </div>
           </div>
           <div className="relative min-h-[270px] w-full overflow-hidden sm:min-h-[360px] lg:min-h-full">
-            <Image src="/images/hygge-house/exterior.jpg" alt="Hygge House in Midway, Utah" fill priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-cover object-center" />
+            <Image src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" alt="Front exterior of Hygge House in Midway, Utah" fill unoptimized priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-cover object-center" />
             <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#F4EFEC] via-[#F4EFEC]/20 to-transparent lg:block" />
             <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#F4EFEC] to-transparent lg:hidden" />
           </div>
