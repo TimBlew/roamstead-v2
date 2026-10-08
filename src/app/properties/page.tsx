@@ -82,7 +82,7 @@ export default function PropertiesPage() {
               return (
                 <article
                   key={property.slug}
-                  className="group grid w-full grid-cols-[46%_1fr] gap-3 rounded-[16px] bg-[#FBF8F7] p-2.5 md:flex md:flex-col md:overflow-hidden md:rounded-[20px] md:border md:border-[#E7DFDB] md:bg-[#FBF8F7] md:p-0"
+                  className="group grid w-full grid-cols-[46%_1fr] gap-3 rounded-[16px] bg-[#FBF8F7] p-2.5 md:flex md:h-full md:flex-col md:overflow-hidden md:rounded-[20px] md:border md:border-[#E7DFDB] md:bg-[#FBF8F7] md:p-0"
                 >
                   <a href={href} className="block min-w-0">
                     <div className="relative h-full min-h-[168px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[4/3] md:h-auto md:rounded-none">
@@ -96,7 +96,7 @@ export default function PropertiesPage() {
                     </div>
                   </a>
 
-                  <div className="flex min-w-0 flex-col justify-center py-0.5 pr-1 md:px-5 md:pb-5 md:pt-4">
+                  <div className="flex min-w-0 flex-col justify-center py-0.5 pr-1 md:flex-1 md:justify-start md:px-5 md:pb-5 md:pt-5">
                     <p className="font-body text-[12px] font-medium leading-4 tracking-[-0.24px] text-[#8F7E73] md:text-[14px] md:leading-[18px] md:tracking-[-0.28px]">
                       {property.hero.locationLabel.replace(", Utah", "")}
                     </p>
@@ -119,7 +119,7 @@ export default function PropertiesPage() {
                       </a>
                     </div>
 
-                    <p className="mt-2 font-body text-[13px] font-normal leading-[18px] tracking-[-0.26px] text-[#6D6057] md:mt-3 md:max-w-[46ch] md:text-[14px] md:leading-[21px] md:tracking-[-0.28px]">
+                    <p className="mt-2 font-body text-[13px] font-normal leading-[18px] tracking-[-0.26px] text-[#6D6057] md:mt-4 md:max-w-[46ch] md:text-[14px] md:leading-[22px] md:tracking-[-0.28px]">
                       <span className="md:hidden">{facts.map((fact, index) => (
                         <Fragment key={fact}>
                           {index > 0 ? " · " : ""}
@@ -136,7 +136,7 @@ export default function PropertiesPage() {
                       Check availability →
                     </a>
 
-                    <p className="mt-4 hidden border-t border-[#E7DFDB] pt-3 font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#6D6057] md:block">
+                    <p className="mt-4 hidden border-t border-[#E7DFDB] pt-3 font-body md:mt-auto text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#6D6057] md:block">
                       {facts.join("  ·  ")}
                     </p>
                   </div>
