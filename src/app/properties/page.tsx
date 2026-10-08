@@ -11,7 +11,7 @@ export default function PropertiesPage() {
 
   return (
     <>
-      <section className="grid overflow-hidden bg-[#F4EFEC] pb-3 lg:min-h-[560px] lg:grid-cols-[1fr_1fr] lg:pb-0">
+      <section className="grid overflow-hidden bg-[#F4EFEC] lg:min-h-[560px] lg:grid-cols-[1fr_1fr]">
         <div className="flex items-center px-4 pb-4 pt-5 md:px-10 md:py-12 lg:px-16 lg:py-16">
           <div className="w-full max-w-[720px]">
             <p className="font-body text-[13px] font-medium leading-[18px] tracking-[-0.26px] text-[#4A6E57] md:text-[14px] md:tracking-[-0.28px]">
