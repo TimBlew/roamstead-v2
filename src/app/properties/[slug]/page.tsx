@@ -19,15 +19,6 @@ const hostawayListingIds: Record<string, number> = {
   "powder-room": 455633,
 };
 
-const staySectionTitles: Record<string, string> = {
-  "hygge-house": "Space for every side of your stay",
-  granary: "A little place to feel at home",
-  daystar: "Room to gather, space to unwind",
-  lowell: "Come in from the mountain",
-  "powder-room": "Your mountain basecamp",
-  senator: "A stay steeped in character",
-};
-
 const propertyHighlights: Record<string, { primary: string[]; secondary: string[] }> = {
   "hygge-house": {
     primary: ["Sleeps 10", "4 Bedrooms", "3 Baths", "Private sauna"],
@@ -215,14 +206,11 @@ export default async function PropertyPage({ params }: PageProps) {
         <section className="bg-[#FFFCFB] px-3 pb-3 pt-6 sm:px-4 md:px-6 md:pb-10 md:pt-14">
           <div className="mx-auto max-w-[1280px]">
             <div className="mb-5 max-w-[760px] md:mb-10">
-              <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
-                The stay
-              </p>
               <h2
-                className="mt-1.5 font-heading text-[32px] font-medium leading-[36px] tracking-[-1.28px] md:mt-2 text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
+                className="font-heading text-[32px] font-medium leading-[36px] tracking-[-1.28px] text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
-                {staySectionTitles[slug] ?? "Explore the stay"}
+                The Space
               </h2>
             </div>
 
