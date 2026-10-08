@@ -14,7 +14,8 @@ const TWO_MONTH_MIN_WIDTH = 760;
 
 export function HostawayBooking({ listingId }: { listingId: number }) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const containerId = `hostaway-calendar-${listingId}`;
+  const containerId = "hostaway-calendar-widget";
+  const [failed, setFailed] = useState(false);
   const [months, setMonths] = useState(1);
   const [ready, setReady] = useState(false);
 
@@ -52,10 +53,16 @@ export function HostawayBooking({ listingId }: { listingId: number }) {
     }
 
     const script = document.createElement("script");
+    setFailed(false);
     script.src = `${SCRIPT_SRC}?v=${listingId}-${months}-${Date.now()}`;
     script.async = true;
 
+    script.onerror = () => setFailed(true);
     script.onload = () => {
+      if (!window.hostawayCalendarWidget) {
+        setFailed(true);
+        return;
+      }
       window.hostawayCalendarWidget?.({
         baseUrl: HOSTAWAY_BASE_URL,
         listingId,
@@ -68,10 +75,14 @@ export function HostawayBooking({ listingId }: { listingId: number }) {
     };
 
     document.body.appendChild(script);
+    const timeout = window.setTimeout(() => {
+      if (!document.getElementById(containerId)?.children.length) setFailed(true);
+    }, 4500);
 
     return () => {
       const mount = document.getElementById(containerId);
       if (mount) mount.innerHTML = "";
+      window.clearTimeout(timeout);
       script.remove();
     };
   }, [containerId, listingId, months, ready]);
@@ -79,6 +90,12 @@ export function HostawayBooking({ listingId }: { listingId: number }) {
   return (
     <div ref={wrapperRef} className="w-full">
       <div id={containerId} />
+      {failed ? (
+        <div className="py-5 text-center">
+          <p className="font-body text-[15px] leading-6 text-[#6D6057]">The live calendar is unavailable right now. You can still check dates securely through our booking partner.</p>
+          <a href={`${HOSTAWAY_BASE_URL}listings/${listingId}`} className="mt-4 inline-flex min-h-11 items-center justify-center bg-[#4A6E57] px-6 font-body text-[14px] font-medium text-white">Check dates with Hostaway</a>
+        </div>
+      ) : null}
     </div>
   );
 }
