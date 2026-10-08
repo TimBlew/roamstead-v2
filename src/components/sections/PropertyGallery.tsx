@@ -11,7 +11,6 @@ const photo = (folder: string, file: string, alt: string): Photo => ({
 
 const galleries: Record<string, Photo[]> = {
   "hygge-house": [
-    { src: "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/e4251f0c-76c0-4125-9077-c6d5063ae636.png", alt: "Golden-hour aerial view of Hygge House with the mountains beyond" },
     photo("house-midway", "exterior-02", "Hygge House exterior"),
     photo("house-midway", "exterior-04", "Backyard and patio"),
     photo("house-midway", "living-03", "Living room and fireplace"),
@@ -19,6 +18,7 @@ const galleries: Record<string, Photo[]> = {
     photo("house-midway", "bedroom-01", "Bedroom"),
     photo("house-midway", "sauna-01", "Private sauna"),
     photo("house-midway", "garage-01", "Gym and gear storage"),
+    { src: "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/e4251f0c-76c0-4125-9077-c6d5063ae636.png", alt: "Golden-hour aerial view of Hygge House with the mountains beyond" },
   ],
   granary: [
     photo("granary", "living-01", "Living room and fireplace"),
