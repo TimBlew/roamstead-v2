@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 
 export const runtime = "nodejs";
 export const alt = "Roamstead | Modern Mountain Hospitality";
@@ -7,8 +9,8 @@ export const contentType = "image/png";
 
 export default async function OpenGraphImage() {
   const [mountain, logo] = await Promise.all([
-    fetch(new URL("../../public/images/hero-mountain-optimized.jpg", import.meta.url)).then((res) => res.arrayBuffer()),
-    fetch(new URL("../../public/roamstead-logo.svg", import.meta.url)).then((res) => res.text()),
+    readFile(path.join(process.cwd(), "public/images/hero-mountain-optimized.jpg")),
+    readFile(path.join(process.cwd(), "public/roamstead-logo.svg"), "utf8"),
   ]);
   // Preserve the original brand mark exactly. Recolor only its existing fill for contrast.
   const whiteLogo = logo.replace(/#4a6e56/gi, "#FFFFFF");
