@@ -231,7 +231,7 @@ export default async function PropertyPage({ params }: PageProps) {
       ) : null}
 
       {stories.length > 0 ? (
-        <section className="bg-[#FFFCFB] px-4 pb-3 pt-6 md:px-6 md:pb-10 md:pt-14">
+        <section className="bg-[#FFFCFB] px-3 pb-3 pt-6 sm:px-4 md:px-6 md:pb-10 md:pt-14">
           <div className="mx-auto max-w-[1280px]">
             <div className="mb-5 max-w-[760px] md:mb-10">
               <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
@@ -249,12 +249,12 @@ export default async function PropertyPage({ params }: PageProps) {
               {stories.map((story, index) => (
                 <article
                   key={story.image.src}
-                  className="grid overflow-hidden rounded-[18px] md:rounded-[24px] border border-[#E7DFDB] bg-[#FBF8F7] shadow-[0_14px_40px_rgba(41,29,22,0.045)] md:grid-cols-[0.92fr_1.08fr]"
+                  className="grid w-full overflow-hidden rounded-[18px] border border-[#E7DFDB] bg-[#FBF8F7] shadow-[0_14px_40px_rgba(41,29,22,0.045)] md:rounded-[24px] md:grid-cols-[0.92fr_1.08fr]"
                 >
                   <div
-                    className={`flex items-center p-5 md:p-8 lg:p-10 ${index % 2 === 1 ? "md:order-2" : ""}`}
+                    className={`flex items-center px-4 py-4 sm:px-5 sm:py-5 md:p-8 lg:p-10 ${index % 2 === 1 ? "md:order-2" : ""}`}
                   >
-                    <div className="max-w-[520px]">
+                    <div className="w-full max-w-none md:max-w-[520px]">
                       <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.08em] text-[#8F7E73]">
                         {story.eyebrow}
                       </p>
@@ -275,7 +275,7 @@ export default async function PropertyPage({ params }: PageProps) {
                   </div>
 
                   <div
-                    className={`relative min-h-[240px] md:min-h-[420px] ${index % 2 === 1 ? "md:order-1" : ""}`}
+                    className={`relative min-h-[260px] w-full md:min-h-[420px] ${index % 2 === 1 ? "md:order-1" : ""}`}
                   >
                     <Image
                       src={story.image.src}
