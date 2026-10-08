@@ -87,17 +87,17 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
           <img src={photos[active].src} alt={photos[active].alt} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.015]" loading="lazy" />
           <span className="absolute bottom-4 right-4 rounded-full border border-white/60 bg-[#FFFCFB]/95 px-4 py-2 font-body text-[13px] font-medium text-[#1F3125] shadow-sm">View photos ↗</span>
         </button>
-        <div className="mt-3 flex items-center gap-3">
-          <button type="button" onClick={previous} aria-label="Previous photo" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#D8CCC4] text-[#1F3125]">←</button>
-          <div className="flex min-w-0 flex-1 snap-x gap-2.5 overflow-x-auto pb-2 [scrollbar-width:none]">
+        <div className="mt-3 flex items-center gap-2 md:gap-3">
+          <button type="button" onClick={previous} aria-label="Previous photo" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#D8CCC4] bg-[#FFFCFB] text-[15px] text-[#1F3125] transition-colors hover:bg-[#F4EFEC] md:h-10 md:w-10">←</button>
+          <div className="flex min-w-0 flex-1 snap-x gap-2 overflow-x-auto py-1 [scrollbar-width:none] md:gap-2.5">
             {photos.map((item, index) => (
-              <button key={item.src} type="button" onClick={() => setActive(index)} aria-label={`View photo ${index + 1}: ${item.alt}`} aria-current={index === active ? "true" : undefined} className={`relative h-[72px] w-[100px] shrink-0 snap-start overflow-hidden rounded-[10px] border-2 transition-opacity md:h-[92px] md:w-[138px] ${index === active ? "border-[#4A6E57] opacity-100" : "border-transparent opacity-70 hover:opacity-100"}`}>
+              <button key={item.src} type="button" onClick={() => setActive(index)} aria-label={`View photo ${index + 1}: ${item.alt}`} aria-current={index === active ? "true" : undefined} className={`relative h-[64px] w-[88px] shrink-0 snap-start overflow-hidden rounded-[9px] border-2 transition-opacity md:h-[84px] md:w-[126px] ${index === active ? "border-[#4A6E57] opacity-100" : "border-transparent opacity-70 hover:opacity-100"}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={item.src} alt="" loading="lazy" className="h-full w-full object-cover" />
               </button>
             ))}
           </div>
-          <button type="button" onClick={next} aria-label="Next photo" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#D8CCC4] text-[#1F3125]">→</button>
+          <button type="button" onClick={next} aria-label="Next photo" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#D8CCC4] bg-[#FFFCFB] text-[15px] text-[#1F3125] transition-colors hover:bg-[#F4EFEC] md:h-10 md:w-10">→</button>
         </div>
       </div>
       {expanded && (
