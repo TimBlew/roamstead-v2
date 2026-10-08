@@ -139,20 +139,20 @@ export default async function PropertyPage({ params }: PageProps) {
             </p>
 
             {highlights.primary.length > 0 ? (
-              <div className="mt-2.5 border-y border-white/24 py-1.5 md:mt-5 md:py-2">
-                <div className="grid grid-cols-2">
+              <div className="mt-2.5 border-y border-white/24 py-1.5 md:mt-6 md:py-0">
+                <div className="grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-white/20">
                   {highlights.primary.map((item, index) => (
                     <div
                       key={item}
-                      className={`flex min-h-[46px] items-center px-3 py-1.5 font-body text-[13.5px] font-medium leading-[18px] tracking-[-0.24px] text-[#FFFCFB] md:min-h-[43px] md:px-4 md:text-[16px] md:leading-6 md:tracking-[-0.28px] ${index % 2 === 1 ? "border-l border-white/18" : ""} ${index > 1 ? "border-t border-white/12" : ""}`}
+                      className={`flex min-h-[46px] items-center px-3 py-1.5 font-body text-[13.5px] font-medium leading-[18px] tracking-[-0.24px] text-[#FFFCFB] md:min-h-[76px] md:justify-center md:px-3 md:py-4 md:text-[15px] md:leading-[21px] md:tracking-[-0.2px] ${index % 2 === 1 ? "border-l border-white/18 md:border-l-0" : ""} ${index > 1 ? "border-t border-white/12 md:border-t-0" : ""}`}
                     >
-                      <span className="block w-full text-left">{item}</span>
+                      <span className="block w-full text-left md:text-center">{item}</span>
                     </div>
                   ))}
                 </div>
 
                 {highlights.secondary.length > 0 ? (
-                  <p className="mt-1.5 border-t border-white/12 pt-2 font-body text-[13.5px] font-medium leading-[20px] tracking-[-0.24px] text-[#FFFCFB] md:mt-2 md:pt-2.5 md:text-[15.5px] md:leading-5 md:tracking-[-0.26px]">
+                  <p className="mt-1.5 border-t border-white/12 pt-2 font-body text-[13.5px] font-medium leading-[20px] tracking-[-0.24px] text-[#FFFCFB] md:mt-0 md:border-t md:border-white/20 md:px-2 md:py-4 md:text-center md:text-[14px] md:leading-6 md:tracking-[-0.26px]">
                     {highlights.secondary.join("  ·  ")}
                   </p>
                 ) : null}
