@@ -9,8 +9,8 @@ interface ValueCardProps {
 
 export const ValueCard: React.FC<ValueCardProps> = ({ image, title, description }) => {
   return (
-    <article className="grid grid-cols-[116px_minmax(0,1fr)] items-center gap-3 md:flex md:h-[460px] md:flex-col md:items-start md:justify-end md:gap-4">
-      <div className="relative h-[116px] w-[116px] shrink-0 overflow-hidden rounded-[15px] md:h-[320px] md:w-full md:rounded-3">
+    <article className="grid grid-cols-[116px_minmax(0,1fr)] items-center gap-3 md:flex md:h-auto md:flex-col md:items-start md:justify-start md:gap-4">
+      <div className="relative h-[116px] w-[116px] shrink-0 overflow-hidden rounded-[15px] md:aspect-[1.45] md:h-auto md:w-full md:rounded-3">
         <Image
           src={image}
           alt={title}
