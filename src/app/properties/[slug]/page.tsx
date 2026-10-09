@@ -165,7 +165,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className="inline-flex min-h-10 items-center justify-center rounded-[10px] border border-white/55 bg-[#FFFCFB] px-6 py-2 font-body text-[14px] font-medium leading-5 tracking-[-0.24px] text-[#291D16] shadow-[0_8px_22px_rgba(0,0,0,0.16)] transition-all hover:-translate-y-px hover:bg-white md:min-h-11 md:px-7 md:py-2.5 md:text-[15px] md:leading-6 md:tracking-[-0.28px]"
               >
-                See available dates
+                Check dates
               </a>
             </div>
           </div>
