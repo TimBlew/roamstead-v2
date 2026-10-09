@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Fragment } from "react";
 import { SenatorBand } from "@/components/sections/SenatorBand";
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
 import { properties } from "@/data/properties";
