@@ -5,21 +5,21 @@ export const ValueCards: React.FC = () => {
   const values = [
     {
       image: "/images/community-first.jpg",
-      title: "Community first",
+      title: "Gather round",
       description:
-        "We design spaces that encourage gathering: around a table, a fire, or a shared plan for tomorrow. The best stays leave room for people.",
+        "A table for everyone, a fire to sit around, and a plan for tomorrow. The best trips leave room for people.",
     },
     {
       image: "/images/four-season.jpg",
-      title: "Four-season living",
+      title: "Four seasons, no off-season",
       description:
-        "We’re here for winter powder and summer singletrack. Mud season. Quiet weeks. Full parking lots and empty trails. The whole year matters.",
+        "Winter powder. Summer singletrack. Fall color. Even mud season, and we mean that. Every week up here is a good one.",
     },
     {
       image: "/images/local-nature.jpg",
       title: "Local by nature",
       description:
-        "Roamstead stays are shaped by their surroundings and the people who live there. We pay attention to the rhythms of the valley, not outside expectations.",
+        "We send you to the bakery, the bike shop, and the river outfitter down the road. The valley's best parts are run by our neighbors.",
     },
   ];
 
@@ -36,7 +36,7 @@ export const ValueCards: React.FC = () => {
           href="/properties"
           className="inline-flex h-9 min-w-[164px] items-center justify-center rounded-[10px] bg-[#4A6E57] px-4 font-body text-[12.5px] font-medium leading-5 tracking-[-0.25px] text-[#FFFCFB] shadow-[0_7px_18px_rgba(74,110,87,0.16)] transition-all hover:-translate-y-px hover:bg-[#3C6049] md:mx-auto md:flex md:h-10 md:min-w-[168px] md:w-fit md:rounded-none md:px-6 md:py-2 md:text-[16px] md:leading-6 md:tracking-[-0.32px] md:shadow-none"
         >
-          Check availability
+          Find your stay
         </a>
       </div>
     </section>
