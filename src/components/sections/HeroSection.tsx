@@ -5,10 +5,10 @@ export const HeroSection: React.FC = () => {
   return (
     <Hero
       backgroundImage="/images/hero-mountain-optimized.jpg"
-      headline="Modern mountain hospitality"
-      description="Roamstead is a growing collection of places to stay in Heber Valley and the surrounding mountains. Each one is shaped by its setting and designed for the way people actually live while traveling."
-      mobileSupplement="These are stays meant to slow you down, and bring you back."
-      ctaText="Book your stay"
+      headline="Come up tired. Go home lighter."
+      description="Roamstead Collective is a small group of homes across Utah's Wasatch Back, rooted in Heber Valley. Pick your base. The mountains do the rest."
+      mobileSupplement=""
+      ctaText="Book direct"
       ctaHref="/book"
     />
   );
