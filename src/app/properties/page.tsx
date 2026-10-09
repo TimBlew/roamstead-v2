@@ -1,20 +1,9 @@
 import Image from "next/image";
-import { Fragment } from "react";
 import { SenatorBand } from "@/components/sections/SenatorBand";
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
 import { properties } from "@/data/properties";
 
 const order = ["hygge-house", "granary", "lowell", "powder-room"];
-
-const propertyHighlights: Record<string, string[]> = {
-  "hygge-house": ["Private 4-person sauna", "Dedicated office", "Garage gym & gear storage", "Fenced yard & fire pit"],
-  granary: ["Mountain views", "Gas fireplace", "Full kitchen", "Walkable to Midway"],
-  daystar: ["Outdoor hot tub", "Indoor sauna", "Indoor sport court", "Pool table"],
-  lowell: ["Steps from the slopes", "Steam shower", "Heated pool & hot tub", "Ski storage"],
-  "powder-room": ["At the resort base", "Pool & hot tub", "Fitness center", "Ski storage"],
-  senator: ["Historic 1902 home", "Breakfast included", "Individual guest rooms", "Wraparound porch"],
-};
-
 
 export const metadata = {
   title: "Our stays | Roamstead Collective",
@@ -79,7 +68,7 @@ export default function PropertiesPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-7 xl:grid-cols-3 xl:gap-8">
+          <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-7 xl:grid-cols-2 xl:gap-8">
             {collection.map((property) => {
               if (!property) return null;
 
@@ -127,16 +116,8 @@ export default function PropertiesPage() {
                     </div>
 
                     <p className="mt-2 font-body text-[13px] leading-5 text-[#6D6057]">{hooks[property.slug]}</p>
-                    <p className="mt-2 font-body text-[13px] font-normal leading-[18px] tracking-[-0.26px] text-[#6D6057] md:mt-4 md:max-w-none md:text-[15px] md:leading-[23px] md:tracking-[-0.15px]">
-                      <span className="md:hidden">{facts.map((fact, index) => (
-                        <Fragment key={fact}>
-                          {index > 0 ? " · " : ""}
-                          <span className="whitespace-nowrap">{fact}</span>
-                        </Fragment>
-                      ))}</span>
-                      <span className={property.slug === "powder-room" ? "hidden md:block md:text-[15px] md:leading-[23px]" : "hidden md:flex md:flex-col md:gap-1 md:text-[15px] md:leading-[23px] md:tracking-[-0.15px]"}>
-                        {facts.map((fact, index) => <span key={fact}>{index > 0 && property.slug === "powder-room" ? " · " : ""}{fact}</span>)}
-                      </span>
+                    <p className="mt-2 font-body text-[13px] font-normal leading-[20px] tracking-[-0.2px] text-[#6D6057] md:mt-4 md:text-[15px] md:leading-[23px]">
+                      {facts.join(" · ")}
                     </p>
 
                     <a href={href} className="mt-4 inline-flex w-fit items-center justify-center rounded-[6px] border border-[#D9CDC6] px-4 py-2 font-body text-[13px] font-medium text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:mt-5 md:px-5 md:py-3">
