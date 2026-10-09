@@ -35,7 +35,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
     <article className="flex w-[76vw] max-w-[292px] shrink-0 snap-start flex-col md:h-full md:w-auto md:max-w-none md:gap-0">
       <a
         href={detailHref || href}
-        className="relative h-[190px] w-full shrink-0 overflow-hidden rounded-[16px] md:h-[256px] md:rounded-[8px] md:border md:border-[#D8CCC4]"
+        className="relative h-[180px] w-full shrink-0 overflow-hidden rounded-[16px] md:h-[256px] md:rounded-[8px] md:border md:border-[#D8CCC4]"
       >
         <Image
           src={image}
@@ -46,7 +46,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         />
       </a>
 
-      <div className="mt-3 flex w-full flex-1 flex-col items-start md:mt-5 md:gap-2">
+      <div className="mt-3 flex w-full flex-1 flex-col items-start md:mt-5">
         <p className="font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#8F7E73] md:text-[16px] md:leading-6 md:tracking-[-0.32px] md:text-[#6D6057]">
           {location.replace(", Utah", "")}
         </p>
@@ -58,14 +58,14 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           <a href={detailHref || href}>{name}</a>
         </h3>
 
-        {hook ? <p className="mt-2 font-body text-[15px] leading-[23px] text-[#6D6057]">{hook}</p> : null}
+        {hook ? <p className="mt-3 min-h-[69px] font-body text-[15px] leading-[23px] text-[#6D6057] md:min-h-[48px]">{hook}</p> : null}
         <p className="mt-2 font-body text-[14px] font-normal leading-5 tracking-[-0.26px] text-[#6D6057] md:text-[16px] md:leading-7">
           {facts}
         </p>
 
         <a
           href={href}
-          className="mt-auto inline-flex min-h-10 items-center justify-center rounded-[7px] border border-[#D8CCC4] bg-[#FEFDFC] px-5 py-2.5 font-body text-[14px] font-medium leading-5 text-[#291D16] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:!mt-5 md:min-h-11 md:text-[16px]"
+          className="mt-4 inline-flex h-12 w-full items-center justify-center rounded-[7px] border border-[#D8CCC4] bg-[#FEFDFC] px-5 font-body text-[14px] font-medium leading-5 text-[#291D16] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:mt-5 md:w-auto md:min-w-[160px] md:text-[16px]"
         >
           Check dates
         </a>
