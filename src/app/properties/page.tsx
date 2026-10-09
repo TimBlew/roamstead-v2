@@ -140,7 +140,7 @@ export default function PropertiesPage() {
                     </p>
 
                     <a href={href} className="mt-4 inline-flex w-fit items-center justify-center rounded-[6px] border border-[#D9CDC6] px-4 py-2 font-body text-[13px] font-medium text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:mt-5 md:px-5 md:py-3">
-                      Check dates →
+                      Check dates
                     </a>
                   </div>
                 </article>
