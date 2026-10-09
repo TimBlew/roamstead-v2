@@ -97,7 +97,7 @@ export function HostawayBooking({ listingId, fallbackUrl }: { listingId: number;
   return (
     <div ref={wrapperRef} className="roamstead-booking-widget mx-auto w-full max-w-[900px]">
       {!loaded && !failed && <div role="status" aria-live="polite" className="flex min-h-[360px] items-center justify-center rounded-[10px] bg-[#F4EFEC]/50 px-4 text-center font-body text-[14px] text-[#6D6057] md:min-h-[470px]">Loading available dates…</div>}
-      <div id={containerId} className={loaded ? "mx-auto w-full" : "absolute h-0 w-0 overflow-hidden"} />
+      <div id={containerId} className="mx-auto w-full" />
       {failed ? (
         <div className="py-5 text-center">
           <p className="font-body text-[15px] leading-6 text-[#6D6057]">The live calendar is unavailable right now. You can still check dates securely through our booking partner.</p>
