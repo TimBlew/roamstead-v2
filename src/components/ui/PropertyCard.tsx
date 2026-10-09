@@ -72,7 +72,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
             href={href}
             className="inline-flex shrink-0 items-center justify-center border border-[#D8CCC4] bg-[#FEFDFC] px-4 py-2 font-body text-[16px] font-medium leading-6 tracking-[-0.32px] text-[#291D16] transition-colors hover:bg-[#F4EFEC]"
           >
-            Check dates
+            Check dates →
           </a>
         </div>
 
@@ -80,7 +80,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           href={href}
           className="mt-2 inline-flex items-center font-body text-[14px] font-medium leading-5 tracking-[-0.28px] text-[#4A6E57] md:hidden"
         >
-          Check dates
+          Check dates →
         </a>
       </div>
     </article>
