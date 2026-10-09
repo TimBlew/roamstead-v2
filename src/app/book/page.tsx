@@ -4,7 +4,7 @@ import { properties } from "@/data/properties";
 const order = ["hygge-house", "granary", "daystar", "lowell", "powder-room", "senator"];
 
 export const metadata = {
-  title: "Book Direct | Roamstead",
+  title: "Book direct | Roamstead",
   description: "Choose a Roamstead stay, check your dates, and book direct.",
 };
 
@@ -57,7 +57,9 @@ export default function BookPage() {
             const href = senator ? property.bookingUrl : `/book/${property.slug}`;
             const facts = senator
               ? "Historic bed & breakfast · Heber City"
-              : property.stats.slice(0, 3).map((stat) => stat.label.toLowerCase() === "sleeps" ? `Sleeps ${stat.value}` : `${stat.value} ${stat.label}`).join(" · ");
+              : property.slug === "powder-room"
+                ? "Sleeps 4 · Studio · 1 Bath"
+                : property.stats.slice(0, 3).map((stat) => stat.label.toLowerCase() === "sleeps" ? `Sleeps ${stat.value}` : `${stat.value} ${stat.label}`).join(" · ");
 
             return (
               <article key={property.slug} className="group flex min-w-0 flex-col overflow-hidden rounded-[10px] border border-[#E7DFDB] bg-[#FFFCFB] shadow-[0_8px_26px_rgba(41,29,22,0.045)] transition-all duration-300 hover:-translate-y-1 hover:border-[#A9B9A9] hover:shadow-[0_16px_36px_rgba(41,29,22,0.09)]">
@@ -73,7 +75,7 @@ export default function BookPage() {
                   </h3>
                   <p className="mt-2 font-body text-[13px] leading-5 text-[#6D6057] md:text-[14px]">{facts}</p>
                   <a href={href} {...(senator ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="mt-5 inline-flex min-h-11 w-full items-center justify-between rounded-[5px] bg-[#4A6E57] px-5 font-body text-[13px] font-medium text-white transition-colors hover:bg-[#3C6049] md:mt-6 md:text-[14px]">
-                    {senator ? "Check rooms & dates" : "Check available dates"} <span aria-hidden="true" className="ml-2">→</span>
+                    {senator ? "Check rooms & dates" : "Check dates"} <span aria-hidden="true" className="ml-2">→</span>
                   </a>
                 </div>
               </article>
