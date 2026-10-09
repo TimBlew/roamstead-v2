@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { Fragment } from "react";
+import { SenatorBand } from "@/components/sections/SenatorBand";
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
 import { properties } from "@/data/properties";
 
-const order = ["hygge-house", "granary", "daystar", "lowell", "powder-room", "senator"];
+const order = ["hygge-house", "granary", "lowell", "powder-room"];
 
 const propertyHighlights: Record<string, string[]> = {
   "hygge-house": ["Private 4-person sauna", "Dedicated office", "Garage gym & gear storage", "Fenced yard & fire pit"],
@@ -27,23 +27,17 @@ export default function PropertiesPage() {
           <div className="relative z-10 flex flex-col justify-center px-4 pb-5 pt-7 md:px-10 md:py-12 lg:px-14 lg:py-16 xl:pl-20">
             <div className="max-w-[610px]">
               <p className="font-body text-[13px] font-medium leading-[18px] tracking-[0.02em] text-[#4A6E57] md:text-[14px] lg:tracking-[0.1em]">
-                Our Properties
+                Our stays
               </p>
               <h1
                 className="mt-3 max-w-[600px] font-heading text-[40px] font-medium leading-[41px] tracking-[-1.6px] text-[#1F3125] md:mt-5 md:text-[54px] md:leading-[1.08] md:tracking-[-2px] lg:mt-5 lg:text-[clamp(46px,3.45vw,64px)] lg:leading-[1.06] lg:tracking-[-0.045em]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
-                Homes for Those Who Roam
+                Homes for people who roam
               </h1>
               <div className="mt-5 max-w-[680px] border-l border-[#4A6E57]/25 pl-4 md:mt-8 md:pl-6 lg:mt-7 lg:max-w-[485px]">
                 <p className="font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:text-[17px] md:leading-[27px] md:tracking-[-0.22px] lg:leading-[1.5]">
-                  Roamstead is a growing collection of places to stay across Heber Valley and nearby mountain towns.
-                </p>
-                <p className="mt-2 font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:mt-3 md:text-[17px] md:leading-[29px] md:tracking-[-0.32px] lg:leading-[1.5]">
-                  Each one is different, but all are designed with the same belief.
-                </p>
-                <p className="mt-3 font-heading text-[23px] font-medium leading-[27px] tracking-[-0.7px] text-[#1F3125] md:mt-5 md:text-[26px] md:leading-[31px] md:tracking-[-0.9px] lg:text-[27px]">
-                  Place comes first.
+                  Roamstead Collective started in Heber Valley and has grown across the Wasatch Back. Every home is different. The rule is the same: the place comes first.
                 </p>
               </div>
             </div>
@@ -70,10 +64,10 @@ export default function PropertiesPage() {
               className="font-heading text-[31px] font-medium leading-[34px] tracking-[-1.24px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
-              Find your place
+              Find your fit
             </h2>
             <p className="mt-2 max-w-[42ch] font-body text-[14.5px] font-normal leading-[21px] tracking-[-0.29px] text-[#6D6057] md:mt-4 md:max-w-[820px] md:text-[18px] md:leading-7 md:tracking-[-0.36px]">
-              From a quiet Midway condo to a six-bedroom Deer Valley home, each property has its own rhythm, setting, and reason to return.
+              From a studio at the base of Park City Mountain to a Midway home that sleeps 10, each stay has its own setting and its own reason to come back.
             </p>
           </div>
 
@@ -81,13 +75,14 @@ export default function PropertiesPage() {
             {collection.map((property) => {
               if (!property) return null;
 
-              const href = "/properties/" + property.slug;
-              const facts = property.slug === "senator"
-                ? ["Historic bed & breakfast", "Individual guest rooms", "Book by room"]
-                : property.stats.slice(0, 3).map((stat) => {
-                    if (stat.label.toLowerCase() === "sleeps") return "Sleeps " + stat.value;
-                    return stat.value + " " + stat.label;
-                  });
+              const href = "/book/" + property.slug;
+              const facts = property.slug === "powder-room" ? ["Sleeps 4", "Studio", "1 Bath"] : property.stats.slice(0, 3).map((stat) => stat.label.toLowerCase() === "sleeps" ? "Sleeps " + stat.value : stat.value + " " + stat.label);
+              const hooks: Record<string, string> = {
+                "hygge-house": "Room for 10. Cozy enough to earn the name.",
+                granary: "A quiet Midway base for 2 to 4. The kitchen island does a lot of work.",
+                lowell: "At the base of Park City Mountain. Boots on, lift next.",
+                "powder-room": "Yes, it's called the Powder Room. Yes, it's for skiers. A studio inside the Lowell building.",
+              };
 
               return (
                 <article
@@ -121,14 +116,9 @@ export default function PropertiesPage() {
                         </a>
                       </h3>
 
-                      <a
-                        href={href}
-                        className="hidden"
-                      >
-                        Explore the stay →
-                      </a>
                     </div>
 
+                    <p className="mt-2 font-body text-[13px] leading-5 text-[#6D6057]">{hooks[property.slug]}</p>
                     <p className="mt-2 font-body text-[13px] font-normal leading-[18px] tracking-[-0.26px] text-[#6D6057] md:mt-4 md:max-w-none md:text-[15px] md:leading-[23px] md:tracking-[-0.15px]">
                       <span className="md:hidden">{facts.map((fact, index) => (
                         <Fragment key={fact}>
@@ -145,11 +135,11 @@ export default function PropertiesPage() {
                       href={href}
                       className="mt-3 inline-flex items-center font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#4A6E57] md:hidden"
                     >
-                      Explore the stay →
+                      Check dates →
                     </a>
 
                     <a href={href} className="mt-5 hidden w-fit items-center justify-center border border-[#D9CDC6] px-5 py-3 font-body text-[13px] font-medium leading-5 text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:inline-flex">
-                      Explore the stay
+                      Check dates
                     </a>
                   </div>
                 </article>
@@ -159,6 +149,7 @@ export default function PropertiesPage() {
         </div>
       </section>
 
+      <SenatorBand campaign="properties-page" />
       <CommunityCTA />
     </>
   );
