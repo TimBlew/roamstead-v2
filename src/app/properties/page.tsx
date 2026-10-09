@@ -15,6 +15,13 @@ const propertyHighlights: Record<string, string[]> = {
 };
 
 
+export const metadata = {
+  title: "Our stays | Roamstead Collective",
+  description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective.",
+  openGraph: { title: "Our stays | Roamstead Collective", description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective." },
+  twitter: { title: "Our stays | Roamstead Collective", description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective." },
+};
+
 export default function PropertiesPage() {
   const collection = order
     .map((slug) => properties.find((property) => property.slug === slug))
