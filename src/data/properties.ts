@@ -311,8 +311,8 @@ export const properties: Property[] = [
     stories: [
       {
         image: {
-          src: "/images/granary/exterior.jpg",
-          alt: "The Granary building in Midway with the mountains behind",
+          src: "/images/granary/kitchen.jpg",
+          alt: "Granary kitchen and island",
         },
         eyebrow: "Kitchen & workspace",
         title: "Everything you need in a smaller footprint",
@@ -323,8 +323,8 @@ export const properties: Property[] = [
       },
       {
         image: {
-          src: "/images/granary/dining.jpg",
-          alt: "Dining table for four beside a bright window",
+          src: "/images/granary/exterior.jpg",
+          alt: "The Granary building in Midway with the mountains behind",
         },
         eyebrow: "Midway at your doorstep",
         title: "Walk to town, drive to the mountains",
@@ -633,8 +633,8 @@ export const properties: Property[] = [
     },
     hero: {
       image: {
-        src: "/images/powder-room/resort-base.jpg",
-        alt: "Aerial view of the Park City Mountain Resort base area in winter",
+        src: "/images/powder-room/bedroom.jpg",
+        alt: "Powder Room studio bedroom and seating",
       },
       locationLabel: "Park City, Utah",
       title: "Powder Room",
