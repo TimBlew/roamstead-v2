@@ -134,8 +134,8 @@ export default function PropertiesPage() {
                           <span className="whitespace-nowrap">{fact}</span>
                         </Fragment>
                       ))}</span>
-                      <span className="hidden md:flex md:flex-col md:gap-1 md:text-[15px] md:leading-[23px] md:tracking-[-0.15px]">
-                        {facts.map((fact) => <span key={fact}>{fact}</span>)}
+                      <span className={property.slug === "powder-room" ? "hidden md:block md:text-[15px] md:leading-[23px]" : "hidden md:flex md:flex-col md:gap-1 md:text-[15px] md:leading-[23px] md:tracking-[-0.15px]"}>
+                        {facts.map((fact, index) => <span key={fact}>{index > 0 && property.slug === "powder-room" ? " · " : ""}{fact}</span>)}
                       </span>
                     </p>
 
