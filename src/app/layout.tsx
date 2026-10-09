@@ -4,9 +4,9 @@ import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "Roamstead - Modern Mountain Hospitality",
+  title: "Roamstead Collective | Wasatch Back stays in Heber Valley & Park City",
   robots: "noindex, nofollow",
-  description: "Thoughtful mountain stays across Heber Valley and Park City, designed for the way people actually travel.",
+  description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
