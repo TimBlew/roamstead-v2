@@ -37,7 +37,7 @@ const propertyHighlights: Record<string, { primary: string[]; secondary: string[
     secondary: ["Steam shower", "Pool + hot tub", "Ski storage", "Underground parking"],
   },
   "powder-room": {
-    primary: ["Sleeps 4", "King bed", "Private bath", "At the resort base"],
+    primary: ["Sleeps 4", "Studio", "1 Bath", "At the resort base"],
     secondary: ["Pool + hot tub", "Fitness center", "Ski storage", "Kitchenette"],
   },
   senator: {
@@ -210,7 +210,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 className="font-heading text-[32px] font-medium leading-[36px] tracking-[-1.28px] text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
-                The Stay
+                The stay
               </h2>
             </div>
 
