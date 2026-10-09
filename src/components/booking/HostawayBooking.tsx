@@ -18,6 +18,7 @@ export function HostawayBooking({ listingId, fallbackUrl }: { listingId: number;
   const [failed, setFailed] = useState(false);
   const [months, setMonths] = useState(1);
   const [ready, setReady] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const el = wrapperRef.current;
@@ -54,6 +55,7 @@ export function HostawayBooking({ listingId, fallbackUrl }: { listingId: number;
 
     const script = document.createElement("script");
     setFailed(false);
+    setLoaded(false);
     script.src = `${SCRIPT_SRC}?v=${listingId}-${months}-${Date.now()}`;
     script.async = true;
 
@@ -77,19 +79,25 @@ export function HostawayBooking({ listingId, fallbackUrl }: { listingId: number;
     document.body.appendChild(script);
     const timeout = window.setTimeout(() => {
       if (!document.getElementById(containerId)?.children.length) setFailed(true);
-    }, 4500);
+    }, 8000);
+    const loadedObserver = new MutationObserver(() => {
+      if (document.getElementById(containerId)?.children.length) setLoaded(true);
+    });
+    if (container) loadedObserver.observe(container, { childList: true, subtree: true });
 
     return () => {
       const mount = document.getElementById(containerId);
       if (mount) mount.innerHTML = "";
       window.clearTimeout(timeout);
+      loadedObserver.disconnect();
       script.remove();
     };
   }, [containerId, listingId, months, ready]);
 
   return (
-    <div ref={wrapperRef} className="roamstead-booking-widget w-full">
-      <div id={containerId} />
+    <div ref={wrapperRef} className="roamstead-booking-widget mx-auto w-full max-w-[900px]">
+      {!loaded && !failed && <div role="status" aria-live="polite" className="flex min-h-[360px] items-center justify-center rounded-[10px] bg-[#F4EFEC]/50 px-4 text-center font-body text-[14px] text-[#6D6057] md:min-h-[470px]">Loading available dates…</div>}
+      <div id={containerId} className={loaded ? "mx-auto w-full" : "absolute h-0 w-0 overflow-hidden"} />
       {failed ? (
         <div className="py-5 text-center">
           <p className="font-body text-[15px] leading-6 text-[#6D6057]">The live calendar is unavailable right now. You can still check dates securely through our booking partner.</p>
