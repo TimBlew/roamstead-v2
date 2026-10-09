@@ -73,6 +73,7 @@ export default function PropertiesPage() {
               if (!property) return null;
 
               const href = "/book/" + property.slug;
+              const detailHref = "/properties/" + property.slug;
               const facts = property.slug === "powder-room" ? ["Sleeps 4", "Studio", "1 Bath"] : property.stats.slice(0, 3).map((stat) => stat.label.toLowerCase() === "sleeps" ? "Sleeps " + stat.value : stat.value + " " + stat.label);
               const hooks: Record<string, string> = {
                 "hygge-house": "Room for 10. Cozy enough to earn the name.",
@@ -86,10 +87,10 @@ export default function PropertiesPage() {
                   key={property.slug}
                   className="group grid w-full grid-cols-[46%_1fr] gap-3 rounded-[16px] bg-[#FBF8F7] p-2.5 md:flex md:h-full md:flex-col md:overflow-visible md:rounded-none md:border-0 md:bg-transparent md:p-0"
                 >
-                  <a href={href} className="block min-w-0">
+                  <a href={detailHref} className="block min-w-0">
                     <div className="relative h-full min-h-[168px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[1.58] md:h-auto md:rounded-[10px]">
                       <Image
-                        src={property.slug === "hygge-house" ? "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" : property.hero.image.src}
+                        src={property.slug === "powder-room" ? "https://www.roamstead-co.com/listings/powder-room/bedroom-01.jpg" : property.slug === "hygge-house" ? "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" : property.hero.image.src}
                         alt={property.slug === "hygge-house" ? "Front exterior of Hygge House in Midway, Utah" : property.hero.image.alt}
                         fill
                         sizes="(min-width: 1024px) 640px, (min-width: 768px) 100vw, 44vw"
@@ -108,14 +109,14 @@ export default function PropertiesPage() {
                         className="font-heading text-[27px] font-medium leading-[29px] tracking-[-1.08px] text-[#1F3125] md:text-[clamp(31px,2.35vw,43px)] md:leading-[1.12] md:tracking-[-0.04em]"
                         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
                       >
-                        <a href={href} className="transition-colors hover:text-[#4A6E57]">
+                        <a href={detailHref} className="transition-colors hover:text-[#4A6E57]">
                           {property.hero.title}
                         </a>
                       </h3>
 
                     </div>
 
-                    <p className="mt-2 font-body text-[13px] leading-5 text-[#6D6057]">{hooks[property.slug]}</p>
+                    <p className="mt-2 font-body text-[14px] leading-[22px] text-[#6D6057] md:text-[16px] md:leading-6">{hooks[property.slug]}</p>
                     <p className="mt-2 font-body text-[13px] font-normal leading-[20px] tracking-[-0.2px] text-[#6D6057] md:mt-4 md:text-[15px] md:leading-[23px]">
                       {facts.join(" · ")}
                     </p>
