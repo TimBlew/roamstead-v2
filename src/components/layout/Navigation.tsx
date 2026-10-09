@@ -25,7 +25,7 @@ export const Navigation: React.FC = () => {
         </div>
 
         <a href="/book" className="site-nav__action site-nav__action--book">
-          Book Direct
+          Book direct
         </a>
       </div>
     </nav>
