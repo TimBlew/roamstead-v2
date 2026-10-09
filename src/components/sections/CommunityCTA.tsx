@@ -31,14 +31,14 @@ export const CommunityCTA = () => {
     }
   }
   return (
-    <section className="bg-[#F4EFEC] px-5 py-12 text-center md:px-6 md:py-20">
+    <section className="bg-[#F4EFEC] px-5 py-9 text-center md:px-6 md:py-16">
       <div className="mx-auto max-w-[720px]">
         <img src="/roamstead-collective-logo.svg" alt="Roamstead Collective" className="mx-auto w-[226px] md:w-[286px]" />
-        <p className="mt-5 font-body text-[13px] font-medium text-[#4A6E57]">Coming soon</p>
-        <h2 className="mt-3 font-heading text-[34px] leading-tight tracking-[-0.04em] text-[#1F3125] md:text-[48px]">For people who come back</h2>
-        <p className="mt-4 font-body text-[16px] leading-7 text-[#6D6057]">We're building a membership for the 4-Seasoners, the people who'd rather know one place well than see a new one every trip. Get on the early list and you'll hear first when it opens.</p>
-        <p className="mt-4 font-body text-[14px] leading-6 text-[#6D6057]">What we're planning: member rates on stays, deals for valley locals, first invites to events, and a newsletter worth opening.</p>
-        <form onSubmit={submit} noValidate className="mx-auto mt-7 grid max-w-[580px] gap-4 text-left md:grid-cols-2">
+        <p className="mt-1 font-body text-[13px] font-medium text-[#4A6E57]">Coming soon</p>
+        <h2 className="mt-2 font-heading text-[34px] leading-[1.12] tracking-[-0.04em] text-[#1F3125] md:text-[48px]">For people who come back</h2>
+        <p className="mt-3 font-body text-[16px] leading-[1.55] text-[#6D6057]">We're building a membership for the 4-Seasoners, the people who'd rather know one place well than see a new one every trip. Get on the early list and you'll hear first when it opens.</p>
+        <p className="mt-3 font-body text-[14px] leading-[1.5] text-[#6D6057]">What we're planning: member rates on stays, deals for valley locals, first invites to events, and a newsletter worth opening.</p>
+        <form onSubmit={submit} noValidate className="mx-auto mt-5 grid max-w-[580px] gap-3 text-left md:grid-cols-2">
           <label className="font-body text-[13px] text-[#1F3125] md:col-span-2">Email <span aria-hidden="true">*</span><input name="email" type="email" required placeholder="Your email" className="mt-2 w-full rounded-[7px] border border-[#CFC4BC] bg-white px-4 py-3 text-[15px] outline-offset-2" /></label>
           <label className="font-body text-[13px] text-[#1F3125]">Which season brings you up here? (optional)<select name="season" defaultValue="" className="mt-2 w-full rounded-[7px] border border-[#CFC4BC] bg-white px-3 py-3 text-[14px]"><option value="">Select a season</option><option>Winter</option><option>Summer</option><option>Fall</option><option>All 4</option></select></label>
           <label className="font-body text-[13px] text-[#1F3125]">Where's home? (optional)<select name="home" defaultValue="" className="mt-2 w-full rounded-[7px] border border-[#CFC4BC] bg-white px-3 py-3 text-[14px]"><option value="">Select an area</option><option>Heber Valley / Wasatch Back</option><option>Salt Lake or Provo area</option><option>Somewhere else</option></select></label>
