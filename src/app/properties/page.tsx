@@ -90,8 +90,8 @@ export default function PropertiesPage() {
                   <a href={detailHref} className="block min-w-0">
                     <div className="relative h-full min-h-[168px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[1.58] md:h-auto md:rounded-[10px]">
                       <Image
-                        src={property.slug === "powder-room" ? "https://www.roamstead-co.com/listings/powder-room/bedroom-01.jpg" : property.slug === "hygge-house" ? "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" : property.hero.image.src}
-                        alt={property.slug === "hygge-house" ? "Front exterior of Hygge House in Midway, Utah" : property.hero.image.alt}
+                        src={property.slug === "powder-room" ? "/images/powder-room/bedroom.jpg" : property.slug === "hygge-house" ? "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" : property.hero.image.src}
+                        alt={property.slug === "powder-room" ? "Powder Room studio bedroom and seating" : property.slug === "hygge-house" ? "Front exterior of Hygge House in Midway, Utah" : property.hero.image.alt}
                         fill
                         sizes="(min-width: 1024px) 640px, (min-width: 768px) 100vw, 44vw"
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
@@ -116,12 +116,12 @@ export default function PropertiesPage() {
 
                     </div>
 
-                    <p className="mt-2 font-body text-[14px] leading-[22px] text-[#6D6057] md:text-[16px] md:leading-6">{hooks[property.slug]}</p>
+                    <p className="mt-2 font-body text-[14px] leading-[22px] text-[#6D6057] md:min-h-[48px] md:text-[16px] md:leading-6">{hooks[property.slug]}</p>
                     <p className="mt-2 font-body text-[13px] font-normal leading-[20px] tracking-[-0.2px] text-[#6D6057] md:mt-4 md:text-[15px] md:leading-[23px]">
                       {facts.join(" · ")}
                     </p>
 
-                    <a href={href} className="mt-4 inline-flex w-fit items-center justify-center rounded-[6px] border border-[#D9CDC6] px-4 py-2 font-body text-[13px] font-medium text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:mt-5 md:px-5 md:py-3">
+                    <a href={href} className="mt-auto inline-flex min-h-12 w-fit items-center justify-center rounded-[6px] border border-[#D9CDC6] px-4 py-2 font-body text-[13px] font-medium text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:!mt-5 md:px-5 md:py-3">
                       Check dates
                     </a>
                   </div>
