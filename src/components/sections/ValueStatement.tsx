@@ -8,10 +8,10 @@ export const ValueStatement: React.FC = () => {
           className="w-full font-heading text-[29px] font-medium leading-[32px] tracking-[-1.28px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
-          Where Mountain Life Slows Down
+          Book with the locals who run it
         </h2>
         <p className="w-full max-w-[386px] font-body text-[14.5px] font-normal leading-[21px] tracking-[-0.32px] text-[#6D6057] md:max-w-none md:text-[20px] md:leading-8 md:tracking-[-0.4px]">
-          Roamstead is a growing collection of places to stay in Heber Valley and the surrounding mountains. Each property is shaped by its setting, designed to feel intentional, welcoming, and easy to return to.
+          Book direct and you'll always get our best price. You also talk to us, not a call center, so questions about parking or the best powder day get a real answer.
         </p>
       </div>
       <div className="h-5 md:h-6" />
