@@ -9,6 +9,7 @@ interface PropertyCardProps {
   bedrooms?: number;
   baths?: number;
   href: string;
+  detailHref?: string;
   eyebrow?: string;
   hook?: string;
 }
@@ -21,6 +22,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   bedrooms,
   baths,
   href,
+  detailHref,
   hook,
 }) => {
   const facts = [
@@ -30,21 +32,21 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   ].filter(Boolean).join(" · ");
 
   return (
-    <article className="flex w-[76vw] max-w-[292px] shrink-0 snap-start flex-col md:w-auto md:max-w-none md:gap-6">
+    <article className="flex w-[76vw] max-w-[292px] shrink-0 snap-start flex-col md:h-full md:w-auto md:max-w-none md:gap-0">
       <a
-        href={href}
+        href={detailHref || href}
         className="relative h-[190px] w-full shrink-0 overflow-hidden rounded-[16px] md:h-[256px] md:rounded-[8px] md:border md:border-[#D8CCC4]"
       >
         <Image
           src={image}
           alt={name}
           fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 78vw"
+          sizes="(min-width: 1024px) 46vw, (min-width: 768px) 50vw, 78vw"
           className="object-cover"
         />
       </a>
 
-      <div className="mt-3 flex w-full flex-col items-start md:mt-0 md:gap-2">
+      <div className="mt-3 flex w-full flex-1 flex-col items-start md:mt-5 md:gap-2">
         <p className="font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#8F7E73] md:text-[16px] md:leading-6 md:tracking-[-0.32px] md:text-[#6D6057]">
           {location.replace(", Utah", "")}
         </p>
@@ -53,17 +55,17 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           className="mt-0.5 font-heading text-[28px] font-medium leading-[32px] tracking-[-1.12px] text-[#1F3125] md:mt-0 md:text-[44px] md:leading-[48px] md:tracking-[-1.76px] md:text-[#4A6E57]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
-          <a href={href}>{name}</a>
+          <a href={detailHref || href}>{name}</a>
         </h3>
 
-        {hook ? <p className="mt-2 font-body text-[14px] leading-5 text-[#6D6057]">{hook}</p> : null}
-        <p className="mt-2 font-body text-[13px] font-normal leading-5 tracking-[-0.26px] text-[#6D6057] md:text-[16px] md:leading-7">
+        {hook ? <p className="mt-2 font-body text-[15px] leading-[23px] text-[#6D6057]">{hook}</p> : null}
+        <p className="mt-2 font-body text-[14px] font-normal leading-5 tracking-[-0.26px] text-[#6D6057] md:text-[16px] md:leading-7">
           {facts}
         </p>
 
         <a
           href={href}
-          className="mt-3 inline-flex min-h-10 items-center justify-center rounded-[7px] border border-[#D8CCC4] bg-[#FEFDFC] px-5 py-2.5 font-body text-[14px] font-medium leading-5 text-[#291D16] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:mt-4 md:min-h-11 md:text-[16px]"
+          className="mt-auto inline-flex min-h-10 items-center justify-center rounded-[7px] border border-[#D8CCC4] bg-[#FEFDFC] px-5 py-2.5 font-body text-[14px] font-medium leading-5 text-[#291D16] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:!mt-5 md:min-h-11 md:text-[16px]"
         >
           Check dates
         </a>
