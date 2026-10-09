@@ -108,7 +108,7 @@ export const properties: Property[] = [
     ],
     details: [
       {
-        heading: "The House",
+        heading: "The house",
         items: [
           "Historic 1902 three-storey home",
           "9,000 sq ft across three floors",
@@ -119,7 +119,7 @@ export const properties: Property[] = [
         ],
       },
       {
-        heading: "Every Room Includes",
+        heading: "Every room includes",
         items: [
           "Individual air conditioning",
           "Dedicated workspace",
@@ -230,7 +230,7 @@ export const properties: Property[] = [
     ],
     details: [
       {
-        heading: "The Home",
+        heading: "The home",
         items: [
           "4 bedrooms, 3 baths",
           "Open-concept living and kitchen",
@@ -348,7 +348,7 @@ export const properties: Property[] = [
     ],
     details: [
       {
-        heading: "The Home",
+        heading: "The home",
         items: [
           "Newly renovated ground-floor condo",
           "Open floor plan with mountain views",
@@ -455,7 +455,7 @@ export const properties: Property[] = [
     ],
     details: [
       {
-        heading: "The Home",
+        heading: "The home",
         items: [
           "6 bedrooms, 6 private baths",
           "Open main level with pool table",
@@ -571,7 +571,7 @@ export const properties: Property[] = [
     ],
     details: [
       {
-        heading: "The Home",
+        heading: "The home",
         items: [
           "Brand-new condo",
           "2 bedrooms, 2 private baths",
@@ -689,7 +689,7 @@ export const properties: Property[] = [
     ],
     details: [
       {
-        heading: "The Home",
+        heading: "The home",
         items: [
           "Hotel-style studio",
           "1 private full bath",
