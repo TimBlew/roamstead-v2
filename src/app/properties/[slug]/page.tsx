@@ -158,12 +158,6 @@ export default async function PropertyPage({ params }: PageProps) {
                     </div>
                   ))}
                 </div>
-
-                {false && highlights.secondary.length > 0 ? (
-                  <p className="mt-1.5 border-t border-white/12 pt-2 font-body text-[13.5px] font-medium leading-[20px] tracking-[-0.24px] text-[#FFFCFB] md:mt-0 md:border-t md:border-white/20 md:px-3 md:py-3 md:text-left md:text-[13.5px] md:leading-6 md:tracking-[-0.26px]">
-                    {highlights.secondary.join("  ·  ")}
-                  </p>
-                ) : null}
               </div>
             ) : null}
 
