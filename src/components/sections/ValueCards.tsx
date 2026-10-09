@@ -25,7 +25,7 @@ export const ValueCards: React.FC = () => {
 
   return (
     <section className="bg-[#FFFCFB] px-4 pb-4 md:px-6 md:pb-16">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-3 md:grid md:grid-cols-3 md:items-start md:gap-4">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-3 md:grid md:grid-cols-3 md:items-stretch md:gap-4">
         {values.map((value) => (
           <ValueCard key={value.title} {...value} />
         ))}
