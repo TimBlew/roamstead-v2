@@ -2,8 +2,8 @@ import React from "react";
 
 export const ValueStatement: React.FC = () => {
   return (
-    <section className="bg-[#FFFCFB] px-4 pt-6 md:px-6 md:pt-16">
-      <div className="mx-auto flex w-full max-w-[816px] flex-col items-center gap-2.5 text-center md:gap-6">
+    <section className="bg-[#FFFCFB] px-4 pt-6 md:px-6 md:pt-12">
+      <div className="mx-auto flex w-full max-w-[816px] flex-col items-center gap-2.5 text-center md:gap-4">
         <h2
           className="w-full font-heading text-[29px] font-medium leading-[32px] tracking-[-1.28px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
@@ -14,7 +14,7 @@ export const ValueStatement: React.FC = () => {
           Book direct and you'll always get our best price. You also talk to us, not a call center, so questions about parking or the best powder day get a real answer.
         </p>
       </div>
-      <div className="h-5 md:h-6" />
+      <div className="h-4 md:h-5" />
     </section>
   );
 };
