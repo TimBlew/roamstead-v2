@@ -101,6 +101,14 @@ export default async function PropertyPage({ params }: PageProps) {
   const highlights = propertyHighlights[slug] ?? { primary: [], secondary: [] };
   const isSenator = slug === "senator";
   const bookingHref = isSenator ? bookingUrl : "#availability";
+  const shortHeroSummaries: Record<string, string> = {
+    "hygge-house": "A spacious Midway mountain home with a private sauna, office, and room to gather.",
+    granary: "A cozy Midway condo with mountain views, a full kitchen, and an easy walk into town.",
+    daystar: "A generous Deer Valley retreat with a hot tub, sauna, and room for everyone.",
+    lowell: "A welcoming Park City condo just steps from the mountain, with resort amenities.",
+    "powder-room": "A comfortable studio at the base of Park City Mountain Resort.",
+    senator: "A historic Heber City home with individually appointed rooms and breakfast included.",
+  };
   const heroImageClass =
     slug === "hygge-house"
       ? "object-cover scale-[1.18] object-[center_24%] md:scale-100 md:object-center"
@@ -122,7 +130,7 @@ export default async function PropertyPage({ params }: PageProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/22 via-transparent to-transparent" />
 
         <div className="relative z-10 w-full px-4 pb-5 pt-8 md:px-10 md:py-12 lg:px-12">
-          <div className="max-w-[940px] rounded-[18px] border border-white/20 bg-[linear-gradient(180deg,rgba(18,35,26,0.91)_0%,rgba(21,37,28,0.83)_46%,rgba(21,37,28,0.73)_100%)] p-4 shadow-[0_18px_48px_rgba(0,0,0,0.24)] backdrop-blur-[14px] md:max-w-[790px] md:rounded-[22px] md:px-10 md:py-9 lg:max-w-[820px]">
+          <div className="max-w-[620px] rounded-[18px] border border-white/20 bg-[linear-gradient(180deg,rgba(18,35,26,0.91)_0%,rgba(21,37,28,0.83)_46%,rgba(21,37,28,0.73)_100%)] p-4 shadow-[0_18px_48px_rgba(0,0,0,0.24)] backdrop-blur-[14px] md:max-w-[600px] md:rounded-[22px] md:px-10 md:py-8 lg:max-w-[620px]">
             <p className="font-body text-[13px] font-semibold leading-5 tracking-[-0.24px] text-[#E6F0E5] drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)] md:text-[17px] md:leading-6 md:tracking-[-0.28px]">
               {hero.locationLabel}
             </p>
@@ -135,23 +143,23 @@ export default async function PropertyPage({ params }: PageProps) {
             </h1>
 
             <p className="mt-2 max-w-[700px] font-body text-[15.5px] font-medium leading-[22px] tracking-[-0.28px] text-[#FFFCFB] drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)] md:mt-4 md:max-w-[660px] md:text-[18px] md:leading-[27px] md:tracking-[-0.3px]">
-              {hero.subtitle}
+              {shortHeroSummaries[slug] ?? hero.subtitle}
             </p>
 
             {highlights.primary.length > 0 ? (
               <div className="mt-2.5 border-y border-white/24 py-1.5 md:mt-5 md:py-0">
-                <div className="grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-white/20">
+                <div className="grid grid-cols-2 md:grid-cols-2 md:divide-x md:divide-white/20">
                   {highlights.primary.map((item, index) => (
                     <div
                       key={item}
-                      className={`flex min-h-[46px] items-center px-3 py-1.5 font-body text-[13.5px] font-medium leading-[18px] tracking-[-0.24px] text-[#FFFCFB] md:min-h-[66px] md:justify-start md:px-4 md:py-3 md:text-[14px] md:leading-[21px] md:tracking-[-0.2px] ${index % 2 === 1 ? "border-l border-white/18 md:border-l-0" : ""} ${index > 1 ? "border-t border-white/12 md:border-t-0" : ""}`}
+                      className={`flex min-h-[46px] items-center px-3 py-1.5 font-body text-[13.5px] font-medium leading-[18px] tracking-[-0.24px] text-[#FFFCFB] md:min-h-[48px] md:justify-start md:px-4 md:py-3 md:text-[14px] md:leading-[21px] md:tracking-[-0.2px] ${index % 2 === 1 ? "border-l border-white/18 md:border-l-0" : ""} ${index > 1 ? "border-t border-white/12 md:border-t-0" : ""}`}
                     >
                       <span className="block w-full text-left md:text-left">{item}</span>
                     </div>
                   ))}
                 </div>
 
-                {highlights.secondary.length > 0 ? (
+                {false && highlights.secondary.length > 0 ? (
                   <p className="mt-1.5 border-t border-white/12 pt-2 font-body text-[13.5px] font-medium leading-[20px] tracking-[-0.24px] text-[#FFFCFB] md:mt-0 md:border-t md:border-white/20 md:px-3 md:py-3 md:text-left md:text-[13.5px] md:leading-6 md:tracking-[-0.26px]">
                     {highlights.secondary.join("  ·  ")}
                   </p>
@@ -159,7 +167,7 @@ export default async function PropertyPage({ params }: PageProps) {
               </div>
             ) : null}
 
-            <div className="mt-3 flex justify-center md:mt-5">
+            <div className="mt-4 flex justify-start md:mt-5">
               <a
                 href={bookingHref}
                 {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
@@ -173,7 +181,7 @@ export default async function PropertyPage({ params }: PageProps) {
       </section>
 
       <section className="bg-[#FFFCFB] px-4 pb-5 pt-6 md:px-6 md:py-12">
-        <p className="mx-auto max-w-[1180px] font-body text-[16px] font-normal leading-6 tracking-[-0.32px] text-[#6D6057] md:text-[22px] md:leading-9 md:tracking-[-0.4px]">
+        <p className="mx-auto max-w-[760px] font-body text-[16px] font-normal leading-6 tracking-[-0.32px] text-[#6D6057] md:text-[22px] md:leading-9 md:tracking-[-0.4px]">
           {property.intro}
         </p>
       </section>
@@ -182,7 +190,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
       {listingId ? (
         <section id="availability" className="scroll-mt-16 bg-[#F4EFEC] px-4 py-8 md:px-6 md:py-16">
-          <div className="mx-auto max-w-[860px]">
+          <div className="mx-auto max-w-[760px]">
             <div className="mb-4 md:mb-6">
               <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
                 Book direct
@@ -195,7 +203,7 @@ export default async function PropertyPage({ params }: PageProps) {
               </h2>
             </div>
 
-            <div className="rounded-[12px] border border-[#E1D7D1] bg-[#FFFCFB] px-2 py-5 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-5 md:px-7 md:py-7">
+            <div className="rounded-[12px] border border-[#E1D7D1] bg-[#FFFCFB] px-2 py-5 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-5 md:px-5 md:py-7">
               <HostawayBooking listingId={listingId} fallbackUrl={bookingUrl} />
             </div>
           </div>
