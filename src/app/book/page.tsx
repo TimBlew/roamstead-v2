@@ -75,7 +75,7 @@ export default function BookPage() {
                   </h3>
                   <p className="mt-2 font-body text-[13px] leading-5 text-[#6D6057] md:text-[14px]">{facts}</p>
                   <a href={href} {...(senator ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="mt-5 inline-flex min-h-11 w-full items-center justify-between rounded-[5px] bg-[#4A6E57] px-5 font-body text-[13px] font-medium text-white transition-colors hover:bg-[#3C6049] md:mt-6 md:text-[14px]">
-                    {senator ? "Check rooms & dates" : "Check dates"} <span aria-hidden="true" className="ml-2">→</span>
+                    Check dates <span aria-hidden="true" className="ml-2">→</span>
                   </a>
                 </div>
               </article>
