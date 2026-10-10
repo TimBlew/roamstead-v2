@@ -130,7 +130,7 @@ export default async function PropertyPage({ params }: PageProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/22 via-transparent to-transparent" />
 
         <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-5 pt-8 md:flex md:justify-center md:px-10 md:py-12 lg:px-12">
-          <div className="w-full max-w-[620px] rounded-[18px] border border-white/20 bg-[linear-gradient(180deg,rgba(18,35,26,0.91)_0%,rgba(21,37,28,0.83)_46%,rgba(21,37,28,0.73)_100%)] p-4 shadow-[0_18px_48px_rgba(0,0,0,0.24)] backdrop-blur-[14px] md:max-w-[580px] md:rounded-[18px] md:px-9 md:py-8 lg:max-w-[600px]">
+          <div className="w-full max-w-[620px] rounded-[18px] border border-white/20 bg-[linear-gradient(180deg,rgba(18,35,26,0.91)_0%,rgba(21,37,28,0.83)_46%,rgba(21,37,28,0.73)_100%)] p-4 shadow-[0_18px_48px_rgba(0,0,0,0.24)] backdrop-blur-[14px] md:max-w-[580px] md:rounded-[18px] md:px-8 md:py-7 lg:max-w-[600px]">
             <p className="font-body text-[13px] font-semibold leading-5 tracking-[-0.24px] text-[#E6F0E5] drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)] md:text-[17px] md:leading-6 md:tracking-[-0.28px]">
               {hero.locationLabel}
             </p>
@@ -147,12 +147,12 @@ export default async function PropertyPage({ params }: PageProps) {
             </p>
 
             {highlights.primary.length > 0 ? (
-              <div className="mt-3 border-y border-white/20 py-1 md:mt-4 md:py-1">
-                <div className="grid grid-cols-2 gap-x-5 gap-y-0 md:gap-x-6">
+              <div className="mt-4 border-t border-white/20 pt-3 md:mt-4 md:pt-3">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-2 md:gap-x-8 md:gap-y-2">
                   {highlights.primary.map((item) => (
                     <div
                       key={item}
-                      className="flex items-center py-1.5 font-body text-[13px] font-medium leading-5 tracking-[-0.1px] text-[#FFFCFB]"
+                      className="flex items-center py-0.5 font-body text-[13px] font-medium leading-5 tracking-[-0.1px] text-[#FFFCFB]"
                     >
                       <span className="block w-full text-left md:text-left">{item}</span>
                     </div>
@@ -161,7 +161,7 @@ export default async function PropertyPage({ params }: PageProps) {
               </div>
             ) : null}
 
-            <div className="mt-4 flex justify-start md:mt-4">
+            <div className="mt-4 flex justify-start md:mt-5">
               <a
                 href={bookingHref}
                 {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
@@ -174,8 +174,8 @@ export default async function PropertyPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="bg-[#FFFCFB] px-4 pb-5 pt-6 md:px-6 md:py-12">
-        <p className="mx-auto max-w-[1060px] font-body text-[16px] font-normal leading-6 tracking-[-0.32px] text-[#6D6057] md:text-[20px] md:leading-[1.75] md:tracking-[-0.4px]">
+      <section className="bg-[#FFFCFB] px-4 pb-2 pt-6 md:px-6 md:pb-1 md:pt-9">
+        <p className="mx-auto max-w-[1060px] font-body text-[16px] font-normal leading-6 tracking-[-0.32px] text-[#6D6057] md:text-[19px] md:leading-[1.65] md:tracking-[-0.4px]">
           {property.intro}
         </p>
       </section>
