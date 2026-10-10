@@ -68,7 +68,7 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
   };
   const renderMonth = (value: Date) => (
     <div className="min-w-0 flex-1 self-start" key={key(value)}>
-      <h3 className="mb-3 text-center font-heading text-[20px] font-medium tracking-[-0.04em] text-[#1F3125]">{monthText.format(value)}</h3>
+      <h3 className="mb-2 text-center font-heading text-[20px] font-medium tracking-[-0.04em] text-[#1F3125]">{monthText.format(value)}</h3>
       <div className="grid grid-cols-7 auto-rows-[38px] content-start gap-y-1">
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => <span key={day} className="flex h-[32px] items-center justify-center text-center font-body text-[12px] font-semibold text-[#786D65]">{day}</span>)}
         {monthDays(value).map((n, index) => {
@@ -90,7 +90,7 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
   return (
     <div className="mx-auto w-full max-w-[720px]">
       {mode === "checking" ? <div role="status" className="flex min-h-[350px] items-center justify-center font-body text-[15px] text-[#6D6057]">Checking live availability…</div> : <>
-        <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="mb-2 flex items-center justify-between gap-3">
           <button type="button" aria-label="Previous month" disabled={month <= startMonth(today)} onClick={() => setMonth(shift(month, -1))} className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D8CCC4] text-[#1F3125] disabled:opacity-25">‹</button>
           <p className="font-body text-[13px] text-[#6D6057]">Select your arrival and departure</p>
           <button type="button" aria-label="Next month" disabled={month >= lastMonth} onClick={() => setMonth(shift(month, 1))} className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D8CCC4] text-[#1F3125] disabled:opacity-25">›</button>
