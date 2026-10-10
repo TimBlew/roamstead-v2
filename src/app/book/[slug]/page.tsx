@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { HostawayBooking } from "@/components/booking/HostawayBooking";
+import { RoamsteadBooking } from "@/components/booking/RoamsteadBooking";
 import { getProperty } from "@/data/properties";
 
 const listingIds: Record<string, number> = {
@@ -47,7 +47,7 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
             <p className="mt-2 font-body text-[14px] leading-6 text-[#6D6057] md:text-[16px]">Select check-in and check-out to continue your reservation.</p>
           </div>
           <div className="mx-auto mt-5 max-w-[620px] rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 py-5 shadow-[0_8px_28px_rgba(41,29,22,0.035)] sm:px-6 md:mt-6 md:px-7 md:py-7">
-            <HostawayBooking listingId={listingId} fallbackUrl={property.bookingUrl} />
+            <RoamsteadBooking listingId={listingId} fallbackUrl={property.bookingUrl} />
           </div>
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
             <p className="font-body text-[12px] leading-5 text-[#8F7E73] md:text-[13px]">Secure checkout with our booking partner.</p>
