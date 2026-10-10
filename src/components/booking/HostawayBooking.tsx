@@ -10,7 +10,8 @@ declare global {
 
 const SCRIPT_SRC = "https://d2q3n06xhbi0am.cloudfront.net/calendar.js";
 const HOSTAWAY_BASE_URL = "https://roamstead_ventures.holidayfuture.com/";
-const TWO_MONTH_MIN_WIDTH = 680;
+// Only request the two-month widget when its actual mount has sufficient room.
+const TWO_MONTH_MIN_WIDTH = 900;
 
 export function HostawayBooking({ listingId, fallbackUrl }: { listingId: number; fallbackUrl: string }) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -95,8 +96,8 @@ export function HostawayBooking({ listingId, fallbackUrl }: { listingId: number;
   }, [containerId, listingId, months, ready]);
 
   return (
-    <div ref={wrapperRef} className="roamstead-booking-widget mx-auto w-full max-w-[760px]">
-      {!loaded && !failed && <div role="status" aria-live="polite" className="flex min-h-[360px] items-center justify-center rounded-[10px] bg-[#F4EFEC]/50 px-4 text-center font-body text-[14px] text-[#6D6057] md:min-h-[470px]">Loading available dates…</div>}
+    <div ref={wrapperRef} className="roamstead-booking-widget mx-auto w-full max-w-[560px]">
+      {!loaded && !failed && <div role="status" aria-live="polite" className="flex min-h-[280px] items-center justify-center rounded-[10px] bg-[#F4EFEC]/50 px-4 text-center font-body text-[14px] text-[#6D6057] md:min-h-[340px]">Loading available dates…</div>}
       <div id={containerId} className="mx-auto w-full" />
       {failed ? (
         <div className="py-5 text-center">
