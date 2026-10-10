@@ -6,7 +6,7 @@ const propertyLinks = [
   ["Granary", "/properties/granary"],
   ["The Lowell", "/properties/lowell"],
   ["Powder Room", "/properties/powder-room"],
-  ["The Heber Senator ↗", senatorUrl],
+  ["The Heber Senator", senatorUrl],
 ];
 
 export const Footer: React.FC = () => (
@@ -19,7 +19,15 @@ export const Footer: React.FC = () => (
       <div>
         <h2 className="mb-3 text-[15px] font-medium">Our stays</h2>
         <div className="grid gap-2">
-          {propertyLinks.map(([name, href]) => <a key={href} href={href} {...(href.startsWith("https") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="text-[13px] text-[#F4EFEC] hover:underline">{name}</a>)}
+          {propertyLinks.map(([name, href]) => {
+            const external = href.startsWith("https");
+            return (
+              <a key={href} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="group inline-flex w-fit items-baseline gap-1.5 text-[13px] text-[#F4EFEC] transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                <span className="group-hover:underline">{name}</span>
+                {external && <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 shrink-0 opacity-70 transition-[transform,opacity] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100"><path d="M4.5 11.5 11 5M6 5h5v5" /></svg>}
+              </a>
+            );
+          })}
         </div>
       </div>
       <div>
