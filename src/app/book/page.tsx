@@ -18,7 +18,7 @@ export default function BookPage() {
     <div className="bg-[#FFFCFB]">
       <section className="relative overflow-hidden bg-[#F4EFEC]">
         <div className="mx-auto grid w-full items-stretch lg:min-h-[690px] lg:grid-cols-[minmax(0,1.16fr)_minmax(0,0.84fr)]">
-          <div className="relative z-10 flex flex-col justify-center px-5 pb-9 pt-12 sm:px-10 lg:px-14 lg:py-20 xl:pl-20">
+          <div className="relative z-10 flex flex-col justify-center px-5 pb-9 pt-12 sm:px-10 lg:py-20 lg:pl-[clamp(88px,9vw,180px)] lg:pr-8">
             <p className="font-body text-[13px] font-semibold uppercase leading-5 tracking-[0.12em] text-[#4A6E57] md:text-[16px] lg:tracking-[0.14em]">Book direct with Roamstead</p>
             <h1 className="mt-3 max-w-[670px] font-heading text-[40px] font-medium leading-[1.08] tracking-[-0.04em] text-[#1F3125] md:mt-5 md:text-[54px] md:tracking-[-0.04em] lg:text-[clamp(43px,3.1vw,60px)] lg:leading-[1.06] lg:tracking-[-0.045em]">
               Your mountain stay<br className="hidden lg:block" /> is waiting
