@@ -22,9 +22,9 @@ export const Footer: React.FC = () => (
           {propertyLinks.map(([name, href]) => {
             const external = href.startsWith("https");
             return (
-              <a key={href} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="group inline-flex w-fit items-center gap-1 text-[12.5px] leading-5 md:items-baseline md:gap-1.5 md:text-[13px] text-[#F4EFEC] transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+              <a key={href} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="group inline-flex w-fit items-center gap-1 text-[12.5px] leading-5 md:gap-1 md:text-[13px] text-[#F4EFEC] transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
                 <span className="group-hover:underline">{name}</span>
-                {external && <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className="h-2.5 w-2.5 shrink-0 opacity-70 md:h-3 md:w-3 transition-[transform,opacity] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100"><path d="M4.5 11.5 11 5M6 5h5v5" /></svg>}
+                {external && <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round" className="relative -top-px inline-block h-[9px] w-[9px] shrink-0 opacity-60 transition-opacity duration-200 group-hover:opacity-100"><path d="M4.5 11.5 11 5M6 5h5v5" /></svg>}
               </a>
             );
           })}
