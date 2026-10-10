@@ -33,7 +33,7 @@ export default function BookPage() {
             </div>
           </div>
           <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#F4EFEC] sm:aspect-[4/3] lg:aspect-auto lg:min-h-full">
-            <Image src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/357bad24-b2c4-437e-80dd-decc76988428.png" alt="Aerial view of Hygge House and the surrounding mountains in Midway, Utah" fill unoptimized priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-contain object-center saturate-[0.92] contrast-[0.96] brightness-[1.015] lg:object-cover lg:object-[center_50%]" />
+            <Image src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/357bad24-b2c4-437e-80dd-decc76988428.png" alt="Aerial view of Hygge House and the surrounding mountains in Midway, Utah" fill unoptimized priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-contain object-center saturate-[0.92] contrast-[0.96] brightness-[1.015] lg:object-cover lg:object-[center_50%] lg:scale-[0.92]" />
             <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#F4EFEC] via-[#F4EFEC]/25 via-[23%] to-transparent lg:block" />
             <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#F4EFEC] to-transparent lg:hidden" />
           </div>
