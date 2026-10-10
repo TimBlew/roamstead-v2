@@ -85,10 +85,10 @@ export default function PropertiesPage() {
               return (
                 <article
                   key={property.slug}
-                  className="group grid w-full grid-cols-[46%_1fr] gap-3 rounded-[16px] bg-[#FBF8F7] p-2.5 md:flex md:flex-col md:overflow-visible md:rounded-none md:border-0 md:bg-transparent md:p-0"
+                  className="group flex w-full flex-col gap-0 overflow-hidden rounded-[16px] border border-[#E7DFDB] bg-[#FBF8F7] md:flex md:flex-col md:overflow-visible md:rounded-none md:border-0 md:bg-transparent md:p-0"
                 >
                   <a href={detailHref} className="block min-w-0">
-                    <div className="relative h-full min-h-[168px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[1.58] md:h-auto md:rounded-[10px]">
+                    <div className="relative aspect-[1.8] w-full overflow-hidden bg-[#F4EFEC] md:aspect-[1.58] md:h-auto md:rounded-[10px]">
                       <Image
                         src={property.slug === "powder-room" ? "/images/powder-room/bedroom.jpg" : property.slug === "hygge-house" ? "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" : property.hero.image.src}
                         alt={property.slug === "powder-room" ? "Powder Room studio bedroom and seating" : property.slug === "hygge-house" ? "Front exterior of Hygge House in Midway, Utah" : property.hero.image.alt}
@@ -99,14 +99,14 @@ export default function PropertiesPage() {
                     </div>
                   </a>
 
-                  <div className="flex min-w-0 flex-col justify-center py-0.5 pr-1 md:justify-start md:px-0 md:pb-0 md:pt-3">
+                  <div className="flex min-w-0 flex-col px-4 pb-4 pt-3.5 md:justify-start md:px-0 md:pb-0 md:pt-3">
                     <p className="font-body text-[12px] font-medium leading-4 tracking-[-0.24px] text-[#8F7E73] md:text-[14px] md:leading-[20px] md:tracking-[-0.1px]">
                       {property.hero.locationLabel.replace(", Utah", "")}
                     </p>
 
                     <div className="mt-0.5 md:mt-1.5 md:block">
                       <h3
-                        className="font-heading text-[27px] font-medium leading-[29px] tracking-[-1.08px] text-[#1F3125] md:text-[clamp(31px,2.35vw,43px)] md:leading-[1.12] md:tracking-[-0.04em]"
+                        className="font-heading text-[28px] font-medium leading-[1.13] tracking-[-1.08px] text-[#1F3125] md:text-[clamp(31px,2.35vw,43px)] md:leading-[1.12] md:tracking-[-0.04em]"
                         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
                       >
                         <a href={detailHref} className="transition-colors hover:text-[#4A6E57]">
@@ -116,12 +116,12 @@ export default function PropertiesPage() {
 
                     </div>
 
-                    <p className="mt-1.5 font-body text-[14px] leading-[22px] text-[#6D6057] md:text-[16px] md:leading-6">{hooks[property.slug]}</p>
+                    <p className="mt-2 font-body text-[14px] leading-[21px] text-[#6D6057] md:text-[16px] md:leading-6">{hooks[property.slug]}</p>
                     <p className="mt-2 font-body text-[13px] font-normal leading-[20px] tracking-[-0.2px] text-[#6D6057] md:mt-3 md:text-[15px] md:leading-[23px]">
                       {facts.join(" · ")}
                     </p>
 
-                    <a href={href} className="mt-4 inline-flex h-12 w-fit items-center justify-center rounded-[7px] border border-[#D9CDC6] px-5 font-body text-[14px] font-medium text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:mt-4 md:min-w-[155px]">
+                    <a href={href} className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-[7px] border border-[#D9CDC6] px-5 font-body text-[14px] font-medium text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:mt-4 md:h-12 md:w-fit md:min-w-[155px]">
                       Check dates
                     </a>
                   </div>
