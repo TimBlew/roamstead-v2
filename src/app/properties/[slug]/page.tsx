@@ -183,21 +183,21 @@ export default async function PropertyPage({ params }: PageProps) {
       <PropertyGallery slug={slug} fallback={stories.map((story) => ({ src: story.image.src, alt: story.image.alt }))} />
 
       {listingId ? (
-        <section id="availability" className="scroll-mt-16 bg-[#F4EFEC] px-4 py-8 md:px-6 md:py-16">
+        <section id="availability" className="scroll-mt-16 bg-[#F4EFEC] px-4 py-7 md:px-6 md:py-11">
           <div className="mx-auto max-w-[620px]">
-            <div className="mb-4 md:mb-5">
+            <div className="mb-3 md:mb-4">
               <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
                 Book direct
               </p>
               <h2
-                className="mt-1.5 font-heading text-[32px] font-medium leading-[36px] tracking-[-1.28px] md:mt-2 text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
+                className="mt-1 font-heading text-[32px] font-medium leading-[36px] tracking-[-1.28px] md:mt-1.5 text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
                 Find your dates
               </h2>
             </div>
 
-            <div className="rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 py-5 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-6 md:px-7 md:py-7">
+            <div className="rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 pb-5 pt-3 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-6 md:px-7 md:pb-6 md:pt-4">
               <RoamsteadBooking listingId={listingId} fallbackUrl={bookingUrl} />
             </div>
           </div>
