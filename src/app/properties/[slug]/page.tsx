@@ -205,9 +205,9 @@ export default async function PropertyPage({ params }: PageProps) {
       ) : null}
 
       {stories.length > 0 ? (
-        <section className="bg-[#FFFCFB] px-3 pb-3 pt-5 sm:px-4 md:px-6 md:pb-10 md:pt-14">
+        <section className="bg-[#FFFCFB] px-3 pb-3 pt-6 sm:px-4 md:px-6 md:pb-10 md:pt-14">
           <div className="mx-auto max-w-[1280px]">
-            <div className="mb-2 max-w-[760px] md:mb-7">
+            <div className="mb-5 max-w-[760px] md:mb-10">
               <h2
                 className="font-heading text-[32px] font-medium leading-[36px] tracking-[-1.28px] text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
