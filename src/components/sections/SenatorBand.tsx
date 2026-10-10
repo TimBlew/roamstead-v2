@@ -15,7 +15,7 @@ export function SenatorBand({ campaign }: { campaign: "senator-band" | "properti
           <div className="mt-4 flex items-center border-l-[3px] border-[#4A6E57] py-0.5 pl-4"><div><p className="font-body text-[11px] font-semibold uppercase tracking-[0.13em] text-[#4A6E57]">3-time Best of State</p><p className="mt-1 font-body text-[14px] font-medium tracking-[-0.01em] text-[#1F3125]">2024 · 2025 · 2026</p></div></div>
           <div className="mt-5 flex w-fit flex-col items-center">
             <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex h-12 min-w-[210px] items-center justify-center gap-2 whitespace-nowrap rounded-[7px] bg-[#4A6E57] px-6 font-body text-[15px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">Stay at the Senator →</a>
-            <p className="mt-2 text-center font-body text-[12px] leading-5 text-[#6D6057]">Books on hebersenator.com</p>
+            <p className="mt-1.5 text-center font-body text-[12px] leading-5 text-[#6D6057]">Books on hebersenator.com</p>
           </div>
         </div>
       </div>
