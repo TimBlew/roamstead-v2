@@ -20,21 +20,21 @@ export default function PropertiesPage() {
   return (
     <>
       <section className="relative overflow-hidden bg-[#F4EFEC]">
-        <div className="mx-auto grid max-w-[1440px] items-stretch lg:min-h-[570px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.94fr)]">
-          <div className="relative z-10 flex flex-col justify-center px-4 pb-5 pt-7 md:px-10 md:py-12 lg:px-14 lg:py-16 xl:pl-20">
-            <div className="max-w-[610px]">
-              <p className="font-body text-[13px] font-medium leading-[18px] tracking-[0.02em] text-[#4A6E57] md:text-[14px] lg:tracking-[0.1em]">
+        <div className="mx-auto grid max-w-[1440px] items-stretch lg:min-h-[510px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.94fr)]">
+          <div className="relative z-10 flex flex-col justify-center px-4 pb-5 pt-7 md:px-10 md:py-12 lg:px-12 lg:py-12 xl:pl-16">
+            <div className="max-w-[680px]">
+              <p className="font-body text-[13px] font-semibold uppercase leading-5 tracking-[0.12em] text-[#4A6E57] md:text-[16px] lg:tracking-[0.14em]">
                 Our stays
               </p>
               <h1
-                className="mt-3 max-w-[600px] font-heading text-[40px] font-medium leading-[41px] tracking-[-1.6px] text-[#1F3125] md:mt-5 md:text-[54px] md:leading-[1.08] md:tracking-[-2px] lg:mt-5 lg:text-[clamp(46px,3.45vw,64px)] lg:leading-[1.06] lg:tracking-[-0.045em]"
+                className="mt-3 max-w-[670px] font-heading text-[40px] font-medium leading-[41px] tracking-[-1.6px] text-[#1F3125] md:mt-5 md:text-[54px] md:leading-[1.08] md:tracking-[-2px] lg:mt-5 lg:text-[clamp(43px,3.1vw,60px)] lg:leading-[1.06] lg:tracking-[-0.045em]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
-                Homes for people who roam
+                Homes for people<br className="hidden lg:block" /> who roam
               </h1>
-              <div className="mt-5 max-w-[680px] border-l border-[#4A6E57]/25 pl-4 md:mt-8 md:pl-6 lg:mt-7 lg:max-w-[485px]">
-                <p className="font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:text-[17px] md:leading-[27px] md:tracking-[-0.22px] lg:leading-[1.5]">
-                  Roamstead Collective started in Heber Valley and has grown across the Wasatch Back. Every home is different. The rule is the same: the place comes first.
+              <div className="mt-5 max-w-[680px] border-l border-[#4A6E57]/25 pl-4 md:mt-8 md:pl-6 lg:mt-6 lg:max-w-[560px]">
+                <p className="font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:text-[18px] md:leading-[28px] md:tracking-[-0.22px] lg:leading-[1.5]">
+                  Roamstead Collective started in Heber Valley and has grown across the Wasatch Back. Every home is different. The rule is the same: <strong className="font-semibold text-[#1F3125]">the place comes first.</strong>
                 </p>
               </div>
             </div>
@@ -54,21 +54,21 @@ export default function PropertiesPage() {
         </div>
       </section>
 
-      <section className="bg-[#FFFCFB] px-2 py-7 md:px-8 md:py-12 lg:px-10">
+      <section className="bg-[#FFFCFB] px-2 py-7 md:px-8 md:py-9 lg:px-10">
         <div className="mx-auto max-w-[1440px]">
-          <div className="mb-5 px-1 md:mb-8 md:px-0">
+          <div className="mb-4 px-1 md:mb-5 md:px-0">
             <h2
               className="font-heading text-[31px] font-medium leading-[34px] tracking-[-1.24px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
               Find your fit
             </h2>
-            <p className="mt-2 max-w-[42ch] font-body text-[14.5px] font-normal leading-[21px] tracking-[-0.29px] text-[#6D6057] md:mt-4 md:max-w-[820px] md:text-[18px] md:leading-7 md:tracking-[-0.36px]">
+            <p className="mt-2 max-w-[42ch] font-body text-[14.5px] font-normal leading-[21px] tracking-[-0.29px] text-[#6D6057] md:mt-2 md:max-w-[820px] md:text-[18px] md:leading-[1.45] md:tracking-[-0.36px]">
               From a studio at the base of Park City Mountain to a Midway home that sleeps 10, each stay has its own setting and its own reason to come back.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-7 xl:grid-cols-2 xl:gap-8">
+          <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-x-7 md:gap-y-9 xl:grid-cols-2 xl:gap-x-8">
             {collection.map((property) => {
               if (!property) return null;
 
@@ -99,12 +99,12 @@ export default function PropertiesPage() {
                     </div>
                   </a>
 
-                  <div className="flex min-w-0 flex-col justify-center py-0.5 pr-1 md:flex-1 md:justify-start md:px-0 md:pb-0 md:pt-5">
+                  <div className="flex min-w-0 flex-col justify-center py-0.5 pr-1 md:flex-1 md:justify-start md:px-0 md:pb-0 md:pt-3">
                     <p className="font-body text-[12px] font-medium leading-4 tracking-[-0.24px] text-[#8F7E73] md:text-[14px] md:leading-[20px] md:tracking-[-0.1px]">
                       {property.hero.locationLabel.replace(", Utah", "")}
                     </p>
 
-                    <div className="mt-0.5 md:mt-3 md:block">
+                    <div className="mt-0.5 md:mt-1.5 md:block">
                       <h3
                         className="font-heading text-[27px] font-medium leading-[29px] tracking-[-1.08px] text-[#1F3125] md:text-[clamp(31px,2.35vw,43px)] md:leading-[1.12] md:tracking-[-0.04em]"
                         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
@@ -116,12 +116,12 @@ export default function PropertiesPage() {
 
                     </div>
 
-                    <p className="mt-2 font-body text-[14px] leading-[22px] text-[#6D6057] md:min-h-[48px] md:text-[16px] md:leading-6">{hooks[property.slug]}</p>
-                    <p className="mt-2 font-body text-[13px] font-normal leading-[20px] tracking-[-0.2px] text-[#6D6057] md:mt-4 md:text-[15px] md:leading-[23px]">
+                    <p className="mt-1.5 font-body text-[14px] leading-[22px] text-[#6D6057] md:min-h-[48px] md:text-[16px] md:leading-6">{hooks[property.slug]}</p>
+                    <p className="mt-2 font-body text-[13px] font-normal leading-[20px] tracking-[-0.2px] text-[#6D6057] md:mt-2 md:text-[15px] md:leading-[23px]">
                       {facts.join(" · ")}
                     </p>
 
-                    <a href={href} className="mt-auto inline-flex min-h-12 w-fit items-center justify-center rounded-[6px] border border-[#D9CDC6] px-4 py-2 font-body text-[13px] font-medium text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:!mt-5 md:px-5 md:py-3">
+                    <a href={href} className="mt-3 inline-flex min-h-12 w-fit items-center justify-center rounded-[6px] border border-[#D9CDC6] px-4 py-2 font-body text-[13px] font-medium text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:!mt-3 md:px-5 md:py-3">
                       Check dates
                     </a>
                   </div>
