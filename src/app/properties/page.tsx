@@ -27,7 +27,7 @@ export default function PropertiesPage() {
                 Our stays
               </p>
               <h1
-                className="mt-3 max-w-[670px] font-heading text-[40px] font-medium leading-[41px] tracking-[-1.6px] text-[#1F3125] md:mt-5 md:text-[54px] md:leading-[1.08] md:tracking-[-2px] lg:mt-5 lg:text-[clamp(43px,3.1vw,60px)] lg:leading-[1.06] lg:tracking-[-0.045em]"
+                className="mt-3 max-w-[670px] font-heading text-[40px] font-medium leading-[1.08] tracking-[-0.04em] text-[#1F3125] md:mt-5 md:text-[54px] md:tracking-[-0.04em] lg:text-[clamp(43px,3.1vw,60px)] lg:leading-[1.06] lg:tracking-[-0.045em]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
                 Homes for people<br className="hidden lg:block" /> who roam
