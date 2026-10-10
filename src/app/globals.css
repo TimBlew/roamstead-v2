@@ -365,6 +365,8 @@ a {
 .roamstead-booking-widget #hostaway-calendar-widget > * {
   margin-left: auto !important;
   margin-right: auto !important;
+  position: relative;
+  left: var(--hostaway-offset, 0px);
 }
 .roamstead-booking-widget #hostaway-calendar-widget button {
   font-family: var(--font-body) !important;
