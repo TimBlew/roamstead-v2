@@ -68,7 +68,7 @@ export default function PropertiesPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-x-7 md:gap-y-9 xl:grid-cols-2 xl:gap-x-8">
+          <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-x-7 md:gap-y-10 xl:grid-cols-2 xl:gap-x-8">
             {collection.map((property) => {
               if (!property) return null;
 
@@ -85,7 +85,7 @@ export default function PropertiesPage() {
               return (
                 <article
                   key={property.slug}
-                  className="group grid w-full grid-cols-[46%_1fr] gap-3 rounded-[16px] bg-[#FBF8F7] p-2.5 md:flex md:h-full md:flex-col md:overflow-visible md:rounded-none md:border-0 md:bg-transparent md:p-0"
+                  className="group grid w-full grid-cols-[46%_1fr] gap-3 rounded-[16px] bg-[#FBF8F7] p-2.5 md:flex md:flex-col md:overflow-visible md:rounded-none md:border-0 md:bg-transparent md:p-0"
                 >
                   <a href={detailHref} className="block min-w-0">
                     <div className="relative h-full min-h-[168px] overflow-hidden rounded-[13px] bg-[#F4EFEC] md:aspect-[1.58] md:h-auto md:rounded-[10px]">
@@ -99,7 +99,7 @@ export default function PropertiesPage() {
                     </div>
                   </a>
 
-                  <div className="flex min-w-0 flex-col justify-center py-0.5 pr-1 md:flex-1 md:justify-start md:px-0 md:pb-0 md:pt-3">
+                  <div className="flex min-w-0 flex-col justify-center py-0.5 pr-1 md:justify-start md:px-0 md:pb-0 md:pt-3">
                     <p className="font-body text-[12px] font-medium leading-4 tracking-[-0.24px] text-[#8F7E73] md:text-[14px] md:leading-[20px] md:tracking-[-0.1px]">
                       {property.hero.locationLabel.replace(", Utah", "")}
                     </p>
@@ -116,12 +116,12 @@ export default function PropertiesPage() {
 
                     </div>
 
-                    <p className="mt-1.5 font-body text-[14px] leading-[22px] text-[#6D6057] md:min-h-[48px] md:text-[16px] md:leading-6">{hooks[property.slug]}</p>
-                    <p className="mt-2 font-body text-[13px] font-normal leading-[20px] tracking-[-0.2px] text-[#6D6057] md:mt-2 md:text-[15px] md:leading-[23px]">
+                    <p className="mt-1.5 font-body text-[14px] leading-[22px] text-[#6D6057] md:text-[16px] md:leading-6">{hooks[property.slug]}</p>
+                    <p className="mt-2 font-body text-[13px] font-normal leading-[20px] tracking-[-0.2px] text-[#6D6057] md:mt-3 md:text-[15px] md:leading-[23px]">
                       {facts.join(" · ")}
                     </p>
 
-                    <a href={href} className="mt-3 inline-flex min-h-12 w-fit items-center justify-center rounded-[6px] border border-[#D9CDC6] px-4 py-2 font-body text-[13px] font-medium text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:!mt-3 md:px-5 md:py-3">
+                    <a href={href} className="mt-4 inline-flex h-12 w-fit items-center justify-center rounded-[7px] border border-[#D9CDC6] px-5 font-body text-[14px] font-medium text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:mt-4 md:min-w-[155px]">
                       Check dates
                     </a>
                   </div>
