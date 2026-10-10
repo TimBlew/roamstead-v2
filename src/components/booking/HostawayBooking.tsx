@@ -40,6 +40,45 @@ export function HostawayBooking({ listingId, fallbackUrl }: { listingId: number;
     };
   }, []);
 
+  // Hostaway reserves uneven internal space on some layouts. Align the
+  // rendered action row with our panel rather than guessing at its DOM widths.
+  useEffect(() => {
+    if (!loaded || failed) return;
+    const mount = wrapperRef.current?.querySelector<HTMLElement>("#hostaway-calendar-widget");
+    if (!mount) return;
+
+    let frame = 0;
+    const centerControls = () => {
+      mount.style.setProperty("--hostaway-offset", "0px");
+      const candidates = Array.from(mount.querySelectorAll<HTMLElement>("button, a, [role='button']"));
+      const clear = candidates.find((element) => /^clear dates$/i.test(element.textContent?.trim() ?? ""));
+      const continueButton = candidates.find((element) => /continue to booking/i.test(element.textContent?.trim() ?? ""));
+      if (!clear || !continueButton) return;
+      const left = clear.getBoundingClientRect();
+      const right = continueButton.getBoundingClientRect();
+      const mountRect = mount.getBoundingClientRect();
+      if (!left.width || !right.width || !mountRect.width) return;
+      const controlsCenter = (Math.min(left.left, right.left) + Math.max(left.right, right.right)) / 2;
+      const panelCenter = mountRect.left + mountRect.width / 2;
+      const offset = Math.max(-120, Math.min(120, panelCenter - controlsCenter));
+      mount.style.setProperty("--hostaway-offset", `${Math.round(offset)}px`);
+    };
+    const refresh = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(centerControls);
+    };
+    refresh();
+    const observer = new ResizeObserver(refresh);
+    observer.observe(mount);
+    window.addEventListener("resize", refresh);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("resize", refresh);
+      mount.style.removeProperty("--hostaway-offset");
+    };
+  }, [loaded, failed, months]);
+
   useEffect(() => {
     if (!ready) return;
 
