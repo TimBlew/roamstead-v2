@@ -19,9 +19,9 @@ export default function BookPage() {
       <section className="relative overflow-hidden bg-[#F4EFEC]">
         <div className="mx-auto grid w-full items-stretch lg:min-h-[590px] lg:grid-cols-[minmax(0,1.03fr)_minmax(0,0.97fr)]">
           <div className="relative z-10 flex flex-col justify-center px-5 pb-9 pt-12 sm:px-10 lg:px-14 lg:py-20 xl:pl-20">
-            <p className="font-body text-[12px] font-medium uppercase tracking-[0.12em] text-[#4A6E57] md:text-[13px]">Book direct with Roamstead</p>
-            <h1 className="mt-5 max-w-[660px] font-heading text-[43px] font-medium leading-[1.04] tracking-[-0.045em] text-[#1F3125] sm:text-[54px] lg:text-[61px]">
-              Your mountain stay is waiting
+            <p className="font-body text-[13px] font-semibold uppercase leading-5 tracking-[0.12em] text-[#4A6E57] md:text-[16px] lg:tracking-[0.14em]">Book direct with Roamstead</p>
+            <h1 className="mt-3 max-w-[670px] font-heading text-[40px] font-medium leading-[1.08] tracking-[-0.04em] text-[#1F3125] md:mt-5 md:text-[54px] md:tracking-[-0.04em] lg:text-[clamp(43px,3.1vw,60px)] lg:leading-[1.06] lg:tracking-[-0.045em]">
+              Your mountain stay<br className="hidden lg:block" /> is waiting
             </h1>
             <p className="mt-5 max-w-[510px] font-body text-[16px] leading-[1.65] text-[#6D6057] lg:text-[18px]">
               Thoughtfully chosen places to settle in and stay awhile. Explore the collection, choose your dates, and book directly.
