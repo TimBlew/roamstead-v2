@@ -17,7 +17,7 @@ export default function BookPage() {
   return (
     <div className="bg-[#FFFCFB]">
       <section className="relative overflow-hidden bg-[#F4EFEC]">
-        <div className="mx-auto grid w-full items-stretch lg:min-h-[540px] lg:grid-cols-[minmax(0,1.03fr)_minmax(0,0.97fr)]">
+        <div className="mx-auto grid w-full items-stretch lg:min-h-[650px] lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)]">
           <div className="relative z-10 flex flex-col justify-center px-5 pb-9 pt-12 sm:px-10 lg:px-14 lg:py-20 xl:pl-20">
             <p className="font-body text-[13px] font-semibold uppercase leading-5 tracking-[0.12em] text-[#4A6E57] md:text-[16px] lg:tracking-[0.14em]">Book direct with Roamstead</p>
             <h1 className="mt-3 max-w-[670px] font-heading text-[40px] font-medium leading-[1.08] tracking-[-0.04em] text-[#1F3125] md:mt-5 md:text-[54px] md:tracking-[-0.04em] lg:text-[clamp(43px,3.1vw,60px)] lg:leading-[1.06] lg:tracking-[-0.045em]">
@@ -33,8 +33,8 @@ export default function BookPage() {
             </div>
           </div>
           <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#F4EFEC] sm:aspect-[4/3] lg:aspect-auto lg:min-h-full">
-            <Image src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/357bad24-b2c4-437e-80dd-decc76988428.png" alt="Aerial view of Hygge House and the surrounding mountains in Midway, Utah" fill unoptimized priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-contain object-center saturate-[0.92] contrast-[0.96] brightness-[1.015] lg:object-contain lg:object-right" />
-            <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#F4EFEC] via-[#F4EFEC]/30 via-[22%] to-transparent lg:block" />
+            <Image src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/357bad24-b2c4-437e-80dd-decc76988428.png" alt="Aerial view of Hygge House and the surrounding mountains in Midway, Utah" fill unoptimized priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-contain object-center saturate-[0.92] contrast-[0.96] brightness-[1.015] lg:object-cover lg:object-[center_50%]" />
+            <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#F4EFEC] via-[#F4EFEC]/25 via-[23%] to-transparent lg:block" />
             <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#F4EFEC] to-transparent lg:hidden" />
           </div>
         </div>
