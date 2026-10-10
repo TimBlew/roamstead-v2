@@ -46,30 +46,30 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         />
       </a>
 
-      <div className="mt-3 flex w-full flex-col items-start md:mt-3">
-        <p className="font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#8F7E73] md:text-[14px] md:leading-5 md:tracking-[-0.2px] md:text-[#6D6057]">
+      <div className="mt-4 flex w-full flex-col items-start md:mt-4">
+        <p className="font-body text-[13px] font-medium leading-5 text-[#82766F] md:text-[14px]">
           {location.replace(", Utah", "")}
         </p>
-
         <h3
-          className="mt-0.5 font-heading text-[28px] font-medium leading-[32px] tracking-[-1.12px] text-[#1F3125] md:mt-1 md:text-[38px] md:leading-[1.12] md:tracking-[-1.4px] md:text-[#1F3125]"
+          className="mt-1 font-heading text-[28px] font-medium leading-[1.12] tracking-[-1.1px] text-[#1F3125] md:text-[36px] md:tracking-[-1.3px]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
           <a href={detailHref || href}>{name}</a>
         </h3>
-
-        {hook ? <p className="mt-2 font-body text-[15px] leading-[1.5] text-[#6D6057] md:mt-2 md:text-[16px]">{hook}</p> : null}
-        <div className="mt-3 flex w-full flex-col items-start gap-3 md:mt-3 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-4 md:gap-y-2">
-          <p className="font-body text-[14px] font-normal leading-5 tracking-[-0.2px] text-[#6D6057] md:text-[14px]">
-            {facts}
+        {hook ? (
+          <p className="mt-2 font-body text-[15px] leading-[1.5] text-[#6D6057] md:text-[16px]">
+            {hook}
           </p>
-          <a
-            href={href}
-            className="inline-flex h-11 w-full items-center justify-center rounded-[7px] border border-[#D8CCC4] bg-[#FEFDFC] px-5 font-body text-[14px] font-medium leading-5 text-[#291D16] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:h-10 md:w-auto md:min-w-[140px]"
-          >
-            Check dates
-          </a>
-        </div>
+        ) : null}
+        <p className="mt-3 font-body text-[13px] leading-5 text-[#6D6057] md:mt-3 md:text-[14px]">
+          {facts}
+        </p>
+        <a
+          href={href}
+          className="mt-4 inline-flex h-11 w-auto min-w-[144px] items-center justify-center whitespace-nowrap rounded-[7px] border border-[#CFC5BD] bg-[#FEFDFC] px-6 font-body text-[14px] font-medium text-[#1F3125] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] md:mt-4"
+        >
+          Check dates
+        </a>
       </div>
     </article>
   );
