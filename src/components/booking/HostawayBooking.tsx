@@ -70,10 +70,13 @@ export function HostawayBooking({ listingId, fallbackUrl }: { listingId: number;
     refresh();
     const observer = new ResizeObserver(refresh);
     observer.observe(mount);
+    const contentObserver = new MutationObserver(refresh);
+    contentObserver.observe(mount, { childList: true, subtree: true });
     window.addEventListener("resize", refresh);
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
+      contentObserver.disconnect();
       window.removeEventListener("resize", refresh);
       mount.style.removeProperty("--hostaway-offset");
     };
