@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Server-only Hostaway integration; refreshed when production credentials are configured.
 export const dynamic = "force-dynamic";
 const LISTING_IDS = new Set(["455635", "455631", "455634", "455632", "455633"]);
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
