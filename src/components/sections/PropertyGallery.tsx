@@ -62,7 +62,7 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
   const next = () => setActive((n) => (n + 1) % photos.length);
 
   return (
-    <section aria-label="Property photo gallery" className="bg-[#FFFCFB] px-4 pb-10 pt-5 md:px-6 md:pb-16 md:pt-8">
+    <section aria-label="Property photo gallery" className="bg-[#FFFCFB] px-4 pb-10 pt-3 md:px-6 md:pb-14 md:pt-4">
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-4 flex items-end justify-between gap-4">
           <h2 className="font-heading text-[30px] font-medium leading-tight tracking-[-1.2px] text-[#1F3125] md:text-[42px] md:tracking-[-1.7px]">Explore the space<span className="text-[#4A6E57]">.</span></h2>
