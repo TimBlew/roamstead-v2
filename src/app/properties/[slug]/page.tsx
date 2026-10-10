@@ -184,8 +184,8 @@ export default async function PropertyPage({ params }: PageProps) {
 
       {listingId ? (
         <section id="availability" className="scroll-mt-16 bg-[#F4EFEC] px-4 py-8 md:px-6 md:py-16">
-          <div className="mx-auto max-w-[760px]">
-            <div className="mb-4 md:mb-6">
+          <div className="mx-auto max-w-[620px]">
+            <div className="mb-4 md:mb-5">
               <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
                 Book direct
               </p>
@@ -197,7 +197,7 @@ export default async function PropertyPage({ params }: PageProps) {
               </h2>
             </div>
 
-            <div className="rounded-[12px] border border-[#E1D7D1] bg-[#FFFCFB] px-2 py-5 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-5 md:px-5 md:py-7">
+            <div className="rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 py-5 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-6 md:px-7 md:py-7">
               <HostawayBooking listingId={listingId} fallbackUrl={bookingUrl} />
             </div>
           </div>
