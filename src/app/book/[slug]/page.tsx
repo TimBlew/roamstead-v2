@@ -41,12 +41,12 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
               <p className="mt-0.5 font-body text-[12px] text-[#6D6057] sm:text-[13px]">{property.hero.locationLabel.replace(", Utah", "")}</p>
             </div>
           </div>
-          <div className="mt-8 md:mt-10">
+          <div className="mt-6 md:mt-7">
             <p className="font-body text-[12px] font-medium uppercase tracking-[0.1em] text-[#4A6E57]">Book direct</p>
-            <h2 className="mt-2 font-heading text-[35px] font-medium leading-[1.08] tracking-[-0.045em] text-[#1F3125] md:text-[49px]">Choose your dates</h2>
+            <h2 className="mt-1 font-heading text-[35px] font-medium leading-[1.08] tracking-[-0.045em] text-[#1F3125] md:text-[49px]">Choose your dates</h2>
             <p className="mt-2 font-body text-[14px] leading-6 text-[#6D6057] md:text-[16px]">Select check-in and check-out to continue your reservation.</p>
           </div>
-          <div className="mx-auto mt-5 max-w-[620px] rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 py-5 shadow-[0_8px_28px_rgba(41,29,22,0.035)] sm:px-6 md:mt-6 md:px-7 md:py-7">
+          <div className="mx-auto mt-4 max-w-[620px] rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 pb-5 pt-3 shadow-[0_8px_28px_rgba(41,29,22,0.035)] sm:px-6 md:mt-4 md:px-7 md:pb-6 md:pt-4">
             <RoamsteadBooking listingId={listingId} fallbackUrl={property.bookingUrl} />
           </div>
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
