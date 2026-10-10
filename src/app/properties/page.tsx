@@ -34,7 +34,7 @@ export default function PropertiesPage() {
               </h1>
               <div className="mt-5 max-w-[680px] border-l border-[#4A6E57]/25 pl-4 md:mt-8 md:pl-6 lg:mt-6 lg:max-w-[560px]">
                 <p className="font-body text-[15px] font-normal leading-[21px] tracking-[-0.3px] text-[#6D6057] md:text-[18px] md:leading-[28px] md:tracking-[-0.22px] lg:leading-[1.5]">
-                  Roamstead Collective started in Heber Valley and has grown across the Wasatch Back. Every home is different. The rule is the same: <strong className="relative inline font-semibold text-[#4A6E57] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"><span className="relative z-10">the place comes first.</span><span aria-hidden="true" className="absolute inset-x-0 bottom-[0.02em] h-[0.2em] rounded-full bg-[#4A6E57]/15" /></strong>
+                  Roamstead Collective started in Heber Valley and has grown across the Wasatch Back. Every home is different. The rule is the same: <span className="font-normal text-[#4A6E57]">the place comes first.</span>
                 </p>
               </div>
             </div>
