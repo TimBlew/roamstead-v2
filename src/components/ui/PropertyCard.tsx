@@ -32,10 +32,10 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   ].filter(Boolean).join(" · ");
 
   return (
-    <article className="flex w-[76vw] max-w-[292px] shrink-0 snap-start flex-col md:h-full md:w-auto md:max-w-none md:gap-0">
+    <article className="flex w-[76vw] max-w-[292px] shrink-0 snap-start flex-col md:w-auto md:max-w-none md:gap-0">
       <a
         href={detailHref || href}
-        className="relative h-[180px] w-full shrink-0 overflow-hidden rounded-[16px] md:h-[256px] md:rounded-[8px] md:border md:border-[#D8CCC4]"
+        className="relative h-[180px] w-full shrink-0 overflow-hidden rounded-[16px] md:aspect-[1.9] md:h-auto md:rounded-[8px] md:border md:border-[#D8CCC4]"
       >
         <Image
           src={image}
@@ -46,29 +46,30 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         />
       </a>
 
-      <div className="mt-3 flex w-full flex-1 flex-col items-start md:mt-5">
-        <p className="font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#8F7E73] md:text-[16px] md:leading-6 md:tracking-[-0.32px] md:text-[#6D6057]">
+      <div className="mt-3 flex w-full flex-col items-start md:mt-3">
+        <p className="font-body text-[13px] font-medium leading-5 tracking-[-0.26px] text-[#8F7E73] md:text-[14px] md:leading-5 md:tracking-[-0.2px] md:text-[#6D6057]">
           {location.replace(", Utah", "")}
         </p>
 
         <h3
-          className="mt-0.5 font-heading text-[28px] font-medium leading-[32px] tracking-[-1.12px] text-[#1F3125] md:mt-0 md:text-[44px] md:leading-[48px] md:tracking-[-1.76px] md:text-[#4A6E57]"
+          className="mt-0.5 font-heading text-[28px] font-medium leading-[32px] tracking-[-1.12px] text-[#1F3125] md:mt-1 md:text-[38px] md:leading-[1.12] md:tracking-[-1.4px] md:text-[#1F3125]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
           <a href={detailHref || href}>{name}</a>
         </h3>
 
-        {hook ? <p className="mt-3 min-h-[69px] font-body text-[15px] leading-[23px] text-[#6D6057] md:min-h-[48px]">{hook}</p> : null}
-        <p className="mt-2 font-body text-[14px] font-normal leading-5 tracking-[-0.26px] text-[#6D6057] md:text-[16px] md:leading-7">
-          {facts}
-        </p>
-
-        <a
-          href={href}
-          className="mt-4 inline-flex h-12 w-full items-center justify-center rounded-[7px] border border-[#D8CCC4] bg-[#FEFDFC] px-5 font-body text-[14px] font-medium leading-5 text-[#291D16] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:mt-5 md:w-auto md:min-w-[160px] md:text-[16px]"
-        >
-          Check dates
-        </a>
+        {hook ? <p className="mt-2 font-body text-[15px] leading-[1.5] text-[#6D6057] md:mt-2 md:text-[16px]">{hook}</p> : null}
+        <div className="mt-3 flex w-full flex-col items-start gap-3 md:mt-3 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-4 md:gap-y-2">
+          <p className="font-body text-[14px] font-normal leading-5 tracking-[-0.2px] text-[#6D6057] md:text-[14px]">
+            {facts}
+          </p>
+          <a
+            href={href}
+            className="inline-flex h-11 w-full items-center justify-center rounded-[7px] border border-[#D8CCC4] bg-[#FEFDFC] px-5 font-body text-[14px] font-medium leading-5 text-[#291D16] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:h-10 md:w-auto md:min-w-[140px]"
+          >
+            Check dates
+          </a>
+        </div>
       </div>
     </article>
   );
