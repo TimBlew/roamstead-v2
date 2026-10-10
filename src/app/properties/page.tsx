@@ -20,7 +20,7 @@ export default function PropertiesPage() {
   return (
     <>
       <section className="relative overflow-hidden bg-[#F4EFEC]">
-        <div className="mx-auto grid max-w-[1440px] items-stretch lg:min-h-[510px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.94fr)]">
+        <div className="mx-auto grid w-full items-stretch lg:min-h-[510px] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.94fr)]">
           <div className="relative z-10 flex flex-col justify-center px-4 pb-5 pt-7 md:px-10 md:py-12 lg:px-12 lg:py-12 xl:pl-16">
             <div className="max-w-[680px]">
               <p className="font-body text-[13px] font-semibold uppercase leading-5 tracking-[0.12em] text-[#4A6E57] md:text-[16px] lg:tracking-[0.14em]">
