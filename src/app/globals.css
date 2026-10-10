@@ -361,6 +361,38 @@ a {
   outline: 2px solid #4a6e57;
   outline-offset: 2px;
 }
+/* Refine the third-party calendar without changing its availability or checkout logic. */
+.roamstead-booking-widget #hostaway-calendar-widget > * {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.roamstead-booking-widget #hostaway-calendar-widget button {
+  font-family: var(--font-body) !important;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+.roamstead-booking-widget #hostaway-calendar-widget button,
+.roamstead-booking-widget #hostaway-calendar-widget a {
+  max-width: 100%;
+}
+.roamstead-booking-widget #hostaway-calendar-widget button[style*="rgb(0, 128"],
+.roamstead-booking-widget #hostaway-calendar-widget button[style*="#008"],
+.roamstead-booking-widget #hostaway-calendar-widget button[style*="#00a"] {
+  background-color: #4a6e57 !important;
+  border-color: #4a6e57 !important;
+}
+.roamstead-booking-widget #hostaway-calendar-widget button {
+  white-space: nowrap;
+}
+@media (min-width: 640px) {
+  .roamstead-booking-widget #hostaway-calendar-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .roamstead-booking-widget #hostaway-calendar-widget > * {
+    max-width: 100%;
+  }
+}
 @media (max-width: 639px) {
   .roamstead-booking-widget {
     max-width: 100%;
