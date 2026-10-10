@@ -338,7 +338,7 @@ a {
 /* Hostaway calendar: responsive sizing shared by booking and property pages. */
 .roamstead-booking-widget {
   width: 100%;
-  max-width: 760px;
+  max-width: 560px;
   min-width: 0;
   margin-inline: auto;
   font-family: var(--font-body);
