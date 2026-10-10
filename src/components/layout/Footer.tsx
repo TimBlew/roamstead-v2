@@ -10,8 +10,8 @@ const propertyLinks = [
 ];
 
 export const Footer: React.FC = () => (
-  <footer className="bg-[#382F29] px-5 pb-7 pt-8 font-body text-[#FFFCFB] md:px-10 md:py-14">
-    <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-x-5 gap-y-7 md:grid-cols-[2fr_1fr_1fr] md:gap-12">
+  <footer className="bg-[#382F29] px-5 pb-7 pt-8 font-body text-[#FFFCFB] md:px-10 md:pt-9 md:pb-7">
+    <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-x-5 gap-y-7 md:grid-cols-[1.5fr_1fr_1fr] md:gap-9">
       <div className="col-span-2 md:col-span-1">
         <img src="/roamstead-logo-light.svg" alt="Roamstead" className="h-auto w-[142px] md:w-[160px]" />
         <p className="mt-2.5 max-w-[350px] text-[13px] leading-5 md:mt-4 md:text-[15px] md:leading-6 text-[#F4EFEC]">Homes across the Wasatch Back, run by people who live here.</p>
@@ -40,6 +40,6 @@ export const Footer: React.FC = () => (
         </div>
       </div>
     </div>
-    <p className="mx-auto mt-7 max-w-[1440px] border-t border-white/20 pt-4 text-[11px] leading-5 md:mt-10 md:pt-5 md:text-[12px] text-[#F4EFEC]">© Roamstead Collective 2026. All rights reserved.</p>
+    <p className="mx-auto mt-7 max-w-[1440px] border-t border-white/20 pt-4 text-[11px] leading-5 md:mt-6 md:pt-4 md:text-[12px] text-[#F4EFEC]">© Roamstead Collective 2026. All rights reserved.</p>
   </footer>
 );
