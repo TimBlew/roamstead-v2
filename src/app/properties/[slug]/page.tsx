@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
 import { PropertyGallery } from "@/components/sections/PropertyGallery";
-import { HostawayBooking } from "@/components/booking/HostawayBooking";
+import { RoamsteadBooking } from "@/components/booking/RoamsteadBooking";
 import { getProperty, properties } from "@/data/properties";
 
 type PageProps = {
@@ -198,7 +198,7 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
 
             <div className="rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 py-5 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-6 md:px-7 md:py-7">
-              <HostawayBooking listingId={listingId} fallbackUrl={bookingUrl} />
+              <RoamsteadBooking listingId={listingId} fallbackUrl={bookingUrl} />
             </div>
           </div>
         </section>
