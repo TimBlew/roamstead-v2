@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const RECIPIENT = process.env.EARLY_ACCESS_RECIPIENT || "chris@roamstead-co.com";
+const RECIPIENT = process.env.EARLY_ACCESS_RECIPIENT || "tim@castlehead.ai";
 const ALLOWED_SEASONS = ["", "Winter", "Summer", "Fall", "All 4"];
 const ALLOWED_HOMES = ["", "Heber Valley / Wasatch Back", "Salt Lake or Provo area", "Somewhere else"];
 
