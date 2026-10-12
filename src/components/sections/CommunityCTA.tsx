@@ -112,8 +112,8 @@ export const CommunityCTA = () => {
       {showResult && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#1F3125]/55 px-5 py-8 backdrop-blur-[4px]" onMouseDown={(event) => { if (event.target === event.currentTarget) closeResult(); }}>
           <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="early-access-result-title" className="relative w-full max-w-[360px] rounded-[16px] border border-[#E7DFDB] bg-[#FFFCFB] px-6 pb-6 pt-7 text-center shadow-[0_24px_80px_rgba(31,49,37,0.19)] sm:px-8">
-            <button ref={closeButtonRef} type="button" onClick={closeResult} aria-label="Close message" className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-[#6D6057] transition-colors hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" className="h-4 w-4"><path d="M5 5 19 19M19 5 5 19" /></svg>
+            <button ref={closeButtonRef} type="button" onClick={closeResult} aria-label="Close message" className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full text-[#6D6057] transition-colors hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" className="h-3.5 w-3.5"><path d="M5 5 19 19M19 5 5 19" /></svg>
             </button>
             <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#E8F5EC] text-[#4A6E57]">
               {status === "success" ? (
