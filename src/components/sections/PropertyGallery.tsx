@@ -62,7 +62,7 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
   const next = () => setActive((n) => (n + 1) % photos.length);
 
   return (
-    <section aria-label="Property photo gallery" className="bg-[#FFFCFB] px-4 pb-10 pt-3 md:px-6 md:pb-14 md:pt-4">
+    <section aria-label="Property photo gallery" className="bg-[#FFFCFB] px-4 pb-3 pt-3 md:px-6 md:pb-14 md:pt-4">
       <div className="mx-auto max-w-[1180px]">
         <div className="mb-4 flex items-end justify-between gap-4">
           <h2 className="font-heading text-[30px] font-medium leading-tight tracking-[-1.2px] text-[#1F3125] md:text-[42px] md:tracking-[-1.7px]">Explore the space<span className="text-[#4A6E57]">.</span></h2>
@@ -91,7 +91,7 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
             </>
           )}
         </div>
-        <div className="mt-3 flex snap-x gap-2.5 overflow-x-auto pb-2 [scrollbar-width:none] md:gap-3">
+        <div className="mt-2.5 flex snap-x gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] md:gap-3">
           {photos.map((item, index) => (
             <button key={item.src} type="button" onClick={() => setActive(index)} aria-label={`View photo ${index + 1}: ${item.alt}`} aria-current={index === active ? "true" : undefined} className={`relative h-[64px] w-[88px] shrink-0 snap-start overflow-hidden rounded-[9px] border-2 transition-opacity md:h-[84px] md:w-[126px] ${index === active ? "border-[#4A6E57] opacity-100" : "border-transparent opacity-70 hover:opacity-100"}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
