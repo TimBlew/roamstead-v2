@@ -6,10 +6,10 @@ import { SenatorBand } from '@/components/sections/SenatorBand';
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
 
 export const metadata = {
-  title: "Roamstead Collective | Wasatch Back stays in Heber Valley & Park City",
+  title: "Roamstead Collective",
   description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective.",
-  openGraph: { title: "Roamstead Collective | Wasatch Back stays in Heber Valley & Park City", description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective." },
-  twitter: { title: "Roamstead Collective | Wasatch Back stays in Heber Valley & Park City", description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective." },
+  openGraph: { title: "Roamstead Collective", description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective." },
+  twitter: { title: "Roamstead Collective", description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective." },
 };
 
 export default function Home() {
