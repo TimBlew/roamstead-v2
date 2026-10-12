@@ -1,12 +1,37 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 export const CommunityCTA = () => {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [season, setSeason] = useState("");
   const [home, setHome] = useState("");
+  const [showResult, setShowResult] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const closeResult = () => { setShowResult(false); setMessage(""); setStatus("idle"); };
+  useEffect(() => {
+    if (!showResult) return;
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeResult();
+      if (event.key === "Tab") {
+        const focusables = dialogRef.current?.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])');
+        if (focusables?.length) {
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+          else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+        }
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => { document.body.style.overflow = previousOverflow; document.removeEventListener("keydown", handleKey); previousFocus?.focus(); };
+  }, [showResult]);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -15,6 +40,7 @@ export const CommunityCTA = () => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setMessage("That email doesn't look right. Mind checking it?");
       setStatus("error");
+      setShowResult(true);
       return;
     }
     setStatus("sending");
@@ -31,9 +57,11 @@ export const CommunityCTA = () => {
       setHome("");
       setStatus("success");
       setMessage("You're on the list. We'll be in touch when it opens.");
+      setShowResult(true);
     } catch (error) {
       setStatus("error");
       setMessage(error instanceof Error ? error.message : "We couldn't complete your signup. Please try again.");
+      setShowResult(true);
     }
   }
   return (
@@ -78,10 +106,28 @@ export const CommunityCTA = () => {
           <div className="pt-1 text-center sm:col-span-2">
             <button type="submit" disabled={status === "sending"} className="inline-flex h-12 min-w-[206px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-7 font-body text-[15px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:opacity-60">{status === "sending" ? "Sending…" : "Get early access"}</button>
             <p className="mt-1.5 font-body text-[12px] leading-5 text-[#6D6057]">Free to join the list. Unsubscribe anytime.</p>
-            {message && <p role="status" className="mt-3 font-body text-[14px] text-[#1F3125]">{message}</p>}
           </div>
         </form>
       </div>
+      {showResult && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#1F3125]/55 px-5 py-8 backdrop-blur-[4px]" onMouseDown={(event) => { if (event.target === event.currentTarget) closeResult(); }}>
+          <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="early-access-result-title" aria-describedby="early-access-result-message" className="relative w-full max-w-[430px] rounded-[18px] border border-[#E7DFDB] bg-[#FFFCFB] px-7 pb-7 pt-9 text-center shadow-[0_24px_80px_rgba(31,49,37,0.19)] sm:px-10">
+            <button ref={closeButtonRef} type="button" onClick={closeResult} aria-label="Close message" className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-[#6D6057] transition-colors hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" className="h-4 w-4"><path d="M5 5 19 19M19 5 5 19" /></svg>
+            </button>
+            <div className="mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-[#E8F5EC] text-[#4A6E57]">
+              {status === "success" ? (
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><path d="m5 12 4.5 4.5L19 7" /></svg>
+              ) : (
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5h.01" /></svg>
+              )}
+            </div>
+            <h3 id="early-access-result-title" className="font-heading text-[29px] font-medium leading-[1.14] tracking-[-0.035em] text-[#1F3125]">{status === "success" ? "Welcome to Roamstead." : "One more thing."}</h3>
+            <p id="early-access-result-message" className="mx-auto mt-3 max-w-[340px] font-body text-[15px] leading-[1.55] text-[#6D6057]">{message}</p>
+            <button type="button" onClick={closeResult} className="mt-6 inline-flex h-11 min-w-[150px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-7 font-body text-[14px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{status === "success" ? "Wonderful" : "Try again"}</button>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
