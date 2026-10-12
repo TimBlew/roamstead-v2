@@ -7,6 +7,7 @@ export const CommunityCTA = () => {
   const [message, setMessage] = useState("");
   const [season, setSeason] = useState("");
   const [home, setHome] = useState("");
+  const [consent, setConsent] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -43,11 +44,17 @@ export const CommunityCTA = () => {
       setShowResult(true);
       return;
     }
+    if (!consent) {
+      setMessage("Please confirm you’d like to receive Roamstead updates.");
+      setStatus("error");
+      setShowResult(true);
+      return;
+    }
     setStatus("sending");
     try {
       const response = await fetch("/api/early-access", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, season: values.get("season"), home: values.get("home") }),
+        body: JSON.stringify({ email, season: values.get("season"), home: values.get("home"), consent }),
       });
       if (!response.ok) {
         throw new Error(response.status === 400 ? "Please check your selections and try again." : "We couldn't complete your signup. Please try again.");
@@ -55,6 +62,7 @@ export const CommunityCTA = () => {
       form.reset();
       setSeason("");
       setHome("");
+      setConsent(false);
       setStatus("success");
       setMessage("You're on the list. We'll be in touch when it opens.");
       setShowResult(true);
@@ -102,6 +110,10 @@ export const CommunityCTA = () => {
               </span>
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#4A6E57]"><path d="m6 9 6 6 6-6" /></svg>
             </span>
+          </label>
+          <label className="flex items-start gap-3 font-body text-[12px] leading-[1.5] text-[#6D6057] sm:col-span-2">
+            <input type="checkbox" name="consent" checked={consent} onChange={(event) => setConsent(event.target.checked)} className="mt-[3px] h-4 w-4 shrink-0 accent-[#4A6E57]" />
+            <span>I'd like to receive Roamstead early-access news, member offers, and occasional updates by email. I can unsubscribe anytime.</span>
           </label>
           <div className="pt-1 text-center sm:col-span-2">
             <button type="submit" disabled={status === "sending"} className="inline-flex h-12 min-w-[206px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-7 font-body text-[15px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:opacity-60">{status === "sending" ? "Sending…" : "Get early access"}</button>
