@@ -100,8 +100,12 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
           <div className="hidden md:block">{renderMonth(shift(month, 1))}</div>
         </div>
         <div className="mt-2 grid grid-cols-2 gap-2 border-t border-[#E7DFDB] pt-2.5 md:mt-4 md:gap-3 md:pt-4">
-          <div className="rounded-[9px] border border-[#D8CCC4] px-3 py-2.5 md:px-3 md:py-2.5"><p className="font-body text-[11px] font-medium uppercase tracking-[0.08em] text-[#786D65]">Check-in</p><p className="mt-0.5 font-body text-[13px] font-medium md:mt-1 md:text-[15px] text-[#1F3125]">{checkIn ? dateText.format(parse(checkIn)) : "Choose date"}</p></div>
-          <div className="rounded-[9px] border border-[#D8CCC4] px-2.5 py-2 md:px-3 md:py-2.5"><p className="font-body text-[11px] font-medium uppercase tracking-[0.08em] text-[#786D65]">Check-out</p><p className="mt-0.5 font-body text-[13px] font-medium md:mt-1 md:text-[15px] text-[#1F3125]">{checkOut ? dateText.format(parse(checkOut)) : "Choose date"}</p></div>
+          {([{ label: "Check-in", value: checkIn }, { label: "Check-out", value: checkOut }] as const).map(({ label, value }) => (
+            <div key={label} className="flex min-w-0 flex-col justify-center rounded-[9px] border border-[#D8CCC4] px-3 py-3 text-left md:px-3 md:py-3">
+              <p className="font-body text-[11px] font-medium uppercase leading-[16px] tracking-[0.08em] text-[#786D65]">{label}</p>
+              <p className="mt-1 whitespace-nowrap font-body text-[13px] font-medium leading-[20px] text-[#1F3125] md:text-[15px]">{value ? dateText.format(parse(value)) : "Choose date"}</p>
+            </div>
+          ))}
         </div>
         {message && <p role="status" className="mt-3 font-body text-[13px] text-[#8C5641]">{message}</p>}
         <div className="mt-2 flex flex-col items-center gap-0 sm:flex-row sm:items-center md:gap-2">
