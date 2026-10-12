@@ -55,14 +55,10 @@ export async function POST(request: Request) {
         if (contactResponse.status === 409) {
           // Existing contacts are global in Resend; add them to this specific segment.
           const membershipResponse = await fetch(
-            `https://api.resend.com/contacts/${encodeURIComponent(email)}/segments`,
+            `https://api.resend.com/contacts/${encodeURIComponent(email)}/segments/${encodeURIComponent(segmentId)}`,
             {
               method: "POST",
-              headers: {
-                Authorization: `Bearer ${contactsKey}`,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ segment_id: segmentId }),
+              headers: { Authorization: `Bearer ${contactsKey}` },
             },
           );
           if (!membershipResponse.ok && membershipResponse.status !== 409) {
