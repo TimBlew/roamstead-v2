@@ -105,8 +105,10 @@ export const CommunityCTA = () => {
           </label>
           <div className="pt-1 text-center sm:col-span-2">
             <button type="submit" disabled={status === "sending"} className="inline-flex h-12 min-w-[206px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-7 font-body text-[15px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:opacity-60">{status === "sending" ? "Sending…" : "Get early access"}</button>
-            <p className="mx-auto mt-2 max-w-[440px] font-body text-[12px] leading-[1.5] text-[#6D6057]">By joining, you agree to receive early-access news and member offers by email.</p>
-            <p className="mt-1 font-body text-[12px] leading-5 text-[#6D6057]">Free to join the list. Unsubscribe anytime.</p>
+            <div className="mt-1.5 font-body text-[12px] leading-[1.45] text-[#6D6057]">
+              <p>Free to join the list. Unsubscribe anytime.</p>
+              <p>By joining, you agree to receive early-access news and member offers by email.</p>
+            </div>
           </div>
         </form>
       </div>
