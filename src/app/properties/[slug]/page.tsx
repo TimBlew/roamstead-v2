@@ -183,9 +183,9 @@ export default async function PropertyPage({ params }: PageProps) {
       <PropertyGallery slug={slug} fallback={stories.map((story) => ({ src: story.image.src, alt: story.image.alt }))} />
 
       {listingId ? (
-        <section id="availability" className="scroll-mt-16 bg-[#F4EFEC] px-4 py-7 md:px-6 md:py-11">
+        <section id="availability" className="scroll-mt-16 bg-[#F4EFEC] px-4 pb-5 pt-5 md:px-6 md:py-11">
           <div className="mx-auto max-w-[620px]">
-            <div className="mb-3 md:mb-4">
+            <div className="mb-2.5 md:mb-4">
               <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
                 Book direct
               </p>
@@ -197,7 +197,7 @@ export default async function PropertyPage({ params }: PageProps) {
               </h2>
             </div>
 
-            <div className="rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 pb-5 pt-3 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-6 md:px-7 md:pb-6 md:pt-4">
+            <div className="rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 pb-3 pt-3 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-6 md:px-7 md:pb-6 md:pt-4">
               <RoamsteadBooking listingId={listingId} fallbackUrl={bookingUrl} />
             </div>
           </div>
@@ -205,9 +205,9 @@ export default async function PropertyPage({ params }: PageProps) {
       ) : null}
 
       {stories.length > 0 ? (
-        <section className="bg-[#FFFCFB] px-3 pb-3 pt-6 sm:px-4 md:px-6 md:pb-10 md:pt-14">
+        <section className="bg-[#FFFCFB] px-3 pb-3 pt-4 sm:px-4 md:px-6 md:pb-10 md:pt-14">
           <div className="mx-auto max-w-[1280px]">
-            <div className="mb-5 max-w-[760px] md:mb-10">
+            <div className="mb-2.5 max-w-[760px] md:mb-10">
               <h2
                 className="font-heading text-[32px] font-medium leading-[36px] tracking-[-1.28px] text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
@@ -223,7 +223,7 @@ export default async function PropertyPage({ params }: PageProps) {
                   className="grid w-full overflow-hidden rounded-[18px] border border-[#E7DFDB] bg-[#FBF8F7] shadow-[0_14px_40px_rgba(41,29,22,0.045)] md:rounded-[24px] md:grid-cols-[0.92fr_1.08fr]"
                 >
                   <div
-                    className={`flex items-center px-4 py-4 sm:px-5 sm:py-5 md:p-8 lg:p-10 ${index % 2 === 1 ? "md:order-2" : ""}`}
+                    className={`flex items-center px-4 py-3.5 sm:px-5 sm:py-5 md:p-8 lg:p-10 ${index % 2 === 1 ? "md:order-2" : ""}`}
                   >
                     <div className="w-full max-w-none md:max-w-[520px]">
                       <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.08em] text-[#8F7E73]">
@@ -235,9 +235,9 @@ export default async function PropertyPage({ params }: PageProps) {
                       >
                         {story.title}
                       </h3>
-                      <div className="mt-3 font-body text-[15px] font-normal leading-6 tracking-[-0.34px] text-[#5F534B] md:text-[18px] md:leading-8">
+                      <div className="mt-2.5 font-body text-[15px] font-normal leading-6 tracking-[-0.34px] text-[#5F534B] md:text-[18px] md:leading-8">
                         {story.paragraphs.map((paragraph) => (
-                          <p key={paragraph} className="mb-3 last:mb-0 md:mb-5">
+                          <p key={paragraph} className="mb-2.5 last:mb-0 md:mb-5">
                             {paragraph}
                           </p>
                         ))}
