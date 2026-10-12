@@ -65,26 +65,26 @@ export const CommunityCTA = () => {
     }
   }
   return (
-    <section className="bg-[#F4EFEC] px-4 py-9 text-center md:px-6 md:py-14">
-      <div className="mx-auto max-w-[900px]">
-        <img src="/roamstead-collective-logo.svg" alt="Roamstead Collective" className="mx-auto w-[210px] md:w-[258px]" />
+    <section className="bg-[#F4EFEC] px-5 pb-7 pt-5 text-center md:px-6 md:py-14">
+      <div className="mx-auto w-full max-w-[900px]">
+        <img src="/roamstead-collective-logo.svg" alt="Roamstead Collective" className="mx-auto w-[195px] md:w-[258px]" />
         <p className="mt-1.5 font-body text-[11px] font-semibold uppercase leading-5 tracking-[0.23em] text-[#4A6E57] md:text-[12px] md:tracking-[0.26em]">Coming soon</p>
-        <h2 className="mx-auto mt-3 max-w-[800px] font-heading text-[31px] font-medium leading-[1.12] tracking-[-0.04em] text-[#1F3125] [text-wrap:balance] sm:text-[39px] md:mt-4 md:text-[46px]">For people who come back</h2>
-        <p className="mx-auto mt-4 max-w-[780px] font-body text-[15px] leading-[1.5] text-[#6D6057] [text-wrap:pretty] md:mt-5 md:text-[17px]">We're building a membership for the 4-Seasoners, the people who'd rather know one place well than see a new one every trip. Get on the early list and you'll hear first when it opens.</p>
-        <p className="mx-auto mt-2.5 max-w-[820px] font-body text-[15px] leading-[1.5] text-[#6D6057] [text-wrap:pretty] md:mt-3 md:text-[17px]">What we're planning: member rates on stays, deals for valley locals, first invites to events, and a newsletter worth opening.</p>
-        <form onSubmit={submit} noValidate className="mx-auto mt-5 grid max-w-[690px] gap-x-5 gap-y-4 text-left sm:grid-cols-2 md:mt-8">
+        <h2 className="mx-auto mt-2.5 max-w-[800px] font-heading text-[31px] font-medium leading-[1.12] tracking-[-0.04em] text-[#1F3125] [text-wrap:balance] sm:text-[39px] md:mt-4 md:text-[46px]">For people who come back</h2>
+        <p className="mx-auto mt-3 max-w-[780px] font-body text-[15px] leading-[1.45] text-[#6D6057] [text-wrap:pretty] md:mt-5 md:text-[17px]">We're building a membership for the 4-Seasoners, the people who'd rather know one place well than see a new one every trip. Get on the early list and you'll hear first when it opens.</p>
+        <p className="mx-auto mt-2 max-w-[820px] font-body text-[15px] leading-[1.45] text-[#6D6057] [text-wrap:pretty] md:mt-3 md:text-[17px]">What we're planning: member rates on stays, deals for valley locals, first invites to events, and a newsletter worth opening.</p>
+        <form onSubmit={submit} noValidate className="mx-auto mt-4 grid w-full max-w-[690px] gap-x-5 gap-y-3 text-left sm:grid-cols-2 md:mt-8 md:gap-y-4">
           <label className="block font-body text-[13px] font-medium tracking-[-0.01em] text-[#1F3125] sm:col-span-2">
             Email <span aria-hidden="true" className="text-[#4A6E57]">*</span>
-            <input name="email" type="email" autoComplete="email" required placeholder="Your email address" className="mt-2 block h-[52px] w-full rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] px-4 font-body text-[15px] text-[#1F3125] shadow-[0_1px_2px_rgba(31,49,37,0.035)] outline-none transition-colors placeholder:text-[#978C84] hover:border-[#AFA69C] focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15" />
+            <input name="email" type="email" autoComplete="email" required placeholder="Your email address" className="mt-1.5 block h-[48px] md:mt-2 md:h-[48px] md:h-[52px] w-full rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] px-4 font-body text-[15px] text-[#1F3125] shadow-[0_1px_2px_rgba(31,49,37,0.035)] outline-none transition-colors placeholder:text-[#978C84] hover:border-[#AFA69C] focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15" />
           </label>
           <label className="block min-w-0 font-body text-[13px] font-medium leading-5 tracking-[-0.01em] text-[#1F3125]">
             Which season brings you up here? <span className="font-normal text-[#8A8078]">(optional)</span>
-            <span className="relative mt-2 block">
-              <select name="season" value={season} onChange={(event) => setSeason(event.target.value)} aria-label="Which season brings you up here?" className="absolute inset-0 z-10 h-[52px] w-full cursor-pointer appearance-none opacity-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
+            <span className="relative mt-1.5 block md:mt-2">
+              <select name="season" value={season} onChange={(event) => setSeason(event.target.value)} aria-label="Which season brings you up here?" className="absolute inset-0 z-10 h-[48px] md:h-[52px] w-full cursor-pointer appearance-none opacity-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
                 <option value="">Select a season</option>
                 <option value="Winter">Winter</option><option value="Spring">Spring</option><option value="Summer">Summer</option><option value="Fall">Fall</option><option value="All Four">All Four</option>
               </select>
-              <span aria-hidden="true" className={`flex h-[52px] w-full items-center rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] shadow-[0_1px_2px_rgba(31,49,37,0.035)] ${season ? "text-[#1F3125]" : "text-[#978C84]"}`}>
+              <span aria-hidden="true" className={`flex h-[48px] md:h-[52px] w-full items-center rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] shadow-[0_1px_2px_rgba(31,49,37,0.035)] ${season ? "text-[#1F3125]" : "text-[#978C84]"}`}>
                 {season || "Select a season"}
               </span>
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#4A6E57]"><path d="m6 9 6 6 6-6" /></svg>
@@ -92,20 +92,20 @@ export const CommunityCTA = () => {
           </label>
           <label className="block min-w-0 font-body text-[13px] font-medium leading-5 tracking-[-0.01em] text-[#1F3125]">
             Where's home? <span className="font-normal text-[#8A8078]">(optional)</span>
-            <span className="relative mt-2 block">
-              <select name="home" value={home} onChange={(event) => setHome(event.target.value)} aria-label="Where's home?" className="absolute inset-0 z-10 h-[52px] w-full cursor-pointer appearance-none opacity-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
+            <span className="relative mt-1.5 block md:mt-2">
+              <select name="home" value={home} onChange={(event) => setHome(event.target.value)} aria-label="Where's home?" className="absolute inset-0 z-10 h-[48px] md:h-[52px] w-full cursor-pointer appearance-none opacity-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
                 <option value="">Select an area</option>
                 <option value="Heber Valley / Wasatch Back">Heber Valley / Wasatch Back</option><option value="Salt Lake or Provo area">Salt Lake or Provo area</option><option value="Somewhere else">Somewhere else</option>
               </select>
-              <span aria-hidden="true" className={`flex h-[52px] w-full items-center rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] shadow-[0_1px_2px_rgba(31,49,37,0.035)] ${home ? "text-[#1F3125]" : "text-[#978C84]"}`}>
+              <span aria-hidden="true" className={`flex h-[48px] md:h-[52px] w-full items-center rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] shadow-[0_1px_2px_rgba(31,49,37,0.035)] ${home ? "text-[#1F3125]" : "text-[#978C84]"}`}>
                 {home || "Select an area"}
               </span>
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#4A6E57]"><path d="m6 9 6 6 6-6" /></svg>
             </span>
           </label>
-          <div className="pt-1 text-center sm:col-span-2">
-            <button type="submit" disabled={status === "sending"} className="inline-flex h-12 min-w-[206px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-7 font-body text-[15px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:opacity-60">{status === "sending" ? "Sending…" : "Get early access"}</button>
-            <div className="mt-1.5 font-body text-[12px] leading-[1.45] text-[#6D6057]">
+          <div className="pt-0.5 text-center sm:col-span-2">
+            <button type="submit" disabled={status === "sending"} className="inline-flex h-11 min-w-[192px] md:h-12 md:min-w-[206px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-7 font-body text-[15px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:opacity-60">{status === "sending" ? "Sending…" : "Get early access"}</button>
+            <div className="mx-auto mt-1.5 max-w-[620px] font-body text-[11.5px] leading-[1.4] md:text-[12px] text-[#6D6057]">
               <p>Free to join the list. Unsubscribe anytime.</p>
               <p>By joining, you agree to receive early-access news and member offers by email.</p>
             </div>
