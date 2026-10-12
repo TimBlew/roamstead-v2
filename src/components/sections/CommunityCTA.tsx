@@ -65,7 +65,7 @@ export const CommunityCTA = () => {
     }
   }
   return (
-    <section className="bg-[#F4EFEC] px-4 pb-7 pt-5 text-center md:px-6 md:py-14">
+    <section className="bg-[#F4EFEC] px-4 pb-7 pt-1 text-center md:px-6 md:py-14">
       <div className="mx-auto w-full max-w-[900px]">
         <img src="/roamstead-collective-logo.svg" alt="Roamstead Collective" className="mx-auto w-[195px] md:w-[258px]" />
         <p className="mt-1.5 font-body text-[11px] font-semibold uppercase leading-5 tracking-[0.23em] text-[#4A6E57] md:text-[12px] md:tracking-[0.26em]">Coming soon</p>
