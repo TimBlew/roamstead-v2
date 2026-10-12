@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const RECIPIENT = process.env.EARLY_ACCESS_RECIPIENT || "tim@castlehead.ai";
-const ALLOWED_SEASONS = ["", "Winter", "Spring", "Summer", "Fall", "Year-round", "All 4"];
+const ALLOWED_SEASONS = ["", "Winter", "Spring", "Summer", "Fall", "All Four", "All 4"];
 const ALLOWED_HOMES = ["", "Heber Valley / Wasatch Back", "Salt Lake or Provo area", "Somewhere else"];
 
 export async function POST(request: Request) {
