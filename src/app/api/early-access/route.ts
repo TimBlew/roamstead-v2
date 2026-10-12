@@ -30,11 +30,13 @@ export async function POST(request: Request) {
       }),
     });
     if (!response.ok) {
-      console.error("Early access email delivery failed", response.status);
-      return NextResponse.json({ error: "Delivery failed" }, { status: 502 });
+      const detail = await response.json().catch(() => ({})) as { name?: string; message?: string; statusCode?: number };
+      console.error("Early access Resend rejection", { status: response.status, code: detail.name || "unknown", message: detail.message || "No detail" });
+      return NextResponse.json({ error: "Email provider rejected the request", code: detail.name || "provider_error" }, { status: 502 });
     }
     return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json({ error: "Delivery failed" }, { status: 502 });
+  } catch (error) {
+    console.error("Early access email request failed", error instanceof Error ? error.message : "Unknown network error");
+    return NextResponse.json({ error: "Email service connection failed", code: "network_error" }, { status: 502 });
   }
 }
