@@ -5,6 +5,8 @@ import { useState, type FormEvent } from "react";
 export const CommunityCTA = () => {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [season, setSeason] = useState("");
+  const [home, setHome] = useState("");
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -23,6 +25,8 @@ export const CommunityCTA = () => {
       });
       if (!response.ok) throw new Error("Submission failed");
       form.reset();
+      setSeason("");
+      setHome("");
       setStatus("success");
       setMessage("You're on the list. We'll be in touch when it opens.");
     } catch {
@@ -46,21 +50,27 @@ export const CommunityCTA = () => {
           <label className="block min-w-0 font-body text-[13px] font-medium leading-5 tracking-[-0.01em] text-[#1F3125]">
             Which season brings you up here? <span className="font-normal text-[#8A8078]">(optional)</span>
             <span className="relative mt-2 block">
-              <select name="season" defaultValue="" className="block h-[52px] w-full appearance-none rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] font-normal text-[#1F3125] shadow-[0_1px_2px_rgba(31,49,37,0.035)] outline-none transition-colors hover:border-[#AFA69C] focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15">
+              <select name="season" value={season} onChange={(event) => setSeason(event.target.value)} aria-label="Which season brings you up here?" className="absolute inset-0 z-10 h-[52px] w-full cursor-pointer appearance-none opacity-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
                 <option value="">Select a season</option>
-                <option>Winter</option><option>Summer</option><option>Fall</option><option>All 4</option>
+                <option value="Winter">Winter</option><option value="Spring">Spring</option><option value="Summer">Summer</option><option value="Fall">Fall</option><option value="Year-round">Year-round</option>
               </select>
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none absolute right-2.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#4A6E57]"><path d="m6 9 6 6 6-6" /></svg>
+              <span aria-hidden="true" className="flex h-[52px] w-full items-center rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] shadow-[0_1px_2px_rgba(31,49,37,0.035)] ${season ? "text-[#1F3125]" : "text-[#978C84]" }">
+                {season || "Select a season"}
+              </span>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#4A6E57]"><path d="m6 9 6 6 6-6" /></svg>
             </span>
           </label>
           <label className="block min-w-0 font-body text-[13px] font-medium leading-5 tracking-[-0.01em] text-[#1F3125]">
             Where's home? <span className="font-normal text-[#8A8078]">(optional)</span>
             <span className="relative mt-2 block">
-              <select name="home" defaultValue="" className="block h-[52px] w-full appearance-none rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] font-normal text-[#1F3125] shadow-[0_1px_2px_rgba(31,49,37,0.035)] outline-none transition-colors hover:border-[#AFA69C] focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15">
+              <select name="home" value={home} onChange={(event) => setHome(event.target.value)} aria-label="Where's home?" className="absolute inset-0 z-10 h-[52px] w-full cursor-pointer appearance-none opacity-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
                 <option value="">Select an area</option>
-                <option>Heber Valley / Wasatch Back</option><option>Salt Lake or Provo area</option><option>Somewhere else</option>
+                <option value="Heber Valley / Wasatch Back">Heber Valley / Wasatch Back</option><option value="Salt Lake or Provo area">Salt Lake or Provo area</option><option value="Somewhere else">Somewhere else</option>
               </select>
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none absolute right-2.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#4A6E57]"><path d="m6 9 6 6 6-6" /></svg>
+              <span aria-hidden="true" className="flex h-[52px] w-full items-center rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] shadow-[0_1px_2px_rgba(31,49,37,0.035)] ${home ? "text-[#1F3125]" : "text-[#978C84]" }">
+                {home || "Select an area"}
+              </span>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#4A6E57]"><path d="m6 9 6 6 6-6" /></svg>
             </span>
           </label>
           <div className="pt-1 text-center sm:col-span-2">
