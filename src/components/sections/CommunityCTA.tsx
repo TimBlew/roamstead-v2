@@ -122,9 +122,9 @@ export const CommunityCTA = () => {
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5h.01" /></svg>
               )}
             </div>
-            <h3 id="early-access-result-title" className="font-heading text-[26px] font-medium leading-[1.14] tracking-[-0.035em] text-[#1F3125]">{status === "success" ? "Welcome to Roamstead." : "One more thing."}</h3>
+            <h3 id="early-access-result-title" className="font-heading text-[26px] font-medium leading-[1.14] tracking-[-0.035em] text-[#1F3125]">{status === "success" ? "You’re on the list." : "One more thing."}</h3>
             {status !== "success" && <p id="early-access-result-message" className="mx-auto mt-2 max-w-[290px] font-body text-[14px] leading-[1.5] text-[#6D6057]">{message}</p>}
-            <button type="button" onClick={closeResult} className="mt-5 inline-flex h-10 min-w-[140px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-7 font-body text-[14px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{status === "success" ? "Back to Roamstead" : "Try again"}</button>
+            <button type="button" onClick={closeResult} className="mt-4 inline-flex h-9 min-w-[112px] items-center justify-center rounded-[7px] bg-[#4A6E57] px-5 font-body text-[14px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{status === "success" ? "Keep exploring" : "Try again"}</button>
           </div>
         </div>
       )}
