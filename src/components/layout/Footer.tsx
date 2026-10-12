@@ -10,15 +10,15 @@ const propertyLinks = [
 ];
 
 export const Footer: React.FC = () => (
-  <footer className="bg-[#382F29] px-5 pb-7 pt-8 font-body text-[#FFFCFB] md:px-10 md:pt-9 md:pb-7">
-    <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-x-5 gap-y-7 md:grid-cols-[1.5fr_1fr_1fr] md:gap-9">
+  <footer className="bg-[#382F29] px-5 pb-5 pt-6 font-body text-[#FFFCFB] md:px-10 md:pt-9 md:pb-7">
+    <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-[1.5fr_1fr_1fr] md:gap-9">
       <div className="col-span-2 md:col-span-1">
-        <img src="/roamstead-logo-light.svg" alt="Roamstead" className="h-auto w-[142px] md:w-[160px]" />
-        <p className="mt-2.5 max-w-[350px] text-[13px] leading-5 md:mt-4 md:text-[15px] md:leading-6 text-[#F4EFEC]">Homes across the Wasatch Back, run by people who live here.</p>
+        <img src="/roamstead-logo-light.svg" alt="Roamstead" className="h-auto w-[132px] md:w-[160px]" />
+        <p className="mt-2 max-w-[390px] text-[13px] leading-[1.45] md:mt-4 md:text-[15px] md:leading-6 text-[#F4EFEC]">Homes across the Wasatch Back, run by people who live here.</p>
       </div>
       <div>
-        <h2 className="mb-2 text-[14px] font-medium md:mb-3 md:text-[15px]">Our stays</h2>
-        <div className="grid gap-2.5 md:gap-2">
+        <h2 className="mb-1.5 text-[14px] font-medium md:mb-3 md:text-[15px]">Our stays</h2>
+        <div className="grid gap-1.5 md:gap-2">
           {propertyLinks.map(([name, href]) => {
             const external = href.startsWith("https");
             return (
@@ -31,7 +31,7 @@ export const Footer: React.FC = () => (
         </div>
       </div>
       <div>
-        <h2 className="mb-2 text-[14px] font-medium md:mb-3 md:text-[15px]">Explore</h2>
+        <h2 className="mb-1.5 text-[14px] font-medium md:mb-3 md:text-[15px]">Explore</h2>
         <div className="grid gap-2.5 text-[12.5px] leading-5 md:gap-2 md:text-[13px]">
           <a href="/properties" className="hover:underline">Properties</a>
           <a href="/book" className="hover:underline">Book direct</a>
@@ -40,6 +40,6 @@ export const Footer: React.FC = () => (
         </div>
       </div>
     </div>
-    <p className="mx-auto mt-7 max-w-[1440px] border-t border-white/20 pt-4 text-[11px] leading-5 md:mt-6 md:pt-4 md:text-[12px] text-[#F4EFEC]">© Roamstead Collective 2026. All rights reserved.</p>
+    <p className="mx-auto mt-5 max-w-[1440px] border-t border-white/20 pt-3 text-[11px] leading-5 md:mt-6 md:pt-4 md:text-[12px] text-[#F4EFEC]">© Roamstead Collective 2026. All rights reserved.</p>
   </footer>
 );
