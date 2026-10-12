@@ -52,7 +52,7 @@ export const CommunityCTA = () => {
             <span className="relative mt-2 block">
               <select name="season" value={season} onChange={(event) => setSeason(event.target.value)} aria-label="Which season brings you up here?" className="absolute inset-0 z-10 h-[52px] w-full cursor-pointer appearance-none opacity-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
                 <option value="">Select a season</option>
-                <option value="Winter">Winter</option><option value="Spring">Spring</option><option value="Summer">Summer</option><option value="Fall">Fall</option><option value="Year-round">Year-round</option>
+                <option value="Winter">Winter</option><option value="Spring">Spring</option><option value="Summer">Summer</option><option value="Fall">Fall</option><option value="All Four">All Four</option>
               </select>
               <span aria-hidden="true" className={`flex h-[52px] w-full items-center rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] shadow-[0_1px_2px_rgba(31,49,37,0.035)] ${season ? "text-[#1F3125]" : "text-[#978C84]"}`}>
                 {season || "Select a season"}
