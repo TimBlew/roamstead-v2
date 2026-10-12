@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 function DetailList({ heading, items }: { heading: string; items: string[] }) {
   return (
-    <div className="border-t border-[#D8CCC4] pt-3">
+    <div className="border-t border-[#D8CCC4] pt-2 md:pt-3">
       <h3
         className="font-heading text-[26px] font-medium leading-[32px] tracking-[-1.04px] text-[#1F3125]"
         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
@@ -77,11 +77,11 @@ function DetailList({ heading, items }: { heading: string; items: string[] }) {
         {heading}
       </h3>
 
-      <ul className="mt-2.5 grid gap-x-6 gap-y-1 sm:grid-cols-2">
+      <ul className="mt-1 grid gap-x-6 gap-y-0 sm:grid-cols-2 md:mt-2.5 md:gap-y-1">
         {items.map((item) => (
           <li
             key={item}
-            className="border-b border-[#E7DFDB] py-2 font-body text-[15px] font-normal leading-[22px] tracking-[-0.3px] text-[#4E433C]"
+            className="border-b border-[#E7DFDB] py-1.5 md:py-2 font-body text-[15px] font-normal leading-[22px] tracking-[-0.3px] text-[#4E433C]"
           >
             {item}
           </li>
@@ -264,9 +264,9 @@ export default async function PropertyPage({ params }: PageProps) {
         </section>
       ) : null}
 
-      <section className="bg-[#FFFCFB] px-4 py-8 md:px-6 md:py-16">
+      <section className="bg-[#FFFCFB] px-4 pb-4 pt-5 md:px-6 md:py-16">
         <div className="mx-auto max-w-[1280px]">
-          <div className="mb-3 md:mb-6">
+          <div className="mb-2 md:mb-6">
             <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
               Property details
             </p>
@@ -278,7 +278,7 @@ export default async function PropertyPage({ params }: PageProps) {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 gap-x-8 gap-y-3 md:gap-y-6 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-2 md:gap-y-6 lg:grid-cols-2">
             {details.map((list) => (
               <DetailList key={list.heading} heading={list.heading} items={list.items} />
             ))}
@@ -286,13 +286,13 @@ export default async function PropertyPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="bg-[#FFFCFB] px-4 pb-6 pt-3 md:px-6 md:py-12">
-        <div className="mx-auto grid max-w-[1180px] gap-4 md:gap-7 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
+      <section className="bg-[#FFFCFB] px-4 pb-6 pt-1 md:px-6 md:py-12">
+        <div className="mx-auto grid max-w-[1180px] gap-3 md:gap-7 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
           <div>
             <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
               Location
             </p>
-            <div className="mt-2.5 space-y-2 font-body text-[16px] font-normal leading-[23px] tracking-[-0.36px] text-[#6D6057] md:mt-4 md:space-y-4 md:text-[18px] md:leading-7">
+            <div className="mt-1.5 space-y-2 font-body text-[16px] font-normal leading-[23px] tracking-[-0.36px] text-[#6D6057] md:mt-4 md:space-y-4 md:text-[18px] md:leading-7">
               {location.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
