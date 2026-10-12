@@ -71,7 +71,7 @@ export const CommunityCTA = () => {
         <p className="mt-1.5 font-body text-[11px] font-semibold uppercase leading-5 tracking-[0.23em] text-[#4A6E57] md:text-[12px] md:tracking-[0.26em]">Coming soon</p>
         <h2 className="mx-auto mt-3 max-w-[800px] font-heading text-[31px] font-medium leading-[1.12] tracking-[-0.04em] text-[#1F3125] [text-wrap:balance] sm:text-[39px] md:mt-4 md:text-[46px]">For people who come back</h2>
         <p className="mx-auto mt-4 max-w-[780px] font-body text-[15px] leading-[1.5] text-[#6D6057] [text-wrap:pretty] md:mt-5 md:text-[17px]">We're building a membership for the 4-Seasoners, the people who'd rather know one place well than see a new one every trip. Get on the early list and you'll hear first when it opens.</p>
-        <p className="mx-auto mt-2.5 max-w-[820px] font-body text-[14px] leading-[1.5] text-[#6D6057] [text-wrap:pretty] md:mt-3 md:text-[15px]">What we're planning: member rates on stays, deals for valley locals, first invites to events, and a newsletter worth opening.</p>
+        <p className="mx-auto mt-2.5 max-w-[820px] font-body text-[15px] leading-[1.5] text-[#6D6057] [text-wrap:pretty] md:mt-3 md:text-[17px]">What we're planning: member rates on stays, deals for valley locals, first invites to events, and a newsletter worth opening.</p>
         <form onSubmit={submit} noValidate className="mx-auto mt-5 grid max-w-[690px] gap-x-5 gap-y-4 text-left sm:grid-cols-2 md:mt-8">
           <label className="block font-body text-[13px] font-medium tracking-[-0.01em] text-[#1F3125] sm:col-span-2">
             Email <span aria-hidden="true" className="text-[#4A6E57]">*</span>
