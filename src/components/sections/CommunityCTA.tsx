@@ -65,7 +65,7 @@ export const CommunityCTA = () => {
     }
   }
   return (
-    <section className="bg-[#F4EFEC] px-5 pb-7 pt-5 text-center md:px-6 md:py-14">
+    <section className="bg-[#F4EFEC] px-4 pb-7 pt-5 text-center md:px-6 md:py-14">
       <div className="mx-auto w-full max-w-[900px]">
         <img src="/roamstead-collective-logo.svg" alt="Roamstead Collective" className="mx-auto w-[195px] md:w-[258px]" />
         <p className="mt-1.5 font-body text-[11px] font-semibold uppercase leading-5 tracking-[0.23em] text-[#4A6E57] md:text-[12px] md:tracking-[0.26em]">Coming soon</p>
@@ -75,7 +75,7 @@ export const CommunityCTA = () => {
         <form onSubmit={submit} noValidate className="mx-auto mt-4 grid w-full max-w-[690px] gap-x-5 gap-y-3 text-left sm:grid-cols-2 md:mt-8 md:gap-y-4">
           <label className="block font-body text-[13px] font-medium tracking-[-0.01em] text-[#1F3125] sm:col-span-2">
             Email <span aria-hidden="true" className="text-[#4A6E57]">*</span>
-            <input name="email" type="email" autoComplete="email" required placeholder="Your email address" className="mt-1.5 block h-[48px] md:mt-2 md:h-[48px] md:h-[52px] w-full rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] px-4 font-body text-[15px] text-[#1F3125] shadow-[0_1px_2px_rgba(31,49,37,0.035)] outline-none transition-colors placeholder:text-[#978C84] hover:border-[#AFA69C] focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15" />
+            <input name="email" type="email" autoComplete="email" required placeholder="Your email address" className="mt-1.5 block h-[48px] md:mt-2 md:h-[52px] w-full rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] px-4 font-body text-[15px] text-[#1F3125] shadow-[0_1px_2px_rgba(31,49,37,0.035)] outline-none transition-colors placeholder:text-[#978C84] hover:border-[#AFA69C] focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15" />
           </label>
           <label className="block min-w-0 font-body text-[13px] font-medium leading-5 tracking-[-0.01em] text-[#1F3125]">
             Which season brings you up here? <span className="font-normal text-[#8A8078]">(optional)</span>
