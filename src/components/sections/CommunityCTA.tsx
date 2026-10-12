@@ -24,8 +24,7 @@ export const CommunityCTA = () => {
         body: JSON.stringify({ email, season: values.get("season"), home: values.get("home") }),
       });
       if (!response.ok) {
-        const result = await response.json().catch(() => ({})) as { error?: string; code?: string };
-        throw new Error(response.status === 400 ? "Please check your form selections and try again." : response.status === 503 ? "Email delivery is not configured yet. Please try again later." : `The email service could not send this request (${result.code || `HTTP ${response.status}`}). Please try again shortly.`);
+        throw new Error(response.status === 400 ? "Please check your selections and try again." : "We couldn't complete your signup. Please try again.");
       }
       form.reset();
       setSeason("");
@@ -34,7 +33,7 @@ export const CommunityCTA = () => {
       setMessage("You're on the list. We'll be in touch when it opens.");
     } catch (error) {
       setStatus("error");
-      setMessage(error instanceof Error ? error.message : "We couldn't send that right now. Please try again.");
+      setMessage(error instanceof Error ? error.message : "We couldn't complete your signup. Please try again.");
     }
   }
   return (
