@@ -5,12 +5,13 @@ const ALLOWED_SEASONS = ["", "Winter", "Spring", "Summer", "Fall", "All Four", "
 const ALLOWED_HOMES = ["", "Heber Valley / Wasatch Back", "Salt Lake or Provo area", "Somewhere else"];
 
 export async function POST(request: Request) {
-  let payload: { email?: unknown; season?: unknown; home?: unknown };
+  let payload: { email?: unknown; season?: unknown; home?: unknown; consent?: unknown };
   try { payload = await request.json(); } catch { return NextResponse.json({ error: "Invalid request" }, { status: 400 }); }
   const email = typeof payload.email === "string" ? payload.email.trim() : "";
   const season = typeof payload.season === "string" ? payload.season : "";
   const home = typeof payload.home === "string" ? payload.home : "";
-  if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !ALLOWED_SEASONS.includes(season) || !ALLOWED_HOMES.includes(home)) {
+  const consent = payload.consent === true;
+  if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !ALLOWED_SEASONS.includes(season) || !ALLOWED_HOMES.includes(home) || !consent) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
   }
   const apiKey = process.env.RESEND_API_KEY;
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         from: sender, to: [RECIPIENT], subject: "Roamstead early access signup",
-        text: `Email: ${email}\nSeason: ${season || "Not provided"}\nHome: ${home || "Not provided"}`,
+        text: `Email: ${email}\nSeason: ${season || "Not provided"}\nHome: ${home || "Not provided"}\nMarketing consent: Yes`,
         reply_to: email,
       }),
     });
@@ -50,6 +51,7 @@ export async function POST(request: Request) {
             email,
             unsubscribed: false,
             segments: [{ id: segmentId }],
+            properties: { roamstead_season: season, roamstead_home_area: home },
           }),
         });
         if (contactResponse.status === 409) {
@@ -61,6 +63,20 @@ export async function POST(request: Request) {
               headers: { Authorization: `Bearer ${contactsKey}` },
             },
           );
+          // Update preferences for an existing contact without changing their
+          // global subscription status or resubscribing an opted-out address.
+          const updateResponse = await fetch(
+            `https://api.resend.com/contacts/${encodeURIComponent(email)}`,
+            {
+              method: "PATCH",
+              headers: {
+                Authorization: `Bearer ${contactsKey}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ properties: { roamstead_season: season, roamstead_home_area: home } }),
+            },
+          );
+          if (!updateResponse.ok) console.error("Roamstead contact preferences update failed", updateResponse.status);
           if (!membershipResponse.ok && membershipResponse.status !== 409) {
             console.error("Roamstead segment membership failed", membershipResponse.status);
           }
