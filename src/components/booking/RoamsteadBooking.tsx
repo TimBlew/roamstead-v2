@@ -115,14 +115,10 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
           <p className="font-body text-[12px] text-[#786D65]">Up to {maxGuests} guests</p>
         </div>
         <div className="rounded-[10px] border border-[#E7DFDB] bg-[#FFFCFB] px-[16px] py-[14px]">
-          <div className="flex items-center justify-between gap-[12px]">
-            <h3 className="font-heading text-[20px] tracking-[-0.03em] text-[#1F3125]">Your stay</h3>
-            <span className="font-body text-[12px] font-medium text-[#4A6E57]">Ready to book</span>
-          </div>
-          <p className="mt-[8px] font-body text-[13px] leading-[1.5] text-[#6D6057]">Review your full price, taxes, fees and payment options on the next screen.</p>
+          <h3 className="font-heading text-[20px] tracking-[-0.03em] text-[#1F3125]">One step closer to your stay.</h3>
+          <p className="mt-[6px] font-body text-[13px] leading-[1.5] text-[#6D6057]">Continue to review your final total, confirm your details, and complete your reservation securely.</p>
         </div>
         <a href={hostawayCheckoutUrl || undefined} aria-disabled={!checkIn || !checkOut || loading} onClick={event => { if (!checkIn || !checkOut || loading) event.preventDefault(); }} className={`flex min-h-[48px] w-full items-center justify-center rounded-[8px] bg-[#4A6E57] px-[16px] text-center font-body text-[15px] font-medium text-white ${!checkIn || !checkOut || loading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049]"}`}>Continue to booking →</a>
-        <p className="text-center font-body text-[12px] leading-[1.5] text-[#786D65]">Guest details and secure payment are completed with Hostaway.</p>
       </div> : mode === "checking" ? <div role="status" className="flex min-h-[350px] items-center justify-center font-body text-[15px] text-[#6D6057]">Checking live availability…</div> : <>
         <div className="mb-[4px] flex items-center justify-between gap-[8px] md:mb-[8px] md:gap-[12px]">
           <button type="button" aria-label="Previous month" disabled={month <= startMonth(today)} onClick={() => setMonth(shift(month, -1))} className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full border border-[#D8CCC4] text-[#1F3125] disabled:opacity-25">‹</button>
