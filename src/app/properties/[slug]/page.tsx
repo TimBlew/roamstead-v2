@@ -205,15 +205,18 @@ export default async function PropertyPage({ params }: PageProps) {
       ) : null}
 
       {stories.length > 0 ? (
-        <section className="bg-[#FFFCFB] px-3 pb-3 pt-4 sm:px-4 md:px-6 md:pb-10 md:pt-14">
+        <section className="bg-[#FFFCFB] px-3 pb-3 pt-4 sm:px-4 md:px-6 md:pb-8 md:pt-7">
           <div className="mx-auto max-w-[1280px]">
-            <div className="mb-2.5 max-w-[760px] md:mb-10">
+            <div className="mb-4 max-w-[760px] md:mb-6">
               <h2
                 className="font-heading text-[32px] font-medium leading-[36px] tracking-[-1.28px] text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
                 The stay
               </h2>
+              <p className="mt-[8px] max-w-[48ch] font-body text-[14px] leading-[1.5] tracking-[-0.2px] text-[#6D6057] md:mt-[10px] md:text-[17px] md:leading-[1.55]">
+                Get to know your home away from home.
+              </p>
             </div>
 
             <div className="space-y-4 md:space-y-8">
