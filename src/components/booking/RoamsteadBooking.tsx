@@ -25,6 +25,10 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
   const [checkIn, setCheckIn] = useState<string | null>(null);
   const [checkOut, setCheckOut] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [step, setStep] = useState(0);
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
+  const [guestEmail, setGuestEmail] = useState("");
   const lastMonth = shift(startMonth(today), 11);
   useEffect(() => {
     const controller = new AbortController();
@@ -90,7 +94,14 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
   if (mode === "fallback") return <div><HostawayBooking listingId={listingId} fallbackUrl={fallbackUrl} /></div>;
   return (
     <div className="mx-auto w-full max-w-[720px]">
-      {mode === "checking" ? <div role="status" className="flex min-h-[350px] items-center justify-center font-body text-[15px] text-[#6D6057]">Checking live availability…</div> : <>
+      {mode === "custom" && <div className="mb-4 flex justify-between border-b border-[#E7DFDB] pb-3 font-body text-[12px] text-[#4A6E57]"><span>Dates</span><span>Guests</span><span>Details</span><span>Review</span></div>}
+      {step > 0 && mode === "custom" ? <div className="space-y-5">
+        <button type="button" onClick={() => setStep(step-1)} className="font-body text-[14px] text-[#4A6E57]">← Back</button>
+        <p className="rounded-[10px] bg-[#F4EFEC] p-3 font-body text-[14px]">{checkIn && dateText.format(parse(checkIn))} – {checkOut && dateText.format(parse(checkOut))}</p>
+        {step === 1 && <div className="space-y-4"><h3 className="font-heading text-[26px] text-[#1F3125]">Who's coming?</h3><div className="flex items-center justify-between border-b border-[#E7DFDB] py-3"><span>Adults</span><div className="flex items-center gap-5"><button type="button" onClick={() => setAdults(Math.max(1,adults-1))}>−</button>{adults}<button type="button" onClick={() => setAdults(Math.min(20,adults+1))}>+</button></div></div><div className="flex items-center justify-between border-b border-[#E7DFDB] py-3"><span>Children</span><div className="flex items-center gap-5"><button type="button" onClick={() => setChildren(Math.max(0,children-1))}>−</button>{children}<button type="button" onClick={() => setChildren(Math.min(20,children+1))}>+</button></div></div><button type="button" onClick={() => setStep(2)} className="h-12 w-full rounded-[8px] bg-[#4A6E57] text-white">Continue →</button></div>}
+        {step === 2 && <form onSubmit={(event) => {event.preventDefault();setStep(3);}} className="space-y-4"><h3 className="font-heading text-[26px] text-[#1F3125]">Guest details</h3><label className="block font-body text-[14px]">Email address<input required type="email" autoComplete="email" value={guestEmail} onChange={(event) => setGuestEmail(event.target.value)} className="mt-2 h-12 w-full rounded-[8px] border border-[#D8CCC4] px-3"/></label><button type="submit" className="h-12 w-full rounded-[8px] bg-[#4A6E57] text-white">Review stay →</button></form>}
+        {step === 3 && <div className="space-y-4"><h3 className="font-heading text-[26px] text-[#1F3125]">Review your stay</h3><p className="font-body text-[14px]">{adults} adults · {children} children · {guestEmail}</p><p className="rounded-[10px] bg-[#F4EFEC] p-4 font-body text-[13px] leading-6 text-[#6D6057]">Live pricing and secure payment are being integrated. No reservation is placed or payment collected in this preview.</p><button type="button" disabled className="h-12 w-full rounded-[8px] bg-[#4A6E57] text-white opacity-50">Secure checkout coming soon</button></div>}
+      </div> : mode === "checking" ? <div role="status" className="flex min-h-[350px] items-center justify-center font-body text-[15px] text-[#6D6057]">Checking live availability…</div> : <>
         <div className="mb-1 flex items-center justify-between gap-2 md:mb-2 md:gap-3">
           <button type="button" aria-label="Previous month" disabled={month <= startMonth(today)} onClick={() => setMonth(shift(month, -1))} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#D8CCC4] text-[#1F3125] disabled:opacity-25">‹</button>
           <p className="min-w-0 text-center font-body text-[12px] leading-[1.3] text-[#6D6057] md:text-[13px]">Choose check-in and check-out dates</p>
@@ -110,8 +121,8 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
         </div>
         {message && <p role="status" className="mt-3 font-body text-[13px] text-[#8C5641]">{message}</p>}
         <div className="mt-2 flex flex-col items-center gap-0 sm:flex-row sm:items-center md:gap-2">
-          <a href={fallbackUrl} target="_blank" rel="noopener noreferrer" aria-disabled={!checkOut} onClick={(event) => { if (!checkOut) event.preventDefault(); }}
-            className={`inline-flex min-h-[44px] w-full flex-1 items-center justify-center whitespace-nowrap rounded-[8px] bg-[#4A6E57] px-3 text-center font-body text-[13px] md:min-h-[50px] md:px-6 md:text-[15px] font-medium text-white ${!checkOut ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049]"}`}>Continue to booking →</a>
+          <button type="button" disabled={!checkOut} onClick={() => { if (checkOut) setStep(1); }}
+            className={`inline-flex min-h-[44px] w-full flex-1 items-center justify-center whitespace-nowrap rounded-[8px] bg-[#4A6E57] px-3 text-center font-body text-[13px] md:min-h-[50px] md:px-6 md:text-[15px] font-medium text-white ${!checkOut ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049]"}`}>Continue to booking →</button>
           <button type="button" onClick={() => { setCheckIn(null); setCheckOut(null); setMessage(""); }} className="min-h-8 px-5 font-body text-[13px] md:min-h-11 md:text-[14px] font-medium text-[#4A6E57]">Clear dates</button>
         </div>
         <p className="mt-0.5 text-center font-body text-[11px] leading-[1.45] md:mt-2 md:text-[12px] md:leading-5 text-[#786D65]">Availability is checked live. Confirm dates, pricing and payment securely with our booking partner.</p>
