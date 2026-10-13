@@ -72,7 +72,7 @@ export default function PropertiesPage() {
             {collection.map((property) => {
               if (!property) return null;
 
-              const href = "/book/" + property.slug;
+              const href = "/properties/" + property.slug + "#availability";
               const detailHref = "/properties/" + property.slug;
               const facts = property.slug === "powder-room" ? ["Sleeps 4", "Studio", "1 Bath"] : property.stats.slice(0, 3).map((stat) => stat.label.toLowerCase() === "sleeps" ? "Sleeps " + stat.value : stat.value + " " + stat.label);
               const hooks: Record<string, string> = {
