@@ -214,7 +214,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 The stay
               </h2>
               <p className="mt-[8px] max-w-[48ch] font-body text-[14px] leading-[1.5] tracking-[-0.2px] text-[#6D6057] md:mt-[10px] md:text-[17px] md:leading-[1.55]">
-                Get to know your home away from home.
+                Get a feel for the place.
               </p>
             </div>
 
