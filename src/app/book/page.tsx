@@ -27,7 +27,7 @@ export default function BookPage() {
               Thoughtfully chosen places to settle in and stay awhile. Explore the collection, choose your dates, and book directly.
             </p>
             <div className="mt-7">
-              <a href="#choose-your-stay" className="inline-flex min-h-12 items-center justify-center rounded-[6px] bg-[#4A6E57] px-8 font-body text-[14px] font-medium text-[#FFFCFB] shadow-[0_8px_20px_rgba(31,49,37,0.12)] transition-colors hover:bg-[#3C6049] md:text-[15px]">
+              <a href="#choose-your-stay" className="inline-flex min-h-12 items-center justify-center rounded-[8px] bg-[#4A6E57] px-8 font-body text-[14px] font-medium text-[#FFFCFB] shadow-[0_8px_20px_rgba(31,49,37,0.12)] transition-colors hover:bg-[#3C6049] md:text-[15px]">
                 Choose your stay
               </a>
             </div>
@@ -74,7 +74,7 @@ export default function BookPage() {
                     <a href={href} {...(senator ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{property.hero.title}</a>
                   </h3>
                   <p className="mt-2 font-body text-[13px] leading-5 text-[#6D6057] md:text-[14px]">{facts}</p>
-                  <a href={href} {...(senator ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="mt-5 inline-flex min-h-11 w-full items-center justify-between rounded-[5px] bg-[#4A6E57] px-5 font-body text-[13px] font-medium text-white transition-colors hover:bg-[#3C6049] md:mt-6 md:text-[14px]">
+                  <a href={href} {...(senator ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="mt-5 inline-flex min-h-11 w-full items-center justify-between rounded-[8px] bg-[#4A6E57] px-5 font-body text-[13px] font-medium text-white transition-colors hover:bg-[#3C6049] md:mt-6 md:text-[14px]">
                     Check dates <span aria-hidden="true" className="ml-2">→</span>
                   </a>
                 </div>
