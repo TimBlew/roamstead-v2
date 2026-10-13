@@ -99,11 +99,11 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
           <img src={photos[active].src} alt={photos[active].alt} className="h-full w-full object-cover" loading="lazy" />
           {photos.length > 1 && (
             <>
-              <button type="button" onClick={previous} aria-label="Previous photo" className="absolute left-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/35 bg-[#1F3125]/50 text-white backdrop-blur-[4px] transition-colors hover:bg-[#1F3125]/70 md:left-5 md:h-10 md:w-10">
-                <span aria-hidden="true" className="text-[16px] leading-none">‹</span>
+              <button type="button" onClick={previous} aria-label="Previous photo" className="group absolute left-1 top-1/2 z-10 flex h-[44px] w-[44px] -translate-y-1/2 items-center justify-center md:left-3">
+                <span aria-hidden="true" className="flex h-[30px] w-[30px] items-center justify-center rounded-full border border-white/30 bg-[#1F3125]/55 text-[18px] leading-none text-white backdrop-blur-[4px] transition-colors group-hover:bg-[#1F3125]/75 md:h-[34px] md:w-[34px]">‹</span>
               </button>
-              <button type="button" onClick={next} aria-label="Next photo" className="absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/35 bg-[#1F3125]/50 text-white backdrop-blur-[4px] transition-colors hover:bg-[#1F3125]/70 md:right-5 md:h-10 md:w-10">
-                <span aria-hidden="true" className="text-[16px] leading-none">›</span>
+              <button type="button" onClick={next} aria-label="Next photo" className="group absolute right-1 top-1/2 z-10 flex h-[44px] w-[44px] -translate-y-1/2 items-center justify-center md:right-3">
+                <span aria-hidden="true" className="flex h-[30px] w-[30px] items-center justify-center rounded-full border border-white/30 bg-[#1F3125]/55 text-[18px] leading-none text-white backdrop-blur-[4px] transition-colors group-hover:bg-[#1F3125]/75 md:h-[34px] md:w-[34px]">›</span>
               </button>
             </>
           )}
