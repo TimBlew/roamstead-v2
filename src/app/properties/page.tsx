@@ -1,3 +1,4 @@
+import { socialImage } from "@/lib/site";
 import Image from "next/image";
 import { SenatorBand } from "@/components/sections/SenatorBand";
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
@@ -9,8 +10,8 @@ export const metadata = {
   alternates: { canonical: "/properties" },
   title: "Our stays | Roamstead Collective",
   description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective.",
-  openGraph: { title: "Our stays | Roamstead Collective", description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective." },
-  twitter: { title: "Our stays | Roamstead Collective", description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective." },
+  openGraph: { images: [socialImage], title: "Our stays | Roamstead Collective", description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective." },
+  twitter: { card: "summary_large_image", images: [socialImage], title: "Our stays | Roamstead Collective", description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective." },
 };
 
 export default function PropertiesPage() {

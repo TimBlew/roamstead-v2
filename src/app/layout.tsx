@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { siteUrl, launchIndexingEnabled } from "@/lib/site";
+import { siteUrl, launchIndexingEnabled, socialImage } from "@/lib/site";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
+  openGraph: { images: [socialImage] },
+  twitter: { card: "summary_large_image", images: [socialImage] },
   alternates: { canonical: "/" },
   title: "Roamstead Collective | Wasatch Back stays in Heber Valley & Park City",
   robots: { index: launchIndexingEnabled, follow: launchIndexingEnabled },

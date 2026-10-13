@@ -1,3 +1,4 @@
+import { socialImage } from "@/lib/site";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -61,7 +62,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: { canonical: `/properties/${slug}` },
     title: property.seo.title,
     description: property.seo.description,
+    twitter: { card: "summary_large_image", title: property.seo.title, description: property.seo.description, images: [socialImage] },
     openGraph: {
+      images: [socialImage],
       title: property.seo.title,
       description: property.seo.description,
     },
