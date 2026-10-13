@@ -81,7 +81,7 @@ function DetailList({ heading, items }: { heading: string; items: string[] }) {
         {items.map((item) => (
           <li
             key={item}
-            className="border-b border-[#E7DFDB] py-1.5 md:py-2 font-body text-[15px] font-normal leading-[22px] tracking-[-0.3px] text-[#4E433C]"
+            className="border-b border-[#E7DFDB] py-1.5 md:py-[8px] font-body text-[15px] font-normal leading-[22px] tracking-[-0.3px] text-[#4E433C]"
           >
             {item}
           </li>
