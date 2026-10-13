@@ -41,7 +41,7 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
         </h2>
         <a
           href="/properties"
-          className="inline-flex h-9 shrink-0 items-center justify-center rounded-[8px] border border-[#D8CCC4] bg-[#FEFDFC] px-3 font-body text-[11.5px] font-medium leading-none tracking-[-0.2px] text-[#291D16] shadow-[0_2px_8px_rgba(41,29,22,0.035)] transition-colors hover:bg-[#F4EFEC] md:h-10 md:rounded-none md:px-4 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
+          className="inline-flex h-9 shrink-0 items-center justify-center rounded-[8px] border border-[#D8CCC4] bg-[#FEFDFC] px-3 font-body text-[11.5px] font-medium leading-none tracking-[-0.2px] text-[#291D16] shadow-[0_2px_8px_rgba(41,29,22,0.035)] transition-colors hover:bg-[#F4EFEC] md:h-10 md:rounded-[8px] md:px-4 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
         >
           View all stays
         </a>
