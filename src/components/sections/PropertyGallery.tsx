@@ -3,9 +3,8 @@
 import { useRef, useState } from "react";
 
 type Photo = { src: string; alt: string };
-const base = "https://www.roamstead-co.com";
 const photo = (folder: string, file: string, alt: string): Photo => ({
-  src: `${base}/listings/${folder}/${file}.jpg`,
+  src: `/listings/${folder}/${file}.jpg`,
   alt,
 });
 
@@ -86,7 +85,15 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
           <span className="font-body text-[13px] tabular-nums text-[#6D6057]">{active + 1} / {photos.length}</span>
         </div>
         <div
-          className="relative aspect-[4/3] w-full overflow-hidden rounded-[18px] bg-[#F4EFEC] md:aspect-[16/9] md:rounded-[24px]"
+          role="group"
+          aria-roledescription="carousel"
+          aria-label="Property photos. Use left and right arrow keys to browse."
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowLeft") { event.preventDefault(); previous(); }
+            if (event.key === "ArrowRight") { event.preventDefault(); next(); }
+          }}
+          className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] relative aspect-[4/3] w-full overflow-hidden rounded-[18px] bg-[#F4EFEC] md:aspect-[16/9] md:rounded-[24px]"
           onTouchStart={(event) => { touchStart.current = event.touches[0]?.clientX ?? null; }}
           onTouchEnd={(event) => {
             if (touchStart.current === null) return;

@@ -4,6 +4,7 @@ import { properties } from "@/data/properties";
 const order = ["hygge-house", "granary", "daystar", "lowell", "powder-room", "senator"];
 
 export const metadata = {
+  alternates: { canonical: "/book" },
   title: "Book direct | Roamstead",
   description: "Choose a Roamstead stay, check your dates, and book direct.",
 };

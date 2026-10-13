@@ -10,11 +10,10 @@ export const contentType = "image/png";
 export default async function OpenGraphImage() {
   const [mountain, logo] = await Promise.all([
     readFile(path.join(process.cwd(), "public/images/hero-mountain-optimized.jpg")),
-    readFile(path.join(process.cwd(), "public/roamstead-logo.svg"), "utf8"),
+    readFile(path.join(process.cwd(), "public/roamstead-logo-light.svg"), "utf8"),
   ]);
-  // Preserve the original brand mark exactly. Recolor only its existing fill for contrast.
-  const whiteLogo = logo.replace(/#4a6e56/gi, "#FFFFFF");
-  const logoSrc = `data:image/svg+xml;base64,${Buffer.from(whiteLogo).toString("base64")}`;
+  // Use the approved light logo asset without modifying its artwork.
+  const logoSrc = `data:image/svg+xml;base64,${Buffer.from(logo).toString("base64")}`;
 
   return new ImageResponse(
     (

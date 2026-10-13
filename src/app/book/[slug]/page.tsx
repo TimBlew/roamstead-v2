@@ -12,6 +12,16 @@ const listingIds: Record<string, number> = {
   "powder-room": 455633,
 };
 
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const property = getProperty(slug);
+  return {
+    title: property ? `Book ${property.hero.title} | Roamstead Collective` : "Book a stay | Roamstead Collective",
+    alternates: { canonical: `/book/${slug}` },
+    robots: { index: false, follow: false },
+  };
+}
+
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -25,7 +35,7 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
   if (!property || !listingId) notFound();
 
   return (
-    <main className="min-h-[70vh] bg-[#FFFCFB]">
+    <div className="min-h-[70vh] bg-[#FFFCFB]">
       <section className="bg-[#F4EFEC] px-[16px] pb-[40px] pt-[28px] md:px-[32px] md:pb-16 md:pt-12">
         <div className="mx-auto max-w-[720px]">
           <Link href="/book#choose-your-stay" className="inline-flex items-center gap-[8px] font-body text-[13px] font-medium text-[#4A6E57] transition-colors hover:text-[#1F3125] md:text-[14px]">
@@ -56,6 +66,6 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

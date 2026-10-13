@@ -6,6 +6,7 @@ import { properties } from "@/data/properties";
 const order = ["hygge-house", "granary", "lowell", "powder-room"];
 
 export const metadata = {
+  alternates: { canonical: "/properties" },
   title: "Our stays | Roamstead Collective",
   description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective.",
   openGraph: { title: "Our stays | Roamstead Collective", description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective." },

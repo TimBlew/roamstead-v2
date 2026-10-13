@@ -30,6 +30,7 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
   const [children, setChildren] = useState(0);
   const hostawayCheckoutUrl = checkIn && checkOut ? `https://roamstead_ventures.holidayfuture.com/checkout/${listingId}?${new URLSearchParams({ start: checkIn, end: checkOut, numberOfGuests: String(adults + children) }).toString()}` : "";
   const maxGuests = ({ 455635: 10, 455631: 4, 455632: 8, 455633: 4 } as Record<number, number>)[listingId] ?? 4;
+  const stayNights = checkIn && checkOut ? Math.round((parse(checkOut).getTime() - parse(checkIn).getTime()) / 86400000) : 0;
   const lastMonth = shift(startMonth(today), 11);
   useEffect(() => {
     const controller = new AbortController();
@@ -105,7 +106,7 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
         <button type="button" onClick={() => setStep(0)} className="font-body text-[13px] font-medium text-[#4A6E57]">← Edit dates</button>
         <div className="flex flex-wrap items-center justify-between gap-[8px] rounded-[10px] bg-[#F4EFEC] px-[16px] py-[12px] font-body text-[14px] text-[#1F3125]">
           <span>{checkIn && dateText.format(parse(checkIn))} – {checkOut && dateText.format(parse(checkOut))}</span>
-          <span className="text-[#6D6057]">{checkIn && checkOut ? Math.round((parse(checkOut).getTime()-parse(checkIn).getTime())/86400000) : 0} nights</span>
+          <span className="text-[#6D6057]">{stayNights} {stayNights === 1 ? "night" : "nights"}</span>
         </div>
         <div className="space-y-[12px]">
           <h3 className="font-heading text-[23px] font-medium tracking-[-0.03em] text-[#1F3125]">Guests</h3>

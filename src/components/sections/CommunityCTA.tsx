@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 
 export const CommunityCTA = () => {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [audienceStored, setAudienceStored] = useState(false);
   const [message, setMessage] = useState("");
   const [season, setSeason] = useState("");
   const [home, setHome] = useState("");
@@ -37,7 +38,7 @@ export const CommunityCTA = () => {
     const form = event.currentTarget;
     const values = new FormData(form);
     const email = String(values.get("email") || "").trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setMessage("That email doesn't look right. Mind checking it?");
       setStatus("error");
       setShowResult(true);
@@ -52,6 +53,8 @@ export const CommunityCTA = () => {
       if (!response.ok) {
         throw new Error(response.status === 400 ? "Please check your selections and try again." : "We couldn't complete your signup. Please try again.");
       }
+      const result = await response.json() as { audienceStored?: boolean };
+      setAudienceStored(result.audienceStored === true);
       form.reset();
       setSeason("");
       setHome("");
@@ -80,11 +83,11 @@ export const CommunityCTA = () => {
           <label className="block min-w-0 font-body text-[13px] font-medium leading-5 tracking-[-0.01em] text-[#1F3125]">
             Which season brings you up here? <span className="font-normal text-[#8A8078]">(optional)</span>
             <span className="relative mt-1.5 block md:mt-2">
-              <select name="season" value={season} onChange={(event) => setSeason(event.target.value)} aria-label="Which season brings you up here?" className="absolute inset-0 z-10 h-[48px] md:h-[52px] w-full cursor-pointer appearance-none opacity-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
+              <select name="season" value={season} onChange={(event) => setSeason(event.target.value)} aria-label="Which season brings you up here?" className="peer absolute inset-0 z-10 h-[48px] md:h-[52px] w-full cursor-pointer appearance-none opacity-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
                 <option value="">Select a season</option>
                 <option value="Winter">Winter</option><option value="Spring">Spring</option><option value="Summer">Summer</option><option value="Fall">Fall</option><option value="All Four">All Four</option>
               </select>
-              <span aria-hidden="true" className={`flex h-[48px] md:h-[52px] w-full items-center rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] shadow-[0_1px_2px_rgba(31,49,37,0.035)] ${season ? "text-[#1F3125]" : "text-[#978C84]"}`}>
+              <span aria-hidden="true" className={`peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#4A6E57] flex h-[48px] md:h-[52px] w-full items-center rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] shadow-[0_1px_2px_rgba(31,49,37,0.035)] ${season ? "text-[#1F3125]" : "text-[#978C84]"}`}>
                 {season || "Select a season"}
               </span>
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#4A6E57]"><path d="m6 9 6 6 6-6" /></svg>
@@ -97,7 +100,7 @@ export const CommunityCTA = () => {
                 <option value="">Select an area</option>
                 <option value="Heber Valley / Wasatch Back">Heber Valley / Wasatch Back</option><option value="Salt Lake or Provo area">Salt Lake or Provo area</option><option value="Somewhere else">Somewhere else</option>
               </select>
-              <span aria-hidden="true" className={`flex h-[48px] md:h-[52px] w-full items-center rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] shadow-[0_1px_2px_rgba(31,49,37,0.035)] ${home ? "text-[#1F3125]" : "text-[#978C84]"}`}>
+              <span aria-hidden="true" className={`peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#4A6E57] flex h-[48px] md:h-[52px] w-full items-center rounded-[8px] border border-[#CFC4BC] bg-[#FFFCFB] py-3 pl-4 pr-11 font-body text-[15px] shadow-[0_1px_2px_rgba(31,49,37,0.035)] ${home ? "text-[#1F3125]" : "text-[#978C84]"}`}>
                 {home || "Select an area"}
               </span>
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#4A6E57]"><path d="m6 9 6 6 6-6" /></svg>
@@ -125,9 +128,9 @@ export const CommunityCTA = () => {
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5h.01" /></svg>
               )}
             </div>
-            <h3 id="early-access-result-title" className="font-heading text-[26px] font-medium leading-[1.14] tracking-[-0.035em] text-[#1F3125]">{status === "success" ? "You’re on the list." : "One more thing."}</h3>
+            <h3 id="early-access-result-title" className="font-heading text-[26px] font-medium leading-[1.14] tracking-[-0.035em] text-[#1F3125]">{status === "success" ? (audienceStored ? "You’re on the list." : "We’ve received your request.") : "One more thing."}</h3>
             {status !== "success" && <p id="early-access-result-message" className="mx-auto mt-2 max-w-[290px] font-body text-[14px] leading-[1.5] text-[#6D6057]">{message}</p>}
-            <button type="button" onClick={closeResult} className="mt-4 inline-flex h-9 min-w-[112px] items-center justify-center rounded-[7px] bg-[#4A6E57] px-5 font-body text-[14px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{status === "success" ? "Keep exploring" : "Try again"}</button>
+            <button type="button" onClick={closeResult} className="mt-4 inline-flex h-9 min-w-[112px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-5 font-body text-[14px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{status === "success" ? "Keep exploring" : "Try again"}</button>
           </div>
         </div>
       )}

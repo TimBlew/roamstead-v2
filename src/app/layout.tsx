@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { siteUrl, launchIndexingEnabled } from "@/lib/site";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
+  metadataBase: siteUrl,
+  alternates: { canonical: "/" },
   title: "Roamstead Collective | Wasatch Back stays in Heber Valley & Park City",
-  robots: "noindex, nofollow",
+  robots: { index: launchIndexingEnabled, follow: launchIndexingEnabled },
   description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective.",
 };
 
@@ -22,8 +25,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "WebSite", name: "Roamstead Collective", url: siteUrl.toString() }).replace(/</g, "\\u003c") }} />
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-[16px] focus:top-[8px] focus:z-[100] focus:rounded-[8px] focus:bg-[#FFFCFB] focus:px-[16px] focus:py-[12px] focus:text-[#1F3125]">Skip to content</a>
         <Navigation />
-        <main className="pt-12">{children}</main>
+        <main id="main-content" tabIndex={-1} className="pt-[52px]">{children}</main>
         <Footer />
       </body>
     </html>

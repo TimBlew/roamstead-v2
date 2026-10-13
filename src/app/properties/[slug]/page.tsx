@@ -58,6 +58,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!property) return {};
 
   return {
+    alternates: { canonical: `/properties/${slug}` },
     title: property.seo.title,
     description: property.seo.description,
     openGraph: {
@@ -163,7 +164,7 @@ export default async function PropertyPage({ params }: PageProps) {
               <a
                 href={bookingHref}
                 {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="group inline-flex h-[48px] w-full items-center justify-center gap-[8px] rounded-[9px] bg-[#FFFCFB] px-[22px] font-body text-[14px] font-semibold leading-5 text-[#1F3125] shadow-[0_5px_16px_rgba(0,0,0,0.1)] transition-colors hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white md:h-[50px] md:text-[15px]"
+                className="group inline-flex h-[48px] w-full items-center justify-center gap-[8px] rounded-[8px] bg-[#FFFCFB] px-[22px] font-body text-[14px] font-semibold leading-5 text-[#1F3125] shadow-[0_5px_16px_rgba(0,0,0,0.1)] transition-colors hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white md:h-[50px] md:text-[15px]"
               >
                 Check dates
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-[17px] w-[17px] transition-transform group-hover:translate-x-[3px]"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>

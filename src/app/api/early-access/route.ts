@@ -37,6 +37,7 @@ export async function POST(request: Request) {
     }
     // Contact storage is activated only after a dedicated Resend contact-management
     // key and Roamstead segment have been configured. Keep send-only credentials separate.
+    let audienceStored = false;
     const contactsKey = process.env.RESEND_CONTACTS_API_KEY;
     const segmentId = process.env.RESEND_ROAMSTEAD_SEGMENT_ID;
     if (contactsKey && segmentId) {
@@ -80,7 +81,10 @@ export async function POST(request: Request) {
           if (!membershipResponse.ok && membershipResponse.status !== 409) {
             console.error("Roamstead segment membership failed", membershipResponse.status);
           }
-        } else if (!contactResponse.ok) {
+          audienceStored = (membershipResponse.ok || membershipResponse.status === 409) && updateResponse.ok;
+        } else if (contactResponse.ok) {
+          audienceStored = true;
+        } else {
           console.error("Roamstead contact storage failed", contactResponse.status);
         }
       } catch (error) {
@@ -89,7 +93,7 @@ export async function POST(request: Request) {
     } else {
       console.info("Roamstead contact storage not activated: contact key or segment missing");
     }
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, audienceStored });
   } catch (error) {
     console.error("Early access email request failed", error instanceof Error ? error.message : "Unknown network error");
     return NextResponse.json({ error: "Email service connection failed", code: "network_error" }, { status: 502 });
