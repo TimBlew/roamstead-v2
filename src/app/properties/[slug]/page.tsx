@@ -147,27 +147,26 @@ export default async function PropertyPage({ params }: PageProps) {
             </p>
 
             {highlights.primary.length > 0 ? (
-              <div className="mt-4 border-t border-white/20 pt-3 md:mt-4 md:pt-3">
-                <div className="grid grid-cols-2 gap-x-6 gap-y-2 md:gap-x-8 md:gap-y-2">
+              <div className="mt-[24px] border-t border-white/25 pt-[18px] md:mt-[24px] md:pt-[20px]">
+                <div className="grid grid-cols-2 gap-x-[22px] gap-y-[13px] md:gap-x-[28px] md:gap-y-[14px]">
                   {highlights.primary.map((item) => (
-                    <div
-                      key={item}
-                      className="flex items-center py-0.5 font-body text-[13px] font-medium leading-5 tracking-[-0.1px] text-[#FFFCFB]"
-                    >
-                      <span className="block w-full text-left md:text-left">{item}</span>
+                    <div key={item} className="flex items-center gap-[10px] font-body text-[13px] font-medium leading-[1.4] tracking-[-0.1px] text-[#FFFCFB] md:text-[14px]">
+                      <span aria-hidden="true" className="h-[5px] w-[5px] shrink-0 rounded-full bg-[#C8DCC7]" />
+                      <span>{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
             ) : null}
 
-            <div className="mt-4 flex justify-start md:mt-5">
+            <div className="mt-[25px] border-t border-white/20 pt-[20px] md:mt-[27px] md:pt-[22px]">
               <a
                 href={bookingHref}
                 {...(isSenator ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="inline-flex h-11 min-w-[148px] items-center justify-center whitespace-nowrap rounded-[7px] border border-white/50 bg-[#FFFCFB] px-6 font-body text-[14px] font-semibold leading-5 text-[#1F3125] shadow-[0_5px_16px_rgba(0,0,0,0.12)] transition-colors hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white md:h-12 md:min-w-[160px] md:text-[15px]"
+                className="group inline-flex h-[48px] w-full items-center justify-center gap-[12px] rounded-[9px] bg-[#FFFCFB] px-[22px] font-body text-[14px] font-semibold leading-5 text-[#1F3125] shadow-[0_5px_16px_rgba(0,0,0,0.1)] transition-colors hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white md:h-[50px] md:text-[15px]"
               >
                 Check dates
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-[17px] w-[17px] transition-transform group-hover:translate-x-[3px]"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
               </a>
             </div>
           </div>
