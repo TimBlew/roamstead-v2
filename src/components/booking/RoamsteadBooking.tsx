@@ -114,9 +114,17 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
           </div>)}
           <p className="font-body text-[12px] text-[#786D65]">Up to {maxGuests} guests</p>
         </div>
-        <div className="rounded-[10px] border border-[#E7DFDB] bg-[#FFFCFB] px-[16px] py-[14px]">
-          <h3 className="font-heading text-[20px] tracking-[-0.03em] text-[#1F3125]">One step closer to your stay.</h3>
-          <p className="mt-[6px] font-body text-[13px] leading-[1.5] text-[#6D6057]">Continue to review your final total, confirm your details, and complete your reservation securely.</p>
+        <div className="rounded-[12px] border border-[#E7DFDB] bg-[#FFFCFB] px-[16px] py-[16px] sm:px-[20px] sm:py-[18px]">
+          <div className="flex items-start gap-[10px] sm:gap-[12px]">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#4A6E57" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="mt-[2px] h-[22px] w-[22px] shrink-0 sm:h-[24px] sm:w-[24px]">
+              <path d="M12 2.5 20 6v6c0 5.2-3.3 8.3-8 9.5C7.3 20.3 4 17.2 4 12V6l8-3.5Z" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+            <div className="min-w-0">
+              <h3 className="max-w-[28ch] font-heading text-[19px] font-medium leading-[1.25] tracking-[-0.03em] text-[#1F3125] sm:text-[21px]">One step closer to your stay.</h3>
+              <p className="mt-[8px] max-w-[51ch] font-body text-[13px] leading-[1.55] text-[#6D6057] sm:text-[14px]">Continue to review your final total, confirm your details, and complete your reservation securely.</p>
+            </div>
+          </div>
         </div>
         <a href={hostawayCheckoutUrl || undefined} aria-disabled={!checkIn || !checkOut || loading} onClick={event => { if (!checkIn || !checkOut || loading) event.preventDefault(); }} className={`flex min-h-[48px] w-full items-center justify-center rounded-[8px] bg-[#4A6E57] px-[16px] text-center font-body text-[15px] font-medium text-white ${!checkIn || !checkOut || loading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049]"}`}>Continue to booking →</a>
       </div> : mode === "checking" ? <div role="status" className="flex min-h-[350px] items-center justify-center font-body text-[15px] text-[#6D6057]">Checking live availability…</div> : <>
