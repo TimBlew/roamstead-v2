@@ -29,25 +29,7 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const hostawayCheckoutUrl = checkIn && checkOut ? `https://roamstead_ventures.holidayfuture.com/checkout/${listingId}?${new URLSearchParams({ start: checkIn, end: checkOut, numberOfGuests: String(adults + children) }).toString()}` : "";
-  const [quote, setQuote] = useState<{ totalPrice: number; currency: string; components: { label: string; amount: number }[] } | null>(null);
-  const [quoteLoading, setQuoteLoading] = useState(false);
-  const [quoteError, setQuoteError] = useState("");
-  const [quoteAttempt, setQuoteAttempt] = useState(0);
-  const [quoteKey, setQuoteKey] = useState("");
-  const currentQuoteKey = [listingId, checkIn, checkOut, adults, children].join(":");
-  const quoteIsCurrent = Boolean(quote && quoteKey === currentQuoteKey);
-  const maxGuests = ({455635: 10, 455631: 4, 455632: 8, 455633: 4} as Record<number, number>)[listingId] ?? 4;
-  const money = (value: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: quote?.currency || "USD" }).format(value);
-  useEffect(() => {
-    if (!checkIn || !checkOut || step < 1) return;
-    const controller = new AbortController();
-    setQuote(null); setQuoteKey(""); setQuoteError(""); setQuoteLoading(true);
-    fetch("/api/hostaway/quote", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ listingId, checkIn, checkOut, adults, children }), signal: controller.signal })
-      .then(async response => { const result = await response.json(); if (!response.ok) throw new Error(result.error || "Pricing unavailable"); if (controller.signal.aborted) return; setQuote(result); setQuoteKey([listingId, checkIn, checkOut, adults, children].join(":")); })
-      .catch(error => { if (!controller.signal.aborted) setQuoteError(error instanceof Error ? error.message : "Pricing unavailable"); })
-      .finally(() => { if (!controller.signal.aborted) setQuoteLoading(false); });
-    return () => controller.abort();
-  }, [listingId, checkIn, checkOut, adults, children, step > 0, quoteAttempt]);
+  const maxGuests = ({ 455635: 10, 455631: 4, 455632: 8, 455633: 4 } as Record<number, number>)[listingId] ?? 4;
   const lastMonth = shift(startMonth(today), 11);
   useEffect(() => {
     const controller = new AbortController();
@@ -132,12 +114,15 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
           </div>)}
           <p className="font-body text-[12px] text-[#786D65]">Up to {maxGuests} guests</p>
         </div>
-        <div aria-live="polite" className="rounded-[10px] border border-[#E7DFDB] bg-[#FFFCFB] px-[16px] py-[16px]">
-          <h3 className="font-heading text-[21px] text-[#1F3125]">Stay total</h3>
-          {quoteLoading ? <p className="mt-[8px] font-body text-[13px] text-[#6D6057]">Checking live rates…</p> : quoteError ? <div role="status" className="mt-[8px] font-body text-[13px] text-[#8C5641]"><p>{quoteError}</p><button type="button" onClick={() => setQuoteAttempt(attempt => attempt + 1)} className="mt-[8px] min-h-[44px] font-medium text-[#4A6E57] underline">Try pricing again</button></div> : quoteIsCurrent && quote ? <div className="mt-[12px] space-y-[8px] font-body text-[13px]">{quote.components.map((line,index) => <div key={index} className="flex justify-between gap-[12px] text-[#6D6057]"><span>{line.label}</span><span>{money(line.amount)}</span></div>)}<div className="flex justify-between border-t border-[#E7DFDB] pt-[12px] text-[15px] font-semibold text-[#1F3125]"><span>Estimated total</span><span>{money(quote.totalPrice)}</span></div></div> : <p className="mt-[8px] font-body text-[13px] text-[#6D6057]">Preparing your quote…</p>}
+        <div className="rounded-[10px] border border-[#E7DFDB] bg-[#FFFCFB] px-[16px] py-[14px]">
+          <div className="flex items-center justify-between gap-[12px]">
+            <h3 className="font-heading text-[20px] tracking-[-0.03em] text-[#1F3125]">Your stay</h3>
+            <span className="font-body text-[12px] font-medium text-[#4A6E57]">Ready to book</span>
+          </div>
+          <p className="mt-[8px] font-body text-[13px] leading-[1.5] text-[#6D6057]">Review your full price, taxes, fees and payment options on the next screen.</p>
         </div>
-        <a href={quoteIsCurrent && !quoteLoading ? hostawayCheckoutUrl : undefined} aria-disabled={!quoteIsCurrent || quoteLoading} onClick={event => { if (!quoteIsCurrent || quoteLoading) event.preventDefault(); }} className={`flex min-h-12 w-full items-center justify-center rounded-[8px] bg-[#4A6E57] px-[16px] text-center font-body text-[15px] font-medium text-white ${!quoteIsCurrent || quoteLoading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049]"}`}>Continue to secure checkout →</a>
-        <p className="text-center font-body text-[12px] leading-5 text-[#786D65]">Guest details and secure payment are completed with Hostaway. Final pricing, fees and policies are confirmed there.</p>
+        <a href={hostawayCheckoutUrl || undefined} aria-disabled={!checkIn || !checkOut || loading} onClick={event => { if (!checkIn || !checkOut || loading) event.preventDefault(); }} className={`flex min-h-[48px] w-full items-center justify-center rounded-[8px] bg-[#4A6E57] px-[16px] text-center font-body text-[15px] font-medium text-white ${!checkIn || !checkOut || loading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049]"}`}>Continue to booking →</a>
+        <p className="text-center font-body text-[12px] leading-[1.5] text-[#786D65]">Guest details and secure payment are completed with Hostaway.</p>
       </div> : mode === "checking" ? <div role="status" className="flex min-h-[350px] items-center justify-center font-body text-[15px] text-[#6D6057]">Checking live availability…</div> : <>
         <div className="mb-[4px] flex items-center justify-between gap-[8px] md:mb-[8px] md:gap-[12px]">
           <button type="button" aria-label="Previous month" disabled={month <= startMonth(today)} onClick={() => setMonth(shift(month, -1))} className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full border border-[#D8CCC4] text-[#1F3125] disabled:opacity-25">‹</button>
