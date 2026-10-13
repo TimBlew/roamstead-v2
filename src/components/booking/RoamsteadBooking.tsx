@@ -108,9 +108,10 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
           const available = !past && item?.available;
           const selected = date === checkIn || date === checkOut;
           const inRange = checkIn && checkOut && date > checkIn && date < checkOut;
-          const canClick = !loading && (Boolean(available && item?.arrivalAllowed) || Boolean(checkIn && !checkOut && validDeparture(checkIn, date)));
-          return <button key={date} type="button" aria-label={dateText.format(parse(date)) + (checkIn && !checkOut && validDeparture(checkIn, date) ? " available for check-out" : available ? " available" : " unavailable")} aria-pressed={Boolean(selected)} disabled={!canClick} onClick={() => selectDate(date)}
-            style={{ width: 32, height: 32, minWidth: 32, minHeight: 32, maxWidth: 32, maxHeight: 32, padding: 0, alignSelf: "center", justifySelf: "center" }} className={`inline-flex shrink-0 items-center justify-center rounded-[8px] font-body text-[14px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${selected ? "bg-[#4A6E57] text-white" : inRange ? "bg-[#E5EDE7] text-[#1F3125]" : available ? "text-[#1F3125] hover:bg-[#E5EDE7]" : "cursor-not-allowed text-[#B5ADA7] line-through"}`}>{n}</button>;
+          const canDepart = Boolean(checkIn && !checkOut && validDeparture(checkIn, date));
+          const canClick = !loading && (Boolean(available && item?.arrivalAllowed) || canDepart);
+          return <button key={date} type="button" aria-label={dateText.format(parse(date)) + (canDepart ? " available for check-out" : available ? " available" : " unavailable")} aria-pressed={Boolean(selected)} disabled={!canClick} onClick={() => selectDate(date)}
+            style={{ width: 32, height: 32, minWidth: 32, minHeight: 32, maxWidth: 32, maxHeight: 32, padding: 0, alignSelf: "center", justifySelf: "center" }} className={`inline-flex shrink-0 items-center justify-center rounded-[8px] font-body text-[14px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${selected ? "bg-[#4A6E57] text-white" : inRange ? "bg-[#E5EDE7] text-[#1F3125]" : available || canDepart ? "text-[#1F3125] hover:bg-[#E5EDE7]" : "cursor-not-allowed text-[#B5ADA7] line-through"}`}>{n}</button>;
         })}
       </div>
     </div>
