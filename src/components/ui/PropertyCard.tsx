@@ -66,7 +66,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         </p>
         <a
           href={href}
-          className="mt-3 inline-flex h-10 w-auto min-w-[144px] items-center justify-center whitespace-nowrap rounded-[7px] border border-[#CFC5BD] bg-[#FEFDFC] px-6 font-body text-[14px] font-medium text-[#1F3125] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] md:mt-4"
+          className="mt-3 inline-flex h-10 w-auto min-w-[144px] items-center justify-center whitespace-nowrap rounded-[8px] border border-[#CFC5BD] bg-[#FEFDFC] px-6 font-body text-[14px] font-medium text-[#1F3125] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] md:mt-4"
         >
           Check dates
         </a>
