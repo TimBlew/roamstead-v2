@@ -60,8 +60,12 @@ const galleries: Record<string, Photo[]> = {
   "powder-room": [
     photo("powder-room", "bedroom-01", "King bed and seating"),
     photo("powder-room", "bathroom-01", "Bathroom"),
+    photo("powder-room", "bathroom-02", "Bathroom kitchenette and mountain view"),
+    photo("powder-room", "bathroom-03", "Bathroom vanity and details"),
     photo("powder-room", "pool-01", "Outdoor pool"),
-    photo("powder-room", "exterior-02", "Park City ski resort"),
+    photo("powder-room", "pool-02", "Outdoor hot tub and pool at night"),
+    photo("powder-room", "gym-01", "Fitness center"),
+    photo("powder-room", "exterior-02", "Park City ski resort and building exterior"),
   ],
 };
 
