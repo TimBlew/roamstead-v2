@@ -103,7 +103,7 @@ export const CommunityCTA = () => {
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#4A6E57]"><path d="m6 9 6 6 6-6" /></svg>
             </span>
           </label>
-          <div className="pt-0 text-center sm:col-span-2">
+          <div className="pt-0 text-center sm:col-span-2 md:pt-[12px]">
             <button type="submit" disabled={status === "sending"} className="inline-flex h-11 min-w-[192px] md:h-12 md:min-w-[206px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-7 font-body text-[15px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:opacity-60">{status === "sending" ? "Sending…" : "Get early access"}</button>
             <div className="mx-auto mt-[8px] max-w-[620px] font-body text-[11.5px] leading-[1.45] md:text-[12px] text-[#6D6057]">
               <p>Free to join the list. Unsubscribe anytime.</p>
