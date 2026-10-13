@@ -183,7 +183,7 @@ export default async function PropertyPage({ params }: PageProps) {
       <PropertyGallery slug={slug} fallback={stories.map((story) => ({ src: story.image.src, alt: story.image.alt }))} />
 
       {listingId ? (
-        <section id="availability" className="scroll-mt-16 bg-[#F4EFEC] px-4 pb-5 pt-5 md:px-6 md:py-11">
+        <section id="availability" className="scroll-mt-24 bg-[#F4EFEC] px-4 pb-5 pt-5 md:px-6 md:py-11">
           <div className="mx-auto max-w-[620px]">
             <div className="mb-2.5 md:mb-4">
               <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
