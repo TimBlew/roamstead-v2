@@ -26,12 +26,12 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
 
   return (
     <main className="min-h-[70vh] bg-[#FFFCFB]">
-      <section className="bg-[#F4EFEC] px-4 pb-10 pt-7 md:px-8 md:pb-16 md:pt-12">
+      <section className="bg-[#F4EFEC] px-[16px] pb-[40px] pt-[28px] md:px-[32px] md:pb-16 md:pt-12">
         <div className="mx-auto max-w-[720px]">
-          <Link href="/book#choose-your-stay" className="inline-flex items-center gap-2 font-body text-[13px] font-medium text-[#4A6E57] transition-colors hover:text-[#1F3125] md:text-[14px]">
+          <Link href="/book#choose-your-stay" className="inline-flex items-center gap-[8px] font-body text-[13px] font-medium text-[#4A6E57] transition-colors hover:text-[#1F3125] md:text-[14px]">
             <span aria-hidden="true">←</span> All stays
           </Link>
-          <div className="mt-6 flex items-center gap-3 rounded-[12px] border border-[#E1D7D1] bg-[#FFFCFB] p-2.5 sm:gap-4 md:mt-8 md:max-w-[720px] md:p-3">
+          <div className="mt-[24px] flex items-center gap-[12px] rounded-[12px] border border-[#E1D7D1] bg-[#FFFCFB] p-2.5 sm:gap-[16px] md:mt-[32px] md:max-w-[720px] md:p-[12px]">
             <div className="relative h-[66px] w-[88px] shrink-0 overflow-hidden rounded-[7px] bg-[#E7DFDB] sm:h-[82px] sm:w-[118px]">
               <Image src={slug === "hygge-house" ? "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" : property.hero.image.src} alt="" fill unoptimized={slug === "hygge-house"} sizes="120px" className="object-cover" />
             </div>
@@ -41,16 +41,15 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
               <p className="mt-0.5 font-body text-[12px] text-[#6D6057] sm:text-[13px]">{property.hero.locationLabel.replace(", Utah", "")}</p>
             </div>
           </div>
-          <div className="mt-6 md:mt-7">
+          <div className="mt-[24px] md:mt-[28px]">
             <p className="font-body text-[12px] font-medium uppercase tracking-[0.1em] text-[#4A6E57]">Book direct</p>
-            <h2 className="mt-1 font-heading text-[35px] font-medium leading-[1.08] tracking-[-0.045em] text-[#1F3125] md:text-[49px]">Choose your dates</h2>
-            <p className="mt-2 font-body text-[14px] leading-6 text-[#6D6057] md:text-[16px]">Select check-in and check-out to continue your reservation.</p>
+            <h2 className="mt-[4px] font-heading text-[35px] font-medium leading-[1.08] tracking-[-0.045em] text-[#1F3125] md:text-[49px]">Plan your stay</h2>
+            <p className="mt-[8px] font-body text-[14px] leading-6 text-[#6D6057] md:text-[16px]">Select check-in and check-out to continue your reservation.</p>
           </div>
-          <div className="mx-auto mt-4 max-w-[620px] rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 pb-5 pt-3 shadow-[0_8px_28px_rgba(41,29,22,0.035)] sm:px-6 md:mt-4 md:px-7 md:pb-6 md:pt-4">
+          <div className="mx-auto mt-[16px] max-w-[620px] rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-[12px] pb-[20px] pt-[12px] shadow-[0_8px_28px_rgba(41,29,22,0.035)] sm:px-[24px] md:mt-[16px] md:px-[28px] md:pb-[24px] md:pt-[16px]">
             <RoamsteadBooking listingId={listingId} fallbackUrl={property.bookingUrl} />
           </div>
-          <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-            <p className="font-body text-[12px] leading-5 text-[#8F7E73] md:text-[13px]">Secure checkout with our booking partner.</p>
+          <div className="mt-[20px] flex flex-wrap items-center justify-between gap-[12px]">
             <Link href={`/properties/${slug}`} className="font-body text-[13px] font-medium text-[#4A6E57] underline underline-offset-4">
               Explore property details
             </Link>
