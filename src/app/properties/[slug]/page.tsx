@@ -77,11 +77,11 @@ function DetailList({ heading, items }: { heading: string; items: string[] }) {
         {heading}
       </h3>
 
-      <ul className="mt-1 grid gap-x-6 gap-y-0 sm:grid-cols-2 md:mt-2.5 md:gap-y-1">
+      <ul className="mt-1 grid gap-x-[20px] gap-y-0 sm:grid-cols-2 md:mt-2.5 md:gap-x-[32px] md:gap-y-0">
         {items.map((item) => (
           <li
             key={item}
-            className="border-b border-[#E7DFDB] py-1.5 md:py-[8px] font-body text-[15px] font-normal leading-[22px] tracking-[-0.3px] text-[#4E433C]"
+            className="flex min-h-[44px] items-center border-b border-[#E7DFDB] py-[8px] font-body text-[15px] font-normal leading-[22px] tracking-[-0.3px] text-[#4E433C] md:min-h-[48px] md:py-[8px]"
           >
             {item}
           </li>
