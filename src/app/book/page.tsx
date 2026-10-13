@@ -34,7 +34,8 @@ export default function BookPage() {
             </div>
           </div>
           <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#F4EFEC] sm:aspect-[4/3] lg:aspect-auto lg:min-h-full">
-            <Image src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/357bad24-b2c4-437e-80dd-decc76988428.png" alt="Aerial view of Hygge House and the surrounding mountains in Midway, Utah" fill unoptimized priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-cover object-center saturate-[0.92] contrast-[0.96] brightness-[1.015] lg:object-cover lg:object-[center_52%] lg:scale-[1.02]" />
+            <div className="absolute inset-0 hidden lg:block" aria-hidden="true"><Image src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/357bad24-b2c4-437e-80dd-decc76988428.png" alt="" fill unoptimized sizes="60vw" className="object-cover object-center scale-[1.12] opacity-40 blur-[28px]" /></div>
+            <Image src="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/357bad24-b2c4-437e-80dd-decc76988428.png" alt="Aerial view of Hygge House and the surrounding mountains in Midway, Utah" fill unoptimized priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-cover object-center saturate-[0.92] contrast-[0.96] brightness-[1.015] lg:object-contain lg:object-center lg:scale-100" />
             <div className="pointer-events-none absolute inset-y-0 -left-px hidden w-[55%] bg-gradient-to-r from-[#F4EFEC] from-0% via-[#F4EFEC]/55 via-[42%] to-transparent lg:block" />
             <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#F4EFEC] to-transparent lg:hidden" />
           </div>
