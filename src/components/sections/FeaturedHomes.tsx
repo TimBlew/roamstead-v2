@@ -49,10 +49,10 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
 
       <div className="mx-auto mt-4 w-full max-w-[1440px] md:mt-8">
         <div onScroll={handleCarouselScroll} className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:gap-7 md:overflow-visible md:px-0 lg:grid-cols-2">
-          <PropertyCard image="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" location="Midway" name="Hygge House" sleeps={10} bedrooms={4} baths={3} href="/book/hygge-house" detailHref="/properties/hygge-house" hook="Room for 10. Cozy enough to earn the name." />
-          <PropertyCard image="/images/granary.jpg" location="Midway" name="Granary" sleeps={4} bedrooms={1} baths={1} href="/book/granary" detailHref="/properties/granary" hook="A quiet Midway base for 2 to 4. The kitchen island does a lot of work." />
-          <PropertyCard image="/images/lowell/exterior.jpg" location="Park City" name="The Lowell" sleeps={8} bedrooms={2} baths={2} href="/book/lowell" detailHref="/properties/lowell" hook="At the base of Park City Mountain. Boots on, lift next." />
-          <PropertyCard image="/images/powder-room/bedroom.jpg" location="Park City" name="Powder Room" sleeps={4} baths={1} href="/book/powder-room" detailHref="/properties/powder-room" hook="Yes, it's called the Powder Room. Yes, it's for skiers. A studio inside the Lowell building." />
+          <PropertyCard image="https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/8d444f85-ede6-407c-ae17-93e38999bdff.jpg" location="Midway" name="Hygge House" sleeps={10} bedrooms={4} baths={3} href="/properties/hygge-house#availability" detailHref="/properties/hygge-house" hook="Room for 10. Cozy enough to earn the name." />
+          <PropertyCard image="/images/granary.jpg" location="Midway" name="Granary" sleeps={4} bedrooms={1} baths={1} href="/properties/granary#availability" detailHref="/properties/granary" hook="A quiet Midway base for 2 to 4. The kitchen island does a lot of work." />
+          <PropertyCard image="/images/lowell/exterior.jpg" location="Park City" name="The Lowell" sleeps={8} bedrooms={2} baths={2} href="/properties/lowell#availability" detailHref="/properties/lowell" hook="At the base of Park City Mountain. Boots on, lift next." />
+          <PropertyCard image="/images/powder-room/bedroom.jpg" location="Park City" name="Powder Room" sleeps={4} baths={1} href="/properties/powder-room#availability" detailHref="/properties/powder-room" hook="Yes, it's called the Powder Room. Yes, it's for skiers. A studio inside the Lowell building." />
         </div>
 
         <div className="mt-3 flex items-center justify-center gap-1.5 md:hidden" aria-label="Swipe to view more properties">
