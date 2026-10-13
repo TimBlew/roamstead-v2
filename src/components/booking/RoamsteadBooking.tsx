@@ -49,6 +49,14 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
   }, [listingId, month]);
+  const validDeparture = (start: string, end: string) => {
+    const arrival = data[start], departure = data[end];
+    if (!arrival || !departure || end <= start || !departure.departureAllowed) return false;
+    const nights = Math.round((parse(end).getTime() - parse(start).getTime()) / 86400000);
+    if (nights < Math.max(1, arrival.minimumStay || 1) || (arrival.maximumStay > 0 && nights > arrival.maximumStay)) return false;
+    for (let n = 0; n < nights; n++) if (!data[key(addDays(parse(start), n))]?.available) return false;
+    return true;
+  };
   const selectDate = (value: string) => {
     const day = data[value];
     if (!day) return;
@@ -56,15 +64,8 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
       if (!day.available || !day.arrivalAllowed) return;
       setCheckIn(value); setCheckOut(null); setMessage(""); return;
     }
-    const arrival = data[checkIn];
-    const nights = Math.round((parse(value).getTime() - parse(checkIn).getTime()) / 86400000);
-    let valid = Boolean(day.departureAllowed && arrival && nights >= arrival.minimumStay && nights <= arrival.maximumStay);
-    for (let n = 0; n < nights; n++) {
-      const intermediate = data[key(addDays(parse(checkIn), n))];
-      if (!intermediate?.available) valid = false;
-    }
-    if (valid) { setCheckOut(value); setMessage(""); }
-    else setMessage("Those dates cannot be booked together. Try another departure date.");
+    if (validDeparture(checkIn, value)) { setCheckOut(value); setMessage(""); }
+    else setMessage("Those dates cannot be booked together. Choose another check-out date.");
   };
   const renderMonth = (value: Date) => (
     <div className="min-w-0 flex-1 self-start" key={key(value)}>
@@ -79,9 +80,9 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
           const available = !past && item?.available;
           const selected = date === checkIn || date === checkOut;
           const inRange = checkIn && checkOut && date > checkIn && date < checkOut;
-          const canClick = available || Boolean(checkIn && !checkOut && !past && item?.departureAllowed);
+          const canClick = !loading && (Boolean(available && item?.arrivalAllowed) || Boolean(checkIn && !checkOut && validDeparture(checkIn, date)));
           return <button key={date} type="button" aria-label={dateText.format(parse(date)) + (available ? " available" : " unavailable")} aria-pressed={Boolean(selected)} disabled={!canClick} onClick={() => selectDate(date)}
-            className={`mx-auto flex h-8 w-8 max-w-full md:h-9 md:w-9 items-center justify-center rounded-[8px] font-body text-[14px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${selected ? "bg-[#4A6E57] text-white" : inRange ? "bg-[#E5EDE7] text-[#1F3125]" : available ? "text-[#1F3125] hover:bg-[#E5EDE7]" : "cursor-not-allowed text-[#B5ADA7] line-through"}`}>{n}</button>;
+            style={{ width: 32, height: 32, minWidth: 32, minHeight: 32, maxWidth: 32, maxHeight: 32, padding: 0, alignSelf: "center", justifySelf: "center" }} className={`inline-flex shrink-0 items-center justify-center rounded-[8px] font-body text-[14px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${selected ? "bg-[#4A6E57] text-white" : inRange ? "bg-[#E5EDE7] text-[#1F3125]" : available ? "text-[#1F3125] hover:bg-[#E5EDE7]" : "cursor-not-allowed text-[#B5ADA7] line-through"}`}>{n}</button>;
         })}
       </div>
     </div>
