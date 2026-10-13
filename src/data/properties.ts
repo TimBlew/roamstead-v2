@@ -110,7 +110,6 @@ export const properties: Property[] = [
         heading: "The house",
         items: [
           "Historic 1902 three-storey home",
-          "Three floors",
           "10 individually decorated rooms",
           "Central heating throughout",
           "Living room commons with fireplace",

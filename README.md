@@ -1,3 +1,5 @@
+> **Launch status (October 13, 2026):** preview remains noindex and public-domain cutover is not approved. See [launch and operating handoff](docs/launch-handoff.md) for verified gates, environment setup, deployment checks and rollback. Earlier planning sections below are historical where they conflict with that handoff or the current Drive Decision Log.
+
 # Roamstead V2 - Modern Mountain Hospitality
 
 A clean, scalable, theme-driven Next.js marketing site for Roamstead using TypeScript and Tailwind CSS.
@@ -11,7 +13,7 @@ A clean, scalable, theme-driven Next.js marketing site for Roamstead using TypeS
 - **Scalable structure**: Easy to add new properties, themes, and pages
 
 ### Tech Stack
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS with custom design tokens
 - **Theming**: CSS variables with `data-theme` attribute
