@@ -206,40 +206,40 @@ export default async function PropertyPage({ params }: PageProps) {
       {stories.length > 0 ? (
         <section className="bg-[#FFFCFB] px-3 pb-3 pt-4 sm:px-4 md:px-6 md:pb-8 md:pt-7">
           <div className="mx-auto max-w-[1280px]">
-            <div className="mb-4 max-w-[760px] md:mb-6">
+            <div className="mb-[24px] max-w-[760px] md:mb-[40px]">
               <h2
                 className="font-heading text-[32px] font-medium leading-[36px] tracking-[-1.28px] text-[#1F3125] md:text-[46px] md:leading-[50px] md:tracking-[-1.84px]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
                 The stay
               </h2>
-              <p className="mt-[8px] max-w-[48ch] font-body text-[14px] leading-[1.5] tracking-[-0.2px] text-[#6D6057] md:mt-[10px] md:text-[17px] md:leading-[1.55]">
+              <p className="mt-[12px] max-w-[48ch] font-body text-[14px] leading-[1.5] tracking-[-0.2px] text-[#6D6057] md:mt-[12px] md:text-[17px] md:leading-[1.55]">
                 Get a feel for the place.
               </p>
             </div>
 
-            <div className="space-y-4 md:space-y-8">
+            <div className="space-y-[24px] md:space-y-[40px]">
               {stories.map((story, index) => (
                 <article
                   key={story.image.src}
                   className="grid w-full overflow-hidden rounded-[18px] border border-[#E7DFDB] bg-[#FBF8F7] shadow-[0_14px_40px_rgba(41,29,22,0.045)] md:rounded-[24px] md:grid-cols-[0.92fr_1.08fr]"
                 >
                   <div
-                    className={`flex items-center px-4 py-3.5 sm:px-5 sm:py-5 md:p-8 lg:p-10 ${index % 2 === 1 ? "md:order-2" : ""}`}
+                    className={`flex items-center px-4 py-3.5 sm:px-5 sm:py-5 md:p-[48px] lg:p-[56px] ${index % 2 === 1 ? "md:order-2" : ""}`}
                   >
                     <div className="w-full max-w-none md:max-w-[520px]">
                       <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.08em] text-[#8F7E73]">
                         {story.eyebrow}
                       </p>
                       <h3
-                        className="mt-1.5 font-heading text-[27px] font-medium leading-[31px] tracking-[-1.2px] text-[#1F3125] md:text-[34px] md:leading-[38px] md:tracking-[-1.36px]"
+                        className="mt-[12px] font-heading text-[27px] font-medium leading-[31px] tracking-[-1.2px] text-[#1F3125] md:text-[34px] md:leading-[38px] md:tracking-[-1.36px]"
                         style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
                       >
                         {story.title}
                       </h3>
-                      <div className="mt-2.5 font-body text-[15px] font-normal leading-6 tracking-[-0.34px] text-[#5F534B] md:text-[18px] md:leading-8">
+                      <div className="mt-[20px] font-body text-[15px] font-normal leading-6 tracking-[-0.34px] text-[#5F534B] md:text-[18px] md:leading-8">
                         {story.paragraphs.map((paragraph) => (
-                          <p key={paragraph} className="mb-2.5 last:mb-0 md:mb-5">
+                          <p key={paragraph} className="mb-[12px] last:mb-0 md:mb-[16px]">
                             {paragraph}
                           </p>
                         ))}
