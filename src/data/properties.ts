@@ -63,11 +63,10 @@ export const properties: Property[] = [
         "A historic home for people who work from everywhere: three blocks from Main Street, fifteen minutes from the mountains.",
     },
     intro:
-      "Built in 1902 by Utah State Senator Joseph Murdock, The Senator is a 9,000-square-foot home on a quiet street in Heber City, three blocks from Main Street, fifteen minutes from Deer Valley, twenty from Park City. Ten individually appointed rooms across three floors, a cooked-to-order breakfast every morning, and the kind of pace that lets you get your work done and still make it outside before the light changes.",
+      "Built in 1902 by Utah State Senator Joseph Murdock, The Senator is a historic home on a quiet street in Heber City, three blocks from Main Street, fifteen minutes from Deer Valley, twenty from Park City. Ten individually appointed rooms across three floors, a cooked-to-order breakfast every morning, and the kind of pace that lets you get your work done and still make it outside before the light changes.",
     stats: [
       { value: "10", label: "Rooms" },
       { value: "3", label: "Floors" },
-      { value: "9,000", label: "Sq ft." },
       { value: "B&B", label: "Property type" },
     ],
     stories: [
@@ -111,7 +110,7 @@ export const properties: Property[] = [
         heading: "The house",
         items: [
           "Historic 1902 three-storey home",
-          "9,000 sq ft across three floors",
+          "Three floors",
           "10 individually decorated rooms",
           "Central heating throughout",
           "Living room commons with fireplace",
