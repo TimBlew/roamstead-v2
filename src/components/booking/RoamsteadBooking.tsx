@@ -75,7 +75,14 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
     else {
       const minimum = Math.max(1, data[checkIn]?.minimumStay || 1);
       const nights = Math.round((parse(value).getTime() - parse(checkIn).getTime()) / 86400000);
-      setMessage(nights < minimum ? `This check-in requires at least ${minimum} nights. Choose a later check-out date.` : "Those dates cannot be booked together. Choose another check-out date.");
+      const maximum = data[checkIn]?.maximumStay;
+      setMessage(nights < minimum
+        ? `This check-in requires at least ${minimum} nights. Choose a later check-out date.`
+        : maximum && nights > maximum
+          ? `This check-in allows up to ${maximum} nights. Choose an earlier check-out date.`
+          : !day.departureAllowed
+            ? "Check-out is not available on that date. Choose another check-out date."
+            : "Those dates cannot be booked together. Choose another check-out date.");
     }
   };
   const renderMonth = (value: Date) => (
