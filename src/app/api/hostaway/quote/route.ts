@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
-const LISTINGS = new Set([455635, 455631, 455632, 455633]);
+const CAPACITY: Record<number, number> = { 455635: 10, 455631: 4, 455632: 8, 455633: 4 };
+const LISTINGS = new Set(Object.keys(CAPACITY).map(Number));
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 export async function POST(request: NextRequest) {
@@ -10,7 +11,7 @@ export async function POST(request: NextRequest) {
   const { listingId, checkIn, checkOut, adults, children } = body;
   const guests = (adults ?? 0) + (children ?? 0);
   const nights = checkIn && checkOut ? (Date.parse(checkOut) - Date.parse(checkIn)) / 86400000 : 0;
-  if (!listingId || !LISTINGS.has(listingId) || !checkIn || !checkOut || !DATE.test(checkIn) || !DATE.test(checkOut) || !Number.isInteger(nights) || nights < 1 || nights > 90 || checkIn < new Date().toISOString().slice(0,10) || !Number.isInteger(adults) || !Number.isInteger(children) || (adults ?? 0) < 1 || (children ?? 0) < 0 || guests > 20) {
+  if (!listingId || !LISTINGS.has(listingId) || !checkIn || !checkOut || !DATE.test(checkIn) || !DATE.test(checkOut) || !Number.isInteger(nights) || nights < 1 || nights > 90 || checkIn < new Date().toISOString().slice(0,10) || !Number.isInteger(adults) || !Number.isInteger(children) || (adults ?? 0) < 1 || (children ?? 0) < 0 || guests > CAPACITY[listingId]) {
     return NextResponse.json({ error: "Please check your dates and guests" }, { status: 400 });
   }
   if (!process.env.HOSTAWAY_ACCOUNT_ID || !process.env.HOSTAWAY_API_KEY) return NextResponse.json({ error: "Pricing is temporarily unavailable" }, { status: 503 });
