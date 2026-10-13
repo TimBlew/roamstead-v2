@@ -53,7 +53,7 @@ const galleries: Record<string, Photo[]> = {
     photo("lowell-302", "bathroom-01", "Bathroom"),
     photo("lowell-302", "bathroom-02", "Bathroom with steam shower"),
     photo("lowell-302", "bathroom-03", "Bathroom details"),
-    photo("lowell-302", "fitness-01", "Fitness center"),
+    photo("lowell-302", "gym-01", "Fitness center"),
     photo("lowell-302", "pool-01", "Heated pool and hot tub"),
     photo("lowell-302", "exterior-01", "Lowell building exterior"),
   ],
