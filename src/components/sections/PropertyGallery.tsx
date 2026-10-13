@@ -11,14 +11,19 @@ const photo = (folder: string, file: string, alt: string): Photo => ({
 
 const galleries: Record<string, Photo[]> = {
   "hygge-house": [
-    photo("house-midway", "exterior-02", "Hygge House exterior"),
-    photo("house-midway", "exterior-04", "Backyard and patio"),
-    photo("house-midway", "living-03", "Living room and fireplace"),
+    photo("house-midway", "exterior-02", "Hygge House front exterior"),
+    photo("house-midway", "exterior-04", "Backyard patio and outdoor dining"),
+    photo("house-midway", "living-03", "Main living room and fireplace"),
+    photo("house-midway", "living-05", "Second living room and game table"),
+    photo("house-midway", "living-02", "Dedicated home office and seating"),
     photo("house-midway", "kitchen-01", "Kitchen and island"),
-    photo("house-midway", "bedroom-01", "Bedroom"),
-    photo("house-midway", "sauna-01", "Private sauna"),
-    photo("house-midway", "garage-01", "Gym and gear storage"),
-    { src: "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/e4251f0c-76c0-4125-9077-c6d5063ae636.png", alt: "Golden-hour aerial view of Hygge House with the mountains beyond" },
+    photo("house-midway", "bedroom-01", "Bedroom with workspace"),
+    photo("house-midway", "bedroom-03", "Guest bedroom"),
+    photo("house-midway", "sauna-01", "Private sauna heater"),
+    photo("house-midway", "sauna-02", "View from inside the private sauna"),
+    photo("house-midway", "garage-01", "Garage gym and gear storage"),
+    photo("house-midway", "garage-03", "Garage weight training equipment"),
+    { src: "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/e4251f0c-76c0-4125-9077-c6d5063ae636.png", alt: "Aerial view of Hygge House and surrounding trees" },
   ],
   granary: [
     photo("granary", "living-01", "Living room and fireplace"),
