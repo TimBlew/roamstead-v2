@@ -33,6 +33,7 @@ const galleries: Record<string, Photo[]> = {
     photo("granary", "dining-01", "Dining area"),
     photo("granary", "bedroom-01", "King bedroom"),
     photo("granary", "bath-01", "Bathroom"),
+    { src: "/images/granary/exterior.jpg", alt: "Granary building with mountain views" },
   ],
   daystar: [
     photo("daystar", "living-01", "Living room"),
