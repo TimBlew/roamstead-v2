@@ -122,15 +122,15 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
           </div>)}
           <p className="font-body text-[12px] text-[#786D65]">Up to {maxGuests} guests</p>
         </div>
-        <div className="rounded-[12px] border border-[#E7DFDB] bg-[#FFFCFB] px-[16px] py-[16px] sm:px-[20px] sm:py-[18px]">
-          <div className="flex items-start gap-[10px] sm:gap-[12px]">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#4A6E57" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="mt-[2px] h-[22px] w-[22px] shrink-0 sm:h-[24px] sm:w-[24px]">
+        <div className="rounded-[12px] border border-[#E7DFDB] bg-[#FFFCFB] px-[14px] py-[12px] sm:px-[20px] sm:py-[18px]">
+          <div className="flex items-start gap-[8px] sm:gap-[12px]">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#4A6E57" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="mt-[2px] h-[20px] w-[20px] shrink-0 sm:h-[24px] sm:w-[24px]">
               <path d="M12 2.5 20 6v6c0 5.2-3.3 8.3-8 9.5C7.3 20.3 4 17.2 4 12V6l8-3.5Z" />
               <path d="m9 12 2 2 4-4" />
             </svg>
             <div className="min-w-0">
-              <h3 className="max-w-[28ch] font-heading text-[19px] font-medium leading-[1.25] tracking-[-0.03em] text-[#1F3125] sm:text-[21px]">One step closer to your stay.</h3>
-              <p className="mt-[8px] max-w-[51ch] font-body text-[13px] leading-[1.55] text-[#6D6057] sm:text-[14px]">Continue to review your final total, confirm your details, and complete your reservation securely.</p>
+              <h3 className="max-w-[30ch] font-heading text-[18px] font-medium leading-[1.2] tracking-[-0.03em] text-[#1F3125] sm:text-[21px]">One step closer to your stay.</h3>
+              <p className="mt-[6px] max-w-[51ch] font-body text-[13px] leading-[1.45] text-[#6D6057] sm:text-[14px]">Continue to review your final total, confirm your details, and complete your reservation securely.</p>
             </div>
           </div>
         </div>
