@@ -11,5 +11,11 @@ export function trackRoamsteadEvent(name: string, data?: AnalyticsDetails) {
   const analyticsWindow = window as Window & {
     va?: (method: string, event: { name: string; data?: AnalyticsDetails }) => void;
   };
-  analyticsWindow.va?.("event", { name, ...(data ? { data } : {}) });
+  if (!analyticsWindow.va) {
+    analyticsWindow.va = (...args: [string, { name: string; data?: AnalyticsDetails }]) => {
+      const queueWindow = window as Window & { vaq?: unknown[] };
+      (queueWindow.vaq ||= []).push(args);
+    };
+  }
+  analyticsWindow.va("event", { name, ...(data ? { data } : {}) });
 }
