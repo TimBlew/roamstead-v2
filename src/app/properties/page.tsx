@@ -123,7 +123,7 @@ export default function PropertiesPage() {
                       {facts.join(" · ")}
                     </p>
 
-                    <a href={href} className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-[8px] border border-[#D9CDC6] px-5 font-body text-[14px] font-medium text-[#2B302A] transition-colors hover:border-[#4A6E57] hover:bg-[#F4EFEC] md:mt-4 md:h-12 md:w-fit md:min-w-[155px]">
+                    <a href={href} className="mt-4 inline-flex h-[46px] w-full items-center justify-center rounded-[8px] border border-[#D9CDC6] bg-[#FFFCFB] px-[24px] font-body text-[14px] font-semibold text-[#2B302A] shadow-[0_2px_7px_rgba(41,29,22,0.045)] transition-[border-color,background-color,box-shadow] duration-200 hover:border-[#8FA393] hover:bg-[#F4EFEC] hover:shadow-[0_4px_12px_rgba(41,29,22,0.07)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] md:h-[48px] md:w-fit md:min-w-[158px]">
                       Check dates
                     </a>
                   </div>
