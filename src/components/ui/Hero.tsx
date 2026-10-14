@@ -43,7 +43,7 @@ export const Hero: React.FC<HeroProps> = ({
           {headlineLines ? headlineLines.map((line) => <span key={line} className="block sm:whitespace-nowrap">{line}</span>) : headline}
         </h1>
 
-        <p className="mt-5 w-full max-w-[335px] font-body text-[14.5px] font-normal leading-[1.55] tracking-[-0.3px] text-white [text-shadow:0_2px_3px_rgba(8,20,15,0.3),0_5px_22px_rgba(8,20,15,0.58)] sm:max-w-[850px] md:mt-7 md:max-w-[1100px] md:text-[19px] md:leading-[1.6] md:tracking-[-0.3px] md:text-[#E8F5EC]">
+        <p className="relative mt-[22px] w-full max-w-[350px] px-[5px] font-body text-[15px] font-medium leading-[1.62] tracking-[-0.22px] text-[#F8FAF5] [text-shadow:0_1px_2px_rgba(9,19,15,0.65),0_3px_12px_rgba(9,19,15,0.62),0_0_22px_rgba(232,247,238,0.20)] sm:max-w-[850px] md:mt-7 md:max-w-[900px] md:text-[19px] md:font-normal md:leading-[1.58] md:tracking-[-0.25px]">
           {descriptionLines ? descriptionLines.map((line) => <span key={line} className="block">{line}</span>) : description}
         </p>
 
