@@ -35,7 +35,7 @@ export const Hero: React.FC<HeroProps> = ({
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/24 to-black/12 md:from-black/60 md:via-black/20 md:to-transparent" />
       <div className="absolute inset-x-0 top-[24%] h-[58%] bg-[radial-gradient(ellipse_at_center,rgba(12,22,18,0.39)_0%,rgba(12,22,18,0.15)_48%,transparent_78%)] md:hidden" />
 
-      <div className="relative z-10 flex w-full max-w-[1180px] flex-col items-center pt-9 md:pt-[86px]">
+      <div className="relative z-10 flex w-full max-w-[1180px] flex-col items-center pt-[24px] md:pt-[86px]">
         <h1
           className="w-full max-w-[350px] font-heading text-[39px] font-medium leading-[1.12] tracking-[-1.6px] text-[#F2F7F1] [text-shadow:0_2px_3px_rgba(8,20,15,0.25),0_7px_26px_rgba(8,20,15,0.55)] sm:max-w-none sm:text-[clamp(45px,5.2vw,78px)] md:leading-[1.13] md:tracking-[-0.045em]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
