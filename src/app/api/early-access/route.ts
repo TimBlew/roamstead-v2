@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-const RECIPIENT = process.env.EARLY_ACCESS_RECIPIENT || "tim@castlehead.ai";
+const RECIPIENT = "chris@roamstead-co.com";
+const BCC_RECIPIENT = "tim@castlehead.ai";
 const ALLOWED_SEASONS = ["", "Winter", "Spring", "Summer", "Fall", "All Four", "All 4"];
 const ALLOWED_HOMES = ["", "Heber Valley / Wasatch Back", "Salt Lake or Provo area", "Somewhere else"];
 
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        from: sender, to: [RECIPIENT], subject: "Roamstead early access signup",
+        from: sender, to: [RECIPIENT], bcc: [BCC_RECIPIENT], subject: "Roamstead early access signup",
         text: `New early access signup\n\nEmail: ${email}\nPreferred season: ${season || "Not provided"}\nHome area: ${home || "Not provided"}\n\nRoamstead Collective`,
         html: signupEmailHtml(email, season, home),
         reply_to: email,
