@@ -107,7 +107,7 @@ export const CommunityCTA = () => {
             </span>
           </label>
           <div className="pt-0 text-center sm:col-span-2 md:pt-[12px]">
-            <button type="submit" disabled={status === "sending"} className="inline-flex h-11 min-w-[192px] md:h-12 md:min-w-[206px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-7 font-body text-[15px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:opacity-60">{status === "sending" ? "Sending…" : "Get early access"}</button>
+            <button type="submit" disabled={status === "sending"} className="inline-flex h-[48px] min-w-[192px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-[28px] font-body text-[15px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.13),0_4px_12px_rgba(31,49,37,0.12)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3C6049] hover:shadow-[0_6px_16px_rgba(31,49,37,0.16)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:cursor-not-allowed disabled:opacity-60 md:h-[52px] md:min-w-[206px]">{status === "sending" ? "Sending…" : "Get early access"}</button>
             <div className="mx-auto mt-[8px] max-w-[620px] font-body text-[11.5px] leading-[1.45] md:text-[12px] text-[#6D6057]">
               <p>Free to join the list. Unsubscribe anytime.</p>
               <p>By joining, you agree to receive early-access news and member offers by email.</p>
@@ -118,7 +118,7 @@ export const CommunityCTA = () => {
       {showResult && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#1F3125]/55 px-5 py-8 backdrop-blur-[4px]" onMouseDown={(event) => { if (event.target === event.currentTarget) closeResult(); }}>
           <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="early-access-result-title" className="relative w-full max-w-[360px] rounded-[16px] border border-[#E7DFDB] bg-[#FFFCFB] px-6 pb-6 pt-7 text-center shadow-[0_24px_80px_rgba(31,49,37,0.19)] sm:px-8">
-            <button ref={closeButtonRef} type="button" onClick={closeResult} aria-label="Close message" className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full text-[#6D6057] transition-colors hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
+            <button ref={closeButtonRef} type="button" onClick={closeResult} aria-label="Close message" className="absolute right-[8px] top-[8px] flex h-[40px] w-[40px] items-center justify-center rounded-[8px] text-[#6D6057] transition-colors hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" className="h-3.5 w-3.5"><path d="M5 5 19 19M19 5 5 19" /></svg>
             </button>
             <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#E8F5EC] text-[#4A6E57]">
@@ -130,7 +130,7 @@ export const CommunityCTA = () => {
             </div>
             <h3 id="early-access-result-title" className="font-heading text-[26px] font-medium leading-[1.14] tracking-[-0.035em] text-[#1F3125]">{status === "success" ? (audienceStored ? "You’re on the list." : "We’ve received your request.") : "One more thing."}</h3>
             {status !== "success" && <p id="early-access-result-message" className="mx-auto mt-2 max-w-[290px] font-body text-[14px] leading-[1.5] text-[#6D6057]">{message}</p>}
-            <button type="button" onClick={closeResult} className="mt-4 inline-flex h-9 min-w-[112px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-5 font-body text-[14px] font-medium text-white transition-colors hover:bg-[#3C6049] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{status === "success" ? "Keep exploring" : "Try again"}</button>
+            <button type="button" onClick={closeResult} className="mt-4 inline-flex min-h-[44px] min-w-[130px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-5 font-body text-[14px] font-semibold text-white shadow-[0_3px_10px_rgba(31,49,37,0.10)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3C6049] hover:shadow-[0_5px_14px_rgba(31,49,37,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{status === "success" ? "Keep exploring" : "Try again"}</button>
           </div>
         </div>
       )}
