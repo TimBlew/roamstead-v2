@@ -31,7 +31,7 @@ export default function BookPage() {
             <p className="mt-[20px] max-w-[490px] font-body text-[15px] font-medium leading-[1.62] tracking-[-0.13px] text-[#62584F] sm:text-[16px] md:mt-[24px] md:font-normal md:leading-[1.6] lg:max-w-[505px] lg:text-[18px]">
               Thoughtfully chosen places to settle in and stay awhile. Explore the collection, choose your dates, and book directly.
             </p>
-            <div className="mt-[20px] flex justify-center md:mt-[30px] md:justify-start lg:mt-[26px]">
+            <div className="mt-[20px] flex justify-center md:mt-[30px] md:justify-start lg:mt-[26px] lg:w-[505px] lg:max-w-full lg:justify-center">
               <a href="#choose-your-stay" className="inline-flex h-[48px] w-[230px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-[26px] font-body text-[15px] font-semibold leading-none tracking-[-0.2px] text-[#FFFCFB] shadow-[0_4px_12px_rgba(31,49,37,0.10)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3D604B] hover:shadow-[0_6px_16px_rgba(31,49,37,0.13)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#1F3125] md:h-[50px] md:w-auto md:min-w-[176px] md:text-[16px] lg:h-[52px] lg:min-w-[218px] lg:px-[32px]">
                 Choose your stay
               </a>
