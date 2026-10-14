@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { HostawayBooking } from "./HostawayBooking";
+import { trackRoamsteadEvent } from "@/lib/analytics";
 
 type Day = { date: string; available: boolean; minimumStay: number; maximumStay: number; arrivalAllowed: boolean; departureAllowed: boolean };
 type CalendarResponse = { days: Day[]; configured?: boolean; error?: string };
@@ -134,7 +135,7 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
             </div>
           </div>
         </div>
-        <a href={hostawayCheckoutUrl || undefined} aria-disabled={!checkIn || !checkOut || loading} onClick={event => { if (!checkIn || !checkOut || loading) event.preventDefault(); }} className={`flex min-h-[48px] w-full items-center justify-center rounded-[8px] bg-[#4A6E57] px-[16px] text-center font-body text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_13px_rgba(31,49,37,0.11)] transition-[background-color,box-shadow] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${!checkIn || !checkOut || loading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049] hover:shadow-[0_6px_17px_rgba(31,49,37,0.16)]"}`}>Continue to booking →</a>
+        <a href={hostawayCheckoutUrl || undefined} aria-disabled={!checkIn || !checkOut || loading} onClick={event => { if (!checkIn || !checkOut || loading) event.preventDefault(); else trackRoamsteadEvent("hostaway_checkout_click", { listing_id: String(listingId) }); }} className={`flex min-h-[48px] w-full items-center justify-center rounded-[8px] bg-[#4A6E57] px-[16px] text-center font-body text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_13px_rgba(31,49,37,0.11)] transition-[background-color,box-shadow] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${!checkIn || !checkOut || loading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049] hover:shadow-[0_6px_17px_rgba(31,49,37,0.16)]"}`}>Continue to booking →</a>
       </div> : mode === "checking" ? <div role="status" className="flex min-h-[350px] items-center justify-center font-body text-[15px] text-[#6D6057]">Checking live availability…</div> : <>
         <div className="mb-[4px] flex items-center justify-between gap-[8px] md:mb-[8px] md:gap-[12px]">
           <button type="button" aria-label="Previous month" disabled={month <= startMonth(today)} onClick={() => setMonth(shift(month, -1))} className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[8px] border border-[#D8CCC4] bg-[#FFFCFB] text-[#1F3125] transition-[background-color,border-color] duration-200 hover:border-[#9CAD9E] hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:cursor-not-allowed disabled:opacity-25 disabled:hover:border-[#D8CCC4] disabled:hover:bg-[#FFFCFB]">‹</button>
@@ -156,7 +157,7 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
         </div>
         {message && <p role="status" className="mt-[12px] font-body text-[13px] text-[#8C5641]">{message}</p>}
         <div className="mt-[8px] flex flex-col items-center gap-0 sm:flex-row sm:items-center md:gap-[8px]">
-          <button type="button" disabled={!checkOut || loading} onClick={() => { if (checkOut && !loading) setStep(1); }}
+          <button type="button" disabled={!checkOut || loading} onClick={() => { if (checkOut && !loading) { trackRoamsteadEvent("availability_dates_selected", { listing_id: String(listingId) }); setStep(1); } }}
             className={`inline-flex min-h-[44px] w-full flex-1 items-center justify-center whitespace-nowrap rounded-[8px] bg-[#4A6E57] px-[12px] text-center font-body text-[13px] md:min-h-[50px] md:px-[24px] md:text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_13px_rgba(31,49,37,0.11)] transition-[background-color,box-shadow] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${!checkOut || loading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049] hover:shadow-[0_6px_17px_rgba(31,49,37,0.16)]"}`}>Continue to booking →</button>
           <button type="button" onClick={() => { setCheckIn(null); setCheckOut(null); setMessage(""); }} className="min-h-[44px] rounded-[8px] px-[20px] font-body text-[13px] font-medium text-[#4A6E57] transition-colors hover:bg-[#F4EFEC] hover:text-[#1F3125] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] md:text-[14px]">Clear dates</button>
         </div>
