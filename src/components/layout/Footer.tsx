@@ -10,11 +10,11 @@ const propertyLinks = [
 ];
 
 export const Footer: React.FC = () => (
-  <footer className="bg-[#382F29] px-5 pb-[24px] pt-[44px] font-body text-[#FFFCFB] md:px-[48px] md:pb-[28px] md:pt-[56px]">
-    <div className="mx-auto grid max-w-[1320px] grid-cols-2 gap-x-[24px] gap-y-[36px] md:grid-cols-[minmax(0,1.45fr)_minmax(0,0.8fr)_minmax(0,0.85fr)] md:gap-x-[64px]">
+  <footer className="bg-[#382F29] px-5 pb-[24px] pt-[44px] font-body text-[#FFFCFB] md:px-[48px] md:pb-[22px] md:pt-[34px]">
+    <div className="mx-auto grid max-w-[1320px] grid-cols-2 gap-x-[24px] gap-y-[36px] md:grid-cols-[minmax(0,1.25fr)_minmax(0,0.95fr)_minmax(0,0.75fr)_minmax(0,1.05fr)] md:gap-x-[32px] lg:gap-x-[42px]">
       <div className="col-span-2 md:col-span-1">
         <img src="/roamstead-logo-light.svg" alt="Roamstead" className="h-auto w-[150px] md:w-[170px]" />
-        <p className="mt-[18px] max-w-[340px] text-[14px] leading-[1.6] text-[#F4EFEC] md:mt-[20px] md:text-[15px]">
+        <p className="mt-[18px] max-w-[340px] text-[14px] leading-[1.6] text-[#F4EFEC] md:mt-[14px] md:text-[15px]">
           Homes across the Wasatch Back,<span className="hidden md:inline"><br /></span>{" "}run by people who live here.
         </p>
       </div>
@@ -40,8 +40,10 @@ export const Footer: React.FC = () => (
             <a href="/book" className="text-[13px] leading-[1.45] hover:underline md:text-[14px]">Book direct</a>
           </div>
         </nav>
-        <div className="mt-[26px] border-t border-white/20 pt-[19px]">
-          <h2 className="mb-[14px] text-[14px] font-semibold tracking-[0.01em]">Get in touch</h2>
+      </div>
+      <div className="col-span-2 min-w-0 md:col-span-1">
+        <div>
+          <h2 className="mb-[16px] text-[14px] font-semibold tracking-[0.01em] md:mb-[18px]">Get in touch</h2>
           <div className="flex flex-col items-start gap-[11px]">
             <a href="mailto:chris@roamstead-co.com" className="break-words text-[13px] leading-[1.45] text-[#F4EFEC] hover:underline md:text-[14px]">chris@roamstead-co.com</a>
             <a href="tel:+14352435670" className="text-[13px] leading-[1.45] text-[#F4EFEC] hover:underline md:text-[14px]">(435) 243-5670</a>
@@ -49,7 +51,7 @@ export const Footer: React.FC = () => (
         </div>
       </div>
     </div>
-    <div className="mx-auto mt-[40px] max-w-[1320px] border-t border-white/20 pt-[20px] md:mt-[44px] md:pt-[20px]">
+    <div className="mx-auto mt-[40px] max-w-[1320px] border-t border-white/20 pt-[20px] md:mt-[28px] md:pt-[14px]">
       <p className="text-[12px] leading-[1.5] text-[#F4EFEC]/80">© Roamstead Collective 2026. All rights reserved.</p>
     </div>
   </footer>
