@@ -59,7 +59,7 @@ export const CommunityCTA = () => {
       setSeason("");
       setHome("");
       setStatus("success");
-      setMessage("You're on the list. We'll be in touch when it opens.");
+      setMessage(result.audienceStored === true ? "You\'re on the list. We\'ll be in touch when it opens." : "We\'ve received your request.");
       setShowResult(true);
     } catch (error) {
       setStatus("error");
@@ -130,7 +130,7 @@ export const CommunityCTA = () => {
               )}
             </div>
             <h3 id="early-access-result-title" className="font-heading text-[26px] font-medium leading-[1.14] tracking-[-0.035em] text-[#1F3125]">{status === "success" ? (audienceStored ? "You’re on the list." : "We’ve received your request.") : "One more thing."}</h3>
-            {status !== "success" && <p id="early-access-result-message" className="mx-auto mt-2 max-w-[290px] font-body text-[14px] leading-[1.5] text-[#6D6057]">{message}</p>}
+            {(status !== "success" || audienceStored) && <p id="early-access-result-message" className="mx-auto mt-2 max-w-[290px] font-body text-[14px] leading-[1.5] text-[#6D6057]">{status === "success" ? "We’ll be in touch when it opens." : message}</p>}
             <button type="button" onClick={closeResult} className="mt-4 inline-flex min-h-[44px] min-w-[130px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-5 font-body text-[14px] font-semibold text-white shadow-[0_3px_10px_rgba(31,49,37,0.10)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3C6049] hover:shadow-[0_5px_14px_rgba(31,49,37,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{status === "success" ? "Keep exploring" : "Try again"}</button>
           </div>
         </div>
