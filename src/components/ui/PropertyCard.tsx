@@ -66,9 +66,12 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         </p>
         <a
           href={href}
-          className="mt-3 inline-flex h-10 w-auto min-w-[144px] items-center justify-center whitespace-nowrap rounded-[8px] border border-[#D8CCC4] bg-[#FFFCFB] px-6 font-body text-[14px] font-semibold text-[#253329] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_2px_5px_rgba(9,22,16,0.06),0_8px_20px_rgba(9,22,16,0.09)] transition-[transform,box-shadow,background-color,border-color] duration-300 hover:-translate-y-[2px] hover:border-[#B6C5B9] hover:bg-white hover:shadow-[inset_0_1px_0_rgba(255,255,255,1),0_5px_12px_rgba(9,22,16,0.09),0_12px_26px_rgba(9,22,16,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] active:translate-y-0 md:mt-4"
+          className="group/cta mt-3 inline-flex h-10 w-auto min-w-[160px] items-center justify-center gap-[10px] whitespace-nowrap rounded-[8px] border border-[#D8CCC4] bg-[#FFFCFB] px-6 font-body text-[14px] font-semibold text-[#253329] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_2px_5px_rgba(9,22,16,0.06),0_8px_20px_rgba(9,22,16,0.09)] transition-[transform,box-shadow,background-color,border-color] duration-300 hover:-translate-y-[2px] hover:border-[#B6C5B9] hover:bg-white hover:shadow-[inset_0_1px_0_rgba(255,255,255,1),0_5px_12px_rgba(9,22,16,0.09),0_12px_26px_rgba(9,22,16,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] active:translate-y-0 md:mt-4"
         >
-          Check dates
+          <span>Check dates</span>
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" className="h-[16px] w-[16px] shrink-0 text-[#4A6E57] transition-transform duration-300 group-hover/cta:translate-x-[3px]">
+            <path d="M3.5 10h12m-5-5 5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </a>
       </div>
     </article>
