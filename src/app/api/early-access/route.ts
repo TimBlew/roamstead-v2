@@ -106,8 +106,9 @@ export async function POST(request: Request) {
         console.error("Roamstead contact storage unavailable", error instanceof Error ? error.message : "Unknown error");
       }
     } else {
-      console.info("Roamstead contact storage not activated: contact key or segment missing");
+      console.error("Roamstead signup requires follow-up: contact storage not configured; notification email delivered");
     }
+    if (!audienceStored) console.error("Roamstead signup requires follow-up: notification delivered but list storage unconfirmed");
     return NextResponse.json({ ok: true, audienceStored });
   } catch (error) {
     console.error("Early access email request failed", error instanceof Error ? error.message : "Unknown network error");
