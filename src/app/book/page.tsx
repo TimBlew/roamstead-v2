@@ -23,16 +23,16 @@ export default function BookPage() {
           <div className="absolute inset-0 bg-[linear-gradient(90deg,#F4EFEC_0%,rgba(244,239,236,0.98)_18%,rgba(244,239,236,0.88)_30%,rgba(244,239,236,0.72)_43%,transparent_55%)]" />
         </div>
         <div className="mx-auto grid w-full items-stretch lg:min-h-[clamp(620px,40.2vw,772px)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-          <div className="relative z-10 flex flex-col justify-center px-5 pb-9 pt-12 sm:px-10 lg:py-20 lg:pl-[clamp(88px,8.5vw,160px)] lg:pr-6">
+          <div className="relative z-10 flex flex-col justify-center px-5 pb-9 pt-12 sm:px-10 lg:py-[80px] lg:pl-[clamp(88px,8.5vw,160px)] lg:pr-[32px]">
             <p className="font-body text-[13px] font-semibold uppercase leading-5 tracking-[0.12em] text-[#4A6E57] md:text-[16px] lg:tracking-[0.14em]">Book direct with Roamstead</p>
-            <h1 className="mt-3 max-w-[670px] font-heading text-[40px] font-medium leading-[1.08] tracking-[-0.04em] text-[#1F3125] md:mt-5 md:text-[54px] md:tracking-[-0.04em] lg:text-[clamp(43px,3.1vw,60px)] lg:leading-[1.06] lg:tracking-[-0.045em]">
+            <h1 className="mt-[14px] max-w-[650px] text-balance font-heading text-[40px] font-medium leading-[1.09] tracking-[-0.04em] text-[#1F3125] md:mt-[20px] md:text-[clamp(46px,5.4vw,55px)] md:leading-[1.09] lg:max-w-[600px] lg:text-[clamp(46px,3.2vw,61px)] lg:leading-[1.075] lg:tracking-[-0.043em]">
               Your mountain stay<br className="hidden lg:block" /> is waiting
             </h1>
-            <p className="mt-5 max-w-[510px] font-body text-[16px] leading-[1.65] text-[#6D6057] lg:text-[18px]">
+            <p className="mt-[20px] max-w-[490px] font-body text-[15px] font-medium leading-[1.62] tracking-[-0.13px] text-[#62584F] sm:text-[16px] md:mt-[24px] md:font-normal md:leading-[1.6] lg:max-w-[505px] lg:text-[18px]">
               Thoughtfully chosen places to settle in and stay awhile. Explore the collection, choose your dates, and book directly.
             </p>
-            <div className="mt-7">
-              <a href="#choose-your-stay" className="inline-flex min-h-12 items-center justify-center rounded-[8px] bg-[#4A6E57] px-8 font-body text-[14px] font-medium text-[#FFFCFB] shadow-[0_8px_20px_rgba(31,49,37,0.12)] transition-colors hover:bg-[#3C6049] md:text-[15px]">
+            <div className="mt-[24px] md:mt-[30px]">
+              <a href="#choose-your-stay" className="inline-flex h-[48px] min-w-[166px] items-center justify-center rounded-[8px] border border-[#345943]/25 bg-[#4A6E57] px-[28px] font-body text-[15px] font-semibold leading-none tracking-[-0.2px] text-[#FFFCFB] shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_3px_8px_rgba(31,49,37,0.11),0_10px_22px_rgba(31,49,37,0.12)] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-[2px] hover:bg-[#3D604B] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_6px_14px_rgba(31,49,37,0.15),0_15px_27px_rgba(31,49,37,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#1F3125] active:translate-y-0 md:h-[52px] md:min-w-[182px] md:text-[16px]">
                 Choose your stay
               </a>
             </div>
