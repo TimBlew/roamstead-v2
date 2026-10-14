@@ -32,7 +32,7 @@ export const Footer: React.FC = () => (
           })}
         </div>
       </nav>
-      <div className="min-w-0">
+      <div className="min-w-0 flex flex-col gap-[24px] md:block">
         <nav aria-label="Explore">
           <h2 className="mb-[12px] text-[14px] font-semibold tracking-[0.01em] md:mb-[18px]">Explore</h2>
           <div className="flex flex-col items-start gap-[8px] md:gap-[11px]">
@@ -40,9 +40,16 @@ export const Footer: React.FC = () => (
             <a href="/book" className="text-[13px] leading-[1.45] hover:underline md:text-[14px]">Book direct</a>
           </div>
         </nav>
+        <div className="md:hidden">
+          <h2 className="mb-[12px] text-[14px] font-semibold tracking-[0.01em] md:mb-[18px]">Get in touch</h2>
+          <div className="flex flex-col items-start gap-[8px] md:gap-[11px]">
+            <a href="mailto:chris@roamstead-co.com" className="break-words text-[13px] leading-[1.45] text-[#F4EFEC] hover:underline md:text-[14px]">chris@roamstead-co.com</a>
+            <a href="tel:+14352435670" className="text-[13px] leading-[1.45] text-[#F4EFEC] hover:underline md:text-[14px]">(435) 243-5670</a>
+          </div>
+        </div>
       </div>
-      <div className="col-span-2 min-w-0 md:col-span-1">
-        <div>
+      <div className="hidden min-w-0 md:block">
+        <div className="hidden md:block">
           <h2 className="mb-[12px] text-[14px] font-semibold tracking-[0.01em] md:mb-[18px]">Get in touch</h2>
           <div className="flex flex-col items-start gap-[8px] md:gap-[11px]">
             <a href="mailto:chris@roamstead-co.com" className="break-words text-[13px] leading-[1.45] text-[#F4EFEC] hover:underline md:text-[14px]">chris@roamstead-co.com</a>
@@ -51,7 +58,7 @@ export const Footer: React.FC = () => (
         </div>
       </div>
     </div>
-    <div className="mx-auto mt-[28px] max-w-[1320px] border-t border-white/20 pt-[16px] md:mt-[28px] md:pt-[14px]">
+    <div className="mx-auto mt-[22px] max-w-[1320px] border-t border-white/20 pt-[16px] md:mt-[28px] md:pt-[14px]">
       <p className="text-[12px] leading-[1.5] text-[#F4EFEC]/80">© Roamstead Collective 2026. All rights reserved.</p>
     </div>
   </footer>
