@@ -19,8 +19,8 @@ export default function BookPage() {
     <div className="bg-[#FFFCFB]">
       <section className="relative overflow-hidden bg-[#F4EFEC]">
         <div className="pointer-events-none absolute inset-0 hidden lg:block">
-          <Image src="/images/book-direct-sunset.png" alt="Hygge House surrounded by trees beneath the mountains and warm sunset sky in Midway, Utah" fill unoptimized priority sizes="100vw" className="object-cover object-center" />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,#F4EFEC_0%,rgba(244,239,236,0.98)_18%,rgba(244,239,236,0.88)_30%,rgba(244,239,236,0.38)_43%,transparent_55%)]" />
+          <Image src="/images/book-direct-sunset.png" alt="Hygge House surrounded by trees beneath the mountains and warm sunset sky in Midway, Utah" fill unoptimized priority sizes="100vw" className="object-cover object-bottom" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,#F4EFEC_0%,rgba(244,239,236,0.98)_18%,rgba(244,239,236,0.88)_30%,rgba(244,239,236,0.72)_43%,transparent_55%)]" />
         </div>
         <div className="mx-auto grid w-full items-stretch lg:min-h-[clamp(620px,40.2vw,772px)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
           <div className="relative z-10 flex flex-col justify-center px-5 pb-9 pt-12 sm:px-10 lg:py-20 lg:pl-[clamp(88px,8.5vw,160px)] lg:pr-6">
