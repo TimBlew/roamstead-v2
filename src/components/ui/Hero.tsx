@@ -22,7 +22,7 @@ export const Hero: React.FC<HeroProps> = ({
   ctaHref,
 }) => {
   return (
-    <section className="relative flex min-h-[455px] w-full items-start justify-center overflow-hidden px-5 text-center md:h-[752px] md:px-6">
+    <section className="relative flex min-h-[420px] w-full items-start justify-center overflow-hidden px-5 text-center md:h-[752px] md:px-6">
       <Image
         src={backgroundImage}
         alt=""
