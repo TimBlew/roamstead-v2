@@ -121,6 +121,7 @@ export const CommunityCTA = () => {
             <button ref={closeButtonRef} type="button" onClick={closeResult} aria-label="Close message" className="absolute right-[8px] top-[8px] flex h-[40px] w-[40px] items-center justify-center rounded-[8px] text-[#6D6057] transition-colors hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" className="h-3.5 w-3.5"><path d="M5 5 19 19M19 5 5 19" /></svg>
             </button>
+            <img src="/roamstead-logo.svg" alt="Roamstead Collective" className="mx-auto mb-[20px] mt-[4px] h-auto w-[154px] max-w-[70%]" />
             <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#E8F5EC] text-[#4A6E57]">
               {status === "success" ? (
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><path d="m5 12 4.5 4.5L19 7" /></svg>
