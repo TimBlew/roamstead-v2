@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 
 export const CommunityCTA = () => {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [audienceStored, setAudienceStored] = useState(false);
   const [message, setMessage] = useState("");
   const [season, setSeason] = useState("");
   const [home, setHome] = useState("");
@@ -53,13 +52,11 @@ export const CommunityCTA = () => {
       if (!response.ok) {
         throw new Error(response.status === 400 ? "Please check your selections and try again." : "We couldn't complete your signup. Please try again.");
       }
-      const result = await response.json() as { audienceStored?: boolean };
-      setAudienceStored(result.audienceStored === true);
       form.reset();
       setSeason("");
       setHome("");
       setStatus("success");
-      setMessage(result.audienceStored === true ? "You\'re on the list. We\'ll be in touch when it opens." : "We\'ve received your request.");
+      setMessage("You’re on the list. We’ll be in touch when it opens.");
       setShowResult(true);
     } catch (error) {
       setStatus("error");
@@ -129,8 +126,8 @@ export const CommunityCTA = () => {
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5h.01" /></svg>
               )}
             </div>
-            <h3 id="early-access-result-title" className="font-heading text-[26px] font-medium leading-[1.14] tracking-[-0.035em] text-[#1F3125]">{status === "success" ? (audienceStored ? "You’re on the list." : "We’ve received your request.") : "One more thing."}</h3>
-            {(status !== "success" || audienceStored) && <p id="early-access-result-message" className="mx-auto mt-2 max-w-[290px] font-body text-[14px] leading-[1.5] text-[#6D6057]">{status === "success" ? "We’ll be in touch when it opens." : message}</p>}
+            <h3 id="early-access-result-title" className="font-heading text-[26px] font-medium leading-[1.14] tracking-[-0.035em] text-[#1F3125]">{status === "success" ? "You’re on the list." : "One more thing."}</h3>
+            {true && <p id="early-access-result-message" className="mx-auto mt-2 max-w-[290px] font-body text-[14px] leading-[1.5] text-[#6D6057]">{status === "success" ? "We’ll be in touch when it opens." : message}</p>}
             <button type="button" onClick={closeResult} className="mt-4 inline-flex min-h-[44px] min-w-[130px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-5 font-body text-[14px] font-semibold text-white shadow-[0_3px_10px_rgba(31,49,37,0.10)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3C6049] hover:shadow-[0_5px_14px_rgba(31,49,37,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{status === "success" ? "Keep exploring" : "Try again"}</button>
           </div>
         </div>
