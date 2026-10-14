@@ -30,7 +30,7 @@ export const Hero: React.FC<HeroProps> = ({
         priority
         fetchPriority="high"
         sizes="100vw"
-        className="object-cover object-[center_44%] md:object-center"
+        className="object-cover object-[center_41%] md:object-center"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/24 to-black/12 md:from-black/60 md:via-black/20 md:to-transparent" />
       <div className="absolute inset-x-0 top-[24%] h-[58%] bg-[radial-gradient(ellipse_at_center,rgba(12,22,18,0.39)_0%,rgba(12,22,18,0.15)_48%,transparent_78%)] md:hidden" />
@@ -43,7 +43,7 @@ export const Hero: React.FC<HeroProps> = ({
           {headlineLines ? headlineLines.map((line) => <span key={line} className="block sm:whitespace-nowrap">{line}</span>) : headline}
         </h1>
 
-        <p className="relative mt-[22px] w-full max-w-[365px] px-[2px] font-body text-[14px] font-medium leading-[1.58] tracking-[-0.18px] text-[#F8FAF5] [text-shadow:0_1px_2px_rgba(9,19,15,0.65),0_3px_12px_rgba(9,19,15,0.62),0_0_22px_rgba(232,247,238,0.20)] sm:max-w-[850px] md:mt-7 md:max-w-[900px] md:text-[19px] md:font-normal md:leading-[1.58] md:tracking-[-0.25px]">
+        <p className="relative mt-[16px] w-full max-w-[365px] px-[2px] font-body text-[14px] font-medium leading-[1.58] tracking-[-0.18px] text-[#F8FAF5] [text-shadow:0_1px_2px_rgba(9,19,15,0.65),0_3px_12px_rgba(9,19,15,0.62),0_0_22px_rgba(232,247,238,0.20)] sm:max-w-[850px] md:mt-7 md:max-w-[900px] md:text-[19px] md:font-normal md:leading-[1.58] md:tracking-[-0.25px]">
           {descriptionLines ? descriptionLines.map((line, index) => <span key={line} className={`block ${index > 0 ? "mt-[10px] md:mt-0" : ""}`}>{line}</span>) : description}
         </p>
 
