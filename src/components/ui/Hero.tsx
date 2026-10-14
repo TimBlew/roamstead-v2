@@ -22,7 +22,7 @@ export const Hero: React.FC<HeroProps> = ({
   ctaHref,
 }) => {
   return (
-    <section className="relative flex min-h-[420px] w-full items-start justify-center overflow-hidden px-5 text-center md:h-[752px] md:px-6">
+    <section className="relative flex min-h-[400px] w-full items-start justify-center overflow-hidden px-5 text-center md:h-[752px] md:px-6">
       <Image
         src={backgroundImage}
         alt=""
@@ -30,7 +30,7 @@ export const Hero: React.FC<HeroProps> = ({
         priority
         fetchPriority="high"
         sizes="100vw"
-        className="object-cover object-[center_41%] md:object-center"
+        className="object-cover object-[center_38%] md:object-center"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/24 to-black/12 md:from-black/60 md:via-black/20 md:to-transparent" />
       <div className="absolute inset-x-0 top-[24%] h-[58%] bg-[radial-gradient(ellipse_at_center,rgba(12,22,18,0.39)_0%,rgba(12,22,18,0.15)_48%,transparent_78%)] md:hidden" />
