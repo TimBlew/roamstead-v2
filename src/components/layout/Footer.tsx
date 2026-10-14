@@ -1,4 +1,8 @@
 import React from "react";
+import { DM_Sans, DM_Serif_Display } from "next/font/google";
+
+const creditSans = DM_Sans({ subsets: ["latin"], weight: ["400"], display: "swap" });
+const creditSerif = DM_Serif_Display({ subsets: ["latin"], weight: ["400"], display: "swap" });
 
 const senatorUrl = "https://hebersenator.com/?utm_source=roamstead-co&utm_medium=referral&utm_campaign=footer";
 const propertyLinks = [
@@ -61,7 +65,7 @@ export const Footer: React.FC = () => (
     <div className="mx-auto mt-[22px] max-w-[1320px] border-t border-white/20 pt-[16px] md:mt-[28px] md:pt-[14px]">
       <div className="flex flex-col gap-[8px] sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <p className="text-[12px] leading-[1.5] text-[#F4EFEC]/80">© Roamstead Collective 2026. All rights reserved.</p>
-        <a href="https://castlehead.ai" target="_blank" rel="noopener noreferrer" aria-label="Site powered by Castlehead" className="group inline-flex w-fit items-baseline gap-[5px] whitespace-nowrap text-[12px] leading-[1.5] text-[#F4EFEC]/65 transition-colors hover:text-[#FFFCFB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:text-[13px]"><span className="font-body font-normal">Site powered by</span><span className="font-serif text-[15px] font-bold tracking-[-0.035em] text-[#FFFCFB] md:text-[17px]">Castlehead<span className="text-[#16A6E8]">.</span></span></a>
+        <a href="https://castlehead.ai" target="_blank" rel="noopener noreferrer" aria-label="Site powered by Castlehead" className="group inline-flex w-fit items-baseline gap-[5px] whitespace-nowrap text-[12px] leading-[1.5] text-[#F4EFEC]/65 transition-colors hover:text-[#FFFCFB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:text-[13px]"><span className={`${creditSans.className} font-normal`}>Site powered by</span><span className={`${creditSerif.className} text-[15px] font-normal tracking-normal text-[#FFFCFB] md:text-[17px]`}>Castlehead<span className="text-[#00D4FF]">.</span></span></a>
       </div>
     </div>
   </footer>
