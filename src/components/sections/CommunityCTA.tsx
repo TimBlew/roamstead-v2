@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { trackRoamsteadEvent } from "@/lib/analytics";
 
 export const CommunityCTA = () => {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -52,6 +53,7 @@ export const CommunityCTA = () => {
       if (!response.ok) {
         throw new Error(response.status === 400 ? "Please check your selections and try again." : "We couldn't complete your signup. Please try again.");
       }
+      trackRoamsteadEvent("early_access_submission_accepted");
       form.reset();
       setSeason("");
       setHome("");
