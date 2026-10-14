@@ -4,6 +4,18 @@ const RECIPIENT = process.env.EARLY_ACCESS_RECIPIENT || "tim@castlehead.ai";
 const ALLOWED_SEASONS = ["", "Winter", "Spring", "Summer", "Fall", "All Four", "All 4"];
 const ALLOWED_HOMES = ["", "Heber Valley / Wasatch Back", "Salt Lake or Provo area", "Somewhere else"];
 
+const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (character) => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+})[character] || character);
+
+function signupEmailHtml(email: string, season: string, home: string) {
+  const safeEmail = escapeHtml(email);
+  const safeSeason = escapeHtml(season || "Not provided");
+  const safeHome = escapeHtml(home || "Not provided");
+  const row = (label: string, value: string) => `<tr><td style="padding:15px 20px 5px;color:#7A7168;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;font-weight:700;">${label}</td></tr><tr><td style="padding:0 20px 16px;color:#1F3125;font-size:17px;line-height:1.45;">${value}</td></tr>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:0;background:#F4EFEC;font-family:Arial,Helvetica,sans-serif;color:#1F3125;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#F4EFEC;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:560px;background:#FFFCFB;border:1px solid #E7DFDB;border-radius:12px;"><tr><td style="padding:28px 28px 22px;background:#1F3125;border-radius:11px 11px 0 0;"><div style="font-size:13px;letter-spacing:0.14em;font-weight:700;color:#C9DACB;text-transform:uppercase;">Roamstead Collective</div><h1 style="margin:12px 0 0;font-size:26px;line-height:1.2;font-weight:600;color:#FFFCFB;">New early access signup</h1><p style="margin:10px 0 0;font-size:14px;line-height:1.5;color:#E2E9E0;">A guest is interested in staying connected.</p></td></tr><tr><td style="padding:24px 24px 12px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #E7DFDB;border-radius:8px;background:#FBF8F7;">${row("Email", `<a href="mailto:${safeEmail}" style="color:#365E47;text-decoration:underline;overflow-wrap:anywhere;">${safeEmail}</a>`)}${row("Preferred season", safeSeason)}${row("Home area", safeHome)}</table><p style="margin:20px 4px 8px;font-size:12px;line-height:1.5;color:#8F7E73;">Early access interest · Roamstead Collective</p></td></tr></table></td></tr></table></body></html>`;
+}
+
 export async function POST(request: Request) {
   let payload: { email?: unknown; season?: unknown; home?: unknown; consent?: unknown };
   try { payload = await request.json(); } catch { return NextResponse.json({ error: "Invalid request" }, { status: 400 }); }
@@ -26,7 +38,8 @@ export async function POST(request: Request) {
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         from: sender, to: [RECIPIENT], subject: "Roamstead early access signup",
-        text: `Email: ${email}\nSeason: ${season || "Not provided"}\nHome: ${home || "Not provided"}\nMarketing consent: Yes`,
+        text: `New early access signup\n\nEmail: ${email}\nPreferred season: ${season || "Not provided"}\nHome area: ${home || "Not provided"}\n\nRoamstead Collective`,
+        html: signupEmailHtml(email, season, home),
         reply_to: email,
       }),
     });
