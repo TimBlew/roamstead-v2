@@ -24,14 +24,14 @@ export default function BookPage() {
         </div>
         <div className="mx-auto grid w-full items-stretch lg:min-h-[clamp(620px,40.2vw,772px)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
           <div className="relative z-10 flex flex-col justify-center px-5 pb-9 pt-12 sm:px-10 lg:py-[80px] lg:pl-[clamp(88px,8.5vw,160px)] lg:pr-[32px]">
-            <p className="font-body text-[13px] font-semibold uppercase leading-5 tracking-[0.12em] text-[#4A6E57] md:text-[16px] lg:tracking-[0.14em]">Book direct with Roamstead</p>
-            <h1 className="mt-[14px] max-w-[650px] text-balance font-heading text-[40px] font-medium leading-[1.09] tracking-[-0.04em] text-[#1F3125] md:mt-[20px] md:text-[clamp(46px,5.4vw,55px)] md:leading-[1.09] lg:max-w-[600px] lg:text-[clamp(46px,3.2vw,61px)] lg:leading-[1.075] lg:tracking-[-0.043em]">
+            <p className="font-body text-[13px] font-semibold uppercase leading-5 tracking-[0.12em] text-[#4A6E57] md:text-[16px] lg:tracking-[0.14em] lg:text-[#416D50] lg:[text-shadow:0_1px_2px_rgba(255,252,251,0.65)]">Book direct with Roamstead</p>
+            <h1 className="mt-[14px] max-w-[650px] text-balance font-heading text-[40px] font-medium leading-[1.09] tracking-[-0.04em] text-[#1F3125] md:mt-[20px] md:text-[clamp(46px,5.4vw,55px)] md:leading-[1.09] lg:max-w-[600px] lg:text-[clamp(46px,3.2vw,61px)] lg:leading-[1.075] lg:tracking-[-0.043em] lg:text-[#1B3023] lg:[text-shadow:0_1px_0_rgba(255,252,251,0.4),0_4px_19px_rgba(31,49,37,0.09)]">
               Your mountain stay<br className="hidden lg:block" /> is waiting
             </h1>
-            <p className="mt-[20px] max-w-[490px] font-body text-[15px] font-medium leading-[1.62] tracking-[-0.13px] text-[#62584F] sm:text-[16px] md:mt-[24px] md:font-normal md:leading-[1.6] lg:max-w-[505px] lg:text-[18px]">
+            <p className="mt-[20px] max-w-[490px] font-body text-[15px] font-medium leading-[1.62] tracking-[-0.13px] text-[#62584F] sm:text-[16px] md:mt-[24px] md:font-normal md:leading-[1.6] lg:max-w-[505px] lg:text-[18px] lg:text-[#514B43] lg:[text-shadow:0_1px_4px_rgba(255,252,251,0.65)]">
               Thoughtfully chosen places to settle in and stay awhile. Explore the collection, choose your dates, and book directly.
             </p>
-            <div className="mt-[20px] flex justify-center md:mt-[30px] md:justify-start lg:mt-[26px] lg:w-[505px] lg:max-w-full lg:justify-center">
+            <div className="mt-[20px] flex justify-center md:mt-[30px] md:justify-start lg:mt-[26px] lg:w-[450px] lg:max-w-full lg:justify-center">
               <a href="#choose-your-stay" className="inline-flex h-[48px] w-[230px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-[26px] font-body text-[15px] font-semibold leading-none tracking-[-0.2px] text-[#FFFCFB] shadow-[0_4px_12px_rgba(31,49,37,0.10)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3D604B] hover:shadow-[0_6px_16px_rgba(31,49,37,0.13)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#1F3125] md:h-[50px] md:w-auto md:min-w-[176px] md:text-[16px] lg:h-[52px] lg:min-w-[218px] lg:px-[32px]">
                 Choose your stay
               </a>
