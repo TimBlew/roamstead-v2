@@ -32,7 +32,7 @@ export default function BookPage() {
               Thoughtfully chosen places to settle in and stay awhile. Explore the collection, choose your dates, and book directly.
             </p>
             <div className="mt-[24px] md:mt-[30px]">
-              <a href="#choose-your-stay" className="inline-flex h-[48px] min-w-[166px] items-center justify-center rounded-[8px] border border-[#345943]/25 bg-[#4A6E57] px-[28px] font-body text-[15px] font-semibold leading-none tracking-[-0.2px] text-[#FFFCFB] shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_3px_8px_rgba(31,49,37,0.11),0_10px_22px_rgba(31,49,37,0.12)] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-[2px] hover:bg-[#3D604B] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_6px_14px_rgba(31,49,37,0.15),0_15px_27px_rgba(31,49,37,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#1F3125] active:translate-y-0 md:h-[52px] md:min-w-[182px] md:text-[16px]">
+              <a href="#choose-your-stay" className="inline-flex h-[46px] min-w-[160px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-[26px] font-body text-[15px] font-semibold leading-none tracking-[-0.2px] text-[#FFFCFB] shadow-[0_4px_12px_rgba(31,49,37,0.10)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3D604B] hover:shadow-[0_6px_16px_rgba(31,49,37,0.13)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#1F3125] md:h-[50px] md:min-w-[176px] md:text-[16px]">
                 Choose your stay
               </a>
             </div>
