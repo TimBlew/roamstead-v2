@@ -11,7 +11,7 @@ const propertyLinks = [
 
 export const Footer: React.FC = () => (
   <footer className="bg-[#382F29] px-5 pb-[20px] pt-[32px] font-body text-[#FFFCFB] md:px-[48px] md:pb-[22px] md:pt-[34px]">
-    <div className="mx-auto grid max-w-[1320px] grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] gap-x-[18px] gap-y-[26px] md:grid-cols-[minmax(0,1.25fr)_minmax(0,0.95fr)_minmax(0,0.75fr)_minmax(0,1.05fr)] md:gap-x-[32px] lg:gap-x-[42px]">
+    <div className="mx-auto grid max-w-[1320px] grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] gap-x-[26px] gap-y-[26px] md:grid-cols-[minmax(0,1.25fr)_minmax(0,0.95fr)_minmax(0,0.75fr)_minmax(0,1.05fr)] md:gap-x-[32px] lg:gap-x-[42px]">
       <div className="col-span-2 md:col-span-1">
         <img src="/roamstead-logo-light.svg" alt="Roamstead" className="h-auto w-[142px] md:w-[170px]" />
         <p className="mt-[12px] max-w-[315px] text-[14px] leading-[1.55] text-[#F4EFEC] md:mt-[14px] md:text-[15px]">
