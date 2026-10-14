@@ -49,7 +49,7 @@ export const Hero: React.FC<HeroProps> = ({
 
         <a
           href={ctaHref}
-          className="mt-[32px] inline-flex h-[48px] min-w-[154px] items-center justify-center rounded-[8px] border border-white/80 bg-[#FFFCFB] px-[28px] font-body text-[15px] font-semibold leading-none tracking-[-0.25px] text-[#253329] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_2px_5px_rgba(9,22,16,0.12),0_12px_30px_rgba(9,22,16,0.24)] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-[2px] hover:bg-white hover:shadow-[inset_0_1px_0_rgba(255,255,255,1),0_5px_12px_rgba(9,22,16,0.15),0_16px_34px_rgba(9,22,16,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white active:translate-y-0 md:mt-8 md:h-[52px] md:min-w-[176px] md:px-[30px] md:text-[16px]"
+          className="mt-[40px] inline-flex h-[48px] min-w-[154px] items-center justify-center rounded-[8px] border border-white/80 bg-[#FFFCFB] px-[28px] font-body text-[15px] font-semibold leading-none tracking-[-0.25px] text-[#253329] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_2px_5px_rgba(9,22,16,0.12),0_12px_30px_rgba(9,22,16,0.24)] transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-[2px] hover:bg-white hover:shadow-[inset_0_1px_0_rgba(255,255,255,1),0_5px_12px_rgba(9,22,16,0.15),0_16px_34px_rgba(9,22,16,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white active:translate-y-0 md:mt-8 md:h-[52px] md:min-w-[176px] md:px-[30px] md:text-[16px]"
         >
           {ctaText}
         </a>
