@@ -7,15 +7,54 @@
     "description": [
       "Roamstead Collective is a small group of homes across Utah's Wasatch Back, rooted in Heber Valley.",
       "Pick your base. The mountains do the rest."
-    ]
+    ],
+    "intro": {
+      "title": "Book with the locals who run it",
+      "body": "Book direct and you'll always get our best price. You also talk to us, not a call center, so questions about parking or the best powder day get a real answer."
+    },
+    "pillars": [
+      {
+        "title": "Gather round",
+        "body": "A table for everyone, a fire to sit around, and a plan for tomorrow. The best trips leave room for people."
+      },
+      {
+        "title": "Four seasons, no off-season",
+        "body": "Winter powder. Summer singletrack. Fall color. Even mud season, and we mean that. Every week up here is a good one."
+      },
+      {
+        "title": "Local by nature",
+        "body": "We send you to the bakery, the bike shop, and the river outfitter down the road. The valley's best parts are run by our neighbors."
+      }
+    ],
+    "featuredHeading": "Pick your base"
   },
   "properties": {
-    "intro": "From a studio at the base of Park City Mountain to a Midway home that sleeps 10, each stay has its own setting and its own reason to come back."
+    "intro": "From a studio at the base of Park City Mountain to a Midway home that sleeps 10, each stay has its own setting and its own reason to come back.",
+    "hero": {
+      "eyebrow": "Our stays",
+      "headline": "Homes for people who roam",
+      "body": "Roamstead Collective started in Heber Valley and has grown across the Wasatch Back. Every home is different. The rule is the same:",
+      "accent": "the place comes first."
+    },
+    "listHeading": "Find your fit"
   },
   "hooks": {
     "hygge-house": "Room for 10. Cozy enough to earn the name.",
     "granary": "A quiet Midway base for 2 to 4. The kitchen island does a lot of work.",
     "lowell": "At the base of Park City Mountain. Boots on, lift next.",
     "powder-room": "Yes, it's called the Powder Room. Yes, it's for skiers. A studio inside the Lowell building."
+  },
+  "shared": {
+    "senator": {
+      "eyebrow": "Our centerpiece in Heber City",
+      "headline": "Old bones, new comforts",
+      "body": "A historic red sandstone Victorian with rooms you book one at a time. Breakfast's on us."
+    },
+    "community": {
+      "eyebrow": "Coming soon",
+      "headline": "For people who come back",
+      "body": "We're building a membership for the 4-Seasoners, the people who'd rather know one place well than see a new one every trip. Get on the early list and you'll hear first when it opens.",
+      "perks": "What we're planning: member rates on stays, deals for valley locals, first invites to events, and a newsletter worth opening."
+    }
   }
 }
