@@ -1,3 +1,4 @@
+import copy from "@/data/admin-copy.json";
 import { socialImage } from "@/lib/site";
 import Image from "next/image";
 import { SenatorBand } from "@/components/sections/SenatorBand";
@@ -66,7 +67,7 @@ export default function PropertiesPage() {
               Find your fit
             </h2>
             <p className="mt-2 max-w-[42ch] font-body text-[14.5px] font-normal leading-[21px] tracking-[-0.29px] text-[#6D6057] md:mt-2 md:max-w-[820px] md:text-[18px] md:leading-[1.45] md:tracking-[-0.36px]">
-              From a studio at the base of Park City Mountain to a Midway home that sleeps 10, each stay has its own setting and its own reason to come back.
+              {copy.properties.intro}
             </p>
           </div>
 
@@ -78,10 +79,10 @@ export default function PropertiesPage() {
               const detailHref = "/properties/" + property.slug;
               const facts = property.slug === "powder-room" ? ["Sleeps 4", "Studio", "1 Bath"] : property.stats.slice(0, 3).map((stat) => stat.label.toLowerCase() === "sleeps" ? "Sleeps " + stat.value : stat.value + " " + stat.label);
               const hooks: Record<string, string> = {
-                "hygge-house": "Room for 10. Cozy enough to earn the name.",
+                "hygge-house": copy.hooks["hygge-house"],
                 granary: "A quiet Midway base for 2 to 4. The kitchen island does a lot of work.",
                 lowell: "At the base of Park City Mountain. Boots on, lift next.",
-                "powder-room": "Yes, it's called the Powder Room. Yes, it's for skiers. A studio inside the Lowell building.",
+                "powder-room": copy.hooks["powder-room"],
               };
 
               return (
