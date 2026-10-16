@@ -39,7 +39,7 @@ export const FeaturedHomes: React.FC<FeaturedHomesProps> = ({ showAll = false })
           className="max-w-[230px] font-heading text-[29px] font-medium leading-[1.08] tracking-[-1.24px] text-[#1F3125] md:max-w-none md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
           style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
         >
-          Pick your base
+          {copy.homepage.featuredHeading}
         </h2>
         <a
           href="/properties"
