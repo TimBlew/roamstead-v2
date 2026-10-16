@@ -16,6 +16,7 @@ export default function CopyEditor() {
   const [base,setBase]=useState<Record<string,string>>({});
   const [busy,setBusy]=useState(false);
   const [notice,setNotice]=useState("");
+  const [publishing,setPublishing]=useState(false);
   const changed=useMemo(()=>Object.keys(values).filter(k=>values[k]!==base[k]),[values,base]);
   useEffect(()=>{fetch("/admin/api/content",{cache:"no-store"}).then(r=>r.json()).then((s:Source)=>{setSource(s);if(s.copy){const v=flatten(s.copy);setValues(v);setBase(v);}}).catch(()=>setNotice("Editor is temporarily unavailable."));},[]);
   useEffect(()=>{function warn(e:BeforeUnloadEvent){if(changed.length){e.preventDefault();e.returnValue="";}}window.addEventListener("beforeunload",warn);return()=>window.removeEventListener("beforeunload",warn)},[changed.length]);
@@ -26,7 +27,18 @@ export default function CopyEditor() {
       const r=await fetch("/admin/api/content",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({sha:source.sha,values})});
       const j=await r.json();
       if(!r.ok)throw Error(j.error||"Save failed");
-      setSource({...source,sha:j.sha});setBase({...values});setNotice("Saved. Publishing to the live site; allow about a minute, then verify the page.");
+      setSource({...source,sha:j.sha});setBase({...values});
+      setNotice("Saved to GitHub. Waiting for the live site...");
+      setPublishing(true);
+      const key=changed[0], expected=values[key];
+      let verified=false;
+      for(let attempt=0;attempt<24;attempt++){
+        await new Promise(resolve=>setTimeout(resolve,5000));
+        const result=await fetch("/admin/api/publish-status?"+new URLSearchParams({field:key,expected}),{cache:"no-store"}).then(x=>x.json()).catch(()=>({status:"unknown"}));
+        if(result.status==="live"){verified=true;break;}
+      }
+      setPublishing(false);
+      setNotice(verified?"Published. Your change is live on the website.":"Saved. Publishing is taking longer than expected. You can check Vercel deployment status.");
     }catch(e){setNotice(e instanceof Error?e.message:"Save failed")}finally{setBusy(false)}
   }
   return <section className="mt-7 rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-5 md:p-7">
@@ -42,7 +54,7 @@ export default function CopyEditor() {
       </details>)}
       <div className="sticky bottom-3 z-10 mt-5 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#D8CCC4] bg-[#FFFCFB] p-3 shadow-md">
         <p role="status" className="font-body text-[12px] text-[#6D6057]">{notice||`${changed.length} unsaved changes`}</p>
-        <div className="flex gap-2"><button type="button" disabled={!changed.length||busy} onClick={()=>{setValues({...base});setNotice("Changes discarded.")}} className="rounded-lg border border-[#D8CCC4] px-4 py-2 text-[13px] disabled:opacity-40">Discard</button><button type="button" disabled={!source.editing||!changed.length||busy} onClick={save} className="rounded-lg bg-[#4A6E57] px-5 py-2 font-body text-[13px] font-medium text-white disabled:opacity-40">{busy?"Saving...":"Save & publish"}</button></div>
+        <div className="flex gap-2"><button type="button" disabled={!changed.length||busy} onClick={()=>{setValues({...base});setNotice("Changes discarded.")}} className="rounded-lg border border-[#D8CCC4] px-4 py-2 text-[13px] disabled:opacity-40">Discard</button><button type="button" disabled={!source.editing||!changed.length||busy||publishing} onClick={save} className="rounded-lg bg-[#4A6E57] px-5 py-2 font-body text-[13px] font-medium text-white disabled:opacity-40">{busy?"Saving...":publishing?"Checking live site...":"Save & publish"}</button></div>
       </div>
     </>}
   </section>
