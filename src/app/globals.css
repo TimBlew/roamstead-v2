@@ -437,3 +437,7 @@ a {
     margin-left: 0;
   }
 }
+
+/* Private management view retains its own chrome; guest navigation stays unchanged elsewhere. */
+body:has(#admin-root) .site-nav, body:has(#admin-root) > footer, body:has(#admin-root) footer { display: none; }
+body:has(#admin-root) #main-content { padding-top: 0; }
