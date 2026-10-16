@@ -11,6 +11,33 @@ export default function EarlyAccessDirectory(){
   const [search,setSearch]=useState("");
   const [season,setSeason]=useState("all");
   const [selected,setSelected]=useState<string|null>(null);
+  const [notificationEmail,setNotificationEmail]=useState("");
+  const [savedEmail,setSavedEmail]=useState("");
+  const [settingEnabled,setSettingEnabled]=useState(false);
+  const [settingBusy,setSettingBusy]=useState(false);
+  const [settingNotice,setSettingNotice]=useState("");
+  useEffect(()=>{
+    let mounted=true;
+    fetch("/admin/api/notification-settings",{cache:"no-store"})
+      .then(async r=>{const data=await r.json();if(!r.ok)throw Error(data.message||"Unable to load notification address.");return data})
+      .then(data=>{if(mounted){setNotificationEmail(data.email||"");setSavedEmail(data.email||"");setSettingEnabled(Boolean(data.editable))}})
+      .catch(e=>{if(mounted)setSettingNotice(e instanceof Error?e.message:"Unable to load notification settings.")});
+    return ()=>{mounted=false};
+  },[]);
+  async function saveNotification(event:React.FormEvent<HTMLFormElement>){
+    event.preventDefault();
+    setSettingBusy(true);setSettingNotice("");
+    try{
+      const response=await fetch("/admin/api/notification-settings",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:notificationEmail})});
+      const data=await response.json();
+      if(!response.ok)throw Error(data.error||"Unable to save.");
+      setSavedEmail(data.email);
+      setNotificationEmail(data.email);
+      setSettingNotice(data.message||"Saved.");
+    }catch(e){setSettingNotice(e instanceof Error?e.message:"Unable to save.");}
+    finally{setSettingBusy(false)}
+  }
+
   const load=useCallback(async(after:string|null=null)=>{
     setLoading(true);setMessage("");
     try{
@@ -29,6 +56,17 @@ export default function EarlyAccessDirectory(){
   const detail=entries.find(e=>e.id===selected);
   const displayDate=(value:string)=>{const d=new Date(value);return Number.isNaN(d.getTime())?value:d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})};
   return <div className="space-y-3">
+    <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-3 sm:p-5">
+      <div><p className="text-[10px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Notifications</p><h2 className="mt-0.5 font-heading text-[20px] leading-tight sm:text-[23px]">Signup notification email</h2><p className="mt-1 font-body text-[12px] leading-[1.5] text-[#6D6057]">Choose where new early-access submission emails are sent. Castlehead keeps its existing backup copy.</p></div>
+      <form onSubmit={saveNotification} className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end">
+        <label className="min-w-0 flex-1 font-body text-[12px] font-medium text-[#1F3125]">Notification recipient
+          <input type="email" required autoComplete="email" maxLength={254} value={notificationEmail} onChange={e=>setNotificationEmail(e.target.value)} disabled={!settingEnabled||settingBusy} placeholder="email@example.com" className="mt-1 block h-[39px] w-full rounded-lg border border-[#D8CCC4] bg-white px-3 font-body text-[13px] outline-[#4A6E57] disabled:opacity-55"/>
+        </label>
+        <button type="submit" disabled={!settingEnabled||settingBusy||!notificationEmail.trim()||notificationEmail.trim().toLowerCase()===savedEmail.toLowerCase()} className="h-[39px] shrink-0 rounded-lg bg-[#4A6E57] px-4 font-body text-[12px] font-medium text-white disabled:opacity-40">{settingBusy?"Saving...":"Save email"}</button>
+      </form>
+      {settingNotice&&<p role="status" className="mt-2 text-[12px] text-[#4A6E57]">{settingNotice}</p>}
+      <p className="mt-2 font-body text-[11px] leading-[1.45] text-[#6D6057]">Updates take effect after the new Vercel deployment is ready. Existing signup emails are unchanged.</p>
+    </section>
     <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-3 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div><p className="text-[10px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Guest interest</p><h2 className="mt-0.5 font-heading text-[22px] leading-tight sm:text-[25px]">Early-access signups</h2><p className="mt-1 max-w-[65ch] font-body text-[12px] leading-[1.45] text-[#6D6057]">Contacts saved in Roamstead’s Resend audience. Email-only notifications are not included unless the contact was stored successfully.</p></div>
