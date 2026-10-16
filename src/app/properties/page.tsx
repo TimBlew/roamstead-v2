@@ -27,17 +27,17 @@ export default function PropertiesPage() {
           <div className="relative z-10 flex flex-col justify-center px-5 pb-[28px] pt-[36px] md:px-10 md:py-[56px] lg:pl-[clamp(88px,9vw,180px)] lg:pr-[32px] lg:py-[64px]">
             <div className="max-w-[680px]">
               <p className="font-body text-[13px] font-semibold uppercase leading-5 tracking-[0.12em] text-[#4A6E57] md:text-[16px] lg:tracking-[0.14em]">
-                Our stays
+                {copy.properties.hero.eyebrow}
               </p>
               <h1
                 className="mt-[14px] max-w-[620px] text-balance font-heading text-[40px] font-medium leading-[1.09] tracking-[-0.041em] text-[#1F3125] md:mt-[19px] md:text-[clamp(44px,5.5vw,55px)] md:leading-[1.1] lg:max-w-[600px] lg:text-[clamp(46px,3.3vw,62px)] lg:leading-[1.065] lg:tracking-[-0.044em]"
                 style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
               >
-                Homes for people<br className="hidden lg:block" /> who roam
+                {copy.properties.hero.headline}
               </h1>
               <div className="mt-[22px] max-w-[590px] border-l border-[#4A6E57]/30 pl-[16px] md:mt-[26px] md:pl-[21px] lg:mt-[25px] lg:max-w-[525px]">
                 <p className="font-body text-[15px] font-medium leading-[1.6] tracking-[-0.19px] text-[#62584F] md:text-[17px] md:font-normal md:leading-[1.58] md:tracking-[-0.16px] lg:text-[18px] lg:leading-[1.55]">
-                  Roamstead Collective started in Heber Valley and has grown across the Wasatch Back. Every home is different. The rule is the same: <span className="inline-block align-baseline font-heading text-[20px] font-medium leading-[1.15] tracking-[-0.035em] text-[#365A43] [text-shadow:0_1px_0_rgba(255,252,251,0.68),0_3px_12px_rgba(31,49,37,0.08)] md:text-[22px]" style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}>the place comes first.</span>
+                  {copy.properties.hero.body} <span className="inline-block align-baseline font-heading text-[20px] font-medium leading-[1.15] tracking-[-0.035em] text-[#365A43] [text-shadow:0_1px_0_rgba(255,252,251,0.68),0_3px_12px_rgba(31,49,37,0.08)] md:text-[22px]" style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}>{copy.properties.hero.accent}</span>
                 </p>
               </div>
             </div>
@@ -64,7 +64,7 @@ export default function PropertiesPage() {
               className="font-heading text-[31px] font-medium leading-[34px] tracking-[-1.24px] text-[#1F3125] md:text-[48px] md:leading-[54px] md:tracking-[-1.92px]"
               style={{ fontVariationSettings: '"opsz" 14, "wdth" 100' }}
             >
-              Find your fit
+              {copy.properties.listHeading}
             </h2>
             <p className="mt-2 max-w-[42ch] font-body text-[14.5px] font-normal leading-[21px] tracking-[-0.29px] text-[#6D6057] md:mt-2 md:max-w-[820px] md:text-[18px] md:leading-[1.45] md:tracking-[-0.36px]">
               {copy.properties.intro}
@@ -80,8 +80,8 @@ export default function PropertiesPage() {
               const facts = property.slug === "powder-room" ? ["Sleeps 4", "Studio", "1 Bath"] : property.stats.slice(0, 3).map((stat) => stat.label.toLowerCase() === "sleeps" ? "Sleeps " + stat.value : stat.value + " " + stat.label);
               const hooks: Record<string, string> = {
                 "hygge-house": copy.hooks["hygge-house"],
-                granary: "A quiet Midway base for 2 to 4. The kitchen island does a lot of work.",
-                lowell: "At the base of Park City Mountain. Boots on, lift next.",
+                granary: copy.hooks.granary,
+                lowell: copy.hooks.lowell,
                 "powder-room": copy.hooks["powder-room"],
               };
 
