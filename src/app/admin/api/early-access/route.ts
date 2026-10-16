@@ -1,9 +1,24 @@
+import { readSignups, sheetConfigured } from "@/lib/signup-sheet";
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuthenticated } from "@/lib/admin-auth";
 export const dynamic = "force-dynamic";
 type ResendContact={ id:string; email:string; created_at:string; unsubscribed?:boolean; properties?:Record<string,unknown> };
 export async function GET(req:NextRequest){
   if(!await adminAuthenticated())return NextResponse.json({error:"Unauthorized"},{status:401,headers:{"Cache-Control":"private, no-store"}});
+  if (sheetConfigured()) {
+    try {
+      const stored=await readSignups();
+      const entries=stored.sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).map(r=>({
+        id:r.id,email:r.email,createdAt:r.createdAt,season:r.season,home:r.home,
+        unsubscribed:false,subscriptionKnown:false,notificationStatus:r.notificationStatus,contactStatus:r.contactStatus,
+        preferencesUnavailable:false
+      }));
+      return NextResponse.json({connected:true,source:"sheets",entries,hasMore:false,nextCursor:null},{headers:{"Cache-Control":"private, no-store"}});
+    } catch(error) {
+      console.error("Roamstead private ledger read failed",error instanceof Error?error.message:"unknown");
+      return NextResponse.json({connected:false,message:"The submissions ledger is temporarily unavailable. Contact Castlehead if the issue persists."},{status:503,headers:{"Cache-Control":"private, no-store"}});
+    }
+  }
   const token=process.env.RESEND_CONTACTS_API_KEY;
   const segment=process.env.RESEND_ROAMSTEAD_SEGMENT_ID;
   if(!token||!segment)return NextResponse.json({connected:false,message:"Resend contacts are not configured. Check the contact-management key and Roamstead segment."},{headers:{"Cache-Control":"private, no-store"}});
@@ -33,7 +48,7 @@ export async function GET(req:NextRequest){
       season:typeof c.properties?.roamstead_season==="string"?c.properties.roamstead_season:"",
       home:typeof c.properties?.roamstead_home_area==="string"?c.properties.roamstead_home_area:""
     }));
-    return NextResponse.json({connected:true,entries,hasMore:Boolean(payload.has_more),nextCursor:payload.has_more?entries.at(-1)?.id||null:null},{headers:{"Cache-Control":"private, no-store"}});
+    return NextResponse.json({connected:true,source:"resend",entries,hasMore:Boolean(payload.has_more),nextCursor:payload.has_more?entries.at(-1)?.id||null:null},{headers:{"Cache-Control":"private, no-store"}});
   }catch(e){
     console.error("Roamstead directory request failed",e instanceof Error?e.message:"unknown");
     return NextResponse.json({connected:false,message:"Contact directory is temporarily unavailable."},{status:502,headers:{"Cache-Control":"private, no-store"}});
