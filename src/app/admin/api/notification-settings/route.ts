@@ -4,7 +4,7 @@ import localSettings from "@/data/early-access-settings.json";
 
 export const dynamic = "force-dynamic";
 const FILE = "src/data/early-access-settings.json";
-const URL = "https://api.github.com/repos/TimBlew/roamstead-v2/contents/" + FILE;
+const GITHUB_URL = "https://api.github.com/repos/TimBlew/roamstead-v2/contents/" + FILE;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 function reply(data:unknown,status=200){return NextResponse.json(data,{status,headers:{"Cache-Control":"private, no-store"}})}
 function token(){return process.env.ROAMSTEAD_EDITOR_GITHUB_TOKEN||""}
@@ -14,7 +14,7 @@ function isSameOrigin(req:NextRequest){
  try {const u=new URL(origin);return u.protocol==="https:"&&u.host===req.headers.get("host");}catch{return false;}
 }
 async function readCurrent(){
- const res=await fetch(URL+"?ref=main",{headers:{"Authorization":"Bearer "+token(),"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"},cache:"no-store",signal:AbortSignal.timeout(8000)});
+ const res=await fetch(GITHUB_URL+"?ref=main",{headers:{"Authorization":"Bearer "+token(),"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"},cache:"no-store",signal:AbortSignal.timeout(8000)});
  if(!res.ok)throw new Error("Settings read failed: "+res.status);
  const item=await res.json() as {sha:string;content:string};
  const data=JSON.parse(Buffer.from(item.content.replace(/\n/g,""),"base64").toString("utf8")) as {notificationEmail:string};
@@ -39,7 +39,7 @@ export async function PUT(req:NextRequest){
   const current=await readCurrent();
   if(email===current.email.toLowerCase())return reply({saved:true,email,unchanged:true,message:"This address is already saved."});
   const content=Buffer.from(JSON.stringify({notificationEmail:email},null,2)+"\n").toString("base64");
-  const response=await fetch(URL,{method:"PUT",headers:{"Authorization":"Bearer "+token(),"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","Content-Type":"application/json"},body:JSON.stringify({message:"Update Roamstead early access notification email",content,sha:current.sha,branch:"main"}),cache:"no-store",signal:AbortSignal.timeout(10000)});
+  const response=await fetch(GITHUB_URL,{method:"PUT",headers:{"Authorization":"Bearer "+token(),"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28","Content-Type":"application/json"},body:JSON.stringify({message:"Update Roamstead early access notification email",content,sha:current.sha,branch:"main"}),cache:"no-store",signal:AbortSignal.timeout(10000)});
   if(response.status===409||response.status===422)return reply({error:"The setting changed. Refresh and try again."},409);
   if(!response.ok){console.error("Roamstead notification setting update failed",response.status);return reply({error:"Unable to publish the new address."},503)}
   return reply({saved:true,email,message:"Saved. Vercel is deploying your new notification address."});
