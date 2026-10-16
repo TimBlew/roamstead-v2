@@ -1,9 +1,10 @@
 "use client";
 import {useCallback,useEffect,useMemo,useState} from "react";
-type Entry={id:string;email:string;createdAt:string;unsubscribed:boolean;season:string;home:string;preferencesUnavailable?:boolean};
-type Response={connected?:boolean;entries?:Entry[];hasMore?:boolean;nextCursor?:string|null;message?:string};
+type Entry={id:string;email:string;createdAt:string;unsubscribed:boolean;season:string;home:string;preferencesUnavailable?:boolean;subscriptionKnown?:boolean;notificationStatus?:string;contactStatus?:string};
+type Response={connected?:boolean;source?:"sheets"|"resend";entries?:Entry[];hasMore?:boolean;nextCursor?:string|null;message?:string};
 export default function EarlyAccessDirectory(){
   const [entries,setEntries]=useState<Entry[]>([]);
+  const [dataSource,setDataSource]=useState<"sheets"|"resend">("resend");
   const [cursor,setCursor]=useState<string|null>(null);
   const [hasMore,setHasMore]=useState(false);
   const [loading,setLoading]=useState(false);
@@ -46,6 +47,7 @@ export default function EarlyAccessDirectory(){
       const data=await r.json() as Response;
       if(!r.ok||!data.connected)throw Error(data.message||"Unable to load signups.");
       setEntries(prev=>after?[...prev,...(data.entries||[])]:data.entries||[]);
+      setDataSource(data.source||"resend");
       setCursor(data.nextCursor||null);setHasMore(Boolean(data.hasMore));
     }catch(e){setMessage(e instanceof Error?e.message:"Unable to load signups.");}
     finally{setLoading(false)}
@@ -69,12 +71,12 @@ export default function EarlyAccessDirectory(){
     </section>
     <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-3 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <div><p className="text-[10px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Guest interest</p><h2 className="mt-0.5 font-heading text-[22px] leading-tight sm:text-[25px]">Early-access signups</h2><p className="mt-1 max-w-[65ch] font-body text-[12px] leading-[1.45] text-[#6D6057]">Contacts saved in Roamstead’s Resend audience. Email-only notifications are not included unless the contact was stored successfully.</p></div>
+        <div><p className="text-[10px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Guest interest</p><h2 className="mt-0.5 font-heading text-[22px] leading-tight sm:text-[25px]">Early-access signups</h2><p className="mt-1 max-w-[65ch] font-body text-[12px] leading-[1.45] text-[#6D6057]">{dataSource==="sheets"?"Permanent form submissions, including guests’ preferred season and home area.":"Contacts saved in Resend. The permanent submission ledger is awaiting its Google Sheets connection."}</p></div>
         <button type="button" onClick={()=>void load()} disabled={loading} className="inline-flex h-[33px] items-center rounded-md border border-[#D8CCC4] px-3 text-[12px] text-[#1F3125] disabled:opacity-40">Refresh</button>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-lg bg-[#F4EFEC] px-3 py-2"><strong className="block font-heading text-[25px] leading-tight">{entries.length}</strong><span className="text-[11px] text-[#6D6057]">{hasMore?"Contacts loaded":"Stored contacts"}</span></div>
-        <div className="rounded-lg bg-[#F4EFEC] px-3 py-2"><strong className="block font-heading text-[25px] leading-tight">{entries.filter(x=>!x.unsubscribed).length}</strong><span className="text-[11px] text-[#6D6057]">Subscribed (loaded)</span></div>
+        <div className="rounded-lg bg-[#F4EFEC] px-3 py-2"><strong className="block font-heading text-[25px] leading-tight">{entries.length}</strong><span className="text-[11px] text-[#6D6057]">{hasMore?"Records loaded":dataSource==="sheets"?"Recorded submissions":"Stored contacts"}</span></div>
+        <div className="rounded-lg bg-[#F4EFEC] px-3 py-2"><strong className="block font-heading text-[25px] leading-tight">{dataSource==="sheets"?entries.filter(x=>x.contactStatus==="stored").length:entries.filter(x=>!x.unsubscribed).length}</strong><span className="text-[11px] text-[#6D6057]">{dataSource==="sheets"?"Contact sync confirmed":"Subscribed (loaded)"}</span></div>
       </div>
       <div className="mt-3 flex flex-col gap-2 sm:flex-row">
         <label className="min-w-0 flex-1"><span className="sr-only">Find a contact</span><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search email, season, or area" className="h-[40px] w-full rounded-lg border border-[#D8CCC4] bg-white px-3 font-body text-[13px] outline-[#4A6E57]"/></label>
@@ -94,6 +96,6 @@ export default function EarlyAccessDirectory(){
       </div>
       {hasMore&&<div className="mt-3 text-center"><button type="button" disabled={loading||!cursor} onClick={()=>void load(cursor)} className="h-[36px] rounded-lg border border-[#D8CCC4] px-4 text-[12px] disabled:opacity-40">Load more</button></div>}
     </section>
-    {detail&&<section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5"><div className="flex items-center justify-between gap-3"><h3 className="font-heading text-[20px]">Contact details</h3><button className="text-[12px] text-[#6D6057] underline" onClick={()=>setSelected(null)}>Close</button></div><dl className="mt-3 grid gap-3 text-[13px] sm:grid-cols-2">{[["Email",detail.email],["Date added",displayDate(detail.createdAt)],["Preferred season",detail.preferencesUnavailable?"Could not load preferences":detail.season||"Not recorded"],["Home area",detail.preferencesUnavailable?"Could not load preferences":detail.home||"Not recorded"],["Subscription",detail.unsubscribed?"Unsubscribed":"Subscribed"]].map(([label,value])=><div key={label}><dt className="text-[11px] text-[#6D6057]">{label}</dt><dd className="mt-0.5 break-words font-medium">{value}</dd></div>)}</dl><a href={"mailto:"+detail.email} className="mt-4 inline-flex h-[34px] items-center rounded-md bg-[#4A6E57] px-3 text-[12px] font-medium text-white">Email guest</a></section>}
+    {detail&&<section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5"><div className="flex items-center justify-between gap-3"><h3 className="font-heading text-[20px]">Contact details</h3><button className="text-[12px] text-[#6D6057] underline" onClick={()=>setSelected(null)}>Close</button></div><dl className="mt-3 grid gap-3 text-[13px] sm:grid-cols-2">{[["Email",detail.email],["Date added",displayDate(detail.createdAt)],["Preferred season",detail.preferencesUnavailable?"Could not load preferences":detail.season||"Not recorded"],["Home area",detail.preferencesUnavailable?"Could not load preferences":detail.home||"Not recorded"],["Audience status",detail.subscriptionKnown===false?(detail.contactStatus==="stored"?"Contact saved":"Sync unconfirmed"):detail.unsubscribed?"Unsubscribed":"Subscribed"]].map(([label,value])=><div key={label}><dt className="text-[11px] text-[#6D6057]">{label}</dt><dd className="mt-0.5 break-words font-medium">{value}</dd></div>)}</dl><a href={"mailto:"+detail.email} className="mt-4 inline-flex h-[34px] items-center rounded-md bg-[#4A6E57] px-3 text-[12px] font-medium text-white">Email guest</a></section>}
   </div>;
 }
