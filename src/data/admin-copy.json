@@ -26,7 +26,25 @@
         "body": "We send you to the bakery, the bike shop, and the river outfitter down the road. The valley's best parts are run by our neighbors."
       }
     ],
-    "featuredHeading": "Pick your base"
+    "featuredHeading": "Pick your base",
+    "cards": {
+      "hygge-house": {
+        "name": "Hygge House",
+        "highlight": "Sleeps 10 · 4 Bedrooms · 3 Baths"
+      },
+      "granary": {
+        "name": "Granary",
+        "highlight": "Sleeps 4 · 1 Bedroom · 1 Bath"
+      },
+      "lowell": {
+        "name": "The Lowell",
+        "highlight": "Sleeps 8 · 2 Bedrooms · 2 Baths"
+      },
+      "powder-room": {
+        "name": "Powder Room",
+        "highlight": "Sleeps 4 · Studio · 1 Bath"
+      }
+    }
   },
   "properties": {
     "intro": "From a studio at the base of Park City Mountain to a Midway home that sleeps 10, each stay has its own setting and its own reason to come back.",
