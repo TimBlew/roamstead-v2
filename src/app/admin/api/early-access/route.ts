@@ -19,8 +19,17 @@ export async function GET(req:NextRequest){
       return NextResponse.json({connected:false,message:"Unable to load stored contacts from Resend. Review the contacts API key permissions."},{status:502,headers:{"Cache-Control":"private, no-store"}});
     }
     const payload=await response.json() as {data?:ResendContact[];has_more?:boolean};
-    const entries=(payload.data||[]).map(c=>({
+    const contacts=await Promise.all((payload.data||[]).map(async c=>{
+      try {
+        const detail=await fetch("https://api.resend.com/contacts/"+encodeURIComponent(c.id),{headers:{Authorization:"Bearer "+token},cache:"no-store",signal:AbortSignal.timeout(8000)});
+        if(!detail.ok){console.error("Roamstead contact preferences lookup failed",detail.status);return {...c,properties:c.properties||{},preferencesUnavailable:true};}
+        const full=await detail.json() as ResendContact;
+        return {...c,properties:full.properties||c.properties||{},preferencesUnavailable:false};
+      }catch{console.error("Roamstead contact preferences lookup unavailable");return {...c,properties:c.properties||{},preferencesUnavailable:true};}
+    }));
+    const entries=contacts.map(c=>({
       id:c.id,email:c.email,createdAt:c.created_at,unsubscribed:Boolean(c.unsubscribed),
+      preferencesUnavailable:Boolean(c.preferencesUnavailable),
       season:typeof c.properties?.roamstead_season==="string"?c.properties.roamstead_season:"",
       home:typeof c.properties?.roamstead_home_area==="string"?c.properties.roamstead_home_area:""
     }));
