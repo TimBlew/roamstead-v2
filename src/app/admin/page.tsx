@@ -1,3 +1,4 @@
+import CopyEditor from "@/components/admin/CopyEditor";
 import type { Metadata } from "next";
 import { adminAuthenticated, adminConfigured } from "@/lib/admin-auth";
 
@@ -17,7 +18,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const configured = adminConfigured();
   const error = (await searchParams).error;
   return (
-    <div className="min-h-[75vh] bg-[#F4EFEC] px-5 py-12 text-[#1F3125] md:px-10 md:py-16">
+    <div id="admin-root" className="min-h-[100vh] bg-[#F4EFEC] px-5 py-12 text-[#1F3125] md:px-10 md:py-16">
       <div className="mx-auto max-w-[1050px]">
         <div className="mb-8">
           <p className="mb-2 font-body text-[12px] font-medium uppercase tracking-[0.16em] text-[#4A6E57]">Roamstead Collective · Private</p>
@@ -39,7 +40,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         ) : (
           <>
             <div className="mb-5 flex items-center justify-between gap-3 rounded-[10px] border border-[#D8CCC4] bg-[#FFFCFB] p-4">
-              <p className="font-body text-[13px] text-[#6D6057]">Reports open in their connected services. Live booking data stays in Hostaway.</p>
+              <p className="font-body text-[13px] text-[#6D6057]">Your private Roamstead workspace. Booking records remain securely in Hostaway.</p>
               <form method="post" action="/admin/logout"><button className="rounded-[8px] border border-[#D8CCC4] px-4 py-2 font-body text-[13px] hover:bg-[#F4EFEC]" type="submit">Sign out</button></form>
             </div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -51,7 +52,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                 </section>
               ))}
             </div>
-            <p className="mt-7 font-body text-[12px] leading-relaxed text-[#6D6057]">This first-stage management hub does not edit published pages or expose private guest details. Content editing and embedded reporting require their own scoped integrations and access permissions.</p>
+            <CopyEditor />
+            <p className="mt-7 font-body text-[12px] leading-relaxed text-[#6D6057]">Reports currently open in their authorized services. The content editor uses revision-checked saves and requires a separate, restricted publishing credential. Guest data remains in Hostaway and Resend.</p>
           </>
         )}
       </div>
