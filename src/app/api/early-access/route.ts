@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
+import settings from "@/data/early-access-settings.json";
 
-const RECIPIENT = "chris@roamstead-co.com";
+const RECIPIENT = settings.notificationEmail;
 const BCC_RECIPIENT = "tim@castlehead.ai";
 const ALLOWED_SEASONS = ["", "Winter", "Spring", "Summer", "Fall", "All Four", "All 4"];
 const ALLOWED_HOMES = ["", "Heber Valley / Wasatch Back", "Salt Lake or Provo area", "Somewhere else"];
