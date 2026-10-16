@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import CopyEditor from "@/components/admin/CopyEditor";
 import AnalyticsPanel from "@/components/admin/AnalyticsPanel";
 import type { Metadata } from "next";
@@ -16,6 +17,7 @@ const reports = [
 ];
 export default async function AdminPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const allowed = await adminAuthenticated();
+  if (allowed) redirect("/admin/edit");
   const configured = adminConfigured();
   const error = (await searchParams).error;
   return (
