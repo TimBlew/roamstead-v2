@@ -8,7 +8,11 @@ const sections:Record<"home"|"properties",Section[]> = {
  {title:"Hero",fields:[["homepage.headline.0","Headline · first line"],["homepage.headline.1","Headline · second line"],["homepage.description.0","Introduction"],["homepage.description.1","Closing line"]]},
  {title:"Book with the locals",fields:[["homepage.intro.title","Heading"],["homepage.intro.body","Description"]]},
  {title:"What makes Roamstead",fields:[["homepage.pillars.0.title","Gather round · heading"],["homepage.pillars.0.body","Gather round · description"],["homepage.pillars.1.title","Four seasons · heading"],["homepage.pillars.1.body","Four seasons · description"],["homepage.pillars.2.title","Local by nature · heading"],["homepage.pillars.2.body","Local by nature · description"]]},
- {title:"Featured stays",fields:[["homepage.featuredHeading","Section heading"],["hooks.hygge-house","Hygge House"],["hooks.granary","Granary"],["hooks.lowell","The Lowell"],["hooks.powder-room","Powder Room"]]},
+ {title:"Featured stays",fields:[["homepage.featuredHeading","Section heading"]]},
+ {title:"Hygge House card",fields:[["homepage.cards.hygge-house.name","Property name"],["hooks.hygge-house","Hook"],["homepage.cards.hygge-house.highlight","Feature highlights"]]},
+ {title:"Granary card",fields:[["homepage.cards.granary.name","Property name"],["hooks.granary","Hook"],["homepage.cards.granary.highlight","Feature highlights"]]},
+ {title:"The Lowell card",fields:[["homepage.cards.lowell.name","Property name"],["hooks.lowell","Hook"],["homepage.cards.lowell.highlight","Feature highlights"]]},
+ {title:"Powder Room card",fields:[["homepage.cards.powder-room.name","Property name"],["hooks.powder-room","Hook"],["homepage.cards.powder-room.highlight","Feature highlights"]]},
  {title:"The Heber Senator",fields:[["shared.senator.eyebrow","Eyebrow"],["shared.senator.headline","Heading"],["shared.senator.body","Description"]]},
  {title:"Early access",fields:[["shared.community.eyebrow","Eyebrow"],["shared.community.headline","Heading"],["shared.community.body","Description"],["shared.community.perks","Member benefits"]]}
  ],
