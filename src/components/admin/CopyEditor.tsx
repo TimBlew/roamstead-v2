@@ -1,14 +1,30 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 
-type Source = { sha?: string; copy?: { homepage: { headline: string[]; description: string[] }; properties: { intro: string }; hooks: Record<string,string> }; editing?: boolean; message?: string; error?: string };
-const sections = [
-  { title: "Homepage hero", fields: [["homepage.headline.0","First headline line"],["homepage.headline.1","Second headline line"],["homepage.description.0","Intro paragraph"],["homepage.description.1","Closing paragraph"]] },
-  { title: "Properties introduction", fields: [["properties.intro","Collection introduction"]] },
-  { title: "Property card hooks", fields: [["hooks.hygge-house","Hygge House"],["hooks.granary","Granary"],["hooks.lowell","The Lowell"],["hooks.powder-room","Powder Room"]] }
-];
-function flatten(copy: NonNullable<Source["copy"]>) {
-  return Object.fromEntries([...copy.homepage.headline.map((s,i)=>[`homepage.headline.${i}`,s]),...copy.homepage.description.map((s,i)=>[`homepage.description.${i}`,s]),["properties.intro",copy.properties.intro],...Object.entries(copy.hooks).map(([k,v])=>[`hooks.${k}`,v])]) as Record<string,string>;
+type Source = { sha?: string; copy?: Record<string,unknown>; editing?:boolean; message?:string; error?:string };
+type Section = { title:string; fields: [string,string][] };
+const sections:Record<"home"|"properties",Section[]> = {
+ home:[
+ {title:"Hero",fields:[["homepage.headline.0","Headline · first line"],["homepage.headline.1","Headline · second line"],["homepage.description.0","Introduction"],["homepage.description.1","Closing line"]]},
+ {title:"Book with the locals",fields:[["homepage.intro.title","Heading"],["homepage.intro.body","Description"]]},
+ {title:"What makes Roamstead",fields:[["homepage.pillars.0.title","Gather round · heading"],["homepage.pillars.0.body","Gather round · description"],["homepage.pillars.1.title","Four seasons · heading"],["homepage.pillars.1.body","Four seasons · description"],["homepage.pillars.2.title","Local by nature · heading"],["homepage.pillars.2.body","Local by nature · description"]]},
+ {title:"Featured stays",fields:[["homepage.featuredHeading","Section heading"],["hooks.hygge-house","Hygge House"],["hooks.granary","Granary"],["hooks.lowell","The Lowell"],["hooks.powder-room","Powder Room"]]},
+ {title:"The Heber Senator",fields:[["shared.senator.eyebrow","Eyebrow"],["shared.senator.headline","Heading"],["shared.senator.body","Description"]]},
+ {title:"Early access",fields:[["shared.community.eyebrow","Eyebrow"],["shared.community.headline","Heading"],["shared.community.body","Description"],["shared.community.perks","Member benefits"]]}
+ ],
+ properties:[
+ {title:"Page hero",fields:[["properties.hero.eyebrow","Eyebrow"],["properties.hero.headline","Heading"],["properties.hero.body","Description"],["properties.hero.accent","Emphasized ending"]]},
+ {title:"Find your fit",fields:[["properties.listHeading","Section heading"],["properties.intro","Description"]]},
+ {title:"Property cards",fields:[["hooks.hygge-house","Hygge House"],["hooks.granary","Granary"],["hooks.lowell","The Lowell"],["hooks.powder-room","Powder Room"]]},
+ {title:"The Heber Senator",fields:[["shared.senator.eyebrow","Eyebrow"],["shared.senator.headline","Heading"],["shared.senator.body","Description"]]},
+ {title:"Early access",fields:[["shared.community.eyebrow","Eyebrow"],["shared.community.headline","Heading"],["shared.community.body","Description"],["shared.community.perks","Member benefits"]]}
+ ]
+};
+function flatten(value:unknown,prefix="",out:Record<string,string>={}):Record<string,string>{
+ if(typeof value==="string"){out[prefix]=value;return out;}
+ if(Array.isArray(value)) value.forEach((v,i)=>flatten(v,prefix?prefix+"."+i:String(i),out));
+ else if(value&&typeof value==="object")Object.entries(value).forEach(([k,v])=>flatten(v,prefix?prefix+"."+k:k,out));
+ return out;
 }
 export default function CopyEditor() {
   const [source,setSource]=useState<Source|null>(null);
@@ -42,22 +58,46 @@ export default function CopyEditor() {
       setNotice(verified?"Published. Your change is live on the website.":"Saved. Publishing is taking longer than expected. You can check Vercel deployment status.");
     }catch(e){setNotice(e instanceof Error?e.message:"Save failed")}finally{setBusy(false)}
   }
-  return <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 md:p-5">
-    <div className="flex flex-wrap items-center justify-between gap-2">
-      <div><p className="font-body text-[11px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Website content</p><h2 className="mt-0.5 font-heading text-[25px] leading-tight">Edit approved copy</h2><p className="mt-1 font-body text-[13px] leading-[1.45] text-[#6D6057]">Changes are committed to the website repository and published through Vercel. Booking details and prices remain in Hostaway.</p></div>
+  const [expanded,setExpanded]=useState<string|null>("Hero");
+  return <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-4 md:px-5">
+    <header className="flex flex-wrap items-center justify-between gap-2">
+      <div>
+        <p className="font-body text-[11px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Website content</p>
+        <h2 className="mt-0.5 font-heading text-[24px] leading-tight">Edit approved copy</h2>
+        <p className="mt-1 font-body text-[12px] leading-[1.45] text-[#6D6057]">Edit sections in the same order as the website. Changes publish through Vercel.</p>
+      </div>
       <span className="rounded-lg bg-[#F4EFEC] px-3 py-1.5 font-body text-[11px] text-[#6D6057]">{source?.editing?"Editor connected":"Read-only"}</span>
-    </div>
-    {!source?<p className="mt-6 font-body text-sm">Loading content...</p>:<>
-      {!source.editing&&<p className="mt-4 rounded-lg border border-[#D8CCC4] bg-[#F4EFEC] p-3 font-body text-[13px]">{source.message||source.error||"Editing isn't configured yet. Ask Castlehead to connect a repository-scoped publishing credential."}</p>}
-      <label className="mt-3 block font-body text-[12px] font-medium text-[#6D6057]">Page<div className="relative mt-1"><select value={page} onChange={e=>setPage(e.target.value as "home"|"properties")} className="block h-[42px] w-full appearance-none rounded-lg border border-[#D8CCC4] bg-white py-2 pl-3 pr-10 font-body text-[13px] text-[#1F3125] focus:outline-[#4A6E57]"><option value="home">Home page</option><option value="properties">Properties page</option></select><span aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 h-[7px] w-[7px] -translate-y-[65%] rotate-45 border-b border-r border-[#4A6E57]" /></div></label>
-      {sections.filter(s=>page==="home"?s.title==="Homepage hero":s.title!=="Homepage hero").map(s=><details key={s.title} open className="mt-2 rounded-lg border border-[#E7DFDB] p-3 md:p-4">
-        <summary className="cursor-pointer font-heading text-[18px] leading-tight text-[#1F3125]">{s.title}</summary>
-        <div className="mt-3 grid gap-3">{s.fields.map(([key,label])=><label key={key} className="block font-body text-[13px] font-medium text-[#1F3125]">{label}{key.includes("headline")||key.startsWith("hooks.")?<input type="text" value={values[key]||""} disabled={!source.editing||busy} onChange={e=>setValues(p=>({...p,[key]:e.target.value}))} className="mt-1 block h-[42px] w-full rounded-lg border border-[#D8CCC4] bg-white px-3 font-body text-[13px] font-normal focus:outline-[#4A6E57] disabled:opacity-75"/>:<textarea value={values[key]||""} disabled={!source.editing||busy} onChange={e=>setValues(p=>({...p,[key]:e.target.value}))} rows={2} className="mt-1 block min-h-[46px] w-full resize-y rounded-lg border border-[#D8CCC4] bg-white px-3 py-2 font-body text-[13px] font-normal leading-[1.5] [field-sizing:content] focus:outline-[#4A6E57] disabled:opacity-75"/>}{changed.includes(key)&&<span className="mt-1 block text-[11px] text-[#4A6E57]">Unsaved change</span>}</label>)}</div>
-      </details>)}
-      <div className="sticky bottom-2 z-10 mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-[#D8CCC4] bg-[#FFFCFB] p-2.5 shadow-sm">
+    </header>
+    {!source?<p className="mt-4 text-sm">Loading content...</p>:<>
+      {!source.editing&&<p className="mt-3 rounded-lg bg-[#F4EFEC] p-3 font-body text-[13px]">{source.message||source.error||"Editing is not configured."}</p>}
+      <label className="mt-3 block font-body text-[12px] font-semibold text-[#1F3125]">Page
+        <span className="relative mt-1 block">
+          <select aria-label="Choose site page" value={page} onChange={e=>{const next=e.target.value as "home"|"properties";setPage(next);setExpanded(next==="home"?"Hero":"Page hero")}} className="absolute inset-0 z-10 h-[40px] w-full cursor-pointer opacity-0">
+            <option value="home">Home page</option>
+            <option value="properties">Properties page</option>
+          </select>
+          <span aria-hidden="true" className="flex h-[40px] w-full items-center rounded-lg border border-[#D8CCC4] bg-white pl-3 pr-10 font-body text-[13px] font-medium text-[#1F3125]">{page==="home"?"Home page":"Properties page"}</span>
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" className="pointer-events-none absolute right-3 top-1/2 h-[16px] w-[16px] -translate-y-1/2 text-[#4A6E57]"><path d="m5 7 5 5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </span>
+      </label>
+      <div className="mt-2 space-y-2">
+        {sections[page].map(section=><section key={section.title} className="overflow-hidden rounded-lg border border-[#E7DFDB] bg-[#FFFCFB]">
+          <button type="button" aria-expanded={expanded===section.title} onClick={()=>setExpanded(expanded===section.title?null:section.title)} className="flex min-h-[43px] w-full items-center justify-between px-3 py-2 text-left font-heading text-[17px] text-[#1F3125] hover:bg-[#F7F3F0]">
+            <span>{section.title}</span><span className="text-[12px] font-body text-[#6D6057]">{section.fields.length} fields <span className="ml-1">{expanded===section.title?"−":"+"}</span></span>
+          </button>
+          {expanded===section.title&&<div className="grid gap-[10px] border-t border-[#E7DFDB] px-3 pb-3 pt-2.5">
+            {section.fields.map(([key,label])=><label key={key} className="block font-body text-[12px] font-medium text-[#1F3125]">
+              {label}
+              {values[key]?.length>105?<textarea rows={2} value={values[key]||""} disabled={!source.editing||busy} onChange={e=>setValues(v=>({...v,[key]:e.target.value}))} className="mt-1 block min-h-[40px] w-full resize-y rounded-md border border-[#D8CCC4] bg-white px-3 py-2 font-body text-[13px] font-normal leading-[1.4] [field-sizing:content] focus:outline-[#4A6E57] disabled:opacity-75"/>:<input type="text" value={values[key]||""} disabled={!source.editing||busy} onChange={e=>setValues(v=>({...v,[key]:e.target.value}))} className="mt-1 block h-[38px] w-full rounded-md border border-[#D8CCC4] bg-white px-3 font-body text-[13px] font-normal focus:outline-[#4A6E57] disabled:opacity-75"/>}
+              {changed.includes(key)&&<span className="block pt-1 text-[11px] text-[#4A6E57]">Unsaved change</span>}
+            </label>)}
+          </div>}
+        </section>)}
+      </div>
+      <div className="sticky bottom-2 z-10 mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-[#D8CCC4] bg-[#FFFCFB] px-3 py-2 shadow-sm">
         <p role="status" className="font-body text-[12px] text-[#6D6057]">{notice||`${changed.length} unsaved changes`}</p>
-        <div className="flex gap-2"><button type="button" disabled={!changed.length||busy} onClick={()=>{setValues({...base});setNotice("Changes discarded.")}} className="rounded-lg border border-[#D8CCC4] px-4 py-2 text-[13px] disabled:opacity-40">Discard</button><button type="button" disabled={!source.editing||!changed.length||busy||publishing} onClick={save} className="rounded-lg bg-[#4A6E57] px-5 py-2 font-body text-[13px] font-medium text-white disabled:opacity-40">{busy?"Saving...":publishing?"Checking live site...":"Save & publish"}</button></div>
+        <div className="flex gap-2"><button type="button" disabled={!changed.length||busy} onClick={()=>{setValues({...base});setNotice("Changes discarded.")}} className="rounded-lg border border-[#D8CCC4] px-3 py-2 text-[12px] disabled:opacity-40">Discard</button><button type="button" disabled={!source.editing||!changed.length||busy||publishing} onClick={save} className="rounded-lg bg-[#4A6E57] px-4 py-2 font-body text-[12px] font-medium text-white disabled:opacity-40">{busy?"Saving...":publishing?"Checking live site...":"Save & publish"}</button></div>
       </div>
     </>}
-  </section>
+  </section>;
 }
