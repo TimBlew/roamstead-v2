@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   if (!await adminAuthenticated()) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const field = req.nextUrl.searchParams.get("field") || "";
   const expected = req.nextUrl.searchParams.get("expected") || "";
-  if (!expected || expected.length > 500 || !/^(homepage\.(headline\.[01]|description\.[01]|intro\.(title|body)|pillars\.[012]\.(title|body)|featuredHeading)|properties\.(intro|listHeading|hero\.(eyebrow|headline|body|accent))|hooks\.(hygge-house|granary|lowell|powder-room)|shared\.(senator\.(eyebrow|headline|body)|community\.(eyebrow|headline|body|perks)))$/.test(field))
+  if (!expected || expected.length > 500 || !/^(homepage\.(headline\.[01]|description\.[01]|intro\.(title|body)|pillars\.[012]\.(title|body)|featuredHeading|cards\.(hygge-house|granary|lowell|powder-room)\.(name|highlight))|properties\.(intro|listHeading|hero\.(eyebrow|headline|body|accent))|hooks\.(hygge-house|granary|lowell|powder-room)|shared\.(senator\.(eyebrow|headline|body)|community\.(eyebrow|headline|body|perks)))$/.test(field))
     return NextResponse.json({ error: "Invalid publishing check." }, { status: 400 });
   const page = field.startsWith("homepage") ? "/" : field.startsWith("properties") ? "/properties" : "/";
   const host = process.env.ROAMSTEAD_SITE_URL || "https://www.roamstead-co.com";
