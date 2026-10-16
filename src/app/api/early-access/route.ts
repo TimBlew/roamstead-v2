@@ -6,6 +6,36 @@ const BCC_RECIPIENT = "tim@castlehead.ai";
 const ALLOWED_SEASONS = ["", "Winter", "Spring", "Summer", "Fall", "All Four", "All 4"];
 const ALLOWED_HOMES = ["", "Heber Valley / Wasatch Back", "Salt Lake or Provo area", "Somewhere else"];
 
+async function ensurePreferenceProperties(apiKey: string) {
+  const keys = ["roamstead_season", "roamstead_home_area"];
+  const response = await fetch("https://api.resend.com/contact-properties?limit=100", {
+    headers: { Authorization: `Bearer ${apiKey}` }, cache: "no-store", signal: AbortSignal.timeout(8000),
+  });
+  if (!response.ok) {
+    console.error("Roamstead preference properties lookup failed", response.status);
+    return false;
+  }
+  const result = await response.json() as { data?: Array<{ key: string }>; has_more?: boolean };
+  const existing = new Set((result.data || []).map(item => item.key));
+  if (result.has_more && keys.some(key => !existing.has(key))) {
+    console.error("Roamstead preference property list exceeded first page; manual configuration required");
+    return false;
+  }
+  for (const key of keys) {
+    if (existing.has(key)) continue;
+    const created = await fetch("https://api.resend.com/contact-properties", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ key, type: "string" }), signal: AbortSignal.timeout(8000),
+    });
+    if (!created.ok && created.status !== 409) {
+      console.error("Roamstead preference property setup failed", key, created.status);
+      return false;
+    }
+  }
+  return true;
+}
+
 const EMAIL_LOGO_URL = new URL("/api/email-logo", process.env.ROAMSTEAD_SITE_URL || "https://roamstead-v2.vercel.app").toString();
 
 const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (character) => ({
@@ -59,6 +89,8 @@ export async function POST(request: Request) {
     const segmentId = process.env.RESEND_ROAMSTEAD_SEGMENT_ID;
     if (contactsKey && segmentId) {
       try {
+        const propertiesReady = await ensurePreferenceProperties(contactsKey);
+        if (!propertiesReady) console.error("Roamstead preference fields may not persist until Resend properties are configured");
         const contactResponse = await fetch("https://api.resend.com/contacts", {
           method: "POST",
           headers: {
