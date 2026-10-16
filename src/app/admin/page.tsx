@@ -21,12 +21,12 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const configured = adminConfigured();
   const error = (await searchParams).error;
   return (
-    <div id="admin-root" className="min-h-[100vh] bg-[#F4EFEC] px-5 py-12 text-[#1F3125] md:px-10 md:py-16">
+    <div id="admin-root" className="min-h-[100dvh] bg-[#F4EFEC] px-4 py-8 text-[#1F3125] sm:px-6 sm:py-12 md:px-10 md:py-16">
       <div className="mx-auto max-w-[1050px]">
-        <div className="mb-8">
-          <p className="mb-2 font-body text-[12px] font-medium uppercase tracking-[0.16em] text-[#4A6E57]">Roamstead Collective · Private</p>
-          <h1 className="font-heading text-[34px] leading-tight md:text-[46px]">{allowed ? "Your site, at a glance." : "Management access."}</h1>
-          <p className="mt-3 max-w-[630px] font-body text-[15px] leading-relaxed text-[#6D6057]">{allowed ? "A single starting point for site performance, guest interest, search visibility and property operations." : "Sign in to open the private operations hub."}</p>
+        <div className="mb-5 md:mb-8">
+          <p className="mb-2 font-body text-[10px] font-medium uppercase tracking-[0.12em] sm:text-[12px] sm:tracking-[0.16em] text-[#4A6E57]">Roamstead Collective · Private</p>
+          <h1 className="font-heading text-[30px] leading-[1.12] tracking-[-0.025em] sm:text-[36px] md:text-[46px]">{allowed ? "Your site, at a glance." : "Management access."}</h1>
+          <p className="mt-2 max-w-[630px] font-body text-[13px] leading-[1.5] sm:mt-3 sm:text-[15px] text-[#6D6057]">{allowed ? "A single starting point for site performance, guest interest, search visibility and property operations." : "Sign in to open the private operations hub."}</p>
         </div>
         {!configured ? (
           <div className="max-w-[600px] rounded-[12px] border border-[#D8CCC4] bg-white p-7">
@@ -34,11 +34,11 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <p className="mt-3 font-body text-[14px] leading-relaxed text-[#6D6057]">Castlehead must first configure the private admin password and session secret in Vercel Production environment variables. No administrative reports are available until access is configured.</p>
           </div>
         ) : !allowed ? (
-          <form method="post" action="/admin/login" className="max-w-[460px] rounded-[12px] border border-[#D8CCC4] bg-[#FFFCFB] p-6 shadow-sm">
-            <label htmlFor="admin-password" className="block font-body text-[14px] font-medium">Password</label>
-            <input id="admin-password" name="password" type="password" required autoComplete="current-password" className="mt-2 h-[48px] w-full rounded-[8px] border border-[#D8CCC4] bg-white px-4 font-body text-[16px] focus:outline-[#4A6E57]" />
+          <form method="post" action="/admin/login" className="w-full max-w-[460px] rounded-[12px] border border-[#D8CCC4] bg-[#FFFCFB] p-4 shadow-sm sm:p-6">
+            <label htmlFor="admin-password" className="block font-body text-[13px] font-medium">Password</label>
+            <input id="admin-password" name="password" type="password" required autoComplete="current-password" className="mt-1.5 h-[43px] w-full rounded-[8px] border border-[#D8CCC4] bg-white px-4 font-body text-[16px] focus:outline-[#4A6E57]" />
             {error && <p role="alert" className="mt-3 font-body text-[13px] text-red-700">Unable to sign in. Check the password and try again.</p>}
-            <button type="submit" className="mt-5 h-[48px] w-full rounded-[8px] bg-[#4A6E57] font-body text-[15px] font-medium text-white hover:bg-[#1F3125]">Open management</button>
+            <button type="submit" className="mt-3 inline-flex h-[42px] w-full items-center justify-center rounded-[8px] bg-[#4A6E57] font-body text-[14px] leading-none font-medium text-white hover:bg-[#1F3125]">Open management</button>
           </form>
         ) : (
           <>
