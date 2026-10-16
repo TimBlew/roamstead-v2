@@ -63,11 +63,11 @@ export default function CopyEditor() {
     }catch(e){setNotice(e instanceof Error?e.message:"Save failed")}finally{setBusy(false)}
   }
   const [expanded,setExpanded]=useState<string|null>("Hero");
-  return <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-4 md:px-5">
-    <header className="flex flex-wrap items-center justify-between gap-2">
+  return <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] px-3 py-3 sm:px-4 md:px-5">
+    <header className="flex flex-wrap items-start justify-between gap-2">
       <div>
         <p className="font-body text-[11px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Website content</p>
-        <h2 className="mt-0.5 font-heading text-[24px] leading-tight">Edit approved copy</h2>
+        <h2 className="mt-0.5 font-heading text-[22px] leading-tight sm:text-[24px]">Edit approved copy</h2>
         <p className="mt-1 font-body text-[12px] leading-[1.45] text-[#6D6057]">Edit sections in the same order as the website. Changes publish through Vercel.</p>
       </div>
       <span className="rounded-lg bg-[#F4EFEC] px-3 py-1.5 font-body text-[11px] text-[#6D6057]">{source?.editing?"Editor connected":"Read-only"}</span>
@@ -84,12 +84,12 @@ export default function CopyEditor() {
           <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" className="pointer-events-none absolute right-3 top-1/2 h-[16px] w-[16px] -translate-y-1/2 text-[#4A6E57]"><path d="m5 7 5 5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </span>
       </label>
-      <div className="mt-2 space-y-2">
+      <div className="mt-2 space-y-1.5">
         {sections[page].map(section=><section key={section.title} className="overflow-hidden rounded-lg border border-[#E7DFDB] bg-[#FFFCFB]">
-          <button type="button" aria-expanded={expanded===section.title} onClick={()=>setExpanded(expanded===section.title?null:section.title)} className="flex min-h-[43px] w-full items-center justify-between px-3 py-2 text-left font-heading text-[17px] text-[#1F3125] hover:bg-[#F7F3F0]">
-            <span>{section.title}</span><span className="text-[12px] font-body text-[#6D6057]">{section.fields.length} fields <span className="ml-1">{expanded===section.title?"−":"+"}</span></span>
+          <button type="button" aria-expanded={expanded===section.title} onClick={()=>setExpanded(expanded===section.title?null:section.title)} className="flex min-h-[42px] w-full items-center justify-between gap-2 px-3 py-2 text-left font-heading text-[15px] sm:text-[17px] text-[#1F3125] hover:bg-[#F7F3F0]">
+            <span>{section.title}</span><span className="shrink-0 text-[11px] font-body text-[#6D6057]">{section.fields.length} fields <span className="ml-1">{expanded===section.title?"−":"+"}</span></span>
           </button>
-          {expanded===section.title&&<div className="grid gap-[10px] border-t border-[#E7DFDB] px-3 pb-3 pt-2.5">
+          {expanded===section.title&&<div className="grid gap-2 border-t border-[#E7DFDB] px-3 pb-2.5 pt-2">
             {section.fields.map(([key,label])=><label key={key} className="block font-body text-[12px] font-medium text-[#1F3125]">
               {label}
               {values[key]?.length>105?<textarea rows={2} value={values[key]||""} disabled={!source.editing||busy} onChange={e=>setValues(v=>({...v,[key]:e.target.value}))} className="mt-1 block min-h-[40px] w-full resize-y rounded-md border border-[#D8CCC4] bg-white px-3 py-2 font-body text-[13px] font-normal leading-[1.4] [field-sizing:content] focus:outline-[#4A6E57] disabled:opacity-75"/>:<input type="text" value={values[key]||""} disabled={!source.editing||busy} onChange={e=>setValues(v=>({...v,[key]:e.target.value}))} className="mt-1 block h-[38px] w-full rounded-md border border-[#D8CCC4] bg-white px-3 font-body text-[13px] font-normal focus:outline-[#4A6E57] disabled:opacity-75"/>}
@@ -98,9 +98,9 @@ export default function CopyEditor() {
           </div>}
         </section>)}
       </div>
-      <div className="sticky bottom-2 z-10 mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-[#D8CCC4] bg-[#FFFCFB] px-3 py-2 shadow-sm">
+      <div className="sticky bottom-2 z-10 mt-2 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-[#D8CCC4] bg-[#FFFCFB] px-2.5 py-2 shadow-sm">
         <p role="status" className="font-body text-[12px] text-[#6D6057]">{notice||`${changed.length} unsaved changes`}</p>
-        <div className="flex gap-2"><button type="button" disabled={!changed.length||busy} onClick={()=>{setValues({...base});setNotice("Changes discarded.")}} className="rounded-lg border border-[#D8CCC4] px-3 py-2 text-[12px] disabled:opacity-40">Discard</button><button type="button" disabled={!source.editing||!changed.length||busy||publishing} onClick={save} className="rounded-lg bg-[#4A6E57] px-4 py-2 font-body text-[12px] font-medium text-white disabled:opacity-40">{busy?"Saving...":publishing?"Checking live site...":"Save & publish"}</button></div>
+        <div className="flex shrink-0 gap-2"><button type="button" disabled={!changed.length||busy} onClick={()=>{setValues({...base});setNotice("Changes discarded.")}} className="rounded-lg border border-[#D8CCC4] px-2.5 py-2 text-[12px] disabled:opacity-40">Discard</button><button type="button" disabled={!source.editing||!changed.length||busy||publishing} onClick={save} className="whitespace-nowrap rounded-lg bg-[#4A6E57] px-3 py-2 font-body text-[12px] font-medium text-white disabled:opacity-40">{busy?"Saving...":publishing?"Checking live site...":"Save & publish"}</button></div>
       </div>
     </>}
   </section>;
