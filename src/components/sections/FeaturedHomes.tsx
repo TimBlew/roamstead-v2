@@ -1,5 +1,6 @@
-import copy from "@/data/admin-copy.json";
 "use client";
+
+import copy from "@/data/admin-copy.json";
 
 import React, { useState } from "react";
 import { PropertyCard } from "../ui/PropertyCard";
