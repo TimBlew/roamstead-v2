@@ -12,6 +12,7 @@ function flatten(copy: NonNullable<Source["copy"]>) {
 }
 export default function CopyEditor() {
   const [source,setSource]=useState<Source|null>(null);
+  const [page,setPage]=useState<"home"|"properties">("home");
   const [values,setValues]=useState<Record<string,string>>({});
   const [base,setBase]=useState<Record<string,string>>({});
   const [busy,setBusy]=useState(false);
@@ -48,7 +49,8 @@ export default function CopyEditor() {
     </div>
     {!source?<p className="mt-6 font-body text-sm">Loading content...</p>:<>
       {!source.editing&&<p className="mt-4 rounded-lg border border-[#D8CCC4] bg-[#F4EFEC] p-3 font-body text-[13px]">{source.message||source.error||"Editing isn't configured yet. Ask Castlehead to connect a repository-scoped publishing credential."}</p>}
-      {sections.map(s=><details key={s.title} open className="mt-5 rounded-lg border border-[#E7DFDB] p-4">
+      <label className="mt-5 block font-body text-[13px] font-medium text-[#6D6057]">Page<select value={page} onChange={e=>setPage(e.target.value as "home"|"properties")} className="mt-2 block w-full rounded-lg border border-[#D8CCC4] bg-white px-4 py-3 text-[14px] text-[#1F3125]"><option value="home">Home page</option><option value="properties">Properties page</option></select></label>
+      {sections.filter(s=>page==="home"?s.title==="Homepage hero":s.title!=="Homepage hero").map(s=><details key={s.title} open className="mt-3 rounded-lg border border-[#E7DFDB] p-4">
         <summary className="cursor-pointer font-heading text-[21px] text-[#1F3125]">{s.title}</summary>
         <div className="mt-4 grid gap-4">{s.fields.map(([key,label])=><label key={key} className="block font-body text-[13px] font-medium text-[#1F3125]">{label}<textarea value={values[key]||""} disabled={!source.editing||busy} onChange={e=>setValues(p=>({...p,[key]:e.target.value}))} rows={key.includes("description")||key==="properties.intro"?3:2} className="mt-2 block w-full resize-y rounded-lg border border-[#D8CCC4] bg-white p-3 font-body text-[14px] leading-relaxed focus:outline-[#4A6E57] disabled:opacity-75"/>{changed.includes(key)&&<span className="mt-1 block text-[11px] text-[#4A6E57]">Unsaved change</span>}</label>)}</div>
       </details>)}
