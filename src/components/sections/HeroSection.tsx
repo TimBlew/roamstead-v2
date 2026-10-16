@@ -1,3 +1,4 @@
+import copy from "@/data/admin-copy.json";
 import React from "react";
 import { Hero } from "../ui/Hero";
 
@@ -5,10 +6,10 @@ export const HeroSection: React.FC = () => {
   return (
     <Hero
       backgroundImage="/images/hero-mountain-optimized.jpg"
-      headline="Come up tired. Go home lighter."
-      headlineLines={["Come up tired.", "Go home lighter."]}
-      description="Roamstead Collective is a small group of homes across Utah's Wasatch Back, rooted in Heber Valley. Pick your base. The mountains do the rest."
-      descriptionLines={["Roamstead Collective is a small group of homes across Utah's Wasatch Back, rooted in Heber Valley.", "Pick your base. The mountains do the rest."]}
+      headline={copy.homepage.headline.join(" ")}
+      headlineLines={copy.homepage.headline}
+      description={copy.homepage.description.join(" ")}
+      descriptionLines={copy.homepage.description}
       mobileSupplement=""
       ctaText="Book direct"
       ctaHref="/book"
