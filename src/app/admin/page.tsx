@@ -1,4 +1,5 @@
 import CopyEditor from "@/components/admin/CopyEditor";
+import AnalyticsPanel from "@/components/admin/AnalyticsPanel";
 import type { Metadata } from "next";
 import { adminAuthenticated, adminConfigured } from "@/lib/admin-auth";
 
@@ -52,6 +53,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                 </section>
               ))}
             </div>
+            <AnalyticsPanel />
             <CopyEditor />
             <p className="mt-7 font-body text-[12px] leading-relaxed text-[#6D6057]">Reports currently open in their authorized services. The content editor uses revision-checked saves and requires a separate, restricted publishing credential. Guest data remains in Hostaway and Resend.</p>
           </>
