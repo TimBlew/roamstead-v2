@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { trackRoamsteadEvent } from "@/lib/analytics";
+import copy from "@/data/admin-copy.json";
 
 export const CommunityCTA = () => {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -70,10 +71,10 @@ export const CommunityCTA = () => {
     <section className="bg-[#F4EFEC] px-3 pb-7 pt-3 text-center md:px-6 md:pt-[40px] md:pb-[44px]">
       <div className="mx-auto w-full max-w-[860px]">
         <img src="/roamstead-collective-logo.svg" alt="Roamstead Collective" className="mx-auto w-[195px] md:w-[232px]" />
-        <p className="mt-1.5 font-body text-[11px] font-semibold uppercase leading-5 tracking-[0.23em] text-[#4A6E57] md:text-[12px] md:tracking-[0.26em]">Coming soon</p>
-        <h2 className="mx-auto mt-2.5 max-w-[800px] font-heading text-[31px] font-medium leading-[1.12] tracking-[-0.04em] text-[#1F3125] [text-wrap:balance] sm:text-[39px] md:mt-[14px] md:text-[44px]">For people who come back</h2>
-        <p className="mx-auto mt-3 max-w-[660px] font-body text-[15px] leading-[1.5] text-[#6D6057] [text-wrap:balance] md:mt-[18px] md:text-[16px] md:leading-[1.6]">We're building a membership for the 4-Seasoners, the people who'd rather know one place well than see a new one every trip. Get on the early list and you'll hear first when it opens.</p>
-        <p className="mx-auto mt-2 max-w-[660px] font-body text-[15px] leading-[1.5] text-[#6D6057] [text-wrap:balance] md:mt-[12px] md:text-[16px] md:leading-[1.6]">What we're planning: member rates on stays, deals for valley locals, first invites to events, and a newsletter worth opening.</p>
+        <p className="mt-1.5 font-body text-[11px] font-semibold uppercase leading-5 tracking-[0.23em] text-[#4A6E57] md:text-[12px] md:tracking-[0.26em]">{copy.shared.community.eyebrow}</p>
+        <h2 className="mx-auto mt-2.5 max-w-[800px] font-heading text-[31px] font-medium leading-[1.12] tracking-[-0.04em] text-[#1F3125] [text-wrap:balance] sm:text-[39px] md:mt-[14px] md:text-[44px]">{copy.shared.community.headline}</h2>
+        <p className="mx-auto mt-3 max-w-[660px] font-body text-[15px] leading-[1.5] text-[#6D6057] [text-wrap:balance] md:mt-[18px] md:text-[16px] md:leading-[1.6]">{copy.shared.community.body}</p>
+        <p className="mx-auto mt-2 max-w-[660px] font-body text-[15px] leading-[1.5] text-[#6D6057] [text-wrap:balance] md:mt-[12px] md:text-[16px] md:leading-[1.6]">{copy.shared.community.perks}</p>
         <form onSubmit={submit} noValidate className="mx-auto mt-4 grid w-full max-w-[690px] gap-x-5 gap-y-3 text-left sm:grid-cols-2 md:mt-[28px] md:gap-y-[14px]">
           <label className="block font-body text-[13px] font-medium tracking-[-0.01em] text-[#1F3125] sm:col-span-2">
             Email <span aria-hidden="true" className="text-[#4A6E57]">*</span>
