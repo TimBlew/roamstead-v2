@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+import { appendSignup, sheetConfigured } from "@/lib/signup-sheet";
 import { NextResponse } from "next/server";
 import settings from "@/data/early-access-settings.json";
 
@@ -143,6 +145,16 @@ export async function POST(request: Request) {
       console.error("Roamstead signup requires follow-up: contact storage not configured; notification email delivered");
     }
     if (!audienceStored) console.error("Roamstead signup requires follow-up: notification delivered but list storage unconfirmed");
+    if (sheetConfigured()) {
+      const now=new Date().toISOString();
+      try {
+        await appendSignup({id:randomUUID(),createdAt:now,email,season,home,consent,notificationStatus:"sent",contactStatus:audienceStored?"stored":"unconfirmed",contactId:"",source:"roamstead-co.com",updatedAt:now});
+      } catch (error) {
+        console.error("Roamstead permanent signup ledger append failed",error instanceof Error?error.message:"unknown");
+      }
+    } else {
+      console.error("Roamstead permanent signup ledger is not connected; Resend continues as current contact source");
+    }
     return NextResponse.json({ ok: true, audienceStored });
   } catch (error) {
     console.error("Early access email request failed", error instanceof Error ? error.message : "Unknown network error");
