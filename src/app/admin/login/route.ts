@@ -5,7 +5,10 @@ export async function POST(req: NextRequest) {
   const form = await req.formData();
   const password = String(form.get("password") || "");
   if (!adminConfigured() || !passwordMatches(password)) {
-    return NextResponse.redirect(new URL("/admin?error=1", req.url), 303);
+    const response = NextResponse.redirect(new URL("/admin?error=1", req.url), 303);
+    response.cookies.set(sessionCookieName(), "", { httpOnly: true, secure: true, sameSite: "strict", path: "/admin", maxAge: 0 });
+    response.headers.set("Cache-Control", "private, no-store");
+    return response;
   }
   const session = newSession();
   const response = NextResponse.redirect(new URL("/admin", req.url), 303);
