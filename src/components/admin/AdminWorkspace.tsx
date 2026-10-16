@@ -4,7 +4,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { adminAuthenticated } from "@/lib/admin-auth";
 
-export async function AdminWorkspace({ active, title, subtitle, children }: { active: "edit" | "analytics"; title: string; subtitle: string; children: ReactNode }) {
+export async function AdminWorkspace({ active, title, subtitle, children }: { active: "edit" | "analytics" | "early-access"; title: string; subtitle: string; children: ReactNode }) {
   if (!await adminAuthenticated()) redirect("/admin");
   return (
     <main id="admin-root" className="min-h-screen bg-[#F4EFEC] px-2 py-4 sm:px-6 text-[#1F3125] sm:px-6 md:py-7">
@@ -18,9 +18,10 @@ export async function AdminWorkspace({ active, title, subtitle, children }: { ac
           </div>
           <form method="post" action="/admin/logout"><button type="submit" className="inline-flex h-[30px] shrink-0 items-center justify-center whitespace-nowrap rounded-[8px] border border-[#D8CCC4] bg-[#FFFCFB] px-2.5 font-body text-[11px] leading-none sm:h-[36px] sm:px-3 sm:text-[13px]">Sign out</button></form>
         </div>
-        <nav aria-label="Admin sections" className="mb-3 grid grid-cols-2 gap-2">
+        <nav aria-label="Admin sections" className="mb-3 grid grid-cols-3 gap-1.5 sm:gap-2">
           <Link href="/admin/edit" aria-current={active==="edit"?"page":undefined} className={`flex h-[42px] items-center justify-center rounded-[10px] border px-2 text-center font-body text-[13px] font-semibold leading-none transition-colors sm:h-[46px] sm:text-[15px] ${active==="edit"?"border-[#1F3125] bg-[#1F3125] text-white":"border-[#D8CCC4] bg-[#FFFCFB] text-[#6D6057] hover:text-[#1F3125]"}`}>Edit your site</Link>
           <Link href="/admin/analytics" aria-current={active==="analytics"?"page":undefined} className={`flex h-[42px] items-center justify-center rounded-[10px] border px-2 text-center font-body text-[13px] font-semibold leading-none transition-colors sm:h-[46px] sm:text-[15px] ${active==="analytics"?"border-[#1F3125] bg-[#1F3125] text-white":"border-[#D8CCC4] bg-[#FFFCFB] text-[#6D6057] hover:text-[#1F3125]"}`}>Analytics</Link>
+          <Link href="/admin/early-access" aria-current={active==="early-access"?"page":undefined} className={`flex h-[42px] items-center justify-center rounded-[10px] border px-1.5 text-center font-body text-[12px] font-semibold leading-none transition-colors sm:h-[46px] sm:text-[15px] ${active==="early-access"?"border-[#1F3125] bg-[#1F3125] text-white":"border-[#D8CCC4] bg-[#FFFCFB] text-[#6D6057] hover:text-[#1F3125]"}`}>Early access</Link>
         </nav>
         {children}
         <p className="mt-3 text-center font-body text-[12px] text-[#6D6057]">Private Roamstead management · Bookings, rates and guest records remain in Hostaway.</p>
