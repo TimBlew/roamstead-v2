@@ -1,6 +1,6 @@
 "use client";
 import {useCallback,useEffect,useMemo,useState} from "react";
-type Entry={id:string;email:string;createdAt:string;unsubscribed:boolean;season:string;home:string};
+type Entry={id:string;email:string;createdAt:string;unsubscribed:boolean;season:string;home:string;preferencesUnavailable?:boolean};
 type Response={connected?:boolean;entries?:Entry[];hasMore?:boolean;nextCursor?:string|null;message?:string};
 export default function EarlyAccessDirectory(){
   const [entries,setEntries]=useState<Entry[]>([]);
@@ -85,8 +85,8 @@ export default function EarlyAccessDirectory(){
         <div className="hidden grid-cols-[minmax(0,1.6fr)_1fr_1fr_90px] gap-3 bg-[#F4EFEC] px-3 py-2 text-[11px] font-semibold text-[#6D6057] sm:grid"><span>Email</span><span>Preferred season</span><span>Home area</span><span>Added</span></div>
         {filtered.map(e=><button key={e.id} type="button" onClick={()=>setSelected(selected===e.id?null:e.id)} className={"block w-full border-t border-[#E7DFDB] px-3 py-3 text-left hover:bg-[#F7F3F0] sm:grid sm:grid-cols-[minmax(0,1.6fr)_1fr_1fr_90px] sm:gap-3 sm:py-2.5 "+(selected===e.id?"bg-[#F4EFEC]":"")}>
           <span className="block min-w-0 break-all text-[13px] font-medium text-[#1F3125]">{e.email}</span>
-          <span className="mt-1 block text-[11px] text-[#6D6057] sm:mt-0 sm:text-[12px]">{e.season||"Season not given"}</span>
-          <span className="block text-[11px] text-[#6D6057] sm:text-[12px]">{e.home||"Area not given"}</span>
+          <span className="mt-1 block text-[11px] text-[#6D6057] sm:mt-0 sm:text-[12px]">{e.preferencesUnavailable?"Unavailable":e.season||"Season not given"}</span>
+          <span className="block text-[11px] text-[#6D6057] sm:text-[12px]">{e.preferencesUnavailable?"Unavailable":e.home||"Area not given"}</span>
           <span className="block text-[11px] text-[#6D6057] sm:text-[12px]">{displayDate(e.createdAt)}</span>
         </button>)}
         {!loading&&!filtered.length&&<p className="px-3 py-5 text-center text-[13px] text-[#6D6057]">{entries.length?"No matching contacts.":"No stored contacts found."}</p>}
@@ -94,7 +94,7 @@ export default function EarlyAccessDirectory(){
       </div>
       {hasMore&&<div className="mt-3 text-center"><button type="button" disabled={loading||!cursor} onClick={()=>void load(cursor)} className="h-[36px] rounded-lg border border-[#D8CCC4] px-4 text-[12px] disabled:opacity-40">Load more</button></div>}
     </section>
-    {detail&&<section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5"><div className="flex items-center justify-between gap-3"><h3 className="font-heading text-[20px]">Contact details</h3><button className="text-[12px] text-[#6D6057] underline" onClick={()=>setSelected(null)}>Close</button></div><dl className="mt-3 grid gap-3 text-[13px] sm:grid-cols-2">{[["Email",detail.email],["Date added",displayDate(detail.createdAt)],["Preferred season",detail.season||"Not provided"],["Home area",detail.home||"Not provided"],["Subscription",detail.unsubscribed?"Unsubscribed":"Subscribed"]].map(([label,value])=><div key={label}><dt className="text-[11px] text-[#6D6057]">{label}</dt><dd className="mt-0.5 break-words font-medium">{value}</dd></div>)}</dl><a href={"mailto:"+detail.email} className="mt-4 inline-flex h-[34px] items-center rounded-md bg-[#4A6E57] px-3 text-[12px] font-medium text-white">Email guest</a></section>}
+    {detail&&<section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5"><div className="flex items-center justify-between gap-3"><h3 className="font-heading text-[20px]">Contact details</h3><button className="text-[12px] text-[#6D6057] underline" onClick={()=>setSelected(null)}>Close</button></div><dl className="mt-3 grid gap-3 text-[13px] sm:grid-cols-2">{[["Email",detail.email],["Date added",displayDate(detail.createdAt)],["Preferred season",detail.preferencesUnavailable?"Could not load preferences":detail.season||"Not recorded"],["Home area",detail.preferencesUnavailable?"Could not load preferences":detail.home||"Not recorded"],["Subscription",detail.unsubscribed?"Unsubscribed":"Subscribed"]].map(([label,value])=><div key={label}><dt className="text-[11px] text-[#6D6057]">{label}</dt><dd className="mt-0.5 break-words font-medium">{value}</dd></div>)}</dl><a href={"mailto:"+detail.email} className="mt-4 inline-flex h-[34px] items-center rounded-md bg-[#4A6E57] px-3 text-[12px] font-medium text-white">Email guest</a></section>}
     <p className="px-1 text-[11px] leading-[1.5] text-[#6D6057]">This is a read-only view of saved Resend contacts, not a complete ledger of form submissions. Guests whose notification email was sent but whose contact storage failed may be missing. Submission timestamps are not recorded separately from contact creation dates.</p>
   </div>;
 }
