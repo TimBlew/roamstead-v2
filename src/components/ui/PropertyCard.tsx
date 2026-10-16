@@ -12,6 +12,7 @@ interface PropertyCardProps {
   detailHref?: string;
   eyebrow?: string;
   hook?: string;
+  featureHighlight?: string;
 }
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -24,10 +25,11 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   href,
   detailHref,
   hook,
+  featureHighlight,
 }) => {
   const facts = [
     sleeps ? "Sleeps " + sleeps : null,
-    bedrooms ? bedrooms + " " + (bedrooms === 1 ? "Bedroom" : "Bedrooms") : (name === "Powder Room" ? "Studio" : null),
+    bedrooms ? bedrooms + " " + (bedrooms === 1 ? "Bedroom" : "Bedrooms") : (!bedrooms ? "Studio" : null),
     baths ? baths + " " + (baths === 1 ? "Bath" : "Baths") : null,
   ].filter(Boolean).join(" · ");
 
@@ -62,7 +64,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           </p>
         ) : null}
         <p className="mb-[20px] mt-2 font-body text-[13px] leading-5 text-[#6D6057] md:mb-0 md:mt-3 md:text-[14px]">
-          {facts}
+          {featureHighlight ?? facts}
         </p>
         <a
           href={href}
