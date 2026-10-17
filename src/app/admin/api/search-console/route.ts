@@ -17,7 +17,7 @@ async function token(request: NextRequest) {
     requested_token_type: "urn:ietf:params:oauth:token-type:access_token",
     subject_token_type: "urn:ietf:params:oauth:token-type:jwt",
     subject_token: oidc,
-    scope: "https://www.googleapis.com/auth/webmasters.readonly"
+    scope: "https://www.googleapis.com/auth/cloud-platform"
   }),
   cache: "no-store", signal: AbortSignal.timeout(10000)
  });
