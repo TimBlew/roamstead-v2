@@ -24,7 +24,7 @@ export async function AdminWorkspace({ active, title, subtitle, children }: { ac
           <Link href="/admin/early-access" aria-current={active==="early-access"?"page":undefined} className={`flex h-[42px] items-center justify-center rounded-[10px] border px-1.5 text-center font-body text-[12px] font-semibold leading-none transition-colors sm:h-[46px] sm:text-[15px] ${active==="early-access"?"border-[#1F3125] bg-[#1F3125] text-white":"border-[#D8CCC4] bg-[#FFFCFB] text-[#6D6057] hover:text-[#1F3125]"}`}>Early access</Link>
         </nav>
         {children}
-        <p className="mt-3 text-center font-body text-[12px] text-[#6D6057]">Your Roamstead workspace · Manage reservations and rates in Hostaway.</p>
+        
       </div>
     </main>
   );
