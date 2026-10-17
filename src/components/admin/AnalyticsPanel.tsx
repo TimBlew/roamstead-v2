@@ -28,15 +28,15 @@ function MetricRows({ title, subtitle, items, keyName, emptyText }: {
 }) {
   const sorted = [...items].sort((a, b) => value(b) - value(a)).slice(0, 6);
   const max = Math.max(...sorted.map(value), 1);
-  return <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-5 sm:p-6">
-    <h3 className="font-heading text-[20px] font-medium leading-tight text-[#1F3125]">{title}</h3>
-    {subtitle && <p className="mt-1.5 font-body text-[12px] leading-relaxed text-[#6D6057]">{subtitle}</p>}
-    <div className="mt-5 space-y-4">
+  return <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
+    <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">{title}</h3>
+    {subtitle && <p className="mt-1 font-body text-[12px] leading-snug text-[#6D6057]">{subtitle}</p>}
+    <div className="mt-3.5 space-y-3>
       {sorted.length ? sorted.map((item, i) => {
         const raw = item[keyName] || "Direct / unknown";
         const label = keyName === "requestPath" ? pageLabel(raw) : keyName === "deviceType" ? raw === "mobile" ? "Phone" : raw === "desktop" ? "Computer" : raw : raw;
         return <div key={raw + i}>
-          <div className="mb-1.5 flex items-baseline justify-between gap-4 font-body text-[13px]">
+          <div className="mb-1 flex items-baseline justify-between gap-4 font-body text-[13px]">
             <span className="min-w-0 break-words text-[#1F3125]">{label}</span>
             <span className="shrink-0 tabular-nums text-[#6D6057]">{format(value(item))}</span>
           </div>
@@ -64,7 +64,7 @@ function VisitsChart({ daily }: { daily: Metric[] }) {
   }, [points.length]);
   const highest = Math.max(1, ...points.map(p => p.pageviews || 0));
   const chartWidth = Math.max(760, (points.length - 1) * 46 + 80);
-  const left = 38, right = 20, top = 18, bottom = 36, height = 222;
+  const left = 38, right = 20, top = 12, bottom = 34, height = 180;
   const width = chartWidth - left - right, usableHeight = height - top - bottom;
   const coords = points.map((p, i) => ({
     x: left + (points.length < 2 ? width / 2 : width * i / (points.length - 1)),
@@ -73,7 +73,7 @@ function VisitsChart({ daily }: { daily: Metric[] }) {
   }));
   const path = coords.map((p, i) => `${i ? "L" : "M"} ${p.x} ${p.y}`).join(" ");
   const active = selected !== null ? coords[selected] : null;
-  return <div className="mt-4 rounded-xl border border-[#E7DFDB] bg-[#FFFCFB] px-3 pb-3 pt-4 sm:px-5">
+  return <div className="mt-2.5 rounded-xl border border-[#E7DFDB] bg-[#FFFCFB] px-3 pb-2.5 pt-3 sm:px-4">
     <div className="flex flex-wrap items-center justify-between gap-2">
       <p className="text-[12px] text-[#6D6057]">Daily page views</p>
       <p className="font-body text-[12px] tabular-nums text-[#4A6E57]">{active ? `${shortDate(active.date)} · ${format(active.views)} views` : "Select a point to see its date and views"}</p>
@@ -95,7 +95,7 @@ function VisitsChart({ daily }: { daily: Metric[] }) {
     {points.length > 0 && scroll.max > 0 && <div
       role="scrollbar" aria-label="Scroll chart dates horizontally" aria-orientation="horizontal"
       aria-valuemin={0} aria-valuemax={Math.ceil(scroll.max)} aria-valuenow={Math.round(scroll.left)}
-      tabIndex={0} className="relative mt-2 h-[11px] w-full touch-none cursor-pointer rounded-full bg-[#ECE9E7]"
+      tabIndex={0} className="relative mt-1.5 h-[9px] w-full touch-none cursor-pointer rounded-full bg-[#ECE9E7]"
       onPointerDown={e => {
         const el = scrollRef.current;
         if (!el) return;
@@ -151,10 +151,10 @@ export default function AnalyticsPanel() {
   const pages = data?.pages || [];
   const publicPages = pages.filter(row => !(row.requestPath || "").startsWith("/admin"));
   const adminViews = pages.filter(row => (row.requestPath || "").startsWith("/admin")).reduce((sum, row) => sum + value(row), 0);
-  return <div className="space-y-5">
-    <section className="rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-5 sm:p-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0"><h2 className="font-heading text-[25px] font-medium text-[#1F3125]">At a glance</h2><p className="mt-1.5 max-w-[720px] font-body text-[13px] leading-relaxed text-[#6D6057]">Explore site activity and booking interest. A checkout click shows interest, rather than a confirmed stay.</p></div>
+  return <div className="space-y-3.5">
+    <section className="rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
+      <div className="flex flex-col gap-2.5 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0"><h2 className="font-heading text-[24px] font-medium leading-[1.15] text-[#1F3125]">At a glance</h2><p className="mt-1 max-w-[720px] font-body text-[13px] leading-relaxed text-[#6D6057]">Explore site activity and booking interest. A checkout click shows interest, rather than a confirmed stay.</p></div>
         <div className="flex shrink-0 items-center gap-3 sm:pt-1">
           <label htmlFor="analytics-period" className="font-body text-[13px] font-medium leading-none text-[#6D6057]">Period</label>
           <div className="relative">
@@ -166,36 +166,36 @@ export default function AnalyticsPanel() {
         </div>
       </div>
       {!data ? <p className="mt-6 text-[14px] text-[#6D6057]">Gathering your latest numbers...</p> : !data.connected ? <p className="mt-6 rounded-lg bg-[#F4EFEC] p-4 text-[14px] text-[#6D6057]">{data.message || "Your site insights are temporarily unavailable."}</p> : <>
-        <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {([["Page views", pageviews], ["Visitors", visits], ["Booking clicks", clicks], ["Dates selected", dateSelections]] as const).map(([label, n]) => <div key={label} className="rounded-xl bg-[#F4EFEC] px-4 py-4"><strong className="block font-heading text-[27px] font-medium leading-none tabular-nums text-[#1F3125]">{format(n)}</strong><span className="mt-2 block font-body text-[12px] text-[#6D6057]">{label}</span></div>)}
+        <div className="mt-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
+          {([["Page views", pageviews], ["Visitors", visits], ["Booking clicks", clicks], ["Dates selected", dateSelections]] as const).map(([label, n]) => <div key={label} className="rounded-xl bg-[#F4EFEC] px-4 py-3"><strong className="block font-heading text-[27px] font-medium leading-none tabular-nums text-[#1F3125]">{format(n)}</strong><span className="mt-1 block font-body text-[12px] text-[#6D6057]">{label}</span></div>)}
         </div>
-        <h3 className="mt-7 font-heading text-[20px] font-medium text-[#1F3125]">Visits over time</h3>
+        <h3 className="mt-5 font-heading text-[20px] font-medium text-[#1F3125]">Visits over time</h3>
         <VisitsChart daily={daily} />
-        <div className="mt-6 border-t border-[#E7DFDB] pt-5"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-2 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-2.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-3 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
+        <div className="mt-4 border-t border-[#E7DFDB] pt-3.5"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
       </>}
     </section>
-    {data?.connected && <div className="grid items-stretch gap-4 lg:grid-cols-2">
+    {data?.connected && <div className="grid items-start gap-3.5 lg:grid-cols-2">
       <MetricRows title="Pages guests visit most" subtitle="Public website pages" items={publicPages} keyName="requestPath" />
       <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" />
       <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" />
-      <section className="flex min-w-0 flex-col rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-5 sm:p-6">
-        <h3 className="font-heading text-[20px] font-medium text-[#1F3125]">Google search</h3>
-        <p className="mt-1.5 font-body text-[12px] text-[#6D6057]">Organic search performance · same selected period</p>
-        {!search ? <p className="mt-5 text-[13px] text-[#6D6057]">Loading Google Search Console…</p> : search.connected ? <>
-          <div className="mt-5 grid grid-cols-2 gap-2.5">
-            {([["Search clicks", search.clicks || 0], ["Impressions", search.impressions || 0], ["Click rate", ((search.ctr || 0) * 100).toFixed(1) + "%"], ["Avg. position", (search.position || 0).toFixed(1)]] as const).map(([name,val]) => <div key={name} className="rounded-xl bg-[#F4EFEC] p-3">
-              <strong className="block font-heading text-[21px] font-medium tabular-nums text-[#1F3125]">{typeof val === "number" ? format(val) : val}</strong>
+      <section className="flex min-w-0 flex-col rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
+        <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">Google search</h3>
+        <p className="mt-1 font-body text-[12px] text-[#6D6057]">Organic search performance · same selected period</p>
+        {!search ? <p className="mt-3 text-[13px] text-[#6D6057]">Loading Google Search Console…</p> : search.connected ? <>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {([["Search clicks", search.clicks || 0], ["Impressions", search.impressions || 0], ["Click rate", ((search.ctr || 0) * 100).toFixed(1) + "%"], ["Avg. position", (search.position || 0).toFixed(1)]] as const).map(([name,val]) => <div key={name} className="rounded-xl bg-[#F4EFEC] px-3 py-2.5">
+              <strong className="block font-heading text-[21px] font-medium leading-tight" tabular-nums text-[#1F3125]">{typeof val === "number" ? format(val) : val}</strong>
               <span className="text-[12px] text-[#6D6057]">{name}</span>
             </div>)}
           </div>
           <h4 className="mt-5 font-heading text-[16px] text-[#1F3125]">Top searches</h4>
-          <div className="mt-2 divide-y divide-[#E7DFDB]">{search.queries?.length ? search.queries.map((item,i) => <div key={i} className="flex justify-between gap-3 py-2 text-[12px]"><span className="min-w-0 break-words">{item.query}</span><span className="shrink-0 tabular-nums text-[#6D6057]">{format(item.clicks)} clicks</span></div>) : <p className="py-2 text-[12px] text-[#6D6057]">No search queries available for these dates.</p>}</div>
-          <p className="mt-3 text-[11px] text-[#6D6057]">Google data typically arrives a few days after search activity. Reporting through {search.endDate}.</p>
-        </> : <p className="mt-5 text-[13px] leading-relaxed text-[#6D6057]">{search.message}</p>}
-        <a className="mt-5 inline-flex w-fit items-center gap-2 rounded-xl border border-[#D8CCC4] bg-white px-4 py-2.5 text-[12px] font-medium text-[#1F3125] transition-colors hover:bg-[#F4EFEC]" href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">Open Search Console <span aria-hidden="true">↗</span></a>
+          <div className="mt-1 divide-y divide-[#E7DFDB]">{search.queries?.length ? search.queries.map((item,i) => <div key={i} className="flex justify-between gap-3 py-1.5 text-[12px]"><span className="min-w-0 break-words">{item.query}</span><span className="shrink-0 tabular-nums text-[#6D6057]">{format(item.clicks)} clicks</span></div>) : <p className="py-2 text-[12px] text-[#6D6057]">No search queries available for these dates.</p>}</div>
+          <p className="mt-2 text-[11px] leading-snug" text-[#6D6057]">Google data typically arrives a few days after search activity. Reporting through {search.endDate}.</p>
+        </> : <p className="mt-3 text-[13px] leading-relaxed text-[#6D6057]">{search.message}</p>}
+        <a className="mt-3 inline-flex w-fit items-center gap-2 rounded-xl border border-[#D8CCC4] bg-white px-4 py-2.5 text-[12px] font-medium text-[#1F3125] transition-colors hover:bg-[#F4EFEC]" href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">Open Search Console <span aria-hidden="true">↗</span></a>
       </section>
     </div>}
     {data?.connected && adminViews > 0 && <p className="px-1 text-[12px] leading-relaxed text-[#6D6057]">Admin workspace activity ({format(adminViews)} page views among the listed paths) is excluded from the popular public pages above. Overall site totals and device/referrer figures may still include internal activity.</p>}
-    <div className="flex justify-end pt-1"><a href="https://vercel.com/tim-blewitts-projects/roamstead-v2/analytics" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[12px] font-medium text-[#4A6E57] underline underline-offset-4">Explore more insights <span aria-hidden="true">↗</span></a></div>
+    <div className="flex justify-end"><a href="https://vercel.com/tim-blewitts-projects/roamstead-v2/analytics" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[12px] font-medium text-[#4A6E57] underline underline-offset-4">Explore more insights <span aria-hidden="true">↗</span></a></div>
   </div>;
 }
