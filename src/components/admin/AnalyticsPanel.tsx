@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 type Metric = { timestamp?: string; visitors?: number; pageviews?: number; count?: number; total?: number; eventName?: string; requestPath?: string; referrerHostname?: string; deviceType?: string };
 type SearchData = {connected?:boolean;message?:string;clicks?:number;impressions?:number;ctr?:number;position?:number;endDate?:string;previous?:{clicks?:number;impressions?:number;ctr?:number;position?:number}|null;queries?:{query:string;clicks:number;impressions:number;position:number;ctr:number}[];pages?:{page:string;clicks:number;impressions:number;position:number;ctr:number}[]};
+type InspectionData = {connected?:boolean;inspection?:boolean;launchIndexingEnabled?:boolean;siteMap?:string;results?:{path:string;url:string;status:string;reason:string;lastCrawlTime?:string|null}[]};
 type WeeklyPoint = {start:string;end:string;visitors:number};
 type Weekly = {weeks:WeeklyPoint[];current:WeeklyPoint|null};
 type Payload = { connected?: boolean; message?: string; visits?: Metric[]; previous?:{visits:Metric[];pages:Metric[];referrers:Metric[];devices:Metric[]}|null; weekly?: Weekly; events?: Metric[]; pages?: Metric[]; referrers?: Metric[]; devices?: Metric[] };
@@ -147,6 +148,8 @@ export default function AnalyticsPanel() {
   const [days, setDays] = useState<7 | 30 | 90 | 365>(7);
   const [data, setData] = useState<Payload | null>(null);
   const [search, setSearch] = useState<SearchData | null>(null);
+  const [inspection, setInspection] = useState<InspectionData | null>(null);
+  const [inspecting, setInspecting] = useState(false);
   const [guestCount, setGuestCount] = useState<number | null>(null);
   useEffect(() => {
     let active = true; setData(null);
@@ -274,6 +277,35 @@ export default function AnalyticsPanel() {
           </div>
           </div>
           <p className="mt-1.5 text-[10px] leading-snug text-[#80766E]">Google data through {search.endDate} · Positions are averages.</p>
+          <div className="mt-3 border-t border-[#E7DFDB] pt-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Google indexing</h4>
+              <button type="button" disabled={inspecting} onClick={async()=>{
+                setInspecting(true);
+                try{
+                  const response=await fetch("/admin/api/search-console?inspection=1",{cache:"no-store"});
+                  const result=await response.json();
+                  setInspection(response.ok?result:{connected:false});
+                }catch{setInspection({connected:false});}
+                finally{setInspecting(false);}
+              }} className="rounded-lg border border-[#D8CCC4] px-3 py-1.5 font-body text-[12px] font-medium text-[#1F3125] transition hover:bg-[#F4EFEC] disabled:opacity-50">
+                {inspecting?"Checking Google…":inspection?"Check again":"Check indexing"}
+              </button>
+            </div>
+            <p className="mt-1 text-[11px] leading-snug text-[#6D6057]">Indexing and search impressions are different. Check which pages Google has indexed.</p>
+            {inspection?.results && <div className="mt-2 divide-y divide-[#EEE8E4]">
+              {inspection.results.map(item=><div key={item.path} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-1.5 text-[12px]">
+                <span className="min-w-0 text-[#1F3125]">{pageLabel(item.path)}</span>
+                <span className={item.status==="indexed"?"text-[#4A6E57]":item.status==="not_indexed"?"text-[#906954]":"text-[#80766E]"}>
+                  {item.status==="indexed"?"Indexed":item.status==="not_indexed"?"Not indexed":"Not confirmed"}
+                </span>
+              </div>)}
+            </div>}
+            {inspection && !inspection.connected && <p className="mt-2 text-[11px] text-[#906954]">Google indexing checks are currently unavailable.</p>}
+            {inspection?.results?.some(item=>item.status==="unavailable") && <p className="mt-1 text-[11px] text-[#80766E]">Some results could not be inspected with current Google permissions.</p>}
+            {inspection?.launchIndexingEnabled===false && <p className="mt-1 text-[11px] text-[#906954]">Production indexing configuration needs review.</p>}
+          </div>
+
         </>}
       </section>}
     {data?.connected && <p className="px-1 text-[11px] leading-snug text-[#6D6057]">Site totals may include historical workspace visits.</p>}
