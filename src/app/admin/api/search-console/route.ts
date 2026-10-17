@@ -1,18 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createSign } from "node:crypto";
 import { adminAuthenticated } from "@/lib/admin-auth";
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 const site = "sc-domain:roamstead-co.com";
 const headers = { "Cache-Control": "private, no-store" };
-async function token() {
- const email=process.env.ROAMSTEAD_GSC_CLIENT_EMAIL, key=process.env.ROAMSTEAD_GSC_PRIVATE_KEY?.replace(/\\n/g,"\n");
- if(!email||!key)return null;
- const now=Math.floor(Date.now()/1000), enc=(s:string)=>Buffer.from(s).toString("base64url");
- const input=enc(JSON.stringify({alg:"RS256",typ:"JWT"}))+"."+enc(JSON.stringify({iss:email,scope:"https://www.googleapis.com/auth/webmasters.readonly",aud:"https://oauth2.googleapis.com/token",iat:now,exp:now+3500}));
- const signer=createSign("RSA-SHA256");signer.update(input);signer.end();
- const resp=await fetch("https://oauth2.googleapis.com/token",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({grant_type:"urn:ietf:params:oauth:grant-type:jwt-bearer",assertion:input+"."+signer.sign(key).toString("base64url")}),cache:"no-store",signal:AbortSignal.timeout(9000)});
- if(!resp.ok)throw Error("Google authentication failed");
- return (await resp.json() as {access_token:string}).access_token;
+const serviceAccount = "roamstead-search-analytics@roamstead-website-operations.iam.gserviceaccount.com";
+const provider = "//iam.googleapis.com/projects/708214299024/locations/global/workloadIdentityPools/roamstead-vercel/providers/roamstead-vercel-production";
+async function token(request: NextRequest) {
+ const oidc = request.headers.get("x-vercel-oidc-token");
+ if (!oidc) return null;
+ const exchange = await fetch("https://sts.googleapis.com/v1/token", {
+  method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  body: new URLSearchParams({
+    audience: provider,
+    grant_type: "urn:ietf:params:oauth:grant-type:token-exchange",
+    requested_token_type: "urn:ietf:params:oauth:token-type:access_token",
+    subject_token_type: "urn:ietf:params:oauth:token-type:jwt",
+    subject_token: oidc,
+    scope: "https://www.googleapis.com/auth/webmasters.readonly"
+  }),
+  cache: "no-store", signal: AbortSignal.timeout(10000)
+ });
+ if (!exchange.ok) throw Error("Google identity federation exchange failed: " + exchange.status);
+ const federated = await exchange.json() as { access_token?: string };
+ if (!federated.access_token) throw Error("Google federation access token missing");
+ const impersonation = await fetch("https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/" + encodeURIComponent(serviceAccount) + ":generateAccessToken", {
+  method: "POST", headers: { Authorization: "Bearer " + federated.access_token, "Content-Type": "application/json" },
+  body: JSON.stringify({ scope: ["https://www.googleapis.com/auth/webmasters.readonly"], lifetime: "1800s" }),
+  cache: "no-store", signal: AbortSignal.timeout(10000)
+ });
+ if (!impersonation.ok) throw Error("Google service account impersonation failed: " + impersonation.status);
+ const result = await impersonation.json() as { accessToken?: string };
+ if (!result.accessToken) throw Error("Google service account token missing");
+ return result.accessToken;
 }
 type Row={keys?:string[];clicks?:number;impressions?:number;ctr?:number;position?:number};
 async function query(access:string,startDate:string,endDate:string,dimensions:string[],rowLimit:number):Promise<Row[]>{
@@ -25,8 +45,8 @@ export async function GET(request:NextRequest){
  const n=Number(request.nextUrl.searchParams.get("days")),days=n===7||n===90?n:30;
  const end=new Date(Date.now()-3*86400000),start=new Date(end.getTime()-(days-1)*86400000),date=(d:Date)=>d.toISOString().slice(0,10);
  try{
-  const access=await token();
-  if(!access)return NextResponse.json({connected:false,message:"Search Console reporting credentials are not configured yet."},{headers});
+  const access=await token(request);
+  if(!access)return NextResponse.json({connected:false,message:"Production OIDC identity token is unavailable. Check Vercel federation configuration."},{headers});
   const [totals,queries,pages]=await Promise.all([query(access,date(start),date(end),[],1),query(access,date(start),date(end),["query"],8),query(access,date(start),date(end),["page"],5)]);
   const total=totals[0]||{};
   return NextResponse.json({connected:true,startDate:date(start),endDate:date(end),clicks:total.clicks||0,impressions:total.impressions||0,ctr:total.ctr||0,position:total.position||0,queries:queries.map(r=>({query:r.keys?.[0]||"",clicks:r.clicks||0})),pages:pages.map(r=>({page:r.keys?.[0]||"",clicks:r.clicks||0}))},{headers});
