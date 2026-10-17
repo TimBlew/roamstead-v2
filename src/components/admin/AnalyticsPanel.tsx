@@ -9,7 +9,7 @@ type Payload = { connected?: boolean; message?: string; visits?: Metric[]; previ
 const actionNames: Record<string, string> = {
   availability_dates_selected: "Dates selected",
   hostaway_checkout_click: "Continue to booking",
-  early_access_submission_accepted: "Early-access signups"
+  early_access_submission_accepted: "Signup submissions"
 };
 const format = (n: number) => new Intl.NumberFormat("en-US").format(n);
 const value = (row: Metric) => Number(row.pageviews ?? row.count ?? row.total ?? row.visitors ?? 0);
@@ -190,7 +190,7 @@ export default function AnalyticsPanel() {
             {eyebrow:"REACH",label:"Visitors",value:format(visits),note:"People exploring the site",detail:changeLabel(visits,previousVisitors),accent:"#597761"},
             {eyebrow:"BOOKING",label:"Checkout clicks",value:format(clicks),note:"Continue to booking actions",detail:null,accent:"#9C826B"},
             {eyebrow:"ENGAGEMENT",label:"Checkout click rate",value:visits>0?((clicks/visits)*100).toFixed(1)+"%":"—",note:"Checkout clicks ÷ visitors",detail:null,accent:"#82917B"},
-            {eyebrow:"AUDIENCE",label:"Early-access signups",value:format(signups),note:"Signup events recorded",detail:null,accent:"#A18A78"}
+            {eyebrow:"AUDIENCE",label:"Signup submissions",value:format(signups),note:"Events, including repeat submissions",detail:null,accent:"#A18A78"}
           ] as const).map((metric) => <div key={metric.label} className="relative flex min-w-0 flex-col rounded-xl border border-[#E8DFD8] bg-[#F8F5F2] px-3 pb-3 pt-3 sm:px-4 sm:pb-4 sm:pt-3.5">
             <div className="flex items-center gap-2">
               <span className="h-[6px] w-[6px] shrink-0 rounded-full" style={{backgroundColor:metric.accent}} aria-hidden="true" />
