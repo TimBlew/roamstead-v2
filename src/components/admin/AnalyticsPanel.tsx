@@ -38,7 +38,7 @@ function MetricRows({ title, subtitle, items, keyName, emptyText, previousItems,
   const sorted = [...items].sort((a, b) => value(b) - value(a)).slice(0, 6);
   const max = Math.max(...sorted.map(value), 1);
   const total = items.reduce((sum,item)=>sum+value(item),0);
-  return <section className={`min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] ${compact ? "px-4 py-2.5 sm:px-5 sm:py-3" : "p-4 sm:p-5"}`}>
+  return <section className={`min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] ${compact ? "px-4 pb-2.5 pt-2 sm:px-5 sm:pb-3 sm:pt-2.5" : "p-4 sm:p-5"}`}>
     <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">{title}</h3>
     {subtitle && <p className="mt-1 font-body text-[12px] leading-snug text-[#6D6057]">{subtitle}</p>}
     <div className={compact ? "mt-1.5 space-y-1.5" : "mt-3 space-y-2.5"}>
@@ -214,7 +214,7 @@ export default function AnalyticsPanel() {
         <MetricRows title="Visits by device type" compact items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
       </div>
     </div>}
-    {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 pb-3 pt-4 sm:px-5 sm:pb-3 sm:pt-4">
+    {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 pb-3 pt-2.5 sm:px-5 sm:pb-3 sm:pt-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="font-heading text-[19px] font-medium text-[#1F3125]">Google search performance</h3>
           <span className="font-body text-[11px] text-[#6D6057]">Organic Google search</span>
