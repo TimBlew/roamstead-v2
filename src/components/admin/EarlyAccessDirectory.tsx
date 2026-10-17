@@ -42,10 +42,10 @@ export default function EarlyAccessDirectory(){
     finally{setSettingBusy(false)}
   }
 
-  const load=useCallback(async(after:string|null=null)=>{
+  const load=useCallback(async(after:string|null=null,refresh=false)=>{
     setLoading(true);setMessage("");
     try{
-      const url="/admin/api/early-access"+(after?"?after="+encodeURIComponent(after):"");
+      const url="/admin/api/early-access"+(after?"?after="+encodeURIComponent(after):refresh?"?refresh=1":"");
       const r=await fetch(url,{cache:"no-store"});
       const data=await r.json() as Response;
       if(!r.ok||!data.connected)throw Error(data.message||"Unable to load signups.");
@@ -76,11 +76,11 @@ export default function EarlyAccessDirectory(){
     <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-3 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div><h2 className="font-heading text-[22px] leading-tight sm:text-[25px]">Guest list</h2></div>
-        <button type="button" onClick={()=>void load()} disabled={loading} className="inline-flex h-[33px] items-center rounded-md border border-[#D8CCC4] px-3 text-[12px] text-[#1F3125] disabled:opacity-40">Refresh</button>
+        <button type="button" onClick={()=>void load(null,true)} disabled={loading} className="inline-flex h-[33px] items-center rounded-md border border-[#D8CCC4] px-3 text-[12px] text-[#1F3125] disabled:opacity-40">Refresh</button>
       </div>
       <div className="mt-3 flex items-center justify-between gap-3 rounded-lg bg-[#F4EFEC] px-4 py-3">
         <div><strong className="block font-heading text-[25px] leading-tight tabular-nums">{initialLoaded?entries.length:"—"}</strong><span className="block text-[11px] text-[#6D6057]">{hasMore?"Records loaded":"Guests on the list"}</span></div>
-        <span className="text-right text-[11px] leading-snug text-[#6D6057]">{loading? "Refreshing list…" : dataSource==="sheets" ? "Mailing status is available in guest details" : "Subscription status is available in guest details"}</span>
+        <span className="text-right text-[11px] leading-snug text-[#6D6057]">{loading? "Refreshing list…" : dataSource==="sheets" ? "Mailing status in guest details" : "Subscription status in guest details"}</span>
       </div>
       <div className="mt-3 flex flex-col gap-2 sm:flex-row">
         <label className="min-w-0 flex-1"><span className="sr-only">Find a contact</span><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search guests by email, season, or area" className="h-[40px] w-full rounded-lg border border-[#D8CCC4] bg-white px-3 font-body text-[13px] outline-[#4A6E57]"/></label>
