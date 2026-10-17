@@ -1,4 +1,5 @@
 "use client";
+// Deployment trigger: rebuild corrected early-access directory from current main.
 import {useCallback,useEffect,useMemo,useState} from "react";
 type Entry={id:string;email:string;createdAt:string;unsubscribed:boolean;season:string;home:string;preferencesUnavailable?:boolean;subscriptionKnown?:boolean;notificationStatus?:string;contactStatus?:string};
 type Response={connected?:boolean;source?:"sheets"|"resend";entries?:Entry[];hasMore?:boolean;nextCursor?:string|null;message?:string};
