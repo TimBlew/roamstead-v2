@@ -34,17 +34,19 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <p className="mt-3 font-body text-[14px] leading-relaxed text-[#6D6057]">Your management access is being set up. Please reach out to Castlehead if you need a hand.</p>
           </div>
         ) : !allowed ? (
-          <form method="post" action="/admin/login" className="w-full max-w-[460px] rounded-[12px] border border-[#D8CCC4] bg-[#FFFCFB] p-4 shadow-sm sm:p-6 lg:mx-auto lg:max-w-[456px] lg:rounded-[16px] lg:border-[#DDD2C9] lg:px-10 lg:pb-9 lg:pt-8 lg:shadow-[0_14px_45px_rgba(31,49,37,0.075)]">
+          <form method="post" action="/admin/login" className="w-full max-w-[460px] rounded-[12px] border border-[#D8CCC4] bg-[#FFFCFB] p-4 shadow-sm sm:p-6 lg:mx-auto lg:max-w-[456px] lg:rounded-[16px] lg:border-[#DDD2C9] lg:px-10 lg:pb-7 lg:pt-7 lg:shadow-[0_14px_45px_rgba(31,49,37,0.075)]">
             <div className="hidden lg:flex lg:flex-col lg:items-center lg:text-center">
-              <img src="/roamstead-logo.svg" alt="Roamstead" className="h-auto w-[206px]" />
-              <p className="mt-5 font-body text-[11px] font-semibold uppercase tracking-[0.17em] text-[#4A6E57]">Your workspace</p>
-              <h1 className="mt-2 font-heading text-[34px] font-medium leading-[1.12] tracking-[-0.035em] text-[#1F3125]">Welcome back.</h1>
-              <p className="mt-2 mb-7 font-body text-[13px] leading-[1.5] text-[#6D6057]">Sign in to manage your Roamstead website.</p>
+              <div className="w-[206px]">
+                <img src="/roamstead-logo.svg" alt="Roamstead" className="block h-auto w-full" />
+                <p className="mt-0.5 flex w-full justify-between font-body text-[10px] font-semibold uppercase leading-none text-[#4A6E57]" aria-label="Workspace">{"WORKSPACE".split("").map((letter,index)=><span key={index}>{letter}</span>)}</p>
+              </div>
+              <h1 className="mt-4 font-heading text-[34px] font-medium leading-[1.12] tracking-[-0.035em] text-[#1F3125]">Welcome back.</h1>
+              <p className="mt-1 mb-3 font-body text-[13px] leading-[1.4] text-[#6D6057]">Sign in to manage your Roamstead website.</p>
             </div>
             <label htmlFor="admin-password" className="block font-body text-[13px] font-medium">Password</label>
             <input id="admin-password" name="password" type="password" required autoComplete="current-password" className="mt-2 h-[43px] w-full rounded-[8px] border border-[#D8CCC4] bg-white px-4 font-body text-[16px] focus:outline-[#4A6E57]" />
             {error && <p role="alert" className="mt-3 font-body text-[13px] text-red-700">That password didn’t work. Please try again.</p>}
-            <button type="submit" className="mt-4 inline-flex h-[42px] w-full items-center justify-center rounded-[8px] bg-[#4A6E57] font-body text-[14px] leading-none font-medium text-white hover:bg-[#1F3125]">Sign in</button>
+            <button type="submit" className="mt-2.5 inline-flex h-[42px] w-full items-center justify-center rounded-[8px] bg-[#4A6E57] font-body text-[14px] leading-none font-medium text-white hover:bg-[#1F3125]">Sign in</button>
           </form>
         ) : (
           <>
