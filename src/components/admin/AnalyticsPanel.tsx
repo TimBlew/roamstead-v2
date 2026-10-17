@@ -159,6 +159,8 @@ export default function AnalyticsPanel() {
         </> : <p className="mt-3 text-[13px] leading-relaxed text-[#6D6057]">{search.message}</p>}
         <a className="mt-3 inline-flex w-fit items-center gap-2 rounded-xl border border-[#D8CCC4] bg-white px-4 py-2.5 text-[12px] font-medium text-[#1F3125] transition-colors hover:bg-[#F4EFEC]" href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">Open Search Console <span aria-hidden="true">↗</span></a>
       </section>
+      <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" />
+      </div>
     </div>}
     {data?.connected && adminViews > 0 && <p className="px-1 text-[12px] leading-relaxed text-[#6D6057]">Admin workspace activity ({format(adminViews)} page views among the listed paths) is excluded from the popular public pages above. Overall site totals and device/referrer figures may still include internal activity.</p>}
     <div className="flex justify-end"><a href="https://vercel.com/tim-blewitts-projects/roamstead-v2/analytics" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[12px] font-medium text-[#4A6E57] underline underline-offset-4">Explore more insights <span aria-hidden="true">↗</span></a></div>
