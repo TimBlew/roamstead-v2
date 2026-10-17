@@ -117,7 +117,7 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   </div>;
 }
 export default function AnalyticsPanel() {
-  const [days, setDays] = useState<7 | 30 | 90 | 365>(30);
+  const [days, setDays] = useState<7 | 30 | 90 | 365>(7);
   const [data, setData] = useState<Payload | null>(null);
   const [search, setSearch] = useState<SearchData | null>(null);
   useEffect(() => {
