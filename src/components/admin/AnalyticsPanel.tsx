@@ -191,14 +191,14 @@ export default function AnalyticsPanel() {
             {eyebrow:"BOOKING",label:"Checkout clicks",value:format(clicks),note:"Continue to booking actions",detail:null,accent:"#9C826B"},
             {eyebrow:"ENGAGEMENT",label:"Checkout click rate",value:visits>0?((clicks/visits)*100).toFixed(1)+"%":"—",note:"Checkout clicks ÷ visitors",detail:null,accent:"#82917B"},
             {eyebrow:"AUDIENCE",label:"Signup submissions",value:format(signups),note:"Events, including repeat submissions",detail:null,accent:"#A18A78"}
-          ] as const).map((metric) => <div key={metric.label} className="relative flex min-w-0 flex-col rounded-xl border border-[#E8DFD8] bg-[#F8F5F2] px-3 pb-3 pt-3 sm:px-4 sm:pb-4 sm:pt-3.5">
+          ] as const).map((metric) => <div key={metric.label} className="relative flex min-w-0 flex-col rounded-xl border border-[#E8DFD8] bg-[#F8F5F2] px-3 pb-2.5 pt-3 sm:px-4 sm:pb-2.5 sm:pt-3">
             <div className="flex items-center gap-2">
               <span className="h-[6px] w-[6px] shrink-0 rounded-full" style={{backgroundColor:metric.accent}} aria-hidden="true" />
               <span className="font-body text-[9px] font-semibold uppercase tracking-[.12em] text-[#80766E] sm:text-[10px]">{metric.eyebrow}</span>
             </div>
-            <strong className="mt-2.5 block font-heading text-[30px] font-medium leading-none tracking-[-.035em] tabular-nums text-[#1F3125] sm:text-[36px]">{metric.value}</strong>
+            <strong className="mt-2 block font-heading text-[30px] font-medium leading-none tracking-[-.035em] tabular-nums text-[#1F3125] sm:text-[36px]">{metric.value}</strong>
             <span className="mt-1.5 block font-body text-[12px] font-semibold leading-snug text-[#374A3D]">{metric.label}</span>
-            <span className="mt-1 hidden font-body text-[10px] leading-snug text-[#786E65] sm:block sm:text-[11px]">{metric.note}</span>
+            <span className="mt-0.5 hidden font-body text-[10px] leading-snug text-[#786E65] sm:block sm:text-[11px]">{metric.note}</span>
             {metric.detail && <span className="mt-1.5 block font-body text-[11px] leading-snug text-[#4A6E57]">{metric.detail}</span>}
           </div>)}
         </div>
