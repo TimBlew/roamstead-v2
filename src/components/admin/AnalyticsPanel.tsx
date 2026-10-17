@@ -38,7 +38,7 @@ function MetricRows({ title, subtitle, items, keyName, emptyText, previousItems,
   const sorted = [...items].sort((a, b) => value(b) - value(a)).slice(0, 6);
   const max = Math.max(...sorted.map(value), 1);
   const total = items.reduce((sum,item)=>sum+value(item),0);
-  return <section className={`min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] ${"px-4 py-3 sm:px-5 sm:py-4"}`}>
+  return <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-3 sm:px-5 sm:py-4">
     <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">{title}</h3>
     {subtitle && <p className="mt-1 font-body text-[12px] leading-snug text-[#6D6057]">{subtitle}</p>}
     <div className={compact ? "mt-1.5 space-y-1.5" : "mt-3 space-y-2.5"}>
@@ -196,7 +196,7 @@ export default function AnalyticsPanel() {
         </div>
       </div>
       {!data ? <p className="mt-6 text-[14px] text-[#6D6057]">Gathering your latest numbers...</p> : !data.connected ? <p className="mt-6 rounded-lg bg-[#F4EFEC] p-4 text-[14px] text-[#6D6057]">{data.message || "Your site insights are temporarily unavailable."}</p> : <>
-        <div className="mt-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
+        <div className="mt-3 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
           {([
             {eyebrow:"REACH",label:"Visitors",value:format(visits),note:"People exploring the site",detail:changeLabel(visits,previousVisitors),accent:"#597761"},
             {eyebrow:"BOOKING",label:"Checkout clicks",value:format(clicks),note:"Continue to booking actions",detail:null,accent:"#9C826B"},
@@ -213,9 +213,9 @@ export default function AnalyticsPanel() {
             {metric.detail && <span className="mt-1.5 block font-body text-[11px] leading-snug text-[#4A6E57]">{metric.detail}</span>}
           </div>)}
         </div>
-                <h3 className="mt-4 font-heading text-[18px] font-medium leading-tight text-[#1F3125] sm:mt-5 sm:text-[20px]">{days===7?"Daily visitor trend":"Weekly visitor trend"}</h3>
+                <h3 className="mt-3 font-heading text-[18px] font-medium leading-tight text-[#1F3125] sm:mt-4 sm:text-[20px]">{days===7?"Daily visitor trend":"Weekly visitor trend"}</h3>
         <VisitsChart weekly={data.weekly} daily={daily} days={days} />
-        <div className="mt-4 border-t border-[#E7DFDB] pt-3.5 sm:mt-5"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
+        <div className="mt-3 border-t border-[#E7DFDB] pt-3 sm:mt-4"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
       </>}
     </section>
     {data?.connected && <div className="grid items-start gap-3 lg:grid-cols-2">
