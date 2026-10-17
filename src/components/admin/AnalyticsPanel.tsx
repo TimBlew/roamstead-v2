@@ -147,6 +147,7 @@ export default function AnalyticsPanel() {
   const [days, setDays] = useState<7 | 30 | 90 | 365>(7);
   const [data, setData] = useState<Payload | null>(null);
   const [search, setSearch] = useState<SearchData | null>(null);
+  const [guestCount, setGuestCount] = useState<number | null>(null);
   useEffect(() => {
     let active = true; setData(null);
     fetch(`/admin/api/analytics?days=${days}`, { cache: "no-store" })
@@ -159,6 +160,16 @@ export default function AnalyticsPanel() {
     fetch(`/admin/api/search-console?days=${days}`, { cache: "no-store" }).then(r => r.json()).then(x => { if(active)setSearch(x); }).catch(() => { if(active)setSearch({connected:false,message:"Google Search reporting is temporarily unavailable."}); });
     return () => { active = false; };
   }, [days]);
+  useEffect(() => {
+    let active = true;
+    fetch("/admin/api/early-access", { cache: "no-store" })
+      .then(r => { if (!r.ok) throw new Error("Guest directory unavailable"); return r.json(); })
+      .then(result => {
+        if (active) setGuestCount(result.connected && Array.isArray(result.entries) ? new Set(result.entries.map((entry: {email?:string}) => (entry.email || "").trim().toLowerCase()).filter(Boolean)).size : null);
+      })
+      .catch(() => { if (active) setGuestCount(null); });
+    return () => { active = false; };
+  }, []);
   const daily = data?.visits || [], events = data?.events || [];
   const pageviews = useMemo(() => daily.reduce((s, d) => s + (d.pageviews || 0), 0), [daily]);
   const visits = useMemo(() => daily.reduce((s, d) => s + (d.visitors || 0), 0), [daily]);
@@ -190,7 +201,7 @@ export default function AnalyticsPanel() {
             {eyebrow:"REACH",label:"Visitors",value:format(visits),note:"People exploring the site",detail:changeLabel(visits,previousVisitors),accent:"#597761"},
             {eyebrow:"BOOKING",label:"Checkout clicks",value:format(clicks),note:"Continue to booking actions",detail:null,accent:"#9C826B"},
             {eyebrow:"ENGAGEMENT",label:"Checkout click rate",value:visits>0?((clicks/visits)*100).toFixed(1)+"%":"—",note:"Checkout clicks ÷ visitors",detail:null,accent:"#82917B"},
-            {eyebrow:"AUDIENCE",label:"Signup submissions",value:format(signups),note:"Events, including repeat submissions",detail:null,accent:"#A18A78"}
+            {eyebrow:"AUDIENCE",label:"Guests on the list",value:guestCount===null?"—":format(guestCount),note:"Stored contacts · all time",detail:null,accent:"#A18A78"}
           ] as const).map((metric) => <div key={metric.label} className="relative flex min-w-0 flex-col rounded-xl border border-[#E8DFD8] bg-[#F8F5F2] px-3 pb-2.5 pt-3 sm:px-4 sm:pb-2.5 sm:pt-3">
             <div className="flex items-center gap-2">
               <span className="h-[6px] w-[6px] shrink-0 rounded-full" style={{backgroundColor:metric.accent}} aria-hidden="true" />
