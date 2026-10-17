@@ -40,7 +40,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                 <img src="/roamstead-logo.svg" alt="Roamstead" className="block h-auto w-full" />
                 <p className="ml-[18%] mt-0.5 flex w-[82%] justify-between font-body text-[10px] sm:text-[11px] lg:text-[12px] font-semibold uppercase leading-none text-[#4A6E57]" aria-label="Workspace">{"WORKSPACE".split("").map((letter,index)=><span key={index}>{letter}</span>)}</p>
               </div>
-              <p className="mt-4 mb-4 max-w-[280px] font-body text-[12px] sm:max-w-none sm:text-[13px] lg:mb-3 leading-[1.4] text-[#6D6057]">Sign in to manage your Roamstead website.</p>
+              <p className="mt-6 mb-5 w-full font-heading text-[17px] font-medium leading-[1.35] tracking-[-0.025em] text-[#345845] sm:text-[18px] lg:mt-6 lg:mb-6 lg:text-[19px]">Sign in to manage your Roamstead website.</p>
             </div>
             <label htmlFor="admin-password" className="block font-body text-[13px] font-medium">Password</label>
             <input id="admin-password" name="password" type="password" required autoComplete="current-password" className="mt-1.5 h-[44px] w-full rounded-[8px] border border-[#D8CCC4] bg-white px-4 font-body text-[16px] focus:outline-[#4A6E57]" />
