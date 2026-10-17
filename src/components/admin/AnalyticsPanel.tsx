@@ -246,7 +246,7 @@ export default function AnalyticsPanel() {
           <div className="min-w-0 border-t border-[#E7DFDB] pt-2.5 lg:border-t-0 lg:border-r lg:pr-4 lg:pt-0">
             <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Google searches</h4>
             <div className="mt-2 divide-y divide-[#EEE8E4]">
-              {(search.queries||[]).filter(q=>q.impressions>0).slice(0,10).map(q=><div key={q.query} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-1.5 text-[12px] leading-[1.4]">
+              {(search.queries||[]).filter(q=>q.impressions>0).slice(0,10).map(q=><div key={q.query} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-1 text-[12px] leading-[1.4]">
                 <span className="min-w-0 overflow-wrap-anywhere break-words text-[#1F3125]">{q.query}</span><span className="shrink-0 tabular-nums text-[#6D6057]">{format(q.impressions)}</span>
               </div>)}
               {!search.queries?.length && <p className="py-2 text-[12px] text-[#6D6057]">Search terms will appear once Google has enough data.</p>}
@@ -277,7 +277,7 @@ export default function AnalyticsPanel() {
           </div>
           </div>
           <p className="mt-1.5 text-[10px] leading-snug text-[#80766E]">Google data through {search.endDate} · Positions are averages.</p>
-          <div className="mt-3 border-t border-[#E7DFDB] pt-3">
+          <div className="mt-2 border-t border-[#E7DFDB] pt-2.5">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Google indexing</h4>
               <button type="button" disabled={inspecting} onClick={async()=>{
@@ -292,8 +292,8 @@ export default function AnalyticsPanel() {
                 {inspecting?"Checking Google…":inspection?"Check again":"Check indexing"}
               </button>
             </div>
-            <p className="mt-1 text-[11px] leading-snug text-[#6D6057]">Indexing and search impressions are different. Check which pages Google has indexed.</p>
-            {inspection?.results && <div className="mt-2 divide-y divide-[#EEE8E4]">
+            
+            {inspection?.results && <div className="mt-1 divide-y divide-[#EEE8E4]">
               {inspection.results.map(item=><div key={item.path} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-1.5 text-[12px]">
                 <span className="min-w-0 text-[#1F3125]">{pageLabel(item.path)}</span>
                 <span className={item.status==="indexed"?"text-[#4A6E57]":item.status==="not_indexed"?"text-[#906954]":"text-[#80766E]"}>
