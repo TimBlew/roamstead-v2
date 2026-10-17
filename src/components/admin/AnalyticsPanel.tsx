@@ -1,9 +1,11 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Metric = { timestamp?: string; visitors?: number; pageviews?: number; count?: number; total?: number; eventName?: string; requestPath?: string; referrerHostname?: string; deviceType?: string };
 type SearchData = {connected?:boolean;message?:string;clicks?:number;impressions?:number;ctr?:number;position?:number;endDate?:string;queries?:{query:string;clicks:number}[];pages?:{page:string;clicks:number}[]};
-type Payload = { connected?: boolean; message?: string; visits?: Metric[]; events?: Metric[]; pages?: Metric[]; referrers?: Metric[]; devices?: Metric[] };
+type WeeklyPoint = {start:string;end:string;visitors:number};
+type Weekly = {weeks:WeeklyPoint[];current:WeeklyPoint|null};
+type Payload = { connected?: boolean; message?: string; visits?: Metric[]; weekly?: Weekly; events?: Metric[]; pages?: Metric[]; referrers?: Metric[]; devices?: Metric[] };
 const actionNames: Record<string, string> = {
   availability_dates_selected: "Dates selected",
   hostaway_checkout_click: "Continue to booking",
@@ -48,87 +50,47 @@ function MetricRows({ title, subtitle, items, keyName, emptyText }: {
     </div>
   </section>;
 }
-function VisitsChart({ daily }: { daily: Metric[] }) {
-  const points = useMemo(() => [...daily].filter(d => d.timestamp).sort((a, b) => (a.timestamp || "").localeCompare(b.timestamp || "")), [daily]);
-  const [selected, setSelected] = useState<number | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [scroll, setScroll] = useState({ left: 0, max: 0 });
-  useEffect(() => {
-    const element = scrollRef.current;
-    if (!element) return;
-    const sync = () => setScroll({ left: element.scrollLeft, max: Math.max(0, element.scrollWidth - element.clientWidth) });
-    sync();
-    const observer = new ResizeObserver(sync);
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [points.length]);
-  const highest = Math.max(1, ...points.map(p => p.pageviews || 0));
-  const chartWidth = Math.max(760, (points.length - 1) * 46 + 80);
-  const left = 38, right = 20, top = 12, bottom = 34, height = 180;
-  const width = chartWidth - left - right, usableHeight = height - top - bottom;
-  const coords = points.map((p, i) => ({
-    x: left + (points.length < 2 ? width / 2 : width * i / (points.length - 1)),
-    y: top + usableHeight * (1 - (p.pageviews || 0) / highest),
-    date: p.timestamp || "", views: p.pageviews || 0
+function VisitsChart({ weekly }: { weekly?: Weekly }) {
+  const weeks = weekly?.weeks || [];
+  const [active, setActive] = useState<number | null>(null);
+  const max = Math.max(1, ...weeks.map(w => w.visitors));
+  const width = 600, height = 190, left = 18, right = 18, top = 26, bottom = 30;
+  const baseline = height - bottom;
+  const coords = weeks.map((w, i) => ({
+    x: left + (width-left-right)*i/Math.max(1,weeks.length-1),
+    y: baseline - (baseline-top)*w.visitors/max,
+    ...w
   }));
-  const path = coords.map((p, i) => `${i ? "L" : "M"} ${p.x} ${p.y}`).join(" ");
-  const active = selected !== null ? coords[selected] : null;
-  return <div className="mt-2.5 rounded-xl border border-[#E7DFDB] bg-[#FFFCFB] px-3 pb-2.5 pt-3 sm:px-4">
+  const path = coords.map((p,i) => `${i?"L":"M"} ${p.x} ${p.y}`).join(" ");
+  const fill = coords.length > 1 ? `${path} L ${coords[coords.length-1].x} ${baseline} L ${coords[0].x} ${baseline} Z` : "";
+  const labelEvery = Math.max(1, Math.ceil(weeks.length/6));
+  const previous = weeks.length > 1 ? weeks[weeks.length-2] : null;
+  const latest = weeks.length ? weeks[weeks.length-1] : null;
+  const change = previous && previous.visitors > 0 && latest ? (latest.visitors-previous.visitors)/previous.visitors*100 : null;
+  return <div className="mt-2.5 rounded-xl border border-[#E7DFDB] bg-[#FFFCFB] px-3 pb-3 pt-3 sm:px-4">
     <div className="flex flex-wrap items-center justify-between gap-2">
-      <p className="text-[12px] text-[#6D6057]">Daily page views</p>
-      <p className="font-body text-[12px] tabular-nums text-[#4A6E57]">{active ? `${shortDate(active.date)} · ${format(active.views)} views` : "Select a point to see its date and views"}</p>
+      <p className="text-[12px] text-[#6D6057]">Weekly visitors · completed weeks</p>
+      <p className="text-[12px] tabular-nums text-[#4A6E57]">{active !== null && weeks[active] ? `${shortDate(weeks[active].start)}–${shortDate(weeks[active].end)} · ${format(weeks[active].visitors)} visitors` : "Select a point for details"}</p>
     </div>
-    {points.length ? <div ref={scrollRef} className="mt-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" onScroll={e => setScroll({ left: e.currentTarget.scrollLeft, max: Math.max(0, e.currentTarget.scrollWidth - e.currentTarget.clientWidth) })} onMouseLeave={() => setSelected(null)}>
-      <svg role="img" aria-label="Daily page views line chart. Each dot represents one date." viewBox={`0 0 ${chartWidth} ${height + 24}`} width={chartWidth} height={height + 24} className="max-w-none" onBlur={() => setSelected(null)}>
-        {[0, 0.5, 1].map((step) => {
-          const y = top + usableHeight * (1 - step);
-          return <g key={step}><line x1={left} x2={chartWidth - right} y1={y} y2={y} stroke="#E9E1DC" strokeWidth="1" /><text x={left - 9} y={y + 4} textAnchor="end" fill="#796F68" fontSize="11">{Math.round(highest * step)}</text></g>;
-        })}
-        <path d={path} fill="none" stroke="#4A6E57" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        {coords.map((p, i) => <g key={p.date}>
-          <circle cx={p.x} cy={p.y} r={selected === i ? 6 : 4} stroke="#4A6E57" strokeWidth="2" fill={selected === i ? "#4A6E57" : "#FFFCFB"} />
-          <circle cx={p.x} cy={p.y} r="13" fill="transparent" tabIndex={0} role="button" aria-label={`${shortDate(p.date)}: ${p.views} views`} onMouseEnter={() => setSelected(i)} onFocus={() => setSelected(i)} onClick={() => setSelected(i)} />
-          <text x={p.x} y={height + 4} textAnchor="middle" fill="#6D6057" fontSize="10" transform={`rotate(-45 ${p.x} ${height + 4})`}>{shortDate(p.date)}</text>
-        </g>)}
-      </svg>
-    </div> : <p className="py-10 text-center text-[13px] text-[#6D6057]">No visits recorded during this period.</p>}
-    {points.length > 0 && scroll.max > 0 && <div
-      role="scrollbar" aria-label="Scroll chart dates horizontally" aria-orientation="horizontal"
-      aria-valuemin={0} aria-valuemax={Math.ceil(scroll.max)} aria-valuenow={Math.round(scroll.left)}
-      tabIndex={0} className="relative mt-1.5 h-[9px] w-full touch-none cursor-pointer rounded-full bg-[#ECE9E7]"
-      onPointerDown={e => {
-        const el = scrollRef.current;
-        if (!el) return;
-        const bar = e.currentTarget, rect = bar.getBoundingClientRect();
-        const thumb = Math.max(40, rect.width * el.clientWidth / el.scrollWidth);
-        const pct = Math.max(0, Math.min(1, (e.clientX - rect.left - thumb / 2) / Math.max(1, rect.width - thumb)));
-        el.scrollLeft = pct * scroll.max;
-        bar.setPointerCapture(e.pointerId);
-      }}
-      onPointerMove={e => {
-        if (!e.currentTarget.hasPointerCapture(e.pointerId) || !scrollRef.current) return;
-        const rect = e.currentTarget.getBoundingClientRect(), el = scrollRef.current;
-        const thumb = Math.max(40, rect.width * el.clientWidth / el.scrollWidth);
-        el.scrollLeft = Math.max(0, Math.min(1, (e.clientX - rect.left - thumb / 2) / Math.max(1, rect.width - thumb))) * scroll.max;
-      }}
-      onKeyDown={e => {
-        if (!scrollRef.current) return;
-        if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-          e.preventDefault(); scrollRef.current.scrollLeft += e.key === "ArrowRight" ? 70 : -70;
-        } else if (e.key === "Home" || e.key === "End") {
-          e.preventDefault(); scrollRef.current.scrollLeft = e.key === "Home" ? 0 : scroll.max;
-        }
-      }}
-    >
-      <div className="absolute top-0 h-full rounded-full bg-[#989898]" style={{
-        width: `${Math.min(100, Math.max(4, (scrollRef.current?.clientWidth || 1) / (scrollRef.current?.scrollWidth || 1) * 100))}%`,
-        left: `${scroll.max ? scroll.left / scroll.max * (100 - Math.min(100, Math.max(4, (scrollRef.current?.clientWidth || 1) / (scrollRef.current?.scrollWidth || 1) * 100))) : 0}%`
-      }} />
-    </div>}
+    {weeks.length > 1 ? <svg role="img" aria-label="Weekly visitors over the past year, completed weeks only" viewBox="0 0 600 190" className="mt-2 block h-auto w-full" onMouseLeave={() => setActive(null)}>
+      <path d={fill} fill="#4A6E57" fillOpacity=".08"/>
+      <line x1={left} x2={width-right} y1={baseline} y2={baseline} stroke="#E7DFDB" />
+      <path d={path} fill="none" stroke="#4A6E57" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      {coords.map((p,i) => <g key={p.start}>
+        <circle cx={p.x} cy={p.y} r={i === coords.length-1 ? 5 : 3.5} fill="#4A6E57" />
+        {(weeks.length <= 8 || i === weeks.length-1) && <text x={p.x} y={Math.max(12,p.y-11)} fontSize="10" textAnchor={i===0?"start":i===weeks.length-1?"end":"middle"} fill="#1F3125">{format(p.visitors)}</text>}
+        {(i%labelEvery===0 || i===weeks.length-1) && <text x={p.x} y={height-9} fontSize="10" textAnchor={i===0?"start":i===weeks.length-1?"end":"middle"} fill="#6D6057">{shortDate(p.start)}</text>}
+        <circle cx={p.x} cy={p.y} r="13" fill="transparent" tabIndex={0} role="button" aria-label={`${shortDate(p.start)} to ${shortDate(p.end)}: ${p.visitors} visitors`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)} />
+      </g>)}
+    </svg> : <p className="py-5 text-[13px] text-[#6D6057]">{weeks.length === 1 ? `First complete week: ${format(weeks[0].visitors)} visitors (${shortDate(weeks[0].start)}–${shortDate(weeks[0].end)}).` : "Weekly history will appear after the first complete week of tracking."}</p>}
+    <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1 border-t border-[#E7DFDB] pt-2 text-[12px] text-[#6D6057]">
+      {latest && previous && change !== null && <span>Latest completed week <strong className="font-medium text-[#1F3125]">{format(latest.visitors)}</strong> <span className={change>0?"text-[#4A6E57]":change<0?"text-[#9A5B55]":"text-[#6D6057]"}>({change>0?"+":""}{change.toFixed(1)}% vs prior week)</span></span>}
+      {weekly?.current && <span>This week so far ({shortDate(weekly.current.start)}–{shortDate(weekly.current.end)}): <strong className="font-medium text-[#1F3125]">{format(weekly.current.visitors)} visitors</strong></span>}
+    </div>
   </div>;
 }
 export default function AnalyticsPanel() {
-  const [days, setDays] = useState<7 | 30 | 90>(30);
+  const [days, setDays] = useState<7 | 30 | 90 | 365>(30);
   const [data, setData] = useState<Payload | null>(null);
   const [search, setSearch] = useState<SearchData | null>(null);
   useEffect(() => {
@@ -158,8 +120,8 @@ export default function AnalyticsPanel() {
         <div className="flex shrink-0 items-center gap-3 sm:pt-1">
           <label htmlFor="analytics-period" className="font-body text-[13px] font-medium leading-none text-[#6D6057]">Period</label>
           <div className="relative">
-            <select id="analytics-period" value={days} onChange={e => setDays(Number(e.target.value) as 7 | 30 | 90)} className="h-11 w-[205px] appearance-none rounded-xl border border-[#D8CCC4] bg-white pl-4 pr-11 font-body text-[13px] font-medium text-[#1F3125] outline-none focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15">
-              <option value={7}>Last 7 days</option><option value={30}>Last 30 days</option><option value={90}>Last 90 days</option>
+            <select id="analytics-period" value={days} onChange={e => setDays(Number(e.target.value) as 7 | 30 | 90 | 365)} className="h-11 w-[205px] appearance-none rounded-xl border border-[#D8CCC4] bg-white pl-4 pr-11 font-body text-[13px] font-medium text-[#1F3125] outline-none focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15">
+              <option value={7}>Last 7 days</option><option value={30}>Last 30 days</option><option value={90}>Last 90 days</option><option value={365}>Last 365 days</option>
             </select>
             <svg className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#1F3125]" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
           </div>
@@ -169,15 +131,15 @@ export default function AnalyticsPanel() {
         <div className="mt-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
           {([["Page views", pageviews], ["Visitors", visits], ["Booking clicks", clicks], ["Dates selected", dateSelections]] as const).map(([label, n]) => <div key={label} className="rounded-xl bg-[#F4EFEC] px-4 py-3"><strong className="block font-heading text-[27px] font-medium leading-none tabular-nums text-[#1F3125]">{format(n)}</strong><span className="mt-1 block font-body text-[12px] text-[#6D6057]">{label}</span></div>)}
         </div>
-        <h3 className="mt-5 font-heading text-[20px] font-medium text-[#1F3125]">Visits over time</h3>
-        <VisitsChart daily={daily} />
+        <h3 className="mt-5 font-heading text-[20px] font-medium text-[#1F3125]">Weekly visitor trend</h3>
+        <VisitsChart weekly={data.weekly} />
         <div className="mt-4 border-t border-[#E7DFDB] pt-3.5"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
       </>}
     </section>
-    {data?.connected && <div className="grid items-start gap-3.5 lg:grid-cols-2">
+    {data?.connected && <div className="grid gap-3.5 lg:grid-cols-2 lg:items-start">\n      <div className="min-w-0 space-y-3.5">
       <MetricRows title="Pages guests visit most" subtitle="Public website pages" items={publicPages} keyName="requestPath" />
-      <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" />
-      <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" />
+      
+      <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" />\n      </div>\n      <div className="min-w-0 space-y-3.5">
       <section className="flex min-w-0 flex-col rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
         <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">Google search</h3>
         <p className="mt-1 font-body text-[12px] text-[#6D6057]">Organic search performance · same selected period</p>
