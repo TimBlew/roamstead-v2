@@ -207,14 +207,11 @@ export default function AnalyticsPanel() {
         <div className="mt-4 border-t border-[#E7DFDB] pt-3.5 sm:mt-5"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
       </>}
     </section>
-    {data?.connected && <div className="grid gap-3 lg:grid-cols-2 lg:items-start">
-      <div className="min-w-0 space-y-3">
+    {data?.connected && <div className="grid items-start gap-3 lg:grid-cols-2">
       <MetricRows title="Pages guests visit most" subtitle="Public website pages" items={publicPages} keyName="requestPath" previousItems={data.previous?.pages} />
-      
-      <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
-      </div>
-      <div className="min-w-0 space-y-3">
-      <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
+      <div className="grid min-w-0 gap-3">
+        <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
+        <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
       </div>
     </div>}
     {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
