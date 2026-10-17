@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Metric = { timestamp?: string; visitors?: number; pageviews?: number; count?: number; total?: number; eventName?: string; requestPath?: string; referrerHostname?: string; deviceType?: string };
 type SearchData = {connected?:boolean;message?:string;clicks?:number;impressions?:number;ctr?:number;position?:number;endDate?:string;previous?:{clicks?:number;impressions?:number;ctr?:number;position?:number}|null;queries?:{query:string;clicks:number;impressions:number;position:number;ctr:number}[];pages?:{page:string;clicks:number}[]};
@@ -74,6 +74,7 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   const points = [...completed, ...(current ? [current] : [])];
   const [active, setActive] = useState<number | null>(null);
   const [compactChart, setCompactChart] = useState(false);
+  const timelineRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const media = window.matchMedia("(max-width: 639px)");
     const sync = () => setCompactChart(media.matches);
@@ -81,8 +82,12 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
     media.addEventListener("change",sync);
     return () => media.removeEventListener("change",sync);
   }, []);
+  useEffect(() => {
+    if(!compactChart || !timelineRef.current) return;
+    timelineRef.current.scrollLeft = timelineRef.current.scrollWidth - timelineRef.current.clientWidth;
+  }, [compactChart, days, points.length]);
   const max = Math.max(1, ...points.map(w => w.visitors));
-  const width = compactChart ? 360 : 600, height = points.length === 1 ? (compactChart ? 175 : 100) : (compactChart ? 205 : 170), left = compactChart ? 10 : 18, right = compactChart ? 10 : 18, top = compactChart ? 24 : 26, bottom = compactChart ? 29 : 30;
+  const width = compactChart ? Math.max(520,points.length*94) : 600, height = points.length === 1 ? (compactChart ? 168 : 100) : (compactChart ? 185 : 170), left = compactChart ? 32 : 18, right = compactChart ? 32 : 18, top = compactChart ? 22 : 26, bottom = compactChart ? 30 : 30;
   const baseline = height - bottom;
   const coords = points.map((w, i) => ({
     x: points.length === 1 ? width / 2 : left + (width-left-right)*i/Math.max(1,points.length-1),
@@ -94,16 +99,17 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   const fill = completedCoords.length > 1 ? `${completePath} L ${completedCoords[completedCoords.length-1].x} ${baseline} L ${completedCoords[0].x} ${baseline} Z` : "";
   const priorPoint = completedCoords[completedCoords.length-1];
   const currentPoint = current ? coords[coords.length-1] : null;
-  const labelEvery = Math.max(1, Math.ceil(points.length/(compactChart ? 4 : 6)));
+  const labelEvery = Math.max(1, Math.ceil(points.length/(compactChart ? Math.max(7,points.length) : 6)));
   const previous = completed.length > 1 ? completed[completed.length-2] : null;
   const latest = completed.length ? completed[completed.length-1] : null;
   const change = previous && previous.visitors > 0 && latest ? (latest.visitors-previous.visitors)/previous.visitors*100 : null;
-  return <div className="mt-2 rounded-xl border border-[#E7DFDB] bg-[#FFFCFB] px-3 py-3 sm:px-4">
+  return <div className="mt-2 border-0 bg-transparent py-2 sm:rounded-xl sm:border sm:border-[#E7DFDB] sm:bg-[#FFFCFB] sm:px-4 sm:py-3">
     <div className="flex items-center justify-between gap-2">
-      <p className="text-[11px] leading-snug text-[#6D6057] sm:text-[12px]">{isDaily ? "Last 7 days" : "Weekly visitors"}</p>
+      <p className="text-[11px] font-medium leading-snug text-[#4A6E57] sm:text-[12px]">{isDaily ? "LAST 7 DAYS" : "WEEKLY HISTORY"}</p>
       <p className="text-right text-[10px] leading-snug tabular-nums text-[#4A6E57] sm:text-[12px]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${current && active === points.length-1 ? (isDaily ? " (today)" : " (this week)") : ""}` : <span className="hidden sm:inline">Select a point for details</span>}</p>
     </div>
-    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox={`0 0 ${width} ${height}`} className="mt-1 block h-auto w-full sm:mt-2" onMouseLeave={() => setActive(null)}>
+    <div ref={timelineRef} className="relative mt-3 overflow-x-auto overscroll-x-contain pb-2 [scrollbar-width:thin] [scrollbar-color:#9CB5A2_transparent] sm:mt-0 sm:overflow-visible sm:pb-0" aria-label="Scrollable visitor timeline" tabIndex={0}>
+    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox={`0 0 ${width} ${height}`} className="block h-auto max-w-none sm:mt-2 sm:w-full" style={compactChart ? {width:`${width}px`} : {width:"100%"}} onMouseLeave={() => setActive(null)}>
       <path d={fill} fill="#4A6E57" fillOpacity=".08"/>
       <line x1={left} x2={width-right} y1={baseline} y2={baseline} stroke="#E7DFDB" />
       <path d={completePath} fill="none" stroke="#4A6E57" strokeWidth={compactChart ? 2.3 : 2} strokeLinecap="round" strokeLinejoin="round" />
@@ -118,6 +124,8 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
         </g>;
       })}
     </svg> : <p className="py-5 text-[13px] text-[#6D6057]">{points.length === 1 ? `${current ? "This week so far" : "First complete week"}: ${format(points[0].visitors)} visitors (${shortDate(points[0].start)}–${shortDate(points[0].end)}).` : "Weekly history will appear once tracking has a full week of data."}</p>}
+    </div>
+    <p className="mt-0.5 text-[10px] leading-tight text-[#80766E] sm:hidden">Swipe horizontally to explore dates <span aria-hidden="true">↔</span></p>
     <div className={`flex flex-wrap items-center gap-x-6 gap-y-1 text-[11px] text-[#6D6057] sm:text-[12px] ${!isDaily && ((latest && previous && change !== null) || current) ? "mt-2 border-t border-[#E7DFDB] pt-2" : "hidden"}`}>
       {!isDaily && latest && previous && change !== null && <span>Latest completed week <strong className="font-medium text-[#1F3125]">{format(latest.visitors)}</strong> <span className={change>0?"text-[#4A6E57]":change<0?"text-[#9A5B55]":"text-[#6D6057]"}>({change>0?"+":""}{change.toFixed(1)}% vs prior week)</span></span>}
       {!isDaily && current && <span>This week so far ({shortDate(current.start)}–{shortDate(current.end)}): <strong className="font-medium text-[#1F3125]">{format(current.visitors)} visitors</strong></span>}
