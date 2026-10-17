@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuthenticated } from "@/lib/admin-auth";
+import { canonical, launchIndexingEnabled } from "@/lib/site";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 const site = "sc-domain:roamstead-co.com";
@@ -53,6 +54,23 @@ export async function GET(request:NextRequest){
  try{
   const access=await token(request);
   if(!access)return NextResponse.json({connected:false,message:"Production OIDC identity token is unavailable. Check Vercel federation configuration."},{headers});
+  if(request.nextUrl.searchParams.get("inspection")==="1"){
+    const paths=["/","/properties","/book","/properties/hygge-house","/properties/granary","/properties/lowell","/properties/powder-room"];
+    const results=await Promise.all(paths.map(async path=>{
+      const url=canonical(path);
+      try{
+        const resp=await fetch("https://searchconsole.googleapis.com/v1/urlInspection/index:inspect",{
+          method:"POST",headers:{Authorization:"Bearer "+access,"Content-Type":"application/json"},
+          body:JSON.stringify({inspectionUrl:url,siteUrl:site}),cache:"no-store",signal:AbortSignal.timeout(15000)
+        });
+        if(!resp.ok) return {path,url,status:"unavailable",reason:"Google inspection unavailable ("+resp.status+")"};
+        const result=await resp.json() as {inspectionResult?:{indexStatusResult?:{verdict?:string;coverageState?:string;indexingState?:string;lastCrawlTime?:string;googleCanonical?:string}}};
+        const index=result.inspectionResult?.indexStatusResult;
+        return {path,url,status:index?.verdict==="PASS"?"indexed":index?.verdict==="FAIL"?"not_indexed":"unknown",reason:index?.coverageState||"Status not provided",lastCrawlTime:index?.lastCrawlTime||null};
+      }catch{return {path,url,status:"unavailable",reason:"Inspection request failed"};}
+    }));
+    return NextResponse.json({connected:true,inspection:true,launchIndexingEnabled,siteMap:canonical("/sitemap.xml"),results},{headers});
+  }
   const previousEnd=new Date(start.getTime()-86400000),previousStart=new Date(start.getTime()-days*86400000);
   const [totals,queries,pages,previousRows]=await Promise.all([query(access,date(start),date(end),[],1),query(access,date(start),date(end),["query"],35),query(access,date(start),date(end),["page"],20),query(access,date(previousStart),date(previousEnd),[],1).catch(()=>[] as Row[])]);
   const total=totals[0]||{};
