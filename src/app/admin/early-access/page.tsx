@@ -4,5 +4,5 @@ import { AdminWorkspace } from "@/components/admin/AdminWorkspace";
 export const dynamic="force-dynamic";
 export const metadata:Metadata={title:"Early access | Roamstead",robots:{index:false,follow:false}};
 export default async function EarlyAccessPage(){
-  return <AdminWorkspace active="early-access" title="Early access" subtitle="Review the guests interested in Roamstead membership."><EarlyAccessDirectory/></AdminWorkspace>;
+  return <AdminWorkspace active="early-access" title="Early access" subtitle="See who’s joined your early-access list and what they’re interested in."><EarlyAccessDirectory/></AdminWorkspace>;
 }
