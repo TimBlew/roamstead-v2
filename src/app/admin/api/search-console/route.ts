@@ -48,13 +48,14 @@ async function query(access:string,startDate:string,endDate:string,dimensions:st
 }
 export async function GET(request:NextRequest){
  if(!await adminAuthenticated())return NextResponse.json({error:"Unauthorized"},{status:401,headers});
- const n=Number(request.nextUrl.searchParams.get("days")),days=n===7||n===90?n:30;
+ const n=Number(request.nextUrl.searchParams.get("days")),days=n===7||n===90||n===365?n:30;
  const end=new Date(Date.now()-3*86400000),start=new Date(end.getTime()-(days-1)*86400000),date=(d:Date)=>d.toISOString().slice(0,10);
  try{
   const access=await token(request);
   if(!access)return NextResponse.json({connected:false,message:"Production OIDC identity token is unavailable. Check Vercel federation configuration."},{headers});
-  const [totals,queries,pages]=await Promise.all([query(access,date(start),date(end),[],1),query(access,date(start),date(end),["query"],8),query(access,date(start),date(end),["page"],5)]);
+  const previousEnd=new Date(start.getTime()-86400000),previousStart=new Date(start.getTime()-days*86400000);
+  const [totals,queries,pages,previousRows]=await Promise.all([query(access,date(start),date(end),[],1),query(access,date(start),date(end),["query"],8),query(access,date(start),date(end),["page"],5),query(access,date(previousStart),date(previousEnd),[],1).catch(()=>[] as Row[])]);
   const total=totals[0]||{};
-  return NextResponse.json({connected:true,startDate:date(start),endDate:date(end),clicks:total.clicks||0,impressions:total.impressions||0,ctr:total.ctr||0,position:total.position||0,queries:queries.map(r=>({query:r.keys?.[0]||"",clicks:r.clicks||0})),pages:pages.map(r=>({page:r.keys?.[0]||"",clicks:r.clicks||0}))},{headers});
+  return NextResponse.json({connected:true,startDate:date(start),endDate:date(end),clicks:total.clicks||0,impressions:total.impressions||0,ctr:total.ctr||0,position:total.position||0,previous:previousRows[0]||null,queries:queries.map(r=>({query:r.keys?.[0]||"",clicks:r.clicks||0,impressions:r.impressions||0,position:r.position||0,ctr:r.ctr||0})),pages:pages.map(r=>({page:r.keys?.[0]||"",clicks:r.clicks||0}))},{headers});
  }catch(error){ const raw=error instanceof Error ? error.message : "unknown"; const diagnostic=/^(federation_exchange|service_account_impersonation|search_console)_[0-9]{3}(?:_[A-Za-z0-9_]{1,80})?$/.test(raw) ? raw : "unexpected_error"; console.error("Roamstead Search Console reporting failed", diagnostic); return NextResponse.json({connected:false,diagnostic,message:"Google reporting connection is not yet ready ("+diagnostic.replaceAll("_"," ")+")."},{headers});}
 }
