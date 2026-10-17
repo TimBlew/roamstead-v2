@@ -158,7 +158,21 @@ export default function AnalyticsPanel() {
       </div>
       {!data ? <p className="mt-6 text-[14px] text-[#6D6057]">Gathering your latest numbers...</p> : !data.connected ? <p className="mt-6 rounded-lg bg-[#F4EFEC] p-4 text-[14px] text-[#6D6057]">{data.message || "Your site insights are temporarily unavailable."}</p> : <>
         <div className="mt-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
-          {([["Page views", pageviews, previousPageviews], ["Visitors", visits, previousVisitors], ["Booking clicks", clicks, undefined], ["Dates selected", dateSelections, undefined]] as const).map(([label, n, previous]) => <div key={label} className="rounded-xl bg-[#F4EFEC] px-4 py-3"><strong className="block font-heading text-[27px] font-medium leading-none tabular-nums text-[#1F3125]">{format(n)}</strong><span className="mt-1 block font-body text-[12px] text-[#6D6057]">{label}</span>{changeLabel(n,previous) && <span className="mt-1 block text-[11px] text-[#4A6E57]">{changeLabel(n,previous)}</span>}</div>)}
+          {([
+            {label:"Page views",value:pageviews,previous:previousPageviews,category:"SITE TRAFFIC",accent:"#66836D"},
+            {label:"Visitors",value:visits,previous:previousVisitors,category:"SITE TRAFFIC",accent:"#66836D"},
+            {label:"Booking clicks",value:clicks,previous:undefined,category:"BOOKING INTEREST",accent:"#A4876C"},
+            {label:"Dates selected",value:dateSelections,previous:undefined,category:"BOOKING INTEREST",accent:"#A4876C"}
+          ] as const).map((metric) => {
+            const comparison = changeLabel(metric.value,metric.previous);
+            return <div key={metric.label} className="relative min-w-0 overflow-hidden rounded-xl border border-[#EAE2DD] bg-[#F7F3F0] px-3.5 pb-3.5 pt-3 sm:px-4">
+              <span className="absolute left-0 top-0 h-[3px] w-full" style={{backgroundColor:metric.accent}} aria-hidden="true" />
+              <span className="block font-body text-[9px] font-semibold tracking-[.12em] text-[#80766E] sm:text-[10px]">{metric.category}</span>
+              <strong className="mt-2 block font-heading text-[31px] font-medium leading-none tracking-[-.035em] tabular-nums text-[#1F3125] sm:text-[34px]">{format(metric.value)}</strong>
+              <span className="mt-1.5 block font-body text-[12px] font-medium leading-snug text-[#625C55]">{metric.label}</span>
+              {comparison && <span className="mt-1 block font-body text-[11px] leading-snug text-[#4A6E57]">{comparison}</span>}
+            </div>;
+          })}
         </div>
         <h3 className="mt-5 font-heading text-[20px] font-medium text-[#1F3125]">Weekly visitor trend</h3>
         <VisitsChart weekly={data.weekly} daily={daily} days={days} />
