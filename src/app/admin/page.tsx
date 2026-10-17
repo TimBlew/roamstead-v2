@@ -36,9 +36,9 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         ) : !allowed ? (
           <form method="post" action="/admin/login" className="w-full max-w-[460px] rounded-[12px] border border-[#D8CCC4] bg-[#FFFCFB] p-4 shadow-sm sm:p-6 lg:mx-auto lg:max-w-[456px] lg:rounded-[16px] lg:border-[#DDD2C9] lg:px-10 lg:pb-7 lg:pt-7 lg:shadow-[0_14px_45px_rgba(31,49,37,0.075)]">
             <div className="hidden lg:flex lg:flex-col lg:items-center lg:text-center">
-              <div className="w-[206px]">
+              <div className="relative -translate-x-[7px] w-[226px]">
                 <img src="/roamstead-logo.svg" alt="Roamstead" className="block h-auto w-full" />
-                <p className="mt-0.5 flex w-full justify-between font-body text-[10px] font-semibold uppercase leading-none text-[#4A6E57]" aria-label="Workspace">{"WORKSPACE".split("").map((letter,index)=><span key={index}>{letter}</span>)}</p>
+                <p className="ml-[18%] mt-0.5 flex w-[82%] justify-between font-body text-[12px] font-semibold uppercase leading-none text-[#4A6E57]" aria-label="Workspace">{"WORKSPACE".split("").map((letter,index)=><span key={index}>{letter}</span>)}</p>
               </div>
               <h1 className="mt-4 font-heading text-[34px] font-medium leading-[1.12] tracking-[-0.035em] text-[#1F3125]">Welcome back.</h1>
               <p className="mt-1 mb-3 font-body text-[13px] leading-[1.4] text-[#6D6057]">Sign in to manage your Roamstead website.</p>
