@@ -23,10 +23,10 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   return (
     <div id="admin-root" className="min-h-[100dvh] bg-[#F4EFEC] px-4 py-8 text-[#1F3125] sm:px-6 sm:py-12 md:px-10 md:py-16 lg:flex lg:items-center lg:justify-center">
       <div className="mx-auto w-full max-w-[1050px] lg:max-w-[520px]">
-        <div className="mb-5 md:mb-8 lg:mb-5 lg:text-center">
+        <div className="mb-5 md:mb-8 lg:mb-2 lg:text-center">
           <p className="mb-2 font-body text-[10px] font-medium uppercase tracking-[0.12em] sm:text-[12px] sm:tracking-[0.16em] text-[#4A6E57]">Roamstead Collective · Your workspace</p>
           <h1 className="font-heading text-[30px] leading-[1.12] tracking-[-0.025em] sm:text-[36px] md:text-[40px]">{allowed ? "Your site, at a glance." : "Welcome back."}</h1>
-          <p className="mt-2 max-w-[630px] font-body text-[13px] leading-[1.5] sm:mt-3 sm:text-[15px] lg:mt-3 lg:mx-auto text-[#6D6057]">{allowed ? "A single starting point for site performance, guest interest, search visibility and property operations." : "Sign in to manage your Roamstead website."}</p>
+          <p className="mt-2 max-w-[630px] font-body text-[13px] leading-[1.5] sm:mt-3 sm:text-[15px] lg:!mt-1 lg:mx-auto text-[#6D6057]">{allowed ? "A single starting point for site performance, guest interest, search visibility and property operations." : "Sign in to manage your Roamstead website."}</p>
         </div>
         {!configured ? (
           <div className="max-w-[600px] rounded-[12px] border border-[#D8CCC4] bg-white p-7">
