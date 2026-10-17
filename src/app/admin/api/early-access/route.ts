@@ -3,16 +3,31 @@ import { NextRequest, NextResponse } from "next/server";
 import { adminAuthenticated } from "@/lib/admin-auth";
 export const dynamic = "force-dynamic";
 type ResendContact={ id:string; email:string; created_at:string; unsubscribed?:boolean; properties?:Record<string,unknown> };
+const DIRECTORY_TTL_MS=45_000;
+let ledgerCache:{entries:ReturnType<typeof mapLedger>;expiresAt:number}|null=null;
+let ledgerPending:Promise<ReturnType<typeof mapLedger>>|null=null;
+function mapLedger(stored:Awaited<ReturnType<typeof readSignups>>){
+  return stored.sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).map(r=>({
+    id:r.id,email:r.email,createdAt:r.createdAt,season:r.season,home:r.home,
+    unsubscribed:false,subscriptionKnown:false,notificationStatus:r.notificationStatus,contactStatus:r.contactStatus,
+    preferencesUnavailable:false
+  }));
+}
+async function getLedgerEntries(refresh:boolean){
+  if(!refresh&&ledgerCache&&Date.now()<ledgerCache.expiresAt)return ledgerCache.entries;
+  if(!ledgerPending){
+    ledgerPending=readSignups().then(mapLedger).then(entries=>{
+      ledgerCache={entries,expiresAt:Date.now()+DIRECTORY_TTL_MS};
+      return entries;
+    }).finally(()=>{ledgerPending=null});
+  }
+  return ledgerPending;
+}
 export async function GET(req:NextRequest){
   if(!await adminAuthenticated())return NextResponse.json({error:"Unauthorized"},{status:401,headers:{"Cache-Control":"private, no-store"}});
   if (sheetConfigured()) {
     try {
-      const stored=await readSignups();
-      const entries=stored.sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).map(r=>({
-        id:r.id,email:r.email,createdAt:r.createdAt,season:r.season,home:r.home,
-        unsubscribed:false,subscriptionKnown:false,notificationStatus:r.notificationStatus,contactStatus:r.contactStatus,
-        preferencesUnavailable:false
-      }));
+      const entries=await getLedgerEntries(req.nextUrl.searchParams.get("refresh")==="1");
       return NextResponse.json({connected:true,source:"sheets",entries,hasMore:false,nextCursor:null},{headers:{"Cache-Control":"private, no-store"}});
     } catch(error) {
       console.error("Roamstead private ledger read failed",error instanceof Error?error.message:"unknown");
