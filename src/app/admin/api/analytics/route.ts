@@ -65,8 +65,8 @@ export async function GET(req:NextRequest){
       query(token,"/visits/aggregate",{since,until,by:"requestPath",limit:"15"}),
       query(token,"/visits/aggregate",{since,until,by:"referrerHostname",limit:"12"}),
       query(token,"/visits/aggregate",{since,until,by:"deviceType",limit:"8"}),
-      dailyRows(token,new Date(now.getTime()-364*DAY),new Date(now.getTime()+DAY))
+      dailyRows(token,new Date(now.getTime()-364*DAY),new Date(now.getTime()+DAY)).catch(() => null)
     ]);
-    return NextResponse.json({connected:true,period:`Past ${range} days`,visits,weekly:weeklySeries(yearRows,now),events:events.data||[],pages:pages.data||[],referrers:referrers.data||[],devices:devices.data||[]},{headers:{"Cache-Control":"private, no-store"}});
+    return NextResponse.json({connected:true,period:`Past ${range} days`,visits,weekly:yearRows ? weeklySeries(yearRows,now) : undefined,weeklyError:yearRows ? undefined : "Weekly visitor history is temporarily unavailable.",events:events.data||[],pages:pages.data||[],referrers:referrers.data||[],devices:devices.data||[]},{headers:{"Cache-Control":"private, no-store"}});
   }catch{return NextResponse.json({connected:false,message:"Unable to retrieve Vercel Analytics data. Check the reporting token permissions and Vercel API access."},{headers:{"Cache-Control":"private, no-store"}})}
 }
