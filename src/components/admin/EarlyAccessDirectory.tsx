@@ -62,7 +62,7 @@ export default function EarlyAccessDirectory(){
   const detail=entries.find(e=>e.id===selected);
   const displayDate=(value:string)=>{const d=new Date(value);return Number.isNaN(d.getTime())?value:d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})};
   return <div className="space-y-3">
-    <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-3 sm:p-5">
+    <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-3 sm:px-5 sm:py-4">
       <div><p className="text-[10px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Notifications</p><h2 className="mt-0.5 font-heading text-[20px] leading-tight sm:text-[23px]">Where signup emails go</h2><p className="mt-1 font-body text-[12px] leading-[1.5] text-[#6D6057]">Choose who receives an email when someone joins your early-access list.</p></div>
       <form onSubmit={saveNotification} className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end">
         <label className="min-w-0 flex-1 font-body text-[12px] font-medium text-[#1F3125]">Send notifications to
@@ -73,7 +73,7 @@ export default function EarlyAccessDirectory(){
       {settingNotice&&<p role="status" className="mt-2 text-[12px] text-[#4A6E57]">{settingNotice}</p>}
       <p className="mt-2 font-body text-[11px] leading-[1.45] text-[#6D6057]">Your new email address will take effect once the website update is live.</p>
     </section>
-    <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-3 sm:p-5">
+    <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-3 sm:px-5 sm:py-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div><h2 className="font-heading text-[22px] leading-tight sm:text-[25px]">Guest list</h2></div>
         <button type="button" onClick={()=>void load(null,true)} disabled={loading} className="inline-flex h-[33px] items-center rounded-md border border-[#D8CCC4] px-3 text-[12px] text-[#1F3125] disabled:opacity-40">Refresh</button>
@@ -100,6 +100,6 @@ export default function EarlyAccessDirectory(){
       </div>
       {hasMore&&<div className="mt-3 text-center"><button type="button" disabled={loading||!cursor} onClick={()=>void load(cursor)} className="h-[36px] rounded-lg border border-[#D8CCC4] px-4 text-[12px] disabled:opacity-40">Load more</button></div>}
     </section>
-    {detail&&<section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5"><div className="flex items-center justify-between gap-3"><h3 className="font-heading text-[20px]">Guest details</h3><button className="text-[12px] text-[#6D6057] underline" onClick={()=>setSelected(null)}>Close</button></div><dl className="mt-3 grid gap-3 text-[13px] sm:grid-cols-2">{[["Email",detail.email],["Date added",displayDate(detail.createdAt)],["Preferred season",detail.preferencesUnavailable?"Could not load preferences":detail.season||"Not provided"],["Home area",detail.preferencesUnavailable?"Could not load preferences":detail.home||"Not provided"],["Mailing list status",detail.subscriptionKnown===false?(detail.contactStatus==="stored"?"Contact saved":"Not yet confirmed"):detail.unsubscribed?"Unsubscribed":"Subscribed"]].map(([label,value])=><div key={label}><dt className="text-[11px] text-[#6D6057]">{label}</dt><dd className="mt-0.5 break-words font-medium">{value}</dd></div>)}</dl><a href={"mailto:"+detail.email} className="mt-4 inline-flex h-[34px] items-center rounded-md bg-[#4A6E57] px-3 text-[12px] font-medium text-white">Send an email</a></section>}
+    {detail&&<section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-3 sm:px-5 sm:py-4"><div className="flex items-center justify-between gap-3"><h3 className="font-heading text-[20px]">Guest details</h3><button className="text-[12px] text-[#6D6057] underline" onClick={()=>setSelected(null)}>Close</button></div><dl className="mt-3 grid gap-3 text-[13px] sm:grid-cols-2">{[["Email",detail.email],["Date added",displayDate(detail.createdAt)],["Preferred season",detail.preferencesUnavailable?"Could not load preferences":detail.season||"Not provided"],["Home area",detail.preferencesUnavailable?"Could not load preferences":detail.home||"Not provided"],["Mailing list status",detail.subscriptionKnown===false?(detail.contactStatus==="stored"?"Contact saved":"Not yet confirmed"):detail.unsubscribed?"Unsubscribed":"Subscribed"]].map(([label,value])=><div key={label}><dt className="text-[11px] text-[#6D6057]">{label}</dt><dd className="mt-0.5 break-words font-medium">{value}</dd></div>)}</dl><a href={"mailto:"+detail.email} className="mt-4 inline-flex h-[34px] items-center rounded-md bg-[#4A6E57] px-3 text-[12px] font-medium text-white">Send an email</a></section>}
   </div>;
 }
