@@ -63,7 +63,7 @@ export default function CopyEditor() {
     }catch(e){setNotice(e instanceof Error?e.message:"Save failed")}finally{setBusy(false)}
   }
   const [expanded,setExpanded]=useState<string|null>("Hero");
-  return <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] px-2.5 py-2.5 sm:px-4 sm:py-3 md:px-5">
+  return <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-3 sm:px-5 sm:py-4">
     <header className="flex items-start justify-between">
       <div>
         <p className="font-body text-[11px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">CONTENT EDITOR</p>
