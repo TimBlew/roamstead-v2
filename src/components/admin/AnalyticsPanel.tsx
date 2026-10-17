@@ -208,9 +208,9 @@ export default function AnalyticsPanel() {
       </>}
     </section>
     {data?.connected && <div className="grid items-start gap-3 lg:grid-cols-2">
-      <MetricRows title="Pages guests visit most" subtitle="Public website pages" items={publicPages} keyName="requestPath" previousItems={data.previous?.pages} />
+      <MetricRows title="Pages guests visit most" compact items={publicPages} keyName="requestPath" previousItems={data.previous?.pages} />
       <div className="grid min-w-0 gap-3">
-        <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
+        <MetricRows title="Referring websites and direct traffic" compact items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
         <MetricRows title="Visits by device type" compact items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
       </div>
     </div>}
