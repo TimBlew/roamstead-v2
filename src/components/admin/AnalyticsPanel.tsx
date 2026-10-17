@@ -176,7 +176,7 @@ export default function AnalyticsPanel() {
         <div className="min-w-0"><h2 className="font-heading text-[24px] font-medium leading-[1.15] text-[#1F3125]">Overview</h2></div>
         <div className="flex shrink-0 items-center gap-3 sm:pt-1">
           <label htmlFor="analytics-period" className="font-body text-[13px] font-medium leading-none text-[#6D6057]">Period</label>
-          <div className="relative">
+          <div className="relative w-[205px] max-w-full">
             <select id="analytics-period" value={days} onChange={e => setDays(Number(e.target.value) as 7 | 30 | 90 | 365)} className="h-11 w-full appearance-none rounded-xl border border-[#D8CCC4] bg-white pl-4 pr-11 font-body text-[13px] font-medium text-[#1F3125] outline-none focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15">
               <option value={7}>Last 7 days</option><option value={30}>Last 30 days</option><option value={90}>Last 3 months</option><option value={365}>Last 12 months</option>
             </select>
