@@ -75,6 +75,14 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   const [active, setActive] = useState<number | null>(null);
   const [compactChart, setCompactChart] = useState(false);
   const timelineRef = useRef<HTMLDivElement>(null);
+  const [scrollIndicator, setScrollIndicator] = useState({left:0,width:100});
+  const syncScrollIndicator = (el:HTMLDivElement) => {
+    const total=el.scrollWidth;
+    const visible=el.clientWidth;
+    const width=total>0 ? Math.min(100,visible/total*100) : 100;
+    const left=total>visible ? el.scrollLeft/(total-visible)*(100-width) : 0;
+    setScrollIndicator({left,width});
+  };
   useEffect(() => {
     const media = window.matchMedia("(max-width: 639px)");
     const sync = () => setCompactChart(media.matches);
@@ -85,6 +93,7 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   useEffect(() => {
     if(!compactChart || !timelineRef.current) return;
     timelineRef.current.scrollLeft = timelineRef.current.scrollWidth - timelineRef.current.clientWidth;
+    syncScrollIndicator(timelineRef.current);
   }, [compactChart, days, points.length]);
   const max = Math.max(1, ...points.map(w => w.visitors));
   const width = compactChart ? Math.max(520,points.length*94) : 600, height = points.length === 1 ? (compactChart ? 168 : 100) : (compactChart ? 185 : 170), left = compactChart ? 32 : 18, right = compactChart ? 32 : 18, top = compactChart ? 22 : 26, bottom = compactChart ? 30 : 30;
@@ -108,7 +117,7 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
       <p className="text-[11px] font-medium leading-snug text-[#4A6E57] sm:text-[12px]">{isDaily ? "LAST 7 DAYS" : "WEEKLY HISTORY"}</p>
       <p className="text-right text-[10px] leading-snug tabular-nums text-[#4A6E57] sm:text-[12px]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${current && active === points.length-1 ? (isDaily ? " (today)" : " (this week)") : ""}` : <span className="hidden sm:inline">Select a point for details</span>}</p>
     </div>
-    <div ref={timelineRef} className="relative mt-3 overflow-x-auto overscroll-x-contain pb-2 [scrollbar-width:thin] [scrollbar-color:#9CB5A2_transparent] sm:mt-0 sm:overflow-visible sm:pb-0" aria-label="Scrollable visitor timeline" tabIndex={0}>
+    <div ref={timelineRef} className="relative mt-3 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mt-0 sm:overflow-visible sm:pb-0" aria-label="Scrollable visitor timeline" tabIndex={0} onScroll={(event) => syncScrollIndicator(event.currentTarget)}>
     {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox={`0 0 ${width} ${height}`} className="block h-auto max-w-none sm:mt-2 sm:w-full" style={compactChart ? {width:`${width}px`} : {width:"100%"}} onMouseLeave={() => setActive(null)}>
       <path d={fill} fill="#4A6E57" fillOpacity=".08"/>
       <line x1={left} x2={width-right} y1={baseline} y2={baseline} stroke="#E7DFDB" />
@@ -125,7 +134,9 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
       })}
     </svg> : <p className="py-5 text-[13px] text-[#6D6057]">{points.length === 1 ? `${current ? "This week so far" : "First complete week"}: ${format(points[0].visitors)} visitors (${shortDate(points[0].start)}–${shortDate(points[0].end)}).` : "Weekly history will appear once tracking has a full week of data."}</p>}
     </div>
-    <p className="mt-0.5 text-[10px] leading-tight text-[#80766E] sm:hidden">Swipe horizontally to explore dates <span aria-hidden="true">↔</span></p>
+    <div className="mt-2 h-[5px] w-full rounded-full bg-[#DEDCD8] sm:hidden" role="img" aria-label="Timeline scroll position">
+      <div className="h-full rounded-full bg-[#959C97] transition-[width,left] duration-150" style={{width:`${scrollIndicator.width}%`,marginLeft:`${scrollIndicator.left}%`}} />
+    </div>
     <div className={`flex flex-wrap items-center gap-x-6 gap-y-1 text-[11px] text-[#6D6057] sm:text-[12px] ${!isDaily && ((latest && previous && change !== null) || current) ? "mt-2 border-t border-[#E7DFDB] pt-2" : "hidden"}`}>
       {!isDaily && latest && previous && change !== null && <span>Latest completed week <strong className="font-medium text-[#1F3125]">{format(latest.visitors)}</strong> <span className={change>0?"text-[#4A6E57]":change<0?"text-[#9A5B55]":"text-[#6D6057]"}>({change>0?"+":""}{change.toFixed(1)}% vs prior week)</span></span>}
       {!isDaily && current && <span>This week so far ({shortDate(current.start)}–{shortDate(current.end)}): <strong className="font-medium text-[#1F3125]">{format(current.visitors)} visitors</strong></span>}
