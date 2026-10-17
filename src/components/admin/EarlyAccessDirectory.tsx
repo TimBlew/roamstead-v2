@@ -64,7 +64,7 @@ export default function EarlyAccessDirectory(){
   return <div className="space-y-3">
     <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-3 sm:px-5 sm:py-4">
       <div><p className="text-[10px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Notifications</p><h2 className="mt-0.5 font-heading text-[20px] leading-tight sm:text-[23px]">Where signup emails go</h2><p className="mt-1 font-body text-[12px] leading-[1.5] text-[#6D6057]">Choose who receives an email when someone joins your early-access list.</p></div>
-      <form onSubmit={saveNotification} className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end">
+      <form onSubmit={saveNotification} className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-end">
         <label className="min-w-0 flex-1 font-body text-[12px] font-medium text-[#1F3125]">Send notifications to
           <input type="email" required autoComplete="email" maxLength={254} value={notificationEmail} onChange={e=>setNotificationEmail(e.target.value)} disabled={!settingEnabled||settingBusy} placeholder="email@example.com" className="mt-1 block h-[39px] w-full rounded-lg border border-[#D8CCC4] bg-white px-3 font-body text-[13px] outline-[#4A6E57] disabled:opacity-55"/>
         </label>
@@ -78,16 +78,16 @@ export default function EarlyAccessDirectory(){
         <div><h2 className="font-heading text-[22px] leading-tight sm:text-[25px]">Guest list</h2></div>
         <button type="button" onClick={()=>void load(null,true)} disabled={loading} className="inline-flex h-[33px] items-center rounded-md border border-[#D8CCC4] px-3 text-[12px] text-[#1F3125] disabled:opacity-40">Refresh</button>
       </div>
-      <div className="mt-3 flex items-center justify-between gap-3 rounded-lg bg-[#F4EFEC] px-4 py-3">
+      <div className="mt-2 flex items-center justify-between gap-3 rounded-lg bg-[#F4EFEC] px-3 py-2.5">
         <div><strong className="block font-heading text-[25px] leading-tight tabular-nums">{initialLoaded?entries.length:"—"}</strong><span className="block text-[11px] text-[#6D6057]">{hasMore?"Records loaded":"Guests on the list"}</span></div>
         <span className="text-right text-[11px] leading-snug text-[#6D6057]">{loading? "Refreshing list…" : dataSource==="sheets" ? "Mailing status in guest details" : "Subscription status in guest details"}</span>
       </div>
-      <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+      <div className="mt-2.5 flex flex-col gap-2 sm:flex-row">
         <label className="min-w-0 flex-1"><span className="sr-only">Find a contact</span><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search guests by email, season, or area" className="h-[40px] w-full rounded-lg border border-[#D8CCC4] bg-white px-3 font-body text-[13px] outline-[#4A6E57]"/></label>
         <label className="relative block w-full sm:w-[170px]"><span className="sr-only">Filter by preferred season</span><select value={season} onChange={e=>setSeason(e.target.value)} className="h-[40px] w-full appearance-none rounded-lg border border-[#D8CCC4] bg-white pl-3 pr-11 font-body text-[13px] text-[#1F3125] outline-none focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15"><option value="all">All seasons</option>{seasons.map(s=><option key={s} value={s}>{s}</option>)}</select><svg aria-hidden="true" viewBox="0 0 20 20" fill="none" className="pointer-events-none absolute right-2.5 top-1/2 h-[16px] w-[16px] -translate-y-1/2 text-[#4A6E57]"><path d="m5 7 5 5 5-5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg></label>
       </div>
       {message&&<p role="alert" className="mt-3 rounded-md bg-[#F4EFEC] px-3 py-2 text-[12px] text-[#6D6057]">{message}</p>}
-      <div className="mt-3 overflow-hidden rounded-lg border border-[#E7DFDB]">
+      <div className="mt-2.5 overflow-hidden rounded-lg border border-[#E7DFDB]">
         <div className="hidden grid-cols-[minmax(0,1.6fr)_1fr_1fr_90px] gap-3 bg-[#F4EFEC] px-3 py-2 text-[11px] font-semibold text-[#6D6057] sm:grid"><span>Email</span><span>Preferred season</span><span>Home area</span><span>Added</span></div>
         {filtered.map(e=><button key={e.id} type="button" onClick={()=>setSelected(selected===e.id?null:e.id)} className={"block w-full border-t border-[#E7DFDB] px-3 py-3 text-left hover:bg-[#F7F3F0] sm:grid sm:grid-cols-[minmax(0,1.6fr)_1fr_1fr_90px] sm:gap-3 sm:py-2.5 "+(selected===e.id?"bg-[#F4EFEC]":"")}>
           <span className="block min-w-0 break-all text-[13px] font-medium text-[#1F3125]">{e.email}</span>
