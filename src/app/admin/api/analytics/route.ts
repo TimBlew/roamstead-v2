@@ -87,11 +87,11 @@ export async function GET(req:NextRequest){
     optional.forEach((result,index) => {
       if(result.status==="rejected") console.warn("Roamstead analytics optional query failed",index,String(result.reason));
     });
-    return NextResponse.json({connected:true,period:`Past ${range} days`,visits,previous,weekly:weeklySeries(yearRows || visits,now),weeklyError:yearRows ? undefined : "Full-year history is temporarily unavailable; showing the available reporting period.",events:events.data||[],pages:pages.data||[],referrers:referrers.data||[],devices:devices.data||[]},{headers:{"Cache-Control":"private, no-store"}});
+    return NextResponse.json({connected:true,period:`Past ${range} days`,visits,previous,weekly:weeklySeries(yearRows || visits,now),weeklyError:yearRows ? undefined : "Full-year history is temporarily unavailable; showing the available reporting period.",events:events?.data||[],pages:pages?.data||[],referrers:referrers?.data||[],devices:devices?.data||[]},{headers:{"Cache-Control":"private, no-store"}});
   }catch(error){
     const detail=error instanceof Error ? error.message : "Unknown analytics error";
     console.error("Roamstead analytics main query failed",detail);
-    const accessDenied=/\\b(401|403)\\b/.test(detail);
+    const accessDenied=/\b(401|403)\b/.test(detail);
     return NextResponse.json({connected:false,message:accessDenied ? "Analytics reporting access needs attention. The reporting token may have expired or lost permission." : "Analytics reporting is temporarily unavailable. Please try again shortly."},{headers:{"Cache-Control":"private, no-store"}});
   }
 }
