@@ -225,17 +225,14 @@ export default function AnalyticsPanel() {
         <MetricRows title="Visits by device type" compact items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
       </div>
     </div>}
-    {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-3 sm:px-5 sm:py-4">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h3 className="font-heading text-[19px] font-medium text-[#1F3125]">Google search performance</h3>
-          <span className="font-body text-[11px] text-[#6D6057]">Organic Google search</span>
-        </div>
+    {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 pb-3 pt-2.5 sm:px-5 sm:py-4">
+        <h3 className="font-heading text-[19px] font-medium leading-tight text-[#1F3125]">Google search performance</h3>
         {!search ? <p className="mt-3 text-[13px] text-[#6D6057]">Loading Google search data…</p> : !search.connected ? <p className="mt-3 text-[13px] text-[#6D6057]">{search.message}</p> : <>
           <div className="mt-2 grid grid-cols-2 gap-2 lg:grid-cols-4">
-            {([["Search clicks",search.clicks||0],["Appearances",search.impressions||0],["Click rate",((search.ctr||0)*100).toFixed(1)+"%"],["Average position",(search.position||0)>0?(search.position||0).toFixed(1):"—"]] as const).map(([name,val],index)=><div key={name} className="relative min-w-0 overflow-hidden rounded-xl border border-[#E5DDD5] bg-[#F7F4F0] px-3 pb-2.5 pt-3 sm:px-3.5">
+            {([["Search clicks",search.clicks||0],["Appearances",search.impressions||0],["Click rate",((search.ctr||0)*100).toFixed(1)+"%"],["Average position",(search.position||0)>0?(search.position||0).toFixed(1):"—"]] as const).map(([name,val],index)=><div key={name} className="relative min-w-0 overflow-hidden rounded-xl border border-[#E5DDD5] bg-[#F7F4F0] px-3 pb-2 pt-2.5 sm:px-3.5 sm:pb-2.5 sm:pt-3">
               <div className={`absolute inset-x-0 top-0 h-[2px] ${index<2?"bg-[#75947D]":"bg-[#B29C88]"}`} />
               <span className="block font-body text-[10px] font-medium tracking-[0.025em] text-[#6D6057]">{name}</span>
-              <strong className="mt-1 block font-heading text-[25px] font-medium leading-none tabular-nums tracking-tight text-[#1F3125] sm:text-[27px]">{typeof val==="number"?format(val):val}</strong>
+              <strong className="mt-0.5 block font-heading text-[25px] font-medium leading-none tabular-nums tracking-tight text-[#1F3125] sm:text-[27px]">{typeof val==="number"?format(val):val}</strong>
             </div>)}
           </div>
           {search.previous && (search.previous.impressions||0)>0 && <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-[#597761]">
