@@ -75,7 +75,7 @@ export default function EarlyAccessDirectory(){
     </section>
     <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-3 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <div><p className="text-[10px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Guest interest</p><h2 className="mt-0.5 font-heading text-[22px] leading-tight sm:text-[25px]">Your early-access list</h2><p className="mt-1 max-w-[65ch] font-body text-[12px] leading-[1.45] text-[#6D6057]">{dataSource==="sheets"?"Everyone who’s joined the list, along with their preferred season and home area.":"Your early-access contacts are being loaded from the mailing list."}</p></div>
+        <div><h2 className="font-heading text-[22px] leading-tight sm:text-[25px]">Guest list</h2></div>
         <button type="button" onClick={()=>void load()} disabled={loading} className="inline-flex h-[33px] items-center rounded-md border border-[#D8CCC4] px-3 text-[12px] text-[#1F3125] disabled:opacity-40">Refresh</button>
       </div>
       <div className="mt-3 flex items-center justify-between gap-3 rounded-lg bg-[#F4EFEC] px-4 py-3">
