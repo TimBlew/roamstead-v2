@@ -66,9 +66,9 @@ export default function CopyEditor() {
   return <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] px-2.5 py-3 sm:px-4 md:px-5">
     <header className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
       <div>
-        <p className="font-body text-[11px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Your website</p>
-        <h2 className="mt-0.5 font-heading text-[22px] leading-tight sm:text-[24px]">Update your website copy</h2>
-        <p className="mt-1 font-body text-[12px] leading-[1.45] text-[#6D6057]">Find a page, make your changes, then save to publish them to your site.</p>
+        <p className="font-body text-[11px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">CONTENT EDITOR</p>
+        <h2 className="mt-0.5 font-heading text-[22px] leading-tight sm:text-[24px]">Website content</h2>
+        <p className="mt-1 font-body text-[12px] leading-[1.45] text-[#6D6057]">Choose a page, edit, and save to publish.</p>
       </div>
       <span className="inline-flex h-[27px] w-fit items-center justify-center rounded-md bg-[#F4EFEC] px-2.5 font-body text-[11px] leading-none text-[#6D6057]">{source?.editing?"Editor connected":"Read-only"}</span>
     </header>
