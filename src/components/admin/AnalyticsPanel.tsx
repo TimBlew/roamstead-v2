@@ -41,11 +41,11 @@ function MetricRows({ title, subtitle, items, keyName, emptyText, previousItems 
   return <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
     <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">{title}</h3>
     {subtitle && <p className="mt-1 font-body text-[12px] leading-snug text-[#6D6057]">{subtitle}</p>}
-    <div className="mt-3.5 space-y-3">
+    <div className="mt-3 space-y-2.5">
       {sorted.length ? sorted.map((item, i) => {
         const raw = item[keyName] || "Direct / unknown";
         const prior=previousItems?.find(x=>(x[keyName] || "Direct / unknown")===raw);
-        const delta=previousItems ? changeLabel(value(item),prior?value(prior):0) : null;
+        const delta=previousItems && prior && value(prior)>0 ? changeLabel(value(item),value(prior)) : null;
         const label = keyName === "requestPath" ? pageLabel(raw) : keyName === "deviceType" ? raw === "mobile" ? "Phone" : raw === "desktop" ? "Computer" : raw : raw;
         return <div key={raw + i}>
           <div className="mb-1 flex items-baseline justify-between gap-4 font-body text-[13px]">
@@ -142,7 +142,6 @@ export default function AnalyticsPanel() {
   const previousVisits=data?.previous?.visits;
   const previousPageviews=previousVisits?.reduce((sum,row)=>sum+(row.pageviews||0),0);
   const previousVisitors=previousVisits?.reduce((sum,row)=>sum+(row.visitors||0),0);
-  const adminViews = pages.filter(row => (row.requestPath || "").startsWith("/admin")).reduce((sum, row) => sum + value(row), 0);
   return <div className="space-y-3.5">
     <section className="rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
       <div className="flex flex-col gap-2.5 sm:flex-row sm:items-start sm:justify-between">
@@ -170,7 +169,7 @@ export default function AnalyticsPanel() {
       <div className="min-w-0 space-y-3">
       <MetricRows title="Pages guests visit most" subtitle="Public website pages" items={publicPages} keyName="requestPath" previousItems={data.previous?.pages} />
       
-      <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
+      <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
       </div>
       <div className="min-w-0 space-y-3">
       <section className="flex min-w-0 flex-col rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
@@ -191,10 +190,9 @@ export default function AnalyticsPanel() {
         </> : <p className="mt-3 text-[13px] leading-relaxed text-[#6D6057]">{search.message}</p>}
         
       </section>
-      <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
+      <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
       </div>
     </div>}
-    {data?.connected && adminViews > 0 && <p className="px-1 text-[12px] leading-relaxed text-[#6D6057]">Admin workspace activity ({format(adminViews)} page views among the listed paths) is excluded from the popular public pages above. Overall site totals and device/referrer figures may still include internal activity.</p>}
-    <div className="flex justify-end"><a href="https://vercel.com/tim-blewitts-projects/roamstead-v2/analytics" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[12px] font-medium text-[#4A6E57] underline underline-offset-4">Explore more insights <span aria-hidden="true">↗</span></a></div>
+    {data?.connected && <p className="px-1 text-[11px] leading-snug text-[#6D6057]">Page rankings exclude workspace visits. Other traffic totals may include internal activity.</p>}
   </div>;
 }
