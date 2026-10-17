@@ -74,11 +74,11 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   const points = [...completed, ...(current ? [current] : [])];
   const [active, setActive] = useState<number | null>(null);
   const max = Math.max(1, ...points.map(w => w.visitors));
-  const width = 600, height = 190, left = 18, right = 18, top = 26, bottom = 30;
+  const width = 600, height = points.length === 1 ? 100 : 170, left = 18, right = 18, top = 26, bottom = 30;
   const baseline = height - bottom;
   const coords = points.map((w, i) => ({
-    x: left + (width-left-right)*i/Math.max(1,points.length-1),
-    y: baseline - (baseline-top)*w.visitors/max,
+    x: points.length === 1 ? width / 2 : left + (width-left-right)*i/Math.max(1,points.length-1),
+    y: points.length === 1 ? top + 12 : baseline - (baseline-top)*w.visitors/max,
     ...w
   }));
   const completedCoords = coords.slice(0,completed.length);
@@ -92,21 +92,21 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   const change = previous && previous.visitors > 0 && latest ? (latest.visitors-previous.visitors)/previous.visitors*100 : null;
   return <div className="mt-2.5 rounded-xl border border-[#E7DFDB] bg-[#FFFCFB] px-3 pb-3 pt-3 sm:px-4">
     <div className="flex flex-wrap items-center justify-between gap-2">
-      <p className="text-[12px] text-[#6D6057]">{isDaily ? "Daily visitors · last 7 days" : "Weekly visitors · last 12 months"}</p>
+      <p className="text-[12px] text-[#6D6057]">{isDaily ? "Daily visitors · last 7 days" : "Weekly visitors · current and completed weeks"}</p>
       <p className="text-[12px] tabular-nums text-[#4A6E57]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${current && active === points.length-1 ? (isDaily ? " (today)" : " (this week)") : ""}` : "Select a point for details"}</p>
     </div>
-    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox="0 0 600 190" className="mt-2 block h-auto w-full" onMouseLeave={() => setActive(null)}>
+    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox={`0 0 ${width} ${height}`} className="mt-2 block h-auto w-full" onMouseLeave={() => setActive(null)}>
       <path d={fill} fill="#4A6E57" fillOpacity=".08"/>
       <line x1={left} x2={width-right} y1={baseline} y2={baseline} stroke="#E7DFDB" />
-      <path d={completePath} fill="none" stroke="#4A6E57" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      {priorPoint && currentPoint && <line x1={priorPoint.x} y1={priorPoint.y} x2={currentPoint.x} y2={currentPoint.y} stroke="#4A6E57" strokeWidth="2.5" strokeDasharray="5 5" strokeLinecap="round"/>}
+      <path d={completePath} fill="none" stroke="#4A6E57" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      {priorPoint && currentPoint && <line x1={priorPoint.x} y1={priorPoint.y} x2={currentPoint.x} y2={currentPoint.y} stroke="#4A6E57" strokeWidth="2.5" strokeDasharray="4 4" strokeLinecap="round"/>}
       {coords.map((p,i) => {
         const isCurrent = !!current && i === coords.length-1;
         return <g key={p.start}>
-          <circle cx={p.x} cy={p.y} r={isCurrent ? 5 : i === completed.length-1 ? 5 : 3.5} fill={isCurrent ? "#FFFCFB" : "#4A6E57"} stroke={isCurrent ? "#4A6E57" : "none"} strokeWidth={isCurrent ? 2.5 : 0}/>
-          {(points.length <= 8 || i === points.length-1) && <text x={p.x} y={Math.max(12,p.y-11)} fontSize="10" textAnchor={i===0?"start":i===points.length-1?"end":"middle"} fill="#1F3125">{format(p.visitors)}</text>}
-          {(i%labelEvery===0 || i===points.length-1) && <text x={p.x} y={height-9} fontSize="10" textAnchor={i===0?"start":i===points.length-1?"end":"middle"} fill="#6D6057">{shortDate(p.start)}</text>}
-          <circle cx={p.x} cy={p.y} r="13" fill="transparent" tabIndex={0} role="button" aria-label={`${shortDate(p.start)} to ${shortDate(p.end)}: ${p.visitors} visitors${isCurrent ? (isDaily ? ", today" : ", current incomplete week") : ""}`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)} />
+          <circle cx={p.x} cy={p.y} r={isCurrent ? 3.5 : 3} fill={isCurrent ? "#FFFCFB" : "#4A6E57"} stroke={isCurrent ? "#4A6E57" : "none"} strokeWidth={isCurrent ? 1.75 : 0}/>
+          {(points.length <= 8 || i === points.length-1) && <text x={p.x} y={Math.max(12,p.y-11)} fontSize="10" textAnchor={points.length===1?"middle":i===0?"start":i===points.length-1?"end":"middle"} fill="#1F3125">{format(p.visitors)}</text>}
+          {(i%labelEvery===0 || i===points.length-1) && <text x={p.x} y={height-9} fontSize="10" textAnchor={points.length===1?"middle":i===0?"start":i===points.length-1?"end":"middle"} fill="#6D6057">{shortDate(p.start)}</text>}
+          <circle cx={p.x} cy={p.y} r="11" fill="transparent" tabIndex={0} role="button" aria-label={`${shortDate(p.start)} to ${shortDate(p.end)}: ${p.visitors} visitors${isCurrent ? (isDaily ? ", today" : ", current incomplete week") : ""}`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)} />
         </g>;
       })}
     </svg> : <p className="py-5 text-[13px] text-[#6D6057]">{points.length === 1 ? `${current ? "This week so far" : "First complete week"}: ${format(points[0].visitors)} visitors (${shortDate(points[0].start)}–${shortDate(points[0].end)}).` : "Weekly history will appear once tracking has a full week of data."}</p>}
