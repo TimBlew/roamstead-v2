@@ -68,12 +68,12 @@ export default function CopyEditor() {
       <div>
         <p className="font-body text-[11px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">CONTENT EDITOR</p>
         <h2 className="mt-0.5 font-heading text-[22px] leading-tight sm:text-[24px]">Website content</h2>
-        <p className="mt-1 font-body text-[12px] leading-[1.45] text-[#6D6057]">Choose a page, edit, and save to publish.</p>
+        
       </div>
     </header>
     {!source?<p className="mt-4 text-sm">Loading content...</p>:<>
       {!source.editing&&<p className="mt-3 rounded-lg bg-[#F4EFEC] p-3 font-body text-[13px]">{source.message||source.error||"Editing is temporarily unavailable. Please contact Castlehead."}</p>}
-      <label className="mt-2.5 block font-body text-[12px] font-semibold text-[#1F3125]">Page
+      <label className="mt-1.5 block font-body text-[12px] font-semibold text-[#1F3125]">Page
         <span className="relative mt-1 block">
           <select aria-label="Choose site page" value={page} onChange={e=>{const next=e.target.value as "home"|"properties";setPage(next);setExpanded(next==="home"?"Hero":"Page hero")}} className="absolute inset-0 z-10 h-[40px] w-full cursor-pointer opacity-0">
             <option value="home">Home page</option>
@@ -83,7 +83,7 @@ export default function CopyEditor() {
           <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" className="pointer-events-none absolute right-2.5 top-1/2 h-[16px] w-[16px] -translate-y-1/2 text-[#4A6E57]"><path d="m5 7 5 5 5-5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </span>
       </label>
-      <div className="mt-2 space-y-1">
+      <div className="mt-2 space-y-1.5">
         {sections[page].map(section=><section key={section.title} className="overflow-hidden rounded-lg border border-[#E7DFDB] bg-[#FFFCFB]">
           <button type="button" aria-expanded={expanded===section.title} onClick={()=>setExpanded(expanded===section.title?null:section.title)} className="flex min-h-[42px] w-full items-center justify-between gap-3 px-2.5 py-2 text-left font-heading text-[15px] leading-[1.25] text-[#1F3125] hover:bg-[#F7F3F0] sm:text-[17px]">
             <span>{section.title}</span><span className="flex shrink-0 items-center gap-2 whitespace-nowrap font-body text-[11px] leading-none text-[#6D6057]">{section.fields.length} fields <span className="inline-flex w-3 justify-center">{expanded===section.title?"−":"+"}</span></span>
