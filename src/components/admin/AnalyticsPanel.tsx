@@ -170,7 +170,7 @@ export default function AnalyticsPanel() {
   const previousVisits=data?.previous?.visits;
   const previousPageviews=previousVisits?.reduce((sum,row)=>sum+(row.pageviews||0),0);
   const previousVisitors=previousVisits?.reduce((sum,row)=>sum+(row.visitors||0),0);
-  return <div className="space-y-3.5">
+  return <div className="space-y-3">
     <section className="rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
       <div className="flex flex-col gap-2.5 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0"><h2 className="font-heading text-[24px] font-medium leading-[1.15] text-[#1F3125]">Overview</h2></div>
@@ -214,14 +214,17 @@ export default function AnalyticsPanel() {
       <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
       </div>
       <div className="min-w-0 space-y-3">
-      <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
+      <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
+      </div>
+    </div>}
+    {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="font-heading text-[19px] font-medium text-[#1F3125]">Google search performance</h3>
           <span className="font-body text-[11px] text-[#6D6057]">Organic Google search</span>
         </div>
         {!search ? <p className="mt-3 text-[13px] text-[#6D6057]">Loading Google search data…</p> : !search.connected ? <p className="mt-3 text-[13px] text-[#6D6057]">{search.message}</p> : <>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            {([["Search clicks",search.clicks||0],["Appearances",search.impressions||0],["Click rate",((search.ctr||0)*100).toFixed(1)+"%"],["Average position",(search.position||0)>0?(search.position||0).toFixed(1):"—"]] as const).map(([name,val])=><div key={name} className="rounded-xl bg-[#F4EFEC] px-3 py-2.5">
+          <div className="mt-2 grid grid-cols-2 gap-2 lg:grid-cols-4">
+            {([["Search clicks",search.clicks||0],["Appearances",search.impressions||0],["Click rate",((search.ctr||0)*100).toFixed(1)+"%"],["Average position",(search.position||0)>0?(search.position||0).toFixed(1):"—"]] as const).map(([name,val])=><div key={name} className="rounded-lg bg-[#F4EFEC] px-3 py-2">
               <strong className="block font-heading text-[22px] font-medium leading-tight tabular-nums text-[#1F3125]">{typeof val==="number"?format(val):val}</strong>
               <span className="text-[11px] text-[#6D6057]">{name}</span>
             </div>)}
@@ -230,17 +233,18 @@ export default function AnalyticsPanel() {
             <span>Appearances: {changeLabel(search.impressions||0,search.previous.impressions)}</span>
             {(search.previous.clicks||0)>0 && <span>Clicks: {changeLabel(search.clicks||0,search.previous.clicks)}</span>}
           </div>}
-          <div className="mt-5 border-t border-[#E7DFDB] pt-3">
+          <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_1fr_1.3fr] lg:gap-5">
+          <div className="border-t border-[#E7DFDB] pt-3 lg:border-t-0 lg:border-r lg:pr-4 lg:pt-0">
             <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">How guests find you on Google</h4>
             <p className="mt-1 text-[11px] text-[#6D6057]">Searches where Roamstead appeared. Number of appearances shown.</p>
-            <div className="mt-2 divide-y divide-[#EEE8E4]">
-              {(search.queries||[]).filter(q=>q.impressions>0).slice(0,10).map(q=><div key={q.query} className="flex items-start justify-between gap-4 py-2 text-[12px]">
+            <div className="mt-1 divide-y divide-[#EEE8E4]">
+              {(search.queries||[]).filter(q=>q.impressions>0).slice(0,10).map(q=><div key={q.query} className="flex items-start justify-between gap-3 py-1.5 text-[12px]">
                 <span className="min-w-0 break-words text-[#1F3125]">{q.query}</span><span className="shrink-0 tabular-nums text-[#6D6057]">{format(q.impressions)}</span>
               </div>)}
               {!search.queries?.length && <p className="py-2 text-[12px] text-[#6D6057]">Search terms will appear once Google has enough data.</p>}
             </div>
           </div>
-          <div className="mt-3 border-t border-[#E7DFDB] pt-3">
+          <div className="border-t border-[#E7DFDB] pt-3 lg:border-t-0 lg:border-r lg:pr-4 lg:pt-0">
             <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Where you rank on Google</h4>
             <p className="mt-1 text-[11px] text-[#6D6057]">Average search position for terms with recorded impressions.</p>
             <div className="mt-2 divide-y divide-[#EEE8E4]">
@@ -249,14 +253,14 @@ export default function AnalyticsPanel() {
               </div>)}
             </div>
           </div>
-          <div className="mt-3 border-t border-[#E7DFDB] pt-3">
+          <div className="border-t border-[#E7DFDB] pt-3 lg:border-t-0 lg:pt-0">
             <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Pages appearing in Google</h4>
             <p className="mt-1 text-[11px] text-[#6D6057]">See which stays and pages attract organic discovery.</p>
-            <div className="mt-3 grid grid-cols-[minmax(0,1fr)_44px_44px_52px] gap-1 text-[10px] text-[#80766E]">
+            <div className="mt-2 grid grid-cols-[minmax(0,1fr)_44px_44px_52px] gap-1 text-[10px] text-[#80766E]">
               <span>Page</span><span className="text-right">Clicks</span><span className="text-right">Views</span><span className="text-right">Rank</span>
             </div>
             <div className="mt-1 divide-y divide-[#EEE8E4]">
-              {(search.pages||[]).slice(0,10).map(p=><div key={p.page} className="grid grid-cols-[minmax(0,1fr)_44px_44px_52px] items-start gap-1 py-2 text-[11px]">
+              {(search.pages||[]).slice(0,10).map(p=><div key={p.page} className="grid grid-cols-[minmax(0,1fr)_44px_44px_52px] items-start gap-1 py-1.5 text-[11px]">
                 <span className="min-w-0 break-words text-[#1F3125]">{pageLabel((()=>{try{return new URL(p.page).pathname}catch{return p.page}})())}</span>
                 <span className="text-right tabular-nums text-[#6D6057]">{format(p.clicks)}</span>
                 <span className="text-right tabular-nums text-[#6D6057]">{format(p.impressions)}</span>
@@ -265,12 +269,10 @@ export default function AnalyticsPanel() {
               {!search.pages?.length && <p className="py-2 text-[12px] text-[#6D6057]">No page data available for this period.</p>}
             </div>
           </div>
+          </div>
           <p className="mt-3 text-[11px] leading-snug text-[#80766E]">Google data is delayed a few days. Reporting through {search.endDate}. Rankings are averages, not fixed placements.</p>
         </>}
-      </section>
-      <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
-      </div>
-    </div>}
+      </section>}
     {data?.connected && <p className="px-1 text-[11px] leading-snug text-[#6D6057]">Page rankings exclude workspace visits. Other traffic totals may include internal activity.</p>}
   </div>;
 }
