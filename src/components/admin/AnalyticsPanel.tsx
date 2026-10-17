@@ -77,7 +77,7 @@ function VisitsChart({ daily }: { daily: Metric[] }) {
       <p className="text-[12px] text-[#6D6057]">Daily page views</p>
       <p className="font-body text-[12px] tabular-nums text-[#4A6E57]">{active ? `${shortDate(active.date)} · ${format(active.views)} views` : "Select a point to see its date and views"}</p>
     </div>
-    {points.length ? <div ref={scrollRef} className="mt-2 overflow-x-auto pb-2" onScroll={e => setScroll({ left: e.currentTarget.scrollLeft, max: Math.max(0, e.currentTarget.scrollWidth - e.currentTarget.clientWidth) })} onMouseLeave={() => setSelected(null)}>
+    {points.length ? <div ref={scrollRef} className="mt-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" onScroll={e => setScroll({ left: e.currentTarget.scrollLeft, max: Math.max(0, e.currentTarget.scrollWidth - e.currentTarget.clientWidth) })} onMouseLeave={() => setSelected(null)}>
       <svg role="img" aria-label="Daily page views line chart. Each dot represents one date." viewBox={`0 0 ${chartWidth} ${height + 24}`} width={chartWidth} height={height + 24} className="max-w-none" onBlur={() => setSelected(null)}>
         {[0, 0.5, 1].map((step) => {
           const y = top + usableHeight * (1 - step);
@@ -91,10 +91,39 @@ function VisitsChart({ daily }: { daily: Metric[] }) {
         </g>)}
       </svg>
     </div> : <p className="py-10 text-center text-[13px] text-[#6D6057]">No visits recorded during this period.</p>}
-    {points.length > 0 && <div className="mt-3 px-1">
-      <input type="range" aria-label="Scroll chart dates horizontally" min={0} max={Math.max(1, scroll.max)} step={1} value={Math.min(scroll.left, Math.max(1, scroll.max))} disabled={scroll.max === 0} onChange={e => { if (scrollRef.current) scrollRef.current.scrollLeft = Number(e.target.value); }} className="block h-2 w-full cursor-ew-resize accent-[#4A6E57] disabled:cursor-default disabled:opacity-40" />
+    {points.length > 0 && scroll.max > 0 && <div
+      role="scrollbar" aria-label="Scroll chart dates horizontally" aria-orientation="horizontal"
+      aria-valuemin={0} aria-valuemax={Math.ceil(scroll.max)} aria-valuenow={Math.round(scroll.left)}
+      tabIndex={0} className="relative mt-2 h-[11px] w-full touch-none cursor-pointer rounded-full bg-[#ECE9E7]"
+      onPointerDown={e => {
+        const el = scrollRef.current;
+        if (!el) return;
+        const bar = e.currentTarget, rect = bar.getBoundingClientRect();
+        const thumb = Math.max(40, rect.width * el.clientWidth / el.scrollWidth);
+        const pct = Math.max(0, Math.min(1, (e.clientX - rect.left - thumb / 2) / Math.max(1, rect.width - thumb)));
+        el.scrollLeft = pct * scroll.max;
+        bar.setPointerCapture(e.pointerId);
+      }}
+      onPointerMove={e => {
+        if (!e.currentTarget.hasPointerCapture(e.pointerId) || !scrollRef.current) return;
+        const rect = e.currentTarget.getBoundingClientRect(), el = scrollRef.current;
+        const thumb = Math.max(40, rect.width * el.clientWidth / el.scrollWidth);
+        el.scrollLeft = Math.max(0, Math.min(1, (e.clientX - rect.left - thumb / 2) / Math.max(1, rect.width - thumb))) * scroll.max;
+      }}
+      onKeyDown={e => {
+        if (!scrollRef.current) return;
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+          e.preventDefault(); scrollRef.current.scrollLeft += e.key === "ArrowRight" ? 70 : -70;
+        } else if (e.key === "Home" || e.key === "End") {
+          e.preventDefault(); scrollRef.current.scrollLeft = e.key === "Home" ? 0 : scroll.max;
+        }
+      }}
+    >
+      <div className="absolute top-0 h-full rounded-full bg-[#989898]" style={{
+        width: `${Math.min(100, Math.max(4, (scrollRef.current?.clientWidth || 1) / (scrollRef.current?.scrollWidth || 1) * 100))}%`,
+        left: `${scroll.max ? scroll.left / scroll.max * (100 - Math.min(100, Math.max(4, (scrollRef.current?.clientWidth || 1) / (scrollRef.current?.scrollWidth || 1) * 100))) : 0}%`
+      }} />
     </div>}
-    <p className="mt-1 text-[11px] text-[#867B74]">Drag the bar to explore the full date range.</p>
   </div>;
 }
 export default function AnalyticsPanel() {
