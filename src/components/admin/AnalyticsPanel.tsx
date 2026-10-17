@@ -136,13 +136,13 @@ export default function AnalyticsPanel() {
         <div className="mt-4 border-t border-[#E7DFDB] pt-3.5"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
       </>}
     </section>
-    {data?.connected && <div className="grid gap-3.5 lg:grid-cols-2 lg:items-start">
-      <div className="min-w-0 space-y-3.5">
+    {data?.connected && <div className="grid gap-3 lg:grid-cols-2 lg:items-start">
+      <div className="min-w-0 space-y-3">
       <MetricRows title="Pages guests visit most" subtitle="Public website pages" items={publicPages} keyName="requestPath" />
       
-      <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" />
+      <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" />
       </div>
-      <div className="min-w-0 space-y-3.5">
+      <div className="min-w-0 space-y-3">
       <section className="flex min-w-0 flex-col rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
         <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">Google search</h3>
         <p className="mt-1 font-body text-[12px] text-[#6D6057]">Organic search performance · same selected period</p>
@@ -153,13 +153,13 @@ export default function AnalyticsPanel() {
               <span className="text-[12px] text-[#6D6057]">{name}</span>
             </div>)}
           </div>
-          <h4 className="mt-5 font-heading text-[16px] text-[#1F3125]">Top searches</h4>
+          <h4 className="mt-3.5 font-heading text-[16px] leading-tight text-[#1F3125]">Top searches</h4>
           <div className="mt-1 divide-y divide-[#E7DFDB]">{search.queries?.length ? search.queries.map((item,i) => <div key={i} className="flex justify-between gap-3 py-1.5 text-[12px]"><span className="min-w-0 break-words">{item.query}</span><span className="shrink-0 tabular-nums text-[#6D6057]">{format(item.clicks)} clicks</span></div>) : <p className="py-2 text-[12px] text-[#6D6057]">No search queries available for these dates.</p>}</div>
           <p className="mt-2 text-[11px] leading-snug text-[#6D6057]">Google data typically arrives a few days after search activity. Reporting through {search.endDate}.</p>
         </> : <p className="mt-3 text-[13px] leading-relaxed text-[#6D6057]">{search.message}</p>}
         <a className="mt-3 inline-flex w-fit items-center gap-2 rounded-xl border border-[#D8CCC4] bg-white px-4 py-2.5 text-[12px] font-medium text-[#1F3125] transition-colors hover:bg-[#F4EFEC]" href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">Open Search Console <span aria-hidden="true">↗</span></a>
       </section>
-      <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" />
+      <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" />
       </div>
     </div>}
     {data?.connected && adminViews > 0 && <p className="px-1 text-[12px] leading-relaxed text-[#6D6057]">Admin workspace activity ({format(adminViews)} page views among the listed paths) is excluded from the popular public pages above. Overall site totals and device/referrer figures may still include internal activity.</p>}
