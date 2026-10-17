@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type Metric = { timestamp?: string; visitors?: number; pageviews?: number; count?: number; total?: number; eventName?: string; requestPath?: string; referrerHostname?: string; deviceType?: string };
-type SearchData = {connected?:boolean;message?:string;clicks?:number;impressions?:number;ctr?:number;position?:number;endDate?:string;previous?:{clicks?:number;impressions?:number;ctr?:number;position?:number}|null;queries?:{query:string;clicks:number;impressions:number;position:number;ctr:number}[];pages?:{page:string;clicks:number}[]};
+type SearchData = {connected?:boolean;message?:string;clicks?:number;impressions?:number;ctr?:number;position?:number;endDate?:string;previous?:{clicks?:number;impressions?:number;ctr?:number;position?:number}|null;queries?:{query:string;clicks:number;impressions:number;position:number;ctr:number}[];pages?:{page:string;clicks:number;impressions:number;position:number;ctr:number}[]};
 type WeeklyPoint = {start:string;end:string;visitors:number};
 type Weekly = {weeks:WeeklyPoint[];current:WeeklyPoint|null};
 type Payload = { connected?: boolean; message?: string; visits?: Metric[]; previous?:{visits:Metric[];pages:Metric[];referrers:Metric[];devices:Metric[]}|null; weekly?: Weekly; events?: Metric[]; pages?: Metric[]; referrers?: Metric[]; devices?: Metric[] };
@@ -214,23 +214,59 @@ export default function AnalyticsPanel() {
       <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
       </div>
       <div className="min-w-0 space-y-3">
-      <section className="flex min-w-0 flex-col rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
-        <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">Google search</h3>
-        <p className="mt-1 font-body text-[12px] text-[#6D6057]">Organic search performance · same selected period</p>
-        {!search ? <p className="mt-3 text-[13px] text-[#6D6057]">Loading Google Search Console…</p> : search.connected ? <>
+      <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h3 className="font-heading text-[19px] font-medium text-[#1F3125]">Google search performance</h3>
+          <span className="font-body text-[11px] text-[#6D6057]">Organic Google search</span>
+        </div>
+        {!search ? <p className="mt-3 text-[13px] text-[#6D6057]">Loading Google search data…</p> : !search.connected ? <p className="mt-3 text-[13px] text-[#6D6057]">{search.message}</p> : <>
           <div className="mt-3 grid grid-cols-2 gap-2">
-            {([["Search clicks", search.clicks || 0], ["Impressions", search.impressions || 0], ["Click rate", ((search.ctr || 0) * 100).toFixed(1) + "%"], ["Avg. position", (search.position || 0).toFixed(1)]] as const).map(([name,val]) => <div key={name} className="rounded-xl bg-[#F4EFEC] px-3 py-2.5">
-              <strong className="block font-heading text-[21px] font-medium leading-tight tabular-nums text-[#1F3125]">{typeof val === "number" ? format(val) : val}</strong>
-              <span className="text-[12px] text-[#6D6057]">{name}</span>
+            {([["Search clicks",search.clicks||0],["Appearances",search.impressions||0],["Click rate",((search.ctr||0)*100).toFixed(1)+"%"],["Average position",(search.position||0)>0?(search.position||0).toFixed(1):"—"]] as const).map(([name,val])=><div key={name} className="rounded-xl bg-[#F4EFEC] px-3 py-2.5">
+              <strong className="block font-heading text-[22px] font-medium leading-tight tabular-nums text-[#1F3125]">{typeof val==="number"?format(val):val}</strong>
+              <span className="text-[11px] text-[#6D6057]">{name}</span>
             </div>)}
           </div>
-          {search.previous && (search.previous.impressions || 0)>0 && <p className="mt-2 text-[11px] text-[#4A6E57]">Impressions: {changeLabel(search.impressions || 0,search.previous.impressions)}</p>}
-          <h4 className="mt-3.5 font-heading text-[16px] leading-tight text-[#1F3125]">Top searches</h4>
-          <div className="mt-2 grid grid-cols-[minmax(0,1fr)_42px_52px_52px] gap-1 text-[10px] text-[#6D6057]"><span>Query</span><span className="text-right">Clicks</span><span className="text-right">Views</span><span className="text-right">Position</span></div>
-          <div className="mt-1 divide-y divide-[#E7DFDB]">{search.queries?.length ? search.queries.map((item,i) => <div key={i} className="grid grid-cols-[minmax(0,1fr)_42px_52px_52px] items-start gap-1 py-1.5 text-[11px]"><span className="min-w-0 break-words">{item.query}</span><span className="text-right tabular-nums text-[#6D6057]">{format(item.clicks)}</span><span className="text-right tabular-nums text-[#6D6057]">{format(item.impressions)}</span><span className="text-right tabular-nums text-[#6D6057]">{item.position?item.position.toFixed(1):"—"}</span></div>) : <p className="py-2 text-[12px] text-[#6D6057]">No search queries available for these dates.</p>}</div>
-          <p className="mt-2 text-[11px] leading-snug text-[#6D6057]">Google data typically arrives a few days after search activity. Reporting through {search.endDate}.</p>
-        </> : <p className="mt-3 text-[13px] leading-relaxed text-[#6D6057]">{search.message}</p>}
-        
+          {search.previous && (search.previous.impressions||0)>0 && <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-[#597761]">
+            <span>Appearances: {changeLabel(search.impressions||0,search.previous.impressions)}</span>
+            {(search.previous.clicks||0)>0 && <span>Clicks: {changeLabel(search.clicks||0,search.previous.clicks)}</span>}
+          </div>}
+          <div className="mt-5 border-t border-[#E7DFDB] pt-3">
+            <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">How guests find you on Google</h4>
+            <p className="mt-1 text-[11px] text-[#6D6057]">Searches where Roamstead appeared. Number of appearances shown.</p>
+            <div className="mt-2 divide-y divide-[#EEE8E4]">
+              {(search.queries||[]).filter(q=>q.impressions>0).slice(0,10).map(q=><div key={q.query} className="flex items-start justify-between gap-4 py-2 text-[12px]">
+                <span className="min-w-0 break-words text-[#1F3125]">{q.query}</span><span className="shrink-0 tabular-nums text-[#6D6057]">{format(q.impressions)}</span>
+              </div>)}
+              {!search.queries?.length && <p className="py-2 text-[12px] text-[#6D6057]">Search terms will appear once Google has enough data.</p>}
+            </div>
+          </div>
+          <div className="mt-3 border-t border-[#E7DFDB] pt-3">
+            <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Where you rank on Google</h4>
+            <p className="mt-1 text-[11px] text-[#6D6057]">Average search position for terms with recorded impressions.</p>
+            <div className="mt-2 divide-y divide-[#EEE8E4]">
+              {[...(search.queries||[])].filter(q=>q.impressions>0&&q.position>0).sort((a,b)=>a.position-b.position).slice(0,10).map(q=><div key={q.query} className="flex items-start justify-between gap-4 py-2 text-[12px]">
+                <span className="min-w-0 break-words text-[#1F3125]">{q.query}</span><span className="shrink-0 font-medium tabular-nums text-[#597761]">{q.position.toFixed(1)}</span>
+              </div>)}
+            </div>
+          </div>
+          <div className="mt-3 border-t border-[#E7DFDB] pt-3">
+            <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Pages appearing in Google</h4>
+            <p className="mt-1 text-[11px] text-[#6D6057]">See which stays and pages attract organic discovery.</p>
+            <div className="mt-3 grid grid-cols-[minmax(0,1fr)_44px_44px_52px] gap-1 text-[10px] text-[#80766E]">
+              <span>Page</span><span className="text-right">Clicks</span><span className="text-right">Views</span><span className="text-right">Rank</span>
+            </div>
+            <div className="mt-1 divide-y divide-[#EEE8E4]">
+              {(search.pages||[]).slice(0,10).map(p=><div key={p.page} className="grid grid-cols-[minmax(0,1fr)_44px_44px_52px] items-start gap-1 py-2 text-[11px]">
+                <span className="min-w-0 break-words text-[#1F3125]">{pageLabel((()=>{try{return new URL(p.page).pathname}catch{return p.page}})())}</span>
+                <span className="text-right tabular-nums text-[#6D6057]">{format(p.clicks)}</span>
+                <span className="text-right tabular-nums text-[#6D6057]">{format(p.impressions)}</span>
+                <span className="text-right tabular-nums text-[#6D6057]">{p.position>0?p.position.toFixed(1):"—"}</span>
+              </div>)}
+              {!search.pages?.length && <p className="py-2 text-[12px] text-[#6D6057]">No page data available for this period.</p>}
+            </div>
+          </div>
+          <p className="mt-3 text-[11px] leading-snug text-[#80766E]">Google data is delayed a few days. Reporting through {search.endDate}. Rankings are averages, not fixed placements.</p>
+        </>}
       </section>
       <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
       </div>
