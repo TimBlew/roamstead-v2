@@ -66,14 +66,14 @@ export default function CopyEditor() {
   return <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] px-2.5 py-3 sm:px-4 md:px-5">
     <header className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
       <div>
-        <p className="font-body text-[11px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Website content</p>
-        <h2 className="mt-0.5 font-heading text-[22px] leading-tight sm:text-[24px]">Edit approved copy</h2>
-        <p className="mt-1 font-body text-[12px] leading-[1.45] text-[#6D6057]">Edit sections in the same order as the website. Changes publish through Vercel.</p>
+        <p className="font-body text-[11px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Your website</p>
+        <h2 className="mt-0.5 font-heading text-[22px] leading-tight sm:text-[24px]">Update your website copy</h2>
+        <p className="mt-1 font-body text-[12px] leading-[1.45] text-[#6D6057]">Find a page, make your changes, then save to publish them to your site.</p>
       </div>
       <span className="inline-flex h-[27px] w-fit items-center justify-center rounded-md bg-[#F4EFEC] px-2.5 font-body text-[11px] leading-none text-[#6D6057]">{source?.editing?"Editor connected":"Read-only"}</span>
     </header>
     {!source?<p className="mt-4 text-sm">Loading content...</p>:<>
-      {!source.editing&&<p className="mt-3 rounded-lg bg-[#F4EFEC] p-3 font-body text-[13px]">{source.message||source.error||"Editing is not configured."}</p>}
+      {!source.editing&&<p className="mt-3 rounded-lg bg-[#F4EFEC] p-3 font-body text-[13px]">{source.message||source.error||"Editing is temporarily unavailable. Please contact Castlehead."}</p>}
       <label className="mt-3 block font-body text-[12px] font-semibold text-[#1F3125]">Page
         <span className="relative mt-1 block">
           <select aria-label="Choose site page" value={page} onChange={e=>{const next=e.target.value as "home"|"properties";setPage(next);setExpanded(next==="home"?"Hero":"Page hero")}} className="absolute inset-0 z-10 h-[40px] w-full cursor-pointer opacity-0">
@@ -93,14 +93,14 @@ export default function CopyEditor() {
             {section.fields.map(([key,label])=><label key={key} className="block font-body text-[12px] font-medium text-[#1F3125]">
               {label}
               {values[key]?.length>105?<textarea rows={2} value={values[key]||""} disabled={!source.editing||busy} onChange={e=>setValues(v=>({...v,[key]:e.target.value}))} className="mt-1 block min-h-[40px] w-full resize-y rounded-md border border-[#D8CCC4] bg-white px-3 py-2 font-body text-[13px] font-normal leading-[1.4] [field-sizing:content] focus:outline-[#4A6E57] disabled:opacity-75"/>:<input type="text" value={values[key]||""} disabled={!source.editing||busy} onChange={e=>setValues(v=>({...v,[key]:e.target.value}))} className="mt-1 block h-[38px] w-full rounded-md border border-[#D8CCC4] bg-white px-3 font-body text-[13px] font-normal focus:outline-[#4A6E57] disabled:opacity-75"/>}
-              {changed.includes(key)&&<span className="block pt-1 text-[11px] text-[#4A6E57]">Unsaved change</span>}
+              {changed.includes(key)&&<span className="block pt-1 text-[11px] text-[#4A6E57]">Not saved yet</span>}
             </label>)}
           </div>}
         </section>)}
       </div>
       <div className="sticky bottom-2 z-10 mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 rounded-lg border border-[#D8CCC4] bg-[#FFFCFB] px-2.5 py-2 shadow-sm">
         <p role="status" className="font-body text-[12px] text-[#6D6057]">{notice||`${changed.length} unsaved changes`}</p>
-        <div className="ml-auto flex shrink-0 items-center gap-1.5"><button type="button" disabled={!changed.length||busy} onClick={()=>{setValues({...base});setNotice("Changes discarded.")}} className="h-[32px] rounded-md border border-[#D8CCC4] px-2.5 text-[11px] disabled:opacity-40">Discard</button><button type="button" disabled={!source.editing||!changed.length||busy||publishing} onClick={save} className="h-[32px] whitespace-nowrap rounded-md bg-[#4A6E57] px-3 font-body text-[11px] font-medium text-white disabled:opacity-40">{busy?"Saving...":publishing?"Checking live site...":"Save & publish"}</button></div>
+        <div className="ml-auto flex shrink-0 items-center gap-1.5"><button type="button" disabled={!changed.length||busy} onClick={()=>{setValues({...base});setNotice("Your changes were discarded.")}} className="h-[32px] rounded-md border border-[#D8CCC4] px-2.5 text-[11px] disabled:opacity-40">Discard</button><button type="button" disabled={!source.editing||!changed.length||busy||publishing} onClick={save} className="h-[32px] whitespace-nowrap rounded-md bg-[#4A6E57] px-3 font-body text-[11px] font-medium text-white disabled:opacity-40">{busy?"Saving...":publishing?"Checking live site...":"Save & publish"}</button></div>
       </div>
     </>}
   </section>;
