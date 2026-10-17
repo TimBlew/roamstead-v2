@@ -214,23 +214,24 @@ export default function AnalyticsPanel() {
         <MetricRows title="Devices guests use" subtitle="Visits by device type" compact items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
       </div>
     </div>}
-    {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
+    {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 pb-3 pt-4 sm:px-5 sm:pb-3 sm:pt-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="font-heading text-[19px] font-medium text-[#1F3125]">Google search performance</h3>
           <span className="font-body text-[11px] text-[#6D6057]">Organic Google search</span>
         </div>
         {!search ? <p className="mt-3 text-[13px] text-[#6D6057]">Loading Google search data…</p> : !search.connected ? <p className="mt-3 text-[13px] text-[#6D6057]">{search.message}</p> : <>
           <div className="mt-2 grid grid-cols-2 gap-2 lg:grid-cols-4">
-            {([["Search clicks",search.clicks||0],["Appearances",search.impressions||0],["Click rate",((search.ctr||0)*100).toFixed(1)+"%"],["Average position",(search.position||0)>0?(search.position||0).toFixed(1):"—"]] as const).map(([name,val])=><div key={name} className="rounded-lg bg-[#F4EFEC] px-3 py-2">
-              <strong className="block font-heading text-[22px] font-medium leading-tight tabular-nums text-[#1F3125]">{typeof val==="number"?format(val):val}</strong>
-              <span className="text-[11px] text-[#6D6057]">{name}</span>
+            {([["Search clicks",search.clicks||0],["Appearances",search.impressions||0],["Click rate",((search.ctr||0)*100).toFixed(1)+"%"],["Average position",(search.position||0)>0?(search.position||0).toFixed(1):"—"]] as const).map(([name,val],index)=><div key={name} className="relative min-w-0 overflow-hidden rounded-xl border border-[#E5DDD5] bg-[#F7F4F0] px-3 pb-2.5 pt-3 sm:px-3.5">
+              <div className={`absolute inset-x-0 top-0 h-[2px] ${index<2?"bg-[#75947D]":"bg-[#B29C88]"}`} />
+              <span className="block font-body text-[10px] font-medium tracking-[0.025em] text-[#6D6057]">{name}</span>
+              <strong className="mt-1 block font-heading text-[25px] font-medium leading-none tabular-nums tracking-tight text-[#1F3125] sm:text-[27px]">{typeof val==="number"?format(val):val}</strong>
             </div>)}
           </div>
           {search.previous && (search.previous.impressions||0)>0 && <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-[#597761]">
             <span>Appearances: {changeLabel(search.impressions||0,search.previous.impressions)}</span>
             {(search.previous.clicks||0)>0 && <span>Clicks: {changeLabel(search.clicks||0,search.previous.clicks)}</span>}
           </div>}
-          <div className="mt-3 grid gap-3 lg:grid-cols-[1fr_1fr_1.3fr] lg:gap-5">
+          <div className="mt-3 grid gap-2.5 lg:grid-cols-[1fr_1fr_1.3fr] lg:gap-4">
           <div className="min-w-0 border-t border-[#E7DFDB] pt-2.5 lg:border-t-0 lg:border-r lg:pr-4 lg:pt-0">
             <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">How guests find you on Google</h4>
             <p className="mt-0.5 font-body text-[11px] leading-[1.35] text-[#6D6057]">Search appearances by query</p>
@@ -267,7 +268,7 @@ export default function AnalyticsPanel() {
             </div>
           </div>
           </div>
-          <p className="mt-3 text-[11px] leading-snug text-[#80766E]">Google data through {search.endDate} · Positions are averages.</p>
+          <p className="mt-1.5 text-[10px] leading-snug text-[#80766E]">Google data through {search.endDate} · Positions are averages.</p>
         </>}
       </section>}
     {data?.connected && <p className="px-1 text-[11px] leading-snug text-[#6D6057]">Site totals may include historical workspace visits.</p>}
