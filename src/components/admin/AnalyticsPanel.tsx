@@ -82,7 +82,7 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
     return () => media.removeEventListener("change",sync);
   }, []);
   const max = Math.max(1, ...points.map(w => w.visitors));
-  const width = compactChart ? 360 : 600, height = points.length === 1 ? (compactChart ? 84 : 100) : (compactChart ? 124 : 170), left = compactChart ? 16 : 18, right = compactChart ? 16 : 18, top = compactChart ? 17 : 26, bottom = compactChart ? 23 : 30;
+  const width = compactChart ? 360 : 600, height = points.length === 1 ? (compactChart ? 76 : 100) : (compactChart ? 92 : 170), left = compactChart ? 16 : 18, right = compactChart ? 16 : 18, top = compactChart ? 13 : 26, bottom = compactChart ? 21 : 30;
   const baseline = height - bottom;
   const coords = points.map((w, i) => ({
     x: points.length === 1 ? width / 2 : left + (width-left-right)*i/Math.max(1,points.length-1),
@@ -103,7 +103,7 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
       <p className="text-[11px] leading-snug text-[#6D6057] sm:text-[12px]">{isDaily ? "Last 7 days" : "Weekly visitors"}</p>
       <p className="text-right text-[10px] leading-snug tabular-nums text-[#4A6E57] sm:text-[12px]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${current && active === points.length-1 ? (isDaily ? " (today)" : " (this week)") : ""}` : <span className="hidden sm:inline">Select a point for details</span>}</p>
     </div>
-    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox={`0 0 ${width} ${height}`} className="mt-1.5 block h-auto w-full sm:mt-2" onMouseLeave={() => setActive(null)}>
+    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox={`0 0 ${width} ${height}`} className="mt-0.5 block h-auto w-full sm:mt-2" onMouseLeave={() => setActive(null)}>
       <path d={fill} fill="#4A6E57" fillOpacity=".08"/>
       <line x1={left} x2={width-right} y1={baseline} y2={baseline} stroke="#E7DFDB" />
       <path d={completePath} fill="none" stroke="#4A6E57" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
