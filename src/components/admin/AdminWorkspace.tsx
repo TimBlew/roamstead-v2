@@ -11,7 +11,7 @@ export async function AdminWorkspace({ active, title, subtitle, children }: { ac
       <div className="mx-auto w-full max-w-[1060px]">
         <div className="relative mb-3 flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <p className="pr-[76px] font-body text-[9px] font-semibold uppercase leading-[1.45] tracking-[.09em] text-[#4A6E57] sm:pr-0 sm:text-[12px] sm:tracking-[.13em]">Roamstead Collective · Private</p>
+            <p className="pr-[76px] font-body text-[9px] font-semibold uppercase leading-[1.45] tracking-[.09em] text-[#4A6E57] sm:pr-0 sm:text-[12px] sm:tracking-[.13em]">Roamstead Collective · Your workspace</p>
             <h1 className="mt-1 font-heading text-[27px] font-medium leading-[1.12] tracking-[-.035em] sm:text-[34px] md:text-[42px]">{title}</h1>
             <p className="mt-1 max-w-[48ch] font-body text-[12px] leading-[1.5] text-[#6D6057] sm:text-[14px]">{subtitle}</p>
             <a href="/" target="_blank" rel="noopener noreferrer" className="mt-1.5 inline-flex items-center gap-1 text-[13px] font-medium text-[#4A6E57] underline underline-offset-4">View your site <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4h6v6M20 4 10 14"/><path d="M20 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5"/></svg></a>
@@ -24,7 +24,7 @@ export async function AdminWorkspace({ active, title, subtitle, children }: { ac
           <Link href="/admin/early-access" aria-current={active==="early-access"?"page":undefined} className={`flex h-[42px] items-center justify-center rounded-[10px] border px-1.5 text-center font-body text-[12px] font-semibold leading-none transition-colors sm:h-[46px] sm:text-[15px] ${active==="early-access"?"border-[#1F3125] bg-[#1F3125] text-white":"border-[#D8CCC4] bg-[#FFFCFB] text-[#6D6057] hover:text-[#1F3125]"}`}>Early access</Link>
         </nav>
         {children}
-        <p className="mt-3 text-center font-body text-[12px] text-[#6D6057]">Private Roamstead management · Bookings, rates and guest records remain in Hostaway.</p>
+        <p className="mt-3 text-center font-body text-[12px] text-[#6D6057]">Your Roamstead workspace · Manage reservations and rates in Hostaway.</p>
       </div>
     </main>
   );
