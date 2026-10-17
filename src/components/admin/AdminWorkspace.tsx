@@ -16,7 +16,7 @@ export async function AdminWorkspace({ active, title, subtitle, children }: { ac
               <p className="ml-[18%] -mt-0.5 flex w-[82%] justify-between font-body text-[8px] font-semibold uppercase leading-none text-[#4A6E57] sm:text-[10px]" aria-label="Workspace">{"WORKSPACE".split("").map((letter,index)=><span key={index}>{letter}</span>)}</p>
             </div>
             <h1 className="mt-3 font-heading text-[27px] font-medium leading-[1.12] tracking-[-.035em] sm:text-[34px] md:text-[42px]">{title}</h1>
-            <p className="mt-1 max-w-[48ch] font-body text-[12px] leading-[1.5] text-[#6D6057] sm:text-[14px]">{subtitle}</p>
+            {subtitle && <p className="mt-1 max-w-[48ch] font-body text-[12px] leading-[1.5] text-[#6D6057] sm:text-[14px]">{subtitle}</p>}
             <a href="/" target="_blank" rel="noopener noreferrer" className="mt-1.5 inline-flex items-center gap-1 text-[13px] font-medium text-[#4A6E57] underline underline-offset-4">View your site <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4h6v6M20 4 10 14"/><path d="M20 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5"/></svg></a>
           </div>
           <form method="post" action="/admin/logout"><button type="submit" className="inline-flex h-[30px] shrink-0 items-center justify-center whitespace-nowrap rounded-[8px] border border-[#D8CCC4] bg-[#FFFCFB] px-2.5 font-body text-[11px] leading-none sm:h-[36px] sm:px-3 sm:text-[13px]">Sign out</button></form>
