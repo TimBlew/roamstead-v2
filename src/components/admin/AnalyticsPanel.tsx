@@ -230,35 +230,35 @@ export default function AnalyticsPanel() {
             <span>Appearances: {changeLabel(search.impressions||0,search.previous.impressions)}</span>
             {(search.previous.clicks||0)>0 && <span>Clicks: {changeLabel(search.clicks||0,search.previous.clicks)}</span>}
           </div>}
-          <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_1fr_1.3fr] lg:gap-5">
-          <div className="border-t border-[#E7DFDB] pt-3 lg:border-t-0 lg:border-r lg:pr-4 lg:pt-0">
+          <div className="mt-3 grid gap-3 lg:grid-cols-[1fr_1fr_1.3fr] lg:gap-5">
+          <div className="min-w-0 border-t border-[#E7DFDB] pt-2.5 lg:border-t-0 lg:border-r lg:pr-4 lg:pt-0">
             <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">How guests find you on Google</h4>
-            <p className="mt-1 text-[11px] text-[#6D6057]">Searches where Roamstead appeared. Number of appearances shown.</p>
+            <p className="mt-0.5 font-body text-[11px] leading-[1.35] text-[#6D6057]">Search appearances by query</p>
             <div className="mt-1 divide-y divide-[#EEE8E4]">
-              {(search.queries||[]).filter(q=>q.impressions>0).slice(0,10).map(q=><div key={q.query} className="flex items-start justify-between gap-3 py-1.5 text-[12px]">
-                <span className="min-w-0 break-words text-[#1F3125]">{q.query}</span><span className="shrink-0 tabular-nums text-[#6D6057]">{format(q.impressions)}</span>
+              {(search.queries||[]).filter(q=>q.impressions>0).slice(0,10).map(q=><div key={q.query} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-1.5 text-[12px] leading-[1.4]">
+                <span className="min-w-0 overflow-wrap-anywhere break-words text-[#1F3125]">{q.query}</span><span className="shrink-0 tabular-nums text-[#6D6057]">{format(q.impressions)}</span>
               </div>)}
               {!search.queries?.length && <p className="py-2 text-[12px] text-[#6D6057]">Search terms will appear once Google has enough data.</p>}
             </div>
           </div>
-          <div className="border-t border-[#E7DFDB] pt-3 lg:border-t-0 lg:border-r lg:pr-4 lg:pt-0">
+          <div className="min-w-0 border-t border-[#E7DFDB] pt-2.5 lg:border-t-0 lg:border-r lg:pr-4 lg:pt-0">
             <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Where you rank on Google</h4>
-            <p className="mt-1 text-[11px] text-[#6D6057]">Average search position for terms with recorded impressions.</p>
-            <div className="mt-2 divide-y divide-[#EEE8E4]">
-              {[...(search.queries||[])].filter(q=>q.impressions>0&&q.position>0).sort((a,b)=>a.position-b.position).slice(0,10).map(q=><div key={q.query} className="flex items-start justify-between gap-4 py-2 text-[12px]">
-                <span className="min-w-0 break-words text-[#1F3125]">{q.query}</span><span className="shrink-0 font-medium tabular-nums text-[#597761]">{q.position.toFixed(1)}</span>
+            <p className="mt-0.5 font-body text-[11px] leading-[1.35] text-[#6D6057]">Average position by query</p>
+            <div className="mt-1 divide-y divide-[#EEE8E4]">
+              {[...(search.queries||[])].filter(q=>q.impressions>0&&q.position>0).sort((a,b)=>a.position-b.position).slice(0,10).map(q=><div key={q.query} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-1.5 text-[12px] leading-[1.4]">
+                <span className="min-w-0 overflow-wrap-anywhere break-words text-[#1F3125]">{q.query}</span><span className="shrink-0 font-medium tabular-nums text-[#597761]">{q.position.toFixed(1)}</span>
               </div>)}
             </div>
           </div>
-          <div className="border-t border-[#E7DFDB] pt-3 lg:border-t-0 lg:pt-0">
+          <div className="min-w-0 border-t border-[#E7DFDB] pt-2.5 lg:border-t-0 lg:pt-0">
             <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Pages appearing in Google</h4>
-            <p className="mt-1 text-[11px] text-[#6D6057]">See which stays and pages attract organic discovery.</p>
-            <div className="mt-2 grid grid-cols-[minmax(0,1fr)_44px_44px_52px] gap-1 text-[10px] text-[#80766E]">
+            <p className="mt-0.5 font-body text-[11px] leading-[1.35] text-[#6D6057]">Organic search landing pages</p>
+            <div className="mt-2 grid grid-cols-[minmax(0,1fr)_40px_40px_46px] gap-1 text-[10px] text-[#80766E]">
               <span>Page</span><span className="text-right">Clicks</span><span className="text-right">Views</span><span className="text-right">Rank</span>
             </div>
             <div className="mt-1 divide-y divide-[#EEE8E4]">
-              {(search.pages||[]).slice(0,10).map(p=><div key={p.page} className="grid grid-cols-[minmax(0,1fr)_44px_44px_52px] items-start gap-1 py-1.5 text-[11px]">
-                <span className="min-w-0 break-words text-[#1F3125]">{pageLabel((()=>{try{return new URL(p.page).pathname}catch{return p.page}})())}</span>
+              {(search.pages||[]).slice(0,10).map(p=><div key={p.page} className="grid grid-cols-[minmax(0,1fr)_40px_40px_46px] items-start gap-1 py-1.5 text-[11px] leading-[1.4]">
+                <span className="min-w-0 overflow-wrap-anywhere break-words text-[#1F3125]">{pageLabel((()=>{try{return new URL(p.page).pathname}catch{return p.page}})())}</span>
                 <span className="text-right tabular-nums text-[#6D6057]">{format(p.clicks)}</span>
                 <span className="text-right tabular-nums text-[#6D6057]">{format(p.impressions)}</span>
                 <span className="text-right tabular-nums text-[#6D6057]">{p.position>0?p.position.toFixed(1):"—"}</span>
@@ -267,9 +267,9 @@ export default function AnalyticsPanel() {
             </div>
           </div>
           </div>
-          <p className="mt-3 text-[11px] leading-snug text-[#80766E]">Google data is delayed a few days. Reporting through {search.endDate}. Rankings are averages, not fixed placements.</p>
+          <p className="mt-3 text-[11px] leading-snug text-[#80766E]">Google data through {search.endDate} · Positions are averages.</p>
         </>}
       </section>}
-    {data?.connected && <p className="px-1 text-[11px] leading-snug text-[#6D6057]">Page rankings exclude workspace visits. Other traffic totals may include internal activity.</p>}
+    {data?.connected && <p className="px-1 text-[11px] leading-snug text-[#6D6057]">Site totals may include historical workspace visits.</p>}
   </div>;
 }
