@@ -73,8 +73,16 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   const current = isDaily ? dailyPoints[6] : weekly?.current || null;
   const points = [...completed, ...(current ? [current] : [])];
   const [active, setActive] = useState<number | null>(null);
+  const [compactChart, setCompactChart] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 639px)");
+    const sync = () => setCompactChart(media.matches);
+    sync();
+    media.addEventListener("change",sync);
+    return () => media.removeEventListener("change",sync);
+  }, []);
   const max = Math.max(1, ...points.map(w => w.visitors));
-  const width = 600, height = points.length === 1 ? 100 : 170, left = 18, right = 18, top = 26, bottom = 30;
+  const width = compactChart ? 360 : 600, height = points.length === 1 ? 100 : 170, left = compactChart ? 15 : 18, right = compactChart ? 15 : 18, top = 26, bottom = 30;
   const baseline = height - bottom;
   const coords = points.map((w, i) => ({
     x: points.length === 1 ? width / 2 : left + (width-left-right)*i/Math.max(1,points.length-1),
@@ -86,7 +94,7 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   const fill = completedCoords.length > 1 ? `${completePath} L ${completedCoords[completedCoords.length-1].x} ${baseline} L ${completedCoords[0].x} ${baseline} Z` : "";
   const priorPoint = completedCoords[completedCoords.length-1];
   const currentPoint = current ? coords[coords.length-1] : null;
-  const labelEvery = Math.max(1, Math.ceil(points.length/6));
+  const labelEvery = Math.max(1, Math.ceil(points.length/(compactChart ? 4 : 6)));
   const previous = completed.length > 1 ? completed[completed.length-2] : null;
   const latest = completed.length ? completed[completed.length-1] : null;
   const change = previous && previous.visitors > 0 && latest ? (latest.visitors-previous.visitors)/previous.visitors*100 : null;
