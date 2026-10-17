@@ -137,6 +137,7 @@ export default function AnalyticsPanel() {
   const visits = useMemo(() => daily.reduce((s, d) => s + (d.visitors || 0), 0), [daily]);
   const clicks = events.filter(x => x.eventName === "hostaway_checkout_click").reduce((s, x) => s + value(x), 0);
   const dateSelections = events.filter(x => x.eventName === "availability_dates_selected").reduce((s, x) => s + value(x), 0);
+  const signups = events.filter(x => x.eventName === "early_access_submission_accepted").reduce((s, x) => s + value(x), 0);
   const pages = data?.pages || [];
   const publicPages = pages.filter(row => !(row.requestPath || "").startsWith("/admin"));
   const previousVisits=data?.previous?.visits;
@@ -159,22 +160,22 @@ export default function AnalyticsPanel() {
       {!data ? <p className="mt-6 text-[14px] text-[#6D6057]">Gathering your latest numbers...</p> : !data.connected ? <p className="mt-6 rounded-lg bg-[#F4EFEC] p-4 text-[14px] text-[#6D6057]">{data.message || "Your site insights are temporarily unavailable."}</p> : <>
         <div className="mt-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
           {([
-            {label:"Page views",value:pageviews,previous:previousPageviews,category:"SITE TRAFFIC",accent:"#66836D"},
-            {label:"Visitors",value:visits,previous:previousVisitors,category:"SITE TRAFFIC",accent:"#66836D"},
-            {label:"Booking clicks",value:clicks,previous:undefined,category:"BOOKING INTEREST",accent:"#A4876C"},
-            {label:"Dates selected",value:dateSelections,previous:undefined,category:"BOOKING INTEREST",accent:"#A4876C"}
-          ] as const).map((metric) => {
-            const comparison = changeLabel(metric.value,metric.previous);
-            return <div key={metric.label} className="relative min-w-0 overflow-hidden rounded-xl border border-[#EAE2DD] bg-[#F7F3F0] px-3.5 pb-3.5 pt-3 sm:px-4">
-              <span className="absolute left-0 top-0 h-[3px] w-full" style={{backgroundColor:metric.accent}} aria-hidden="true" />
-              <span className="block font-body text-[9px] font-semibold tracking-[.12em] text-[#80766E] sm:text-[10px]">{metric.category}</span>
-              <strong className="mt-2 block font-heading text-[31px] font-medium leading-none tracking-[-.035em] tabular-nums text-[#1F3125] sm:text-[34px]">{format(metric.value)}</strong>
-              <span className="mt-1.5 block font-body text-[12px] font-medium leading-snug text-[#625C55]">{metric.label}</span>
-              {comparison && <span className="mt-1 block font-body text-[11px] leading-snug text-[#4A6E57]">{comparison}</span>}
-            </div>;
-          })}
+            {eyebrow:"REACH",label:"Visitors",value:format(visits),note:"People exploring the site",detail:changeLabel(visits,previousVisitors),accent:"#597761"},
+            {eyebrow:"BOOKING",label:"Checkout clicks",value:format(clicks),note:"Continue to booking actions",detail:null,accent:"#9C826B"},
+            {eyebrow:"ENGAGEMENT",label:"Checkout click rate",value:visits>0?((clicks/visits)*100).toFixed(1)+"%":"—",note:"Checkout clicks ÷ visitors",detail:null,accent:"#82917B"},
+            {eyebrow:"AUDIENCE",label:"Early-access signups",value:format(signups),note:"Signup events recorded",detail:null,accent:"#A18A78"}
+          ] as const).map((metric) => <div key={metric.label} className="relative flex min-w-0 flex-col rounded-xl border border-[#E8DFD8] bg-[#F8F5F2] px-3.5 pb-3.5 pt-3.5 sm:px-4 sm:pb-4">
+            <div className="flex items-center gap-2">
+              <span className="h-[6px] w-[6px] shrink-0 rounded-full" style={{backgroundColor:metric.accent}} aria-hidden="true" />
+              <span className="font-body text-[9px] font-semibold uppercase tracking-[.12em] text-[#80766E] sm:text-[10px]">{metric.eyebrow}</span>
+            </div>
+            <strong className="mt-3 block font-heading text-[32px] font-medium leading-none tracking-[-.035em] tabular-nums text-[#1F3125] sm:text-[36px]">{metric.value}</strong>
+            <span className="mt-1.5 block font-body text-[12px] font-semibold leading-snug text-[#374A3D]">{metric.label}</span>
+            <span className="mt-1 block font-body text-[10px] leading-snug text-[#786E65] sm:text-[11px]">{metric.note}</span>
+            {metric.detail && <span className="mt-1.5 block font-body text-[11px] leading-snug text-[#4A6E57]">{metric.detail}</span>}
+          </div>)}
         </div>
-        <h3 className="mt-5 font-heading text-[20px] font-medium text-[#1F3125]">Weekly visitor trend</h3>
+                <h3 className="mt-5 font-heading text-[20px] font-medium text-[#1F3125]">Weekly visitor trend</h3>
         <VisitsChart weekly={data.weekly} daily={daily} days={days} />
         <div className="mt-4 border-t border-[#E7DFDB] pt-3.5"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
       </>}
