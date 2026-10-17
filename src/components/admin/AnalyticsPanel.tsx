@@ -32,16 +32,16 @@ function changeLabel(current:number,previous:number|undefined){
   const percent=(current-previous)/previous*100;
   return (percent>0?"+":"")+percent.toFixed(0)+"% vs prior";
 }
-function MetricRows({ title, subtitle, items, keyName, emptyText, previousItems }: {
-  title: string; subtitle?: string; items: Metric[]; keyName: "requestPath" | "referrerHostname" | "deviceType"; emptyText?: string; previousItems?:Metric[];
+function MetricRows({ title, subtitle, items, keyName, emptyText, previousItems, compact = false }: {
+  title: string; subtitle?: string; items: Metric[]; keyName: "requestPath" | "referrerHostname" | "deviceType"; emptyText?: string; previousItems?:Metric[]; compact?:boolean;
 }) {
   const sorted = [...items].sort((a, b) => value(b) - value(a)).slice(0, 6);
   const max = Math.max(...sorted.map(value), 1);
   const total = items.reduce((sum,item)=>sum+value(item),0);
-  return <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
+  return <section className={`min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] ${compact ? "px-4 py-3 sm:px-5 sm:py-3.5" : "p-4 sm:p-5"}`}>
     <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">{title}</h3>
     {subtitle && <p className="mt-1 font-body text-[12px] leading-snug text-[#6D6057]">{subtitle}</p>}
-    <div className="mt-3 space-y-2.5">
+    <div className={compact ? "mt-2 space-y-2" : "mt-3 space-y-2.5"}>
       {sorted.length ? sorted.map((item, i) => {
         const raw = item[keyName] || "Direct / unknown";
         const prior=previousItems?.find(x=>(x[keyName] || "Direct / unknown")===raw);
@@ -211,7 +211,7 @@ export default function AnalyticsPanel() {
       <MetricRows title="Pages guests visit most" subtitle="Public website pages" items={publicPages} keyName="requestPath" previousItems={data.previous?.pages} />
       <div className="grid min-w-0 gap-3">
         <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
-        <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
+        <MetricRows title="Devices guests use" subtitle="Visits by device type" compact items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
       </div>
     </div>}
     {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
