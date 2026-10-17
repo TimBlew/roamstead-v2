@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Metric = { timestamp?: string; visitors?: number; pageviews?: number; count?: number; total?: number; eventName?: string; requestPath?: string; referrerHostname?: string; deviceType?: string };
 type Payload = { connected?: boolean; message?: string; visits?: Metric[]; events?: Metric[]; pages?: Metric[]; referrers?: Metric[]; devices?: Metric[] };
@@ -50,8 +50,19 @@ function MetricRows({ title, subtitle, items, keyName, emptyText }: {
 function VisitsChart({ daily }: { daily: Metric[] }) {
   const points = useMemo(() => [...daily].filter(d => d.timestamp).sort((a, b) => (a.timestamp || "").localeCompare(b.timestamp || "")), [daily]);
   const [selected, setSelected] = useState<number | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [scroll, setScroll] = useState({ left: 0, max: 0 });
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (!element) return;
+    const sync = () => setScroll({ left: element.scrollLeft, max: Math.max(0, element.scrollWidth - element.clientWidth) });
+    sync();
+    const observer = new ResizeObserver(sync);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [points.length]);
   const highest = Math.max(1, ...points.map(p => p.pageviews || 0));
-  const chartWidth = Math.max(560, (points.length - 1) * 32 + 60);
+  const chartWidth = Math.max(760, (points.length - 1) * 46 + 80);
   const left = 38, right = 20, top = 18, bottom = 36, height = 222;
   const width = chartWidth - left - right, usableHeight = height - top - bottom;
   const coords = points.map((p, i) => ({
@@ -66,7 +77,7 @@ function VisitsChart({ daily }: { daily: Metric[] }) {
       <p className="text-[12px] text-[#6D6057]">Daily page views</p>
       <p className="font-body text-[12px] tabular-nums text-[#4A6E57]">{active ? `${shortDate(active.date)} · ${format(active.views)} views` : "Select a point to see its date and views"}</p>
     </div>
-    {points.length ? <div className="mt-2 overflow-x-auto pb-1" onMouseLeave={() => setSelected(null)}>
+    {points.length ? <div ref={scrollRef} className="mt-2 overflow-x-auto pb-2" onScroll={e => setScroll({ left: e.currentTarget.scrollLeft, max: Math.max(0, e.currentTarget.scrollWidth - e.currentTarget.clientWidth) })} onMouseLeave={() => setSelected(null)}>
       <svg role="img" aria-label="Daily page views line chart. Each dot represents one date." viewBox={`0 0 ${chartWidth} ${height + 24}`} width={chartWidth} height={height + 24} className="max-w-none" onBlur={() => setSelected(null)}>
         {[0, 0.5, 1].map((step) => {
           const y = top + usableHeight * (1 - step);
@@ -80,7 +91,10 @@ function VisitsChart({ daily }: { daily: Metric[] }) {
         </g>)}
       </svg>
     </div> : <p className="py-10 text-center text-[13px] text-[#6D6057]">No visits recorded during this period.</p>}
-    <p className="mt-1 text-[11px] text-[#867B74] sm:hidden">Scroll sideways to explore every date.</p>
+    {points.length > 0 && <div className="mt-3 px-1">
+      <input type="range" aria-label="Scroll chart dates horizontally" min={0} max={Math.max(1, scroll.max)} step={1} value={Math.min(scroll.left, Math.max(1, scroll.max))} disabled={scroll.max === 0} onChange={e => { if (scrollRef.current) scrollRef.current.scrollLeft = Number(e.target.value); }} className="block h-2 w-full cursor-ew-resize accent-[#4A6E57] disabled:cursor-default disabled:opacity-40" />
+    </div>}
+    <p className="mt-1 text-[11px] text-[#867B74]">Drag the bar to explore the full date range.</p>
   </div>;
 }
 export default function AnalyticsPanel() {
@@ -108,7 +122,7 @@ export default function AnalyticsPanel() {
         <div className="flex shrink-0 items-center gap-3 sm:pt-1">
           <label htmlFor="analytics-period" className="font-body text-[13px] font-medium leading-none text-[#6D6057]">Period</label>
           <div className="relative">
-            <select id="analytics-period" value={days} onChange={e => setDays(Number(e.target.value) as 7 | 30 | 90)} className="h-11 w-[174px] appearance-none rounded-xl border border-[#D8CCC4] bg-white pl-4 pr-10 font-body text-[13px] font-medium text-[#1F3125] outline-none focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15">
+            <select id="analytics-period" value={days} onChange={e => setDays(Number(e.target.value) as 7 | 30 | 90)} className="h-11 w-[205px] appearance-none rounded-xl border border-[#D8CCC4] bg-white pl-4 pr-11 font-body text-[13px] font-medium text-[#1F3125] outline-none focus:border-[#4A6E57] focus:ring-2 focus:ring-[#4A6E57]/15">
               <option value={7}>Last 7 days</option><option value={30}>Last 30 days</option><option value={90}>Last 90 days</option>
             </select>
             <svg className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#1F3125]" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
