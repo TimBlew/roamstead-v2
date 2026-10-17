@@ -40,8 +40,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                 <img src="/roamstead-logo.svg" alt="Roamstead" className="block h-auto w-full" />
                 <p className="ml-[18%] mt-0.5 flex w-[82%] justify-between font-body text-[10px] sm:text-[11px] lg:text-[12px] font-semibold uppercase leading-none text-[#4A6E57]" aria-label="Workspace">{"WORKSPACE".split("").map((letter,index)=><span key={index}>{letter}</span>)}</p>
               </div>
-              <h1 className="mt-5 font-heading text-[29px] sm:text-[32px] lg:mt-4 lg:text-[34px] font-medium leading-[1.12] tracking-[-0.035em] text-[#1F3125]">Welcome back.</h1>
-              <p className="mt-1 mb-5 max-w-[280px] font-body text-[12px] sm:max-w-none sm:text-[13px] lg:mb-3 leading-[1.4] text-[#6D6057]">Sign in to manage your Roamstead website.</p>
+              <p className="mt-4 mb-4 max-w-[280px] font-body text-[12px] sm:max-w-none sm:text-[13px] lg:mb-3 leading-[1.4] text-[#6D6057]">Sign in to manage your Roamstead website.</p>
             </div>
             <label htmlFor="admin-password" className="block font-body text-[13px] font-medium">Password</label>
             <input id="admin-password" name="password" type="password" required autoComplete="current-password" className="mt-1.5 h-[44px] w-full rounded-[8px] border border-[#D8CCC4] bg-white px-4 font-body text-[16px] focus:outline-[#4A6E57]" />
