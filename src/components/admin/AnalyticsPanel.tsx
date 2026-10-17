@@ -82,7 +82,7 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
     return () => media.removeEventListener("change",sync);
   }, []);
   const max = Math.max(1, ...points.map(w => w.visitors));
-  const width = compactChart ? 360 : 600, height = points.length === 1 ? (compactChart ? 76 : 100) : (compactChart ? 92 : 170), left = compactChart ? 16 : 18, right = compactChart ? 16 : 18, top = compactChart ? 13 : 26, bottom = compactChart ? 21 : 30;
+  const width = compactChart ? 360 : 600, height = points.length === 1 ? (compactChart ? 175 : 100) : (compactChart ? 205 : 170), left = compactChart ? 10 : 18, right = compactChart ? 10 : 18, top = compactChart ? 24 : 26, bottom = compactChart ? 29 : 30;
   const baseline = height - bottom;
   const coords = points.map((w, i) => ({
     x: points.length === 1 ? width / 2 : left + (width-left-right)*i/Math.max(1,points.length-1),
@@ -103,16 +103,16 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
       <p className="text-[11px] leading-snug text-[#6D6057] sm:text-[12px]">{isDaily ? "Last 7 days" : "Weekly visitors"}</p>
       <p className="text-right text-[10px] leading-snug tabular-nums text-[#4A6E57] sm:text-[12px]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${current && active === points.length-1 ? (isDaily ? " (today)" : " (this week)") : ""}` : <span className="hidden sm:inline">Select a point for details</span>}</p>
     </div>
-    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox={`0 0 ${width} ${height}`} className="mt-0.5 block h-auto w-full sm:mt-2" onMouseLeave={() => setActive(null)}>
+    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox={`0 0 ${width} ${height}`} className="mt-1 block h-auto w-full sm:mt-2" onMouseLeave={() => setActive(null)}>
       <path d={fill} fill="#4A6E57" fillOpacity=".08"/>
       <line x1={left} x2={width-right} y1={baseline} y2={baseline} stroke="#E7DFDB" />
-      <path d={completePath} fill="none" stroke="#4A6E57" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      {priorPoint && currentPoint && <line x1={priorPoint.x} y1={priorPoint.y} x2={currentPoint.x} y2={currentPoint.y} stroke="#4A6E57" strokeWidth="2.5" strokeDasharray="4 4" strokeLinecap="round"/>}
+      <path d={completePath} fill="none" stroke="#4A6E57" strokeWidth={compactChart ? 2.3 : 2} strokeLinecap="round" strokeLinejoin="round" />
+      {priorPoint && currentPoint && <line x1={priorPoint.x} y1={priorPoint.y} x2={currentPoint.x} y2={currentPoint.y} stroke="#4A6E57" strokeWidth={compactChart ? 2.3 : 2.5} strokeDasharray="4 4" strokeLinecap="round"/>}
       {coords.map((p,i) => {
         const isCurrent = !!current && i === coords.length-1;
         return <g key={p.start}>
-          <circle cx={p.x} cy={p.y} r={isCurrent ? 3.5 : 3} fill={isCurrent ? "#FFFCFB" : "#4A6E57"} stroke={isCurrent ? "#4A6E57" : "none"} strokeWidth={isCurrent ? 1.75 : 0}/>
-          {(points.length <= 8 || i === points.length-1) && <text x={p.x} y={Math.max(12,p.y-11)} fontSize={compactChart ? 9 : 10} textAnchor={points.length===1?"middle":i===0?"start":i===points.length-1?"end":"middle"} fill="#1F3125">{format(p.visitors)}</text>}
+          <circle cx={p.x} cy={p.y} r={compactChart ? (isCurrent ? 4 : 3.5) : (isCurrent ? 3.5 : 3)} fill={isCurrent ? "#FFFCFB" : "#4A6E57"} stroke={isCurrent ? "#4A6E57" : "none"} strokeWidth={isCurrent ? 1.75 : 0}/>
+          {(points.length <= 8 || i === points.length-1) && <text x={p.x} y={Math.max(12,p.y-11)} fontSize={compactChart ? 10 : 10} textAnchor={points.length===1?"middle":i===0?"start":i===points.length-1?"end":"middle"} fill="#1F3125">{format(p.visitors)}</text>}
           {(i%labelEvery===0 || i===points.length-1) && <text x={p.x} y={height-9} fontSize="10" textAnchor={points.length===1?"middle":i===0?"start":i===points.length-1?"end":"middle"} fill="#6D6057">{shortDate(p.start)}</text>}
           <circle cx={p.x} cy={p.y} r="11" fill="transparent" tabIndex={0} role="button" aria-label={`${shortDate(p.start)} to ${shortDate(p.end)}: ${p.visitors} visitors${isCurrent ? (isDaily ? ", today" : ", current incomplete week") : ""}`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)} />
         </g>;
