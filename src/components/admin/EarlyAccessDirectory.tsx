@@ -2,13 +2,14 @@
 import {useCallback,useEffect,useMemo,useState} from "react";
 type Entry={id:string;email:string;createdAt:string;unsubscribed:boolean;season:string;home:string;preferencesUnavailable?:boolean;subscriptionKnown?:boolean;notificationStatus?:string;contactStatus?:string};
 type Response={connected?:boolean;source?:"sheets"|"resend";entries?:Entry[];hasMore?:boolean;nextCursor?:string|null;message?:string};
+let cachedDirectory: Response | null = null;
 export default function EarlyAccessDirectory(){
-  const [entries,setEntries]=useState<Entry[]>([]);
-  const [dataSource,setDataSource]=useState<"sheets"|"resend">("resend");
+  const [entries,setEntries]=useState<Entry[]>(()=>cachedDirectory?.entries||[]);
+  const [dataSource,setDataSource]=useState<"sheets"|"resend">(()=>cachedDirectory?.source||"resend");
   const [cursor,setCursor]=useState<string|null>(null);
   const [hasMore,setHasMore]=useState(false);
   const [loading,setLoading]=useState(false);
-  const [message,setMessage]=useState("");
+  const [message,setMessage]=useState("");\n  const [initialLoaded,setInitialLoaded]=useState(()=>Boolean(cachedDirectory));
   const [search,setSearch]=useState("");
   const [season,setSeason]=useState("all");
   const [selected,setSelected]=useState<string|null>(null);
@@ -46,7 +47,7 @@ export default function EarlyAccessDirectory(){
       const r=await fetch(url,{cache:"no-store"});
       const data=await r.json() as Response;
       if(!r.ok||!data.connected)throw Error(data.message||"Unable to load signups.");
-      setEntries(prev=>after?[...prev,...(data.entries||[])]:data.entries||[]);
+      setEntries(prev=>after?[...prev,...(data.entries||[])]:data.entries||[]);\n      if(!after){cachedDirectory=data;setInitialLoaded(true)}
       setDataSource(data.source||"resend");
       setCursor(data.nextCursor||null);setHasMore(Boolean(data.hasMore));
     }catch(e){setMessage(e instanceof Error?e.message:"Unable to load signups.");}
@@ -74,9 +75,9 @@ export default function EarlyAccessDirectory(){
         <div><p className="text-[10px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Guest interest</p><h2 className="mt-0.5 font-heading text-[22px] leading-tight sm:text-[25px]">Your early-access list</h2><p className="mt-1 max-w-[65ch] font-body text-[12px] leading-[1.45] text-[#6D6057]">{dataSource==="sheets"?"Everyone who’s joined the list, along with their preferred season and home area.":"Your early-access contacts are being loaded from the mailing list."}</p></div>
         <button type="button" onClick={()=>void load()} disabled={loading} className="inline-flex h-[33px] items-center rounded-md border border-[#D8CCC4] px-3 text-[12px] text-[#1F3125] disabled:opacity-40">Refresh</button>
       </div>
-      <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-lg bg-[#F4EFEC] px-3 py-2"><strong className="block font-heading text-[25px] leading-tight">{entries.length}</strong><span className="text-[11px] text-[#6D6057]">{hasMore?"Records loaded":dataSource==="sheets"?"Guests on the list":"Stored contacts"}</span></div>
-        <div className="rounded-lg bg-[#F4EFEC] px-3 py-2"><strong className="block font-heading text-[25px] leading-tight">{dataSource==="sheets"?entries.filter(x=>x.contactStatus==="stored").length:entries.filter(x=>!x.unsubscribed).length}</strong><span className="text-[11px] text-[#6D6057]">{dataSource==="sheets"?"Added to mailing list":"Subscribed contacts"}</span></div>
+      <div className="mt-3 flex items-center justify-between gap-3 rounded-lg bg-[#F4EFEC] px-4 py-3">
+        <div><strong className="block font-heading text-[25px] leading-tight tabular-nums">{initialLoaded?entries.length:"—"}</strong><span className="block text-[11px] text-[#6D6057]">{hasMore?"Records loaded":"Guests on the list"}</span></div>
+        <span className="text-right text-[11px] leading-snug text-[#6D6057]">{loading? "Refreshing list…" : dataSource==="sheets" ? "Mailing status is available in guest details" : "Subscription status is available in guest details"}</span>
       </div>
       <div className="mt-3 flex flex-col gap-2 sm:flex-row">
         <label className="min-w-0 flex-1"><span className="sr-only">Find a contact</span><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search guests by email, season, or area" className="h-[40px] w-full rounded-lg border border-[#D8CCC4] bg-white px-3 font-body text-[13px] outline-[#4A6E57]"/></label>
@@ -91,8 +92,8 @@ export default function EarlyAccessDirectory(){
           <span className="block text-[11px] text-[#6D6057] sm:text-[12px]">{e.preferencesUnavailable?"Unavailable":e.home||"Not provided"}</span>
           <span className="block text-[11px] text-[#6D6057] sm:text-[12px]">{displayDate(e.createdAt)}</span>
         </button>)}
-        {!loading&&!filtered.length&&<p className="px-3 py-5 text-center text-[13px] text-[#6D6057]">{entries.length?"No guests match that search.":"No signups yet. New guests will appear here."}</p>}
-        {loading&&<p className="px-3 py-4 text-[13px] text-[#6D6057]">Loading your list...</p>}
+        {initialLoaded&&!loading&&!filtered.length&&<p className="px-3 py-5 text-center text-[13px] text-[#6D6057]">{entries.length?"No guests match that search.":"No signups yet. New guests will appear here."}</p>}
+        {!initialLoaded&&loading&&<p className="px-3 py-4 text-[13px] text-[#6D6057]">Loading your list...</p>}
       </div>
       {hasMore&&<div className="mt-3 text-center"><button type="button" disabled={loading||!cursor} onClick={()=>void load(cursor)} className="h-[36px] rounded-lg border border-[#D8CCC4] px-4 text-[12px] disabled:opacity-40">Load more</button></div>}
     </section>
