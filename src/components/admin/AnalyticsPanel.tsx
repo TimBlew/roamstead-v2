@@ -62,41 +62,50 @@ function MetricRows({ title, subtitle, items, keyName, emptyText, previousItems 
   </section>;
 }
 function VisitsChart({ weekly }: { weekly?: Weekly }) {
-  const weeks = weekly?.weeks || [];
+  const completed = weekly?.weeks || [];
+  const current = weekly?.current || null;
+  const points = [...completed, ...(current ? [current] : [])];
   const [active, setActive] = useState<number | null>(null);
-  const max = Math.max(1, ...weeks.map(w => w.visitors));
+  const max = Math.max(1, ...points.map(w => w.visitors));
   const width = 600, height = 190, left = 18, right = 18, top = 26, bottom = 30;
   const baseline = height - bottom;
-  const coords = weeks.map((w, i) => ({
-    x: left + (width-left-right)*i/Math.max(1,weeks.length-1),
+  const coords = points.map((w, i) => ({
+    x: left + (width-left-right)*i/Math.max(1,points.length-1),
     y: baseline - (baseline-top)*w.visitors/max,
     ...w
   }));
-  const path = coords.map((p,i) => `${i?"L":"M"} ${p.x} ${p.y}`).join(" ");
-  const fill = coords.length > 1 ? `${path} L ${coords[coords.length-1].x} ${baseline} L ${coords[0].x} ${baseline} Z` : "";
-  const labelEvery = Math.max(1, Math.ceil(weeks.length/6));
-  const previous = weeks.length > 1 ? weeks[weeks.length-2] : null;
-  const latest = weeks.length ? weeks[weeks.length-1] : null;
+  const completedCoords = coords.slice(0,completed.length);
+  const completePath = completedCoords.map((p,i) => `${i?"L":"M"} ${p.x} ${p.y}`).join(" ");
+  const fill = completedCoords.length > 1 ? `${completePath} L ${completedCoords[completedCoords.length-1].x} ${baseline} L ${completedCoords[0].x} ${baseline} Z` : "";
+  const priorPoint = completedCoords[completedCoords.length-1];
+  const currentPoint = current ? coords[coords.length-1] : null;
+  const labelEvery = Math.max(1, Math.ceil(points.length/6));
+  const previous = completed.length > 1 ? completed[completed.length-2] : null;
+  const latest = completed.length ? completed[completed.length-1] : null;
   const change = previous && previous.visitors > 0 && latest ? (latest.visitors-previous.visitors)/previous.visitors*100 : null;
   return <div className="mt-2.5 rounded-xl border border-[#E7DFDB] bg-[#FFFCFB] px-3 pb-3 pt-3 sm:px-4">
     <div className="flex flex-wrap items-center justify-between gap-2">
-      <p className="text-[12px] text-[#6D6057]">Weekly visitors · completed weeks</p>
-      <p className="text-[12px] tabular-nums text-[#4A6E57]">{active !== null && weeks[active] ? `${shortDate(weeks[active].start)}–${shortDate(weeks[active].end)} · ${format(weeks[active].visitors)} visitors` : "Select a point for details"}</p>
+      <p className="text-[12px] text-[#6D6057]">Weekly visitors · past 12 months</p>
+      <p className="text-[12px] tabular-nums text-[#4A6E57]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${current && active === points.length-1 ? " (this week)" : ""}` : "Select a point for details"}</p>
     </div>
-    {weeks.length > 1 ? <svg role="img" aria-label="Weekly visitors over the past year, completed weeks only" viewBox="0 0 600 190" className="mt-2 block h-auto w-full" onMouseLeave={() => setActive(null)}>
+    {points.length > 1 ? <svg role="img" aria-label="Weekly visitors over the past year. Solid dots mark completed weeks; outlined dot marks the current week." viewBox="0 0 600 190" className="mt-2 block h-auto w-full" onMouseLeave={() => setActive(null)}>
       <path d={fill} fill="#4A6E57" fillOpacity=".08"/>
       <line x1={left} x2={width-right} y1={baseline} y2={baseline} stroke="#E7DFDB" />
-      <path d={path} fill="none" stroke="#4A6E57" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      {coords.map((p,i) => <g key={p.start}>
-        <circle cx={p.x} cy={p.y} r={i === coords.length-1 ? 5 : 3.5} fill="#4A6E57" />
-        {(weeks.length <= 8 || i === weeks.length-1) && <text x={p.x} y={Math.max(12,p.y-11)} fontSize="10" textAnchor={i===0?"start":i===weeks.length-1?"end":"middle"} fill="#1F3125">{format(p.visitors)}</text>}
-        {(i%labelEvery===0 || i===weeks.length-1) && <text x={p.x} y={height-9} fontSize="10" textAnchor={i===0?"start":i===weeks.length-1?"end":"middle"} fill="#6D6057">{shortDate(p.start)}</text>}
-        <circle cx={p.x} cy={p.y} r="13" fill="transparent" tabIndex={0} role="button" aria-label={`${shortDate(p.start)} to ${shortDate(p.end)}: ${p.visitors} visitors`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)} />
-      </g>)}
-    </svg> : <p className="py-5 text-[13px] text-[#6D6057]">{weeks.length === 1 ? `First complete week: ${format(weeks[0].visitors)} visitors (${shortDate(weeks[0].start)}–${shortDate(weeks[0].end)}).` : "Weekly history will appear after the first complete week of tracking."}</p>}
+      <path d={completePath} fill="none" stroke="#4A6E57" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      {priorPoint && currentPoint && <line x1={priorPoint.x} y1={priorPoint.y} x2={currentPoint.x} y2={currentPoint.y} stroke="#4A6E57" strokeWidth="2.5" strokeDasharray="5 5" strokeLinecap="round"/>}
+      {coords.map((p,i) => {
+        const isCurrent = !!current && i === coords.length-1;
+        return <g key={p.start}>
+          <circle cx={p.x} cy={p.y} r={isCurrent ? 5 : i === completed.length-1 ? 5 : 3.5} fill={isCurrent ? "#FFFCFB" : "#4A6E57"} stroke={isCurrent ? "#4A6E57" : "none"} strokeWidth={isCurrent ? 2.5 : 0}/>
+          {(points.length <= 8 || i === points.length-1) && <text x={p.x} y={Math.max(12,p.y-11)} fontSize="10" textAnchor={i===0?"start":i===points.length-1?"end":"middle"} fill="#1F3125">{format(p.visitors)}</text>}
+          {(i%labelEvery===0 || i===points.length-1) && <text x={p.x} y={height-9} fontSize="10" textAnchor={i===0?"start":i===points.length-1?"end":"middle"} fill="#6D6057">{shortDate(p.start)}</text>}
+          <circle cx={p.x} cy={p.y} r="13" fill="transparent" tabIndex={0} role="button" aria-label={`${shortDate(p.start)} to ${shortDate(p.end)}: ${p.visitors} visitors${isCurrent ? ", current incomplete week" : ""}`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)} />
+        </g>;
+      })}
+    </svg> : <p className="py-5 text-[13px] text-[#6D6057]">{points.length === 1 ? `${current ? "This week so far" : "First complete week"}: ${format(points[0].visitors)} visitors (${shortDate(points[0].start)}–${shortDate(points[0].end)}).` : "Weekly history will appear once tracking has a full week of data."}</p>}
     <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1 border-t border-[#E7DFDB] pt-2 text-[12px] text-[#6D6057]">
       {latest && previous && change !== null && <span>Latest completed week <strong className="font-medium text-[#1F3125]">{format(latest.visitors)}</strong> <span className={change>0?"text-[#4A6E57]":change<0?"text-[#9A5B55]":"text-[#6D6057]"}>({change>0?"+":""}{change.toFixed(1)}% vs prior week)</span></span>}
-      {weekly?.current && <span>This week so far ({shortDate(weekly.current.start)}–{shortDate(weekly.current.end)}): <strong className="font-medium text-[#1F3125]">{format(weekly.current.visitors)} visitors</strong></span>}
+      {current && <span>This week so far ({shortDate(current.start)}–{shortDate(current.end)}): <strong className="font-medium text-[#1F3125]">{format(current.visitors)} visitors</strong></span>}
     </div>
   </div>;
 }
