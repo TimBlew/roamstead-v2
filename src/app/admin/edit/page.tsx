@@ -3,4 +3,4 @@ import CopyEditor from "@/components/admin/CopyEditor";
 import { AdminWorkspace } from "@/components/admin/AdminWorkspace";
 export const dynamic="force-dynamic";
 export const metadata:Metadata={title:"Edit your site | Roamstead",robots:{index:false,follow:false}};
-export default async function EditPage(){return <AdminWorkspace active="edit" title="Edit your site" subtitle="Make thoughtful updates to your website’s wording. Save your changes when you’re ready."><CopyEditor /></AdminWorkspace>}
+export default async function EditPage(){return <AdminWorkspace active="edit" title="Edit your site" subtitle="Update your website's wording and publish when ready."><CopyEditor /></AdminWorkspace>}
