@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type Metric = { timestamp?: string; visitors?: number; pageviews?: number; count?: number; total?: number; eventName?: string; requestPath?: string; referrerHostname?: string; deviceType?: string };
+type SearchData = {connected?:boolean;message?:string;clicks?:number;impressions?:number;ctr?:number;position?:number;endDate?:string;queries?:{query:string;clicks:number}[];pages?:{page:string;clicks:number}[]};
 type Payload = { connected?: boolean; message?: string; visits?: Metric[]; events?: Metric[]; pages?: Metric[]; referrers?: Metric[]; devices?: Metric[] };
 const actionNames: Record<string, string> = {
   availability_dates_selected: "Dates selected",
@@ -129,11 +130,17 @@ function VisitsChart({ daily }: { daily: Metric[] }) {
 export default function AnalyticsPanel() {
   const [days, setDays] = useState<7 | 30 | 90>(30);
   const [data, setData] = useState<Payload | null>(null);
+  const [search, setSearch] = useState<SearchData | null>(null);
   useEffect(() => {
     let active = true; setData(null);
     fetch(`/admin/api/analytics?days=${days}`, { cache: "no-store" })
       .then(r => r.json()).then(x => { if (active) setData(x); })
       .catch(() => { if (active) setData({ connected: false, message: "Reporting is temporarily unavailable." }); });
+    return () => { active = false; };
+  }, [days]);
+  useEffect(() => {
+    let active = true; setSearch(null);
+    fetch(`/admin/api/search-console?days=${days}`, { cache: "no-store" }).then(r => r.json()).then(x => { if(active)setSearch(x); }).catch(() => { if(active)setSearch({connected:false,message:"Google Search reporting is temporarily unavailable."}); });
     return () => { active = false; };
   }, [days]);
   const daily = data?.visits || [], events = data?.events || [];
@@ -173,8 +180,18 @@ export default function AnalyticsPanel() {
       <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" />
       <section className="flex min-w-0 flex-col rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-5 sm:p-6">
         <h3 className="font-heading text-[20px] font-medium text-[#1F3125]">Google search</h3>
-        <p className="mt-1.5 font-body text-[12px] text-[#6D6057]">Search performance</p>
-        <p className="mt-5 max-w-[420px] text-[13px] leading-relaxed text-[#6D6057]">Search Console is verified. Query and ranking data will appear here after a secure reporting connection is added.</p>
+        <p className="mt-1.5 font-body text-[12px] text-[#6D6057]">Organic search performance · same selected period</p>
+        {!search ? <p className="mt-5 text-[13px] text-[#6D6057]">Loading Google Search Console…</p> : search.connected ? <>
+          <div className="mt-5 grid grid-cols-2 gap-2.5">
+            {([["Search clicks", search.clicks || 0], ["Impressions", search.impressions || 0], ["Click rate", ((search.ctr || 0) * 100).toFixed(1) + "%"], ["Avg. position", (search.position || 0).toFixed(1)]] as const).map(([name,val]) => <div key={name} className="rounded-xl bg-[#F4EFEC] p-3">
+              <strong className="block font-heading text-[21px] font-medium tabular-nums text-[#1F3125]">{typeof val === "number" ? format(val) : val}</strong>
+              <span className="text-[12px] text-[#6D6057]">{name}</span>
+            </div>)}
+          </div>
+          <h4 className="mt-5 font-heading text-[16px] text-[#1F3125]">Top searches</h4>
+          <div className="mt-2 divide-y divide-[#E7DFDB]">{search.queries?.length ? search.queries.map((item,i) => <div key={i} className="flex justify-between gap-3 py-2 text-[12px]"><span className="min-w-0 break-words">{item.query}</span><span className="shrink-0 tabular-nums text-[#6D6057]">{format(item.clicks)} clicks</span></div>) : <p className="py-2 text-[12px] text-[#6D6057]">No search queries available for these dates.</p>}</div>
+          <p className="mt-3 text-[11px] text-[#6D6057]">Google data typically arrives a few days after search activity. Reporting through {search.endDate}.</p>
+        </> : <p className="mt-5 text-[13px] leading-relaxed text-[#6D6057]">{search.message}</p>}
         <a className="mt-5 inline-flex w-fit items-center gap-2 rounded-xl border border-[#D8CCC4] bg-white px-4 py-2.5 text-[12px] font-medium text-[#1F3125] transition-colors hover:bg-[#F4EFEC]" href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">Open Search Console <span aria-hidden="true">↗</span></a>
       </section>
     </div>}
