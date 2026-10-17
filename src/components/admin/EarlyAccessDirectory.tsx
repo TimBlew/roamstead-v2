@@ -59,7 +59,7 @@ export default function EarlyAccessDirectory(){
   const displayDate=(value:string)=>{const d=new Date(value);return Number.isNaN(d.getTime())?value:d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})};
   return <div className="space-y-3">
     <section className="rounded-xl border border-[#D8CCC4] bg-[#FFFCFB] p-3 sm:p-5">
-      <div><p className="text-[10px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Notifications</p><h2 className="mt-0.5 font-heading text-[20px] leading-tight sm:text-[23px]">Where signup emails go</h2><p className="mt-1 font-body text-[12px] leading-[1.5] text-[#6D6057]">Choose who receives an email when someone joins your early-access list. Castlehead will continue receiving a backup.</p></div>
+      <div><p className="text-[10px] font-semibold uppercase tracking-[.12em] text-[#4A6E57]">Notifications</p><h2 className="mt-0.5 font-heading text-[20px] leading-tight sm:text-[23px]">Where signup emails go</h2><p className="mt-1 font-body text-[12px] leading-[1.5] text-[#6D6057]">Choose who receives an email when someone joins your early-access list.</p></div>
       <form onSubmit={saveNotification} className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end">
         <label className="min-w-0 flex-1 font-body text-[12px] font-medium text-[#1F3125]">Send notifications to
           <input type="email" required autoComplete="email" maxLength={254} value={notificationEmail} onChange={e=>setNotificationEmail(e.target.value)} disabled={!settingEnabled||settingBusy} placeholder="email@example.com" className="mt-1 block h-[39px] w-full rounded-lg border border-[#D8CCC4] bg-white px-3 font-body text-[13px] outline-[#4A6E57] disabled:opacity-55"/>
