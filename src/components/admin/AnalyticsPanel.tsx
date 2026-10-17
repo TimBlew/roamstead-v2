@@ -136,10 +136,13 @@ export default function AnalyticsPanel() {
         <div className="mt-4 border-t border-[#E7DFDB] pt-3.5"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
       </>}
     </section>
-    {data?.connected && <div className="grid gap-3.5 lg:grid-cols-2 lg:items-start">\n      <div className="min-w-0 space-y-3.5">
+    {data?.connected && <div className="grid gap-3.5 lg:grid-cols-2 lg:items-start">
+      <div className="min-w-0 space-y-3.5">
       <MetricRows title="Pages guests visit most" subtitle="Public website pages" items={publicPages} keyName="requestPath" />
       
-      <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" />\n      </div>\n      <div className="min-w-0 space-y-3.5">
+      <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" />
+      </div>
+      <div className="min-w-0 space-y-3.5">
       <section className="flex min-w-0 flex-col rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
         <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">Google search</h3>
         <p className="mt-1 font-body text-[12px] text-[#6D6057]">Organic search performance · same selected period</p>
