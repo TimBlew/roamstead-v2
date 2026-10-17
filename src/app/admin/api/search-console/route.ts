@@ -29,7 +29,13 @@ async function token(request: NextRequest) {
   body: JSON.stringify({ scope: ["https://www.googleapis.com/auth/webmasters.readonly"], lifetime: "1800s" }),
   cache: "no-store", signal: AbortSignal.timeout(10000)
  });
- if (!impersonation.ok) throw Error("service_account_impersonation_" + impersonation.status);
+ if (!impersonation.ok) {
+  const details = await impersonation.json().catch(() => null) as {error?: {status?:string; message?:string; details?: Array<{"@type"?:string;reason?:string}>}} | null;
+  const reason = details?.error?.details?.find(d => d.reason)?.reason;
+  const status = details?.error?.status;
+  const safe = (reason || status || "unknown").replace(/[^A-Za-z0-9_]/g, "").slice(0, 80);
+  throw Error("service_account_impersonation_" + impersonation.status + "_" + safe);
+ }
  const result = await impersonation.json() as { accessToken?: string };
  if (!result.accessToken) throw Error("Google service account token missing");
  return result.accessToken;
@@ -50,5 +56,5 @@ export async function GET(request:NextRequest){
   const [totals,queries,pages]=await Promise.all([query(access,date(start),date(end),[],1),query(access,date(start),date(end),["query"],8),query(access,date(start),date(end),["page"],5)]);
   const total=totals[0]||{};
   return NextResponse.json({connected:true,startDate:date(start),endDate:date(end),clicks:total.clicks||0,impressions:total.impressions||0,ctr:total.ctr||0,position:total.position||0,queries:queries.map(r=>({query:r.keys?.[0]||"",clicks:r.clicks||0})),pages:pages.map(r=>({page:r.keys?.[0]||"",clicks:r.clicks||0}))},{headers});
- }catch(error){ const raw=error instanceof Error ? error.message : "unknown"; const diagnostic=/^(federation_exchange|service_account_impersonation|search_console)_[0-9]{3}$/.test(raw) ? raw : "unexpected_error"; console.error("Roamstead Search Console reporting failed", diagnostic); return NextResponse.json({connected:false,diagnostic,message:"Google reporting connection is not yet ready ("+diagnostic.replaceAll("_"," ")+")."},{headers});}
+ }catch(error){ const raw=error instanceof Error ? error.message : "unknown"; const diagnostic=/^(federation_exchange|service_account_impersonation|search_console)_[0-9]{3}(?:_[A-Za-z0-9_]{1,80})?$/.test(raw) ? raw : "unexpected_error"; console.error("Roamstead Search Console reporting failed", diagnostic); return NextResponse.json({connected:false,diagnostic,message:"Google reporting connection is not yet ready ("+diagnostic.replaceAll("_"," ")+")."},{headers});}
 }
