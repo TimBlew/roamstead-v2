@@ -80,7 +80,7 @@ export default function CopyEditor() {
             <option value="properties">Properties page</option>
           </select>
           <span aria-hidden="true" className="flex h-[40px] w-full items-center rounded-lg border border-[#D8CCC4] bg-white pl-3 pr-11 font-body text-[13px] font-medium text-[#1F3125]">{page==="home"?"Home page":"Properties page"}</span>
-          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" className="pointer-events-none absolute right-4 top-1/2 h-[16px] w-[16px] -translate-y-1/2 text-[#4A6E57]"><path d="m5 7 5 5 5-5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" className="pointer-events-none absolute right-2.5 top-1/2 h-[16px] w-[16px] -translate-y-1/2 text-[#4A6E57]"><path d="m5 7 5 5 5-5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </span>
       </label>
       <div className="mt-2 space-y-1">
