@@ -65,20 +65,33 @@ export async function GET(req:NextRequest){
   const now=new Date(), since=new Date(now.getTime()-range*DAY).toISOString(),until=now.toISOString();
   const previousSince=new Date(now.getTime()-2*range*DAY).toISOString();
   try{
-    const [visits,events,pages,referrers,devices,yearRows,previous]=await Promise.all([
-      dailyRows(token,new Date(since),now),
+    const visits = await dailyRows(token,new Date(since),now);
+    // Keep essential traffic visible if a breakdown, event aggregation, or
+    // independent historical query is temporarily unavailable.
+    const optional = await Promise.allSettled([
       query(token,"/events/aggregate",{since,until,by:"eventName",limit:"30"}),
       query(token,"/visits/aggregate",{since,until,by:"requestPath",limit:"15"}),
       query(token,"/visits/aggregate",{since,until,by:"referrerHostname",limit:"12"}),
       query(token,"/visits/aggregate",{since,until,by:"deviceType",limit:"8"}),
-      dailyRows(token,new Date(now.getTime()-364*DAY),new Date(now.getTime()+DAY)).catch(() => null),
+      dailyRows(token,new Date(now.getTime()-364*DAY),new Date(now.getTime()+DAY)),
       Promise.all([
         dailyRows(token,new Date(previousSince),new Date(since)),
         query(token,"/visits/aggregate",{since:previousSince,until:since,by:"requestPath",limit:"15"}),
         query(token,"/visits/aggregate",{since:previousSince,until:since,by:"referrerHostname",limit:"12"}),
         query(token,"/visits/aggregate",{since:previousSince,until:since,by:"deviceType",limit:"8"})
-      ]).then(([daily,p,r,d])=>({visits:daily,pages:p.data||[],referrers:r.data||[],devices:d.data||[]})).catch(()=>null)
+      ]).then(([daily,p,r,d])=>({visits:daily,pages:p.data||[],referrers:r.data||[],devices:d.data||[]}))
     ]);
+    const available = (index:number) => optional[index].status==="fulfilled" ? (optional[index] as PromiseFulfilledResult<any>).value : null;
+    const events=available(0), pages=available(1), referrers=available(2), devices=available(3);
+    const yearRows=available(4), previous=available(5);
+    optional.forEach((result,index) => {
+      if(result.status==="rejected") console.warn("Roamstead analytics optional query failed",index,String(result.reason));
+    });
     return NextResponse.json({connected:true,period:`Past ${range} days`,visits,previous,weekly:weeklySeries(yearRows || visits,now),weeklyError:yearRows ? undefined : "Full-year history is temporarily unavailable; showing the available reporting period.",events:events.data||[],pages:pages.data||[],referrers:referrers.data||[],devices:devices.data||[]},{headers:{"Cache-Control":"private, no-store"}});
-  }catch{return NextResponse.json({connected:false,message:"Unable to retrieve Vercel Analytics data. Check the reporting token permissions and Vercel API access."},{headers:{"Cache-Control":"private, no-store"}})}
+  }catch(error){
+    const detail=error instanceof Error ? error.message : "Unknown analytics error";
+    console.error("Roamstead analytics main query failed",detail);
+    const accessDenied=/\\b(401|403)\\b/.test(detail);
+    return NextResponse.json({connected:false,message:accessDenied ? "Analytics reporting access needs attention. The reporting token may have expired or lost permission." : "Analytics reporting is temporarily unavailable. Please try again shortly."},{headers:{"Cache-Control":"private, no-store"}});
+  }
 }
