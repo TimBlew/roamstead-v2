@@ -58,15 +58,22 @@ export async function GET(req:NextRequest){
   const days=Number(req.nextUrl.searchParams.get("days"));
   const range=days===7||days===90||days===365?days:30;
   const now=new Date(), since=new Date(now.getTime()-range*DAY).toISOString(),until=now.toISOString();
+  const previousSince=new Date(now.getTime()-2*range*DAY).toISOString();
   try{
-    const [visits,events,pages,referrers,devices,yearRows]=await Promise.all([
+    const [visits,events,pages,referrers,devices,yearRows,previous]=await Promise.all([
       dailyRows(token,new Date(since),now),
       query(token,"/events/aggregate",{since,until,by:"eventName",limit:"30"}),
       query(token,"/visits/aggregate",{since,until,by:"requestPath",limit:"15"}),
       query(token,"/visits/aggregate",{since,until,by:"referrerHostname",limit:"12"}),
       query(token,"/visits/aggregate",{since,until,by:"deviceType",limit:"8"}),
-      dailyRows(token,new Date(now.getTime()-364*DAY),new Date(now.getTime()+DAY)).catch(() => null)
+      dailyRows(token,new Date(now.getTime()-364*DAY),new Date(now.getTime()+DAY)).catch(() => null),
+      Promise.all([
+        dailyRows(token,new Date(previousSince),new Date(since)),
+        query(token,"/visits/aggregate",{since:previousSince,until:since,by:"requestPath",limit:"15"}),
+        query(token,"/visits/aggregate",{since:previousSince,until:since,by:"referrerHostname",limit:"12"}),
+        query(token,"/visits/aggregate",{since:previousSince,until:since,by:"deviceType",limit:"8"})
+      ]).then(([daily,p,r,d])=>({visits:daily,pages:p.data||[],referrers:r.data||[],devices:d.data||[]})).catch(()=>null)
     ]);
-    return NextResponse.json({connected:true,period:`Past ${range} days`,visits,weekly:yearRows ? weeklySeries(yearRows,now) : undefined,weeklyError:yearRows ? undefined : "Weekly visitor history is temporarily unavailable.",events:events.data||[],pages:pages.data||[],referrers:referrers.data||[],devices:devices.data||[]},{headers:{"Cache-Control":"private, no-store"}});
+    return NextResponse.json({connected:true,period:`Past ${range} days`,visits,previous,weekly:yearRows ? weeklySeries(yearRows,now) : undefined,weeklyError:yearRows ? undefined : "Weekly visitor history is temporarily unavailable.",events:events.data||[],pages:pages.data||[],referrers:referrers.data||[],devices:devices.data||[]},{headers:{"Cache-Control":"private, no-store"}});
   }catch{return NextResponse.json({connected:false,message:"Unable to retrieve Vercel Analytics data. Check the reporting token permissions and Vercel API access."},{headers:{"Cache-Control":"private, no-store"}})}
 }
