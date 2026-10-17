@@ -31,7 +31,7 @@ function MetricRows({ title, subtitle, items, keyName, emptyText }: {
   return <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
     <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">{title}</h3>
     {subtitle && <p className="mt-1 font-body text-[12px] leading-snug text-[#6D6057]">{subtitle}</p>}
-    <div className="mt-3.5 space-y-3>
+    <div className="mt-3.5 space-y-3">
       {sorted.length ? sorted.map((item, i) => {
         const raw = item[keyName] || "Direct / unknown";
         const label = keyName === "requestPath" ? pageLabel(raw) : keyName === "deviceType" ? raw === "mobile" ? "Phone" : raw === "desktop" ? "Computer" : raw : raw;
