@@ -61,9 +61,16 @@ function MetricRows({ title, subtitle, items, keyName, emptyText, previousItems 
     </div>
   </section>;
 }
-function VisitsChart({ weekly }: { weekly?: Weekly }) {
-  const completed = weekly?.weeks || [];
-  const current = weekly?.current || null;
+function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[]; days:number }) {
+  const isDaily = days === 7;
+  const today = new Date();
+  const dailyMap = new Map(daily.map(row => [row.timestamp?.slice(0,10), row.visitors || 0]));
+  const dailyPoints = Array.from({length:7},(_,i)=>{
+    const date = new Date(Date.UTC(today.getUTCFullYear(),today.getUTCMonth(),today.getUTCDate()-6+i)).toISOString().slice(0,10);
+    return {start:date,end:date,visitors:dailyMap.get(date)||0};
+  });
+  const completed = isDaily ? dailyPoints.slice(0,6) : weekly?.weeks || [];
+  const current = isDaily ? dailyPoints[6] : weekly?.current || null;
   const points = [...completed, ...(current ? [current] : [])];
   const [active, setActive] = useState<number | null>(null);
   const max = Math.max(1, ...points.map(w => w.visitors));
@@ -85,10 +92,10 @@ function VisitsChart({ weekly }: { weekly?: Weekly }) {
   const change = previous && previous.visitors > 0 && latest ? (latest.visitors-previous.visitors)/previous.visitors*100 : null;
   return <div className="mt-2.5 rounded-xl border border-[#E7DFDB] bg-[#FFFCFB] px-3 pb-3 pt-3 sm:px-4">
     <div className="flex flex-wrap items-center justify-between gap-2">
-      <p className="text-[12px] text-[#6D6057]">Weekly visitors · past 12 months</p>
-      <p className="text-[12px] tabular-nums text-[#4A6E57]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${current && active === points.length-1 ? " (this week)" : ""}` : "Select a point for details"}</p>
+      <p className="text-[12px] text-[#6D6057]">{isDaily ? "Daily visitors · last 7 days" : "Weekly visitors · last 12 months"}</p>
+      <p className="text-[12px] tabular-nums text-[#4A6E57]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${current && active === points.length-1 ? (isDaily ? " (today)" : " (this week)") : ""}` : "Select a point for details"}</p>
     </div>
-    {points.length > 1 ? <svg role="img" aria-label="Weekly visitors over the past year. Solid dots mark completed weeks; outlined dot marks the current week." viewBox="0 0 600 190" className="mt-2 block h-auto w-full" onMouseLeave={() => setActive(null)}>
+    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox="0 0 600 190" className="mt-2 block h-auto w-full" onMouseLeave={() => setActive(null)}>
       <path d={fill} fill="#4A6E57" fillOpacity=".08"/>
       <line x1={left} x2={width-right} y1={baseline} y2={baseline} stroke="#E7DFDB" />
       <path d={completePath} fill="none" stroke="#4A6E57" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -99,13 +106,13 @@ function VisitsChart({ weekly }: { weekly?: Weekly }) {
           <circle cx={p.x} cy={p.y} r={isCurrent ? 5 : i === completed.length-1 ? 5 : 3.5} fill={isCurrent ? "#FFFCFB" : "#4A6E57"} stroke={isCurrent ? "#4A6E57" : "none"} strokeWidth={isCurrent ? 2.5 : 0}/>
           {(points.length <= 8 || i === points.length-1) && <text x={p.x} y={Math.max(12,p.y-11)} fontSize="10" textAnchor={i===0?"start":i===points.length-1?"end":"middle"} fill="#1F3125">{format(p.visitors)}</text>}
           {(i%labelEvery===0 || i===points.length-1) && <text x={p.x} y={height-9} fontSize="10" textAnchor={i===0?"start":i===points.length-1?"end":"middle"} fill="#6D6057">{shortDate(p.start)}</text>}
-          <circle cx={p.x} cy={p.y} r="13" fill="transparent" tabIndex={0} role="button" aria-label={`${shortDate(p.start)} to ${shortDate(p.end)}: ${p.visitors} visitors${isCurrent ? ", current incomplete week" : ""}`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)} />
+          <circle cx={p.x} cy={p.y} r="13" fill="transparent" tabIndex={0} role="button" aria-label={`${shortDate(p.start)} to ${shortDate(p.end)}: ${p.visitors} visitors${isCurrent ? (isDaily ? ", today" : ", current incomplete week") : ""}`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)} />
         </g>;
       })}
     </svg> : <p className="py-5 text-[13px] text-[#6D6057]">{points.length === 1 ? `${current ? "This week so far" : "First complete week"}: ${format(points[0].visitors)} visitors (${shortDate(points[0].start)}–${shortDate(points[0].end)}).` : "Weekly history will appear once tracking has a full week of data."}</p>}
     <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1 border-t border-[#E7DFDB] pt-2 text-[12px] text-[#6D6057]">
-      {latest && previous && change !== null && <span>Latest completed week <strong className="font-medium text-[#1F3125]">{format(latest.visitors)}</strong> <span className={change>0?"text-[#4A6E57]":change<0?"text-[#9A5B55]":"text-[#6D6057]"}>({change>0?"+":""}{change.toFixed(1)}% vs prior week)</span></span>}
-      {current && <span>This week so far ({shortDate(current.start)}–{shortDate(current.end)}): <strong className="font-medium text-[#1F3125]">{format(current.visitors)} visitors</strong></span>}
+      {!isDaily && latest && previous && change !== null && <span>Latest completed week <strong className="font-medium text-[#1F3125]">{format(latest.visitors)}</strong> <span className={change>0?"text-[#4A6E57]":change<0?"text-[#9A5B55]":"text-[#6D6057]"}>({change>0?"+":""}{change.toFixed(1)}% vs prior week)</span></span>}
+      {!isDaily && current && <span>This week so far ({shortDate(current.start)}–{shortDate(current.end)}): <strong className="font-medium text-[#1F3125]">{format(current.visitors)} visitors</strong></span>}
     </div>
   </div>;
 }
@@ -155,7 +162,7 @@ export default function AnalyticsPanel() {
           {([["Page views", pageviews, previousPageviews], ["Visitors", visits, previousVisitors], ["Booking clicks", clicks, undefined], ["Dates selected", dateSelections, undefined]] as const).map(([label, n, previous]) => <div key={label} className="rounded-xl bg-[#F4EFEC] px-4 py-3"><strong className="block font-heading text-[27px] font-medium leading-none tabular-nums text-[#1F3125]">{format(n)}</strong><span className="mt-1 block font-body text-[12px] text-[#6D6057]">{label}</span>{changeLabel(n,previous) && <span className="mt-1 block text-[11px] text-[#4A6E57]">{changeLabel(n,previous)}</span>}</div>)}
         </div>
         <h3 className="mt-5 font-heading text-[20px] font-medium text-[#1F3125]">Weekly visitor trend</h3>
-        <VisitsChart weekly={data.weekly} />
+        <VisitsChart weekly={data.weekly} daily={daily} days={days} />
         <div className="mt-4 border-t border-[#E7DFDB] pt-3.5"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
       </>}
     </section>
