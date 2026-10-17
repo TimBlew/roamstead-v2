@@ -173,7 +173,7 @@ export default function AnalyticsPanel() {
   return <div className="space-y-3.5">
     <section className="rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
       <div className="flex flex-col gap-2.5 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0"><h2 className="font-heading text-[24px] font-medium leading-[1.15] text-[#1F3125]">At a glance</h2><p className="mt-1 max-w-[720px] font-body text-[13px] leading-relaxed text-[#6D6057]">Explore site activity and booking interest.</p></div>
+        <div className="min-w-0"><h2 className="font-heading text-[24px] font-medium leading-[1.15] text-[#1F3125]">Overview</h2></div>
         <div className="flex shrink-0 items-center gap-3 sm:pt-1">
           <label htmlFor="analytics-period" className="font-body text-[13px] font-medium leading-none text-[#6D6057]">Period</label>
           <div className="relative">
