@@ -244,9 +244,8 @@ export default function AnalyticsPanel() {
           </div>}
           <div className="mt-3 grid gap-2.5 lg:grid-cols-[1fr_1fr_1.3fr] lg:gap-4">
           <div className="min-w-0 border-t border-[#E7DFDB] pt-2.5 lg:border-t-0 lg:border-r lg:pr-4 lg:pt-0">
-            <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">How guests find you on Google</h4>
-            <p className="mt-0.5 font-body text-[11px] leading-[1.35] text-[#6D6057]">Search appearances by query</p>
-            <div className="mt-1 divide-y divide-[#EEE8E4]">
+            <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Google searches</h4>
+            <div className="mt-2 divide-y divide-[#EEE8E4]">
               {(search.queries||[]).filter(q=>q.impressions>0).slice(0,10).map(q=><div key={q.query} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-1.5 text-[12px] leading-[1.4]">
                 <span className="min-w-0 overflow-wrap-anywhere break-words text-[#1F3125]">{q.query}</span><span className="shrink-0 tabular-nums text-[#6D6057]">{format(q.impressions)}</span>
               </div>)}
@@ -254,21 +253,19 @@ export default function AnalyticsPanel() {
             </div>
           </div>
           <div className="min-w-0 border-t border-[#E7DFDB] pt-2.5 lg:border-t-0 lg:border-r lg:pr-4 lg:pt-0">
-            <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Where you rank on Google</h4>
-            <p className="mt-0.5 font-body text-[11px] leading-[1.35] text-[#6D6057]">Average position by query</p>
-            <div className="mt-1 divide-y divide-[#EEE8E4]">
+            <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Google rankings</h4>
+            <div className="mt-2 divide-y divide-[#EEE8E4]">
               {[...(search.queries||[])].filter(q=>q.impressions>0&&q.position>0).sort((a,b)=>a.position-b.position).slice(0,10).map(q=><div key={q.query} className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 py-1.5 text-[12px] leading-[1.4]">
                 <span className="min-w-0 overflow-wrap-anywhere break-words text-[#1F3125]">{q.query}</span><span className="shrink-0 font-medium tabular-nums text-[#597761]">{q.position.toFixed(1)}</span>
               </div>)}
             </div>
           </div>
           <div className="min-w-0 border-t border-[#E7DFDB] pt-2.5 lg:border-t-0 lg:pt-0">
-            <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Pages appearing in Google</h4>
-            <p className="mt-0.5 font-body text-[11px] leading-[1.35] text-[#6D6057]">Organic search landing pages</p>
+            <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Pages found on Google</h4>
             <div className="mt-2 grid grid-cols-[minmax(0,1fr)_40px_40px_46px] gap-1 text-[10px] text-[#80766E]">
               <span>Page</span><span className="text-right">Clicks</span><span className="text-right">Views</span><span className="text-right">Rank</span>
             </div>
-            <div className="mt-1 divide-y divide-[#EEE8E4]">
+            <div className="mt-2 divide-y divide-[#EEE8E4]">
               {(search.pages||[]).slice(0,10).map(p=><div key={p.page} className="grid grid-cols-[minmax(0,1fr)_40px_40px_46px] items-start gap-1 py-1.5 text-[11px] leading-[1.4]">
                 <span className="min-w-0 overflow-wrap-anywhere break-words text-[#1F3125]">{pageLabel((()=>{try{return new URL(p.page).pathname}catch{return p.page}})())}</span>
                 <span className="text-right tabular-nums text-[#6D6057]">{format(p.clicks)}</span>
