@@ -35,21 +35,26 @@ async function dailyRows(token:string,start:Date,end:Date) {
 }
 function weeklySeries(rows:Daily[],now:Date){
   const map=new Map(rows.map(d=>[d.timestamp?.slice(0,10)||"",d]));
-  const first=rows.find(d=>(d.pageviews||0)>0)?.timestamp;
+  const first=rows.find(d=>(d.pageviews||0)>0 || (d.visitors||0)>0)?.timestamp;
   if(!first)return {weeks:[],current:null};
-  const start=utcDay(first);
-  start.setUTCDate(start.getUTCDate()+((7-start.getUTCDay())%7));
+  const firstDay=utcDay(first);
+  const firstSunday=new Date(firstDay);
+  firstSunday.setUTCDate(firstSunday.getUTCDate()+((7-firstSunday.getUTCDay())%7));
   const today=utcDay(iso(now));
+  const currentSunday=new Date(today);
+  currentSunday.setUTCDate(currentSunday.getUTCDate()-currentSunday.getUTCDay());
   const weeks:{start:string;end:string;visitors:number}[]=[];
-  let current:{start:string;end:string;visitors:number}|null=null;
-  for(let cursor=start.getTime();cursor<=today.getTime();cursor+=7*DAY){
+  for(let cursor=firstSunday.getTime();cursor+6*DAY<currentSunday.getTime();cursor+=7*DAY){
     let visitors=0;
     for(let i=0;i<7;i++)visitors+=map.get(iso(new Date(cursor+i*DAY)))?.visitors||0;
-    const week={start:iso(new Date(cursor)),end:iso(new Date(cursor+6*DAY)),visitors};
-    if(cursor+6*DAY<today.getTime())weeks.push(week);
-    else {current={...week,end:iso(today)};break;}
+    weeks.push({start:iso(new Date(cursor)),end:iso(new Date(cursor+6*DAY)),visitors});
   }
-  return {weeks,current};
+  // The partial launch week isn't a completed week, but the current week should
+  // always be visible as a live outlined point even before the first Sunday.
+  let currentVisitors=0;
+  for(let cursor=currentSunday.getTime();cursor<=today.getTime();cursor+=DAY)
+    currentVisitors+=map.get(iso(new Date(cursor)))?.visitors||0;
+  return {weeks,current:{start:iso(currentSunday),end:iso(today),visitors:currentVisitors}};
 }
 export async function GET(req:NextRequest){
   if(!await adminAuthenticated())return NextResponse.json({error:"Unauthorized"},{status:401});
@@ -74,6 +79,6 @@ export async function GET(req:NextRequest){
         query(token,"/visits/aggregate",{since:previousSince,until:since,by:"deviceType",limit:"8"})
       ]).then(([daily,p,r,d])=>({visits:daily,pages:p.data||[],referrers:r.data||[],devices:d.data||[]})).catch(()=>null)
     ]);
-    return NextResponse.json({connected:true,period:`Past ${range} days`,visits,previous,weekly:yearRows ? weeklySeries(yearRows,now) : undefined,weeklyError:yearRows ? undefined : "Weekly visitor history is temporarily unavailable.",events:events.data||[],pages:pages.data||[],referrers:referrers.data||[],devices:devices.data||[]},{headers:{"Cache-Control":"private, no-store"}});
+    return NextResponse.json({connected:true,period:`Past ${range} days`,visits,previous,weekly:weeklySeries(yearRows || visits,now),weeklyError:yearRows ? undefined : "Full-year history is temporarily unavailable; showing the available reporting period.",events:events.data||[],pages:pages.data||[],referrers:referrers.data||[],devices:devices.data||[]},{headers:{"Cache-Control":"private, no-store"}});
   }catch{return NextResponse.json({connected:false,message:"Unable to retrieve Vercel Analytics data. Check the reporting token permissions and Vercel API access."},{headers:{"Cache-Control":"private, no-store"}})}
 }
