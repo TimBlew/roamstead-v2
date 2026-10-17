@@ -9,7 +9,8 @@ export default function EarlyAccessDirectory(){
   const [cursor,setCursor]=useState<string|null>(null);
   const [hasMore,setHasMore]=useState(false);
   const [loading,setLoading]=useState(false);
-  const [message,setMessage]=useState("");\n  const [initialLoaded,setInitialLoaded]=useState(()=>Boolean(cachedDirectory));
+  const [message,setMessage]=useState("");
+  const [initialLoaded,setInitialLoaded]=useState(()=>Boolean(cachedDirectory));
   const [search,setSearch]=useState("");
   const [season,setSeason]=useState("all");
   const [selected,setSelected]=useState<string|null>(null);
@@ -47,7 +48,8 @@ export default function EarlyAccessDirectory(){
       const r=await fetch(url,{cache:"no-store"});
       const data=await r.json() as Response;
       if(!r.ok||!data.connected)throw Error(data.message||"Unable to load signups.");
-      setEntries(prev=>after?[...prev,...(data.entries||[])]:data.entries||[]);\n      if(!after){cachedDirectory=data;setInitialLoaded(true)}
+      setEntries(prev=>after?[...prev,...(data.entries||[])]:data.entries||[]);
+      if(!after){cachedDirectory=data;setInitialLoaded(true)}
       setDataSource(data.source||"resend");
       setCursor(data.nextCursor||null);setHasMore(Boolean(data.hasMore));
     }catch(e){setMessage(e instanceof Error?e.message:"Unable to load signups.");}
