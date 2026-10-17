@@ -2,10 +2,10 @@
 import { useEffect, useMemo, useState } from "react";
 
 type Metric = { timestamp?: string; visitors?: number; pageviews?: number; count?: number; total?: number; eventName?: string; requestPath?: string; referrerHostname?: string; deviceType?: string };
-type SearchData = {connected?:boolean;message?:string;clicks?:number;impressions?:number;ctr?:number;position?:number;endDate?:string;queries?:{query:string;clicks:number}[];pages?:{page:string;clicks:number}[]};
+type SearchData = {connected?:boolean;message?:string;clicks?:number;impressions?:number;ctr?:number;position?:number;endDate?:string;previous?:{clicks?:number;impressions?:number;ctr?:number;position?:number}|null;queries?:{query:string;clicks:number;impressions:number;position:number;ctr:number}[];pages?:{page:string;clicks:number}[]};
 type WeeklyPoint = {start:string;end:string;visitors:number};
 type Weekly = {weeks:WeeklyPoint[];current:WeeklyPoint|null};
-type Payload = { connected?: boolean; message?: string; visits?: Metric[]; weekly?: Weekly; events?: Metric[]; pages?: Metric[]; referrers?: Metric[]; devices?: Metric[] };
+type Payload = { connected?: boolean; message?: string; visits?: Metric[]; previous?:{visits:Metric[];pages:Metric[];referrers:Metric[];devices:Metric[]}|null; weekly?: Weekly; events?: Metric[]; pages?: Metric[]; referrers?: Metric[]; devices?: Metric[] };
 const actionNames: Record<string, string> = {
   availability_dates_selected: "Dates selected",
   hostaway_checkout_click: "Continue to booking",
@@ -25,26 +25,37 @@ function pageLabel(raw: string) {
   if (raw.startsWith("/book/")) return "Book: " + raw.slice("/book/".length).replace(/-/g, " ");
   return raw;
 }
-function MetricRows({ title, subtitle, items, keyName, emptyText }: {
-  title: string; subtitle?: string; items: Metric[]; keyName: "requestPath" | "referrerHostname" | "deviceType"; emptyText?: string;
+const pct = (part:number,total:number) => total > 0 ? Math.round(100*part/total)+"%" : "—";
+function changeLabel(current:number,previous:number|undefined){
+  if(previous===undefined)return null;
+  if(previous===0)return current===0?"No change":"New activity";
+  const percent=(current-previous)/previous*100;
+  return (percent>0?"+":"")+percent.toFixed(0)+"% vs prior";
+}
+function MetricRows({ title, subtitle, items, keyName, emptyText, previousItems }: {
+  title: string; subtitle?: string; items: Metric[]; keyName: "requestPath" | "referrerHostname" | "deviceType"; emptyText?: string; previousItems?:Metric[];
 }) {
   const sorted = [...items].sort((a, b) => value(b) - value(a)).slice(0, 6);
   const max = Math.max(...sorted.map(value), 1);
+  const total = items.reduce((sum,item)=>sum+value(item),0);
   return <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
     <h3 className="font-heading text-[19px] font-medium leading-[1.2] text-[#1F3125]">{title}</h3>
     {subtitle && <p className="mt-1 font-body text-[12px] leading-snug text-[#6D6057]">{subtitle}</p>}
     <div className="mt-3.5 space-y-3">
       {sorted.length ? sorted.map((item, i) => {
         const raw = item[keyName] || "Direct / unknown";
+        const prior=previousItems?.find(x=>(x[keyName] || "Direct / unknown")===raw);
+        const delta=previousItems ? changeLabel(value(item),prior?value(prior):0) : null;
         const label = keyName === "requestPath" ? pageLabel(raw) : keyName === "deviceType" ? raw === "mobile" ? "Phone" : raw === "desktop" ? "Computer" : raw : raw;
         return <div key={raw + i}>
           <div className="mb-1 flex items-baseline justify-between gap-4 font-body text-[13px]">
             <span className="min-w-0 break-words text-[#1F3125]">{label}</span>
-            <span className="shrink-0 tabular-nums text-[#6D6057]">{format(value(item))}</span>
+            <span className="shrink-0 tabular-nums text-[#6D6057]">{format(value(item))} <span className="text-[11px] text-[#78877B]">· {pct(value(item),total)}</span></span>
           </div>
           <div className="h-1.5 overflow-hidden rounded-full bg-[#EAE4E0]">
             <div className="h-full rounded-full bg-[#9DB3A1]" style={{ width: `${Math.max(2, value(item) / max * 100)}%` }} />
           </div>
+          {delta && <p className="mt-1 text-[11px] leading-tight text-[#6D6057]">{delta}</p>}
         </div>;
       }) : <p className="text-[13px] text-[#6D6057]">{emptyText || "Nothing to show for these dates yet."}</p>}
     </div>
@@ -112,6 +123,9 @@ export default function AnalyticsPanel() {
   const dateSelections = events.filter(x => x.eventName === "availability_dates_selected").reduce((s, x) => s + value(x), 0);
   const pages = data?.pages || [];
   const publicPages = pages.filter(row => !(row.requestPath || "").startsWith("/admin"));
+  const previousVisits=data?.previous?.visits;
+  const previousPageviews=previousVisits?.reduce((sum,row)=>sum+(row.pageviews||0),0);
+  const previousVisitors=previousVisits?.reduce((sum,row)=>sum+(row.visitors||0),0);
   const adminViews = pages.filter(row => (row.requestPath || "").startsWith("/admin")).reduce((sum, row) => sum + value(row), 0);
   return <div className="space-y-3.5">
     <section className="rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
@@ -129,7 +143,7 @@ export default function AnalyticsPanel() {
       </div>
       {!data ? <p className="mt-6 text-[14px] text-[#6D6057]">Gathering your latest numbers...</p> : !data.connected ? <p className="mt-6 rounded-lg bg-[#F4EFEC] p-4 text-[14px] text-[#6D6057]">{data.message || "Your site insights are temporarily unavailable."}</p> : <>
         <div className="mt-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
-          {([["Page views", pageviews], ["Visitors", visits], ["Booking clicks", clicks], ["Dates selected", dateSelections]] as const).map(([label, n]) => <div key={label} className="rounded-xl bg-[#F4EFEC] px-4 py-3"><strong className="block font-heading text-[27px] font-medium leading-none tabular-nums text-[#1F3125]">{format(n)}</strong><span className="mt-1 block font-body text-[12px] text-[#6D6057]">{label}</span></div>)}
+          {([["Page views", pageviews, previousPageviews], ["Visitors", visits, previousVisitors], ["Booking clicks", clicks, undefined], ["Dates selected", dateSelections, undefined]] as const).map(([label, n, previous]) => <div key={label} className="rounded-xl bg-[#F4EFEC] px-4 py-3"><strong className="block font-heading text-[27px] font-medium leading-none tabular-nums text-[#1F3125]">{format(n)}</strong><span className="mt-1 block font-body text-[12px] text-[#6D6057]">{label}</span>{changeLabel(n,previous) && <span className="mt-1 block text-[11px] text-[#4A6E57]">{changeLabel(n,previous)}</span>}</div>)}
         </div>
         <h3 className="mt-5 font-heading text-[20px] font-medium text-[#1F3125]">Weekly visitor trend</h3>
         <VisitsChart weekly={data.weekly} />
@@ -138,9 +152,9 @@ export default function AnalyticsPanel() {
     </section>
     {data?.connected && <div className="grid gap-3 lg:grid-cols-2 lg:items-start">
       <div className="min-w-0 space-y-3">
-      <MetricRows title="Pages guests visit most" subtitle="Public website pages" items={publicPages} keyName="requestPath" />
+      <MetricRows title="Pages guests visit most" subtitle="Public website pages" items={publicPages} keyName="requestPath" previousItems={data.previous?.pages} />
       
-      <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" />
+      <MetricRows title="How guests found you" subtitle="Referring websites and direct traffic" items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
       </div>
       <div className="min-w-0 space-y-3">
       <section className="flex min-w-0 flex-col rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] p-4 sm:p-5">
@@ -153,13 +167,15 @@ export default function AnalyticsPanel() {
               <span className="text-[12px] text-[#6D6057]">{name}</span>
             </div>)}
           </div>
+          {search.previous && <p className="mt-2 text-[11px] text-[#4A6E57]">Impressions: {changeLabel(search.impressions || 0,search.previous.impressions)}</p>}
           <h4 className="mt-3.5 font-heading text-[16px] leading-tight text-[#1F3125]">Top searches</h4>
-          <div className="mt-1 divide-y divide-[#E7DFDB]">{search.queries?.length ? search.queries.map((item,i) => <div key={i} className="flex justify-between gap-3 py-1.5 text-[12px]"><span className="min-w-0 break-words">{item.query}</span><span className="shrink-0 tabular-nums text-[#6D6057]">{format(item.clicks)} clicks</span></div>) : <p className="py-2 text-[12px] text-[#6D6057]">No search queries available for these dates.</p>}</div>
+          <div className="mt-2 grid grid-cols-[minmax(0,1fr)_42px_52px_52px] gap-1 text-[10px] text-[#6D6057]"><span>Query</span><span className="text-right">Clicks</span><span className="text-right">Views</span><span className="text-right">Position</span></div>
+          <div className="mt-1 divide-y divide-[#E7DFDB]">{search.queries?.length ? search.queries.map((item,i) => <div key={i} className="grid grid-cols-[minmax(0,1fr)_42px_52px_52px] items-start gap-1 py-1.5 text-[11px]"><span className="min-w-0 break-words">{item.query}</span><span className="text-right tabular-nums text-[#6D6057]">{format(item.clicks)}</span><span className="text-right tabular-nums text-[#6D6057]">{format(item.impressions)}</span><span className="text-right tabular-nums text-[#6D6057]">{item.position?item.position.toFixed(1):"—"}</span></div>) : <p className="py-2 text-[12px] text-[#6D6057]">No search queries available for these dates.</p>}</div>
           <p className="mt-2 text-[11px] leading-snug text-[#6D6057]">Google data typically arrives a few days after search activity. Reporting through {search.endDate}.</p>
         </> : <p className="mt-3 text-[13px] leading-relaxed text-[#6D6057]">{search.message}</p>}
-        <a className="mt-3 inline-flex w-fit items-center gap-2 rounded-xl border border-[#D8CCC4] bg-white px-4 py-2.5 text-[12px] font-medium text-[#1F3125] transition-colors hover:bg-[#F4EFEC]" href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">Open Search Console <span aria-hidden="true">↗</span></a>
+        
       </section>
-      <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" />
+      <MetricRows title="Devices guests use" subtitle="Visits by device type" items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
       </div>
     </div>}
     {data?.connected && adminViews > 0 && <p className="px-1 text-[12px] leading-relaxed text-[#6D6057]">Admin workspace activity ({format(adminViews)} page views among the listed paths) is excluded from the popular public pages above. Overall site totals and device/referrer figures may still include internal activity.</p>}
