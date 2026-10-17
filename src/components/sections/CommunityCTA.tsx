@@ -117,21 +117,21 @@ export const CommunityCTA = () => {
       </div>
       {showResult && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#1F3125]/55 px-5 py-8 backdrop-blur-[4px]" onMouseDown={(event) => { if (event.target === event.currentTarget) closeResult(); }}>
-          <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="early-access-result-title" className="relative w-full max-w-[360px] rounded-[16px] border border-[#E7DFDB] bg-[#FFFCFB] px-6 pb-6 pt-7 text-center shadow-[0_24px_80px_rgba(31,49,37,0.19)] sm:px-8">
+          <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="early-access-result-title" className="relative w-full max-w-[360px] rounded-[16px] border border-[#E7DFDB] bg-[#FFFCFB] px-6 pb-6 pt-7 text-center shadow-[0_24px_80px_rgba(31,49,37,0.19)] sm:max-w-[410px] sm:px-8 sm:pb-7 sm:pt-6">
             <button ref={closeButtonRef} type="button" onClick={closeResult} aria-label="Close message" className="absolute right-[8px] top-[8px] flex h-[40px] w-[40px] items-center justify-center rounded-[8px] text-[#6D6057] transition-colors hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" className="h-3.5 w-3.5"><path d="M5 5 19 19M19 5 5 19" /></svg>
             </button>
-            <img src="/roamstead-logo.svg" alt="Roamstead Collective" className="mx-auto mb-[20px] mt-[4px] h-auto w-[154px] max-w-[70%]" />
-            <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#E8F5EC] text-[#4A6E57]">
+            <img src="/roamstead-logo.svg" alt="Roamstead Collective" className="mx-auto mb-[20px] mt-[4px] h-auto w-[154px] max-w-[70%] sm:mb-4 sm:mt-0 sm:w-[148px]" />
+            <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#E8F5EC] sm:mb-3 sm:h-[46px] sm:w-[46px] text-[#4A6E57]">
               {status === "success" ? (
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><path d="m5 12 4.5 4.5L19 7" /></svg>
               ) : (
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5M12 16.5h.01" /></svg>
               )}
             </div>
-            <h3 id="early-access-result-title" className="font-heading text-[26px] font-medium leading-[1.14] tracking-[-0.035em] text-[#1F3125]">{status === "success" ? "You’re on the list." : "One more thing."}</h3>
-            {<p id="early-access-result-message" className="mx-auto mt-2 max-w-[290px] font-body text-[14px] leading-[1.5] text-[#6D6057]">{status === "success" ? "We’ll be in touch when it opens." : message}</p>}
-            <button type="button" onClick={closeResult} className="mt-4 inline-flex min-h-[44px] min-w-[130px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-5 font-body text-[14px] font-semibold text-white shadow-[0_3px_10px_rgba(31,49,37,0.10)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3C6049] hover:shadow-[0_5px_14px_rgba(31,49,37,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{status === "success" ? "Keep exploring" : "Try again"}</button>
+            <h3 id="early-access-result-title" className="font-heading text-[26px] font-medium leading-[1.14] sm:text-[25px] tracking-[-0.035em] text-[#1F3125]">{status === "success" ? "You’re on the list." : "One more thing."}</h3>
+            {<p id="early-access-result-message" className="mx-auto mt-2 max-w-[290px] font-body text-[14px] leading-[1.5] sm:mt-1.5 text-[#6D6057]">{status === "success" ? "We’ll be in touch when it opens." : message}</p>}
+            <button type="button" onClick={closeResult} className="mt-4 inline-flex min-h-[44px] min-w-[130px] sm:mt-5 sm:min-h-[42px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-5 font-body text-[14px] font-semibold text-white shadow-[0_3px_10px_rgba(31,49,37,0.10)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3C6049] hover:shadow-[0_5px_14px_rgba(31,49,37,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{status === "success" ? "Keep exploring" : "Try again"}</button>
           </div>
         </div>
       )}
