@@ -166,7 +166,7 @@ export const properties: Property[] = [
   {
     slug: 'hygge-house',
     seo: {
-      title: "Hygge House | Roamstead",
+      title: "Hygge House | 4-Bedroom Midway Utah Vacation Rental | Roamstead",
       description:
         "A spacious four-bedroom mountain home in Midway, Utah, with a private sauna, a dedicated office, and a garage gym set up for bikes, skis and boards.",
     },
@@ -284,7 +284,7 @@ export const properties: Property[] = [
   {
     slug: 'granary',
     seo: {
-      title: "Granary | Roamstead",
+      title: "Granary | 1-Bedroom Condo in Midway Utah | Roamstead",
       description:
         "A newly renovated one-bedroom condo in Midway, Utah, with mountain views, a gas fireplace and a full kitchen, walkable to Midway's restaurants and shops.",
     },
@@ -508,7 +508,7 @@ export const properties: Property[] = [
   {
     slug: 'lowell',
     seo: {
-      title: "The Lowell | Roamstead",
+      title: "The Lowell | Park City Ski Condo Near the Slopes | Roamstead",
       description:
         "A brand-new two-bedroom condo at the base of Park City Mountain Resort, about thirty steps from the snow, with a steam shower, heated pool and hot tub.",
     },
@@ -625,7 +625,7 @@ export const properties: Property[] = [
   {
     slug: 'powder-room',
     seo: {
-      title: "Powder Room | Roamstead",
+      title: "Powder Room | Park City Mountain Studio Stay | Roamstead",
       description:
         "A hotel-style studio at the base of Park City Mountain Resort, steps from the snow, with a king bed, an outdoor pool and hot tub, and a fitness center.",
     },
