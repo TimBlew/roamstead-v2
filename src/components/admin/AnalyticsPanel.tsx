@@ -28,7 +28,7 @@ function pageLabel(raw: string) {
 const pct = (part:number,total:number) => total > 0 ? Math.round(100*part/total)+"%" : "—";
 function changeLabel(current:number,previous:number|undefined){
   if(previous===undefined)return null;
-  if(previous===0)return current===0?"No change":"New activity";
+  if(previous<=0)return null;
   const percent=(current-previous)/previous*100;
   return (percent>0?"+":"")+percent.toFixed(0)+"% vs prior";
 }
@@ -182,7 +182,7 @@ export default function AnalyticsPanel() {
               <span className="text-[12px] text-[#6D6057]">{name}</span>
             </div>)}
           </div>
-          {search.previous && <p className="mt-2 text-[11px] text-[#4A6E57]">Impressions: {changeLabel(search.impressions || 0,search.previous.impressions)}</p>}
+          {search.previous && (search.previous.impressions || 0)>0 && <p className="mt-2 text-[11px] text-[#4A6E57]">Impressions: {changeLabel(search.impressions || 0,search.previous.impressions)}</p>}
           <h4 className="mt-3.5 font-heading text-[16px] leading-tight text-[#1F3125]">Top searches</h4>
           <div className="mt-2 grid grid-cols-[minmax(0,1fr)_42px_52px_52px] gap-1 text-[10px] text-[#6D6057]"><span>Query</span><span className="text-right">Clicks</span><span className="text-right">Views</span><span className="text-right">Position</span></div>
           <div className="mt-1 divide-y divide-[#E7DFDB]">{search.queries?.length ? search.queries.map((item,i) => <div key={i} className="grid grid-cols-[minmax(0,1fr)_42px_52px_52px] items-start gap-1 py-1.5 text-[11px]"><span className="min-w-0 break-words">{item.query}</span><span className="text-right tabular-nums text-[#6D6057]">{format(item.clicks)}</span><span className="text-right tabular-nums text-[#6D6057]">{format(item.impressions)}</span><span className="text-right tabular-nums text-[#6D6057]">{item.position?item.position.toFixed(1):"—"}</span></div>) : <p className="py-2 text-[12px] text-[#6D6057]">No search queries available for these dates.</p>}</div>
