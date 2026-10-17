@@ -90,12 +90,12 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   const previous = completed.length > 1 ? completed[completed.length-2] : null;
   const latest = completed.length ? completed[completed.length-1] : null;
   const change = previous && previous.visitors > 0 && latest ? (latest.visitors-previous.visitors)/previous.visitors*100 : null;
-  return <div className="mt-2.5 rounded-xl border border-[#E7DFDB] bg-[#FFFCFB] px-3 pb-3 pt-3 sm:px-4">
-    <div className="flex flex-wrap items-center justify-between gap-2">
-      <p className="text-[12px] text-[#6D6057]">{isDaily ? "Daily visitors · last 7 days" : "Weekly visitors · current and completed weeks"}</p>
-      <p className="text-[12px] tabular-nums text-[#4A6E57]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${current && active === points.length-1 ? (isDaily ? " (today)" : " (this week)") : ""}` : "Select a point for details"}</p>
+  return <div className="mt-2 rounded-xl border border-[#E7DFDB] bg-[#FFFCFB] px-3 py-3 sm:px-4">
+    <div className="flex items-center justify-between gap-2">
+      <p className="text-[11px] leading-snug text-[#6D6057] sm:text-[12px]">{isDaily ? "Last 7 days" : "Weekly visitors"}</p>
+      <p className="text-right text-[10px] leading-snug tabular-nums text-[#4A6E57] sm:text-[12px]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${current && active === points.length-1 ? (isDaily ? " (today)" : " (this week)") : ""}` : <span className="hidden sm:inline">Select a point for details</span>}</p>
     </div>
-    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox={`0 0 ${width} ${height}`} className="mt-2 block h-auto w-full" onMouseLeave={() => setActive(null)}>
+    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox={`0 0 ${width} ${height}`} className="mt-3 block h-auto w-full sm:mt-2" onMouseLeave={() => setActive(null)}>
       <path d={fill} fill="#4A6E57" fillOpacity=".08"/>
       <line x1={left} x2={width-right} y1={baseline} y2={baseline} stroke="#E7DFDB" />
       <path d={completePath} fill="none" stroke="#4A6E57" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -110,7 +110,7 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
         </g>;
       })}
     </svg> : <p className="py-5 text-[13px] text-[#6D6057]">{points.length === 1 ? `${current ? "This week so far" : "First complete week"}: ${format(points[0].visitors)} visitors (${shortDate(points[0].start)}–${shortDate(points[0].end)}).` : "Weekly history will appear once tracking has a full week of data."}</p>}
-    <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1 border-t border-[#E7DFDB] pt-2 text-[12px] text-[#6D6057]">
+    <div className={`flex flex-wrap items-center gap-x-6 gap-y-1 text-[11px] text-[#6D6057] sm:text-[12px] ${!isDaily && ((latest && previous && change !== null) || current) ? "mt-2 border-t border-[#E7DFDB] pt-2" : "hidden"}`}>
       {!isDaily && latest && previous && change !== null && <span>Latest completed week <strong className="font-medium text-[#1F3125]">{format(latest.visitors)}</strong> <span className={change>0?"text-[#4A6E57]":change<0?"text-[#9A5B55]":"text-[#6D6057]"}>({change>0?"+":""}{change.toFixed(1)}% vs prior week)</span></span>}
       {!isDaily && current && <span>This week so far ({shortDate(current.start)}–{shortDate(current.end)}): <strong className="font-medium text-[#1F3125]">{format(current.visitors)} visitors</strong></span>}
     </div>
@@ -164,20 +164,20 @@ export default function AnalyticsPanel() {
             {eyebrow:"BOOKING",label:"Checkout clicks",value:format(clicks),note:"Continue to booking actions",detail:null,accent:"#9C826B"},
             {eyebrow:"ENGAGEMENT",label:"Checkout click rate",value:visits>0?((clicks/visits)*100).toFixed(1)+"%":"—",note:"Checkout clicks ÷ visitors",detail:null,accent:"#82917B"},
             {eyebrow:"AUDIENCE",label:"Early-access signups",value:format(signups),note:"Signup events recorded",detail:null,accent:"#A18A78"}
-          ] as const).map((metric) => <div key={metric.label} className="relative flex min-w-0 flex-col rounded-xl border border-[#E8DFD8] bg-[#F8F5F2] px-3.5 pb-3.5 pt-3.5 sm:px-4 sm:pb-4">
+          ] as const).map((metric) => <div key={metric.label} className="relative flex min-w-0 flex-col rounded-xl border border-[#E8DFD8] bg-[#F8F5F2] px-3 pb-3 pt-3 sm:px-4 sm:pb-4 sm:pt-3.5">
             <div className="flex items-center gap-2">
               <span className="h-[6px] w-[6px] shrink-0 rounded-full" style={{backgroundColor:metric.accent}} aria-hidden="true" />
               <span className="font-body text-[9px] font-semibold uppercase tracking-[.12em] text-[#80766E] sm:text-[10px]">{metric.eyebrow}</span>
             </div>
-            <strong className="mt-3 block font-heading text-[32px] font-medium leading-none tracking-[-.035em] tabular-nums text-[#1F3125] sm:text-[36px]">{metric.value}</strong>
+            <strong className="mt-2.5 block font-heading text-[30px] font-medium leading-none tracking-[-.035em] tabular-nums text-[#1F3125] sm:text-[36px]">{metric.value}</strong>
             <span className="mt-1.5 block font-body text-[12px] font-semibold leading-snug text-[#374A3D]">{metric.label}</span>
-            <span className="mt-1 block font-body text-[10px] leading-snug text-[#786E65] sm:text-[11px]">{metric.note}</span>
+            <span className="mt-1 hidden font-body text-[10px] leading-snug text-[#786E65] sm:block sm:text-[11px]">{metric.note}</span>
             {metric.detail && <span className="mt-1.5 block font-body text-[11px] leading-snug text-[#4A6E57]">{metric.detail}</span>}
           </div>)}
         </div>
-                <h3 className="mt-5 font-heading text-[20px] font-medium text-[#1F3125]">Weekly visitor trend</h3>
+                <h3 className="mt-4 font-heading text-[18px] font-medium leading-tight text-[#1F3125] sm:mt-5 sm:text-[20px]">{days===7?"Daily visitor trend":"Weekly visitor trend"}</h3>
         <VisitsChart weekly={data.weekly} daily={daily} days={days} />
-        <div className="mt-4 border-t border-[#E7DFDB] pt-3.5"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
+        <div className="mt-4 border-t border-[#E7DFDB] pt-3.5 sm:mt-5"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
       </>}
     </section>
     {data?.connected && <div className="grid gap-3 lg:grid-cols-2 lg:items-start">
