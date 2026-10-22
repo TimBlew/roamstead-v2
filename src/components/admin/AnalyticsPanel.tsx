@@ -27,14 +27,8 @@ function pageLabel(raw: string) {
   return raw;
 }
 const pct = (part:number,total:number) => total > 0 ? Math.round(100*part/total)+"%" : "—";
-function changeLabel(current:number,previous:number|undefined){
-  if(previous===undefined)return null;
-  if(previous<=0)return null;
-  const percent=(current-previous)/previous*100;
-  return (percent>0?"+":"")+percent.toFixed(0)+"% vs prior";
-}
-function MetricRows({ title, subtitle, items, keyName, emptyText, previousItems, compact = false }: {
-  title: string; subtitle?: string; items: Metric[]; keyName: "requestPath" | "referrerHostname" | "deviceType"; emptyText?: string; previousItems?:Metric[]; compact?:boolean;
+function MetricRows({ title, subtitle, items, keyName, emptyText, compact = false }: {
+  title: string; subtitle?: string; items: Metric[]; keyName: "requestPath" | "referrerHostname" | "deviceType"; emptyText?: string; compact?:boolean;
 }) {
   const sorted = [...items].sort((a, b) => value(b) - value(a)).slice(0, 6);
   const max = Math.max(...sorted.map(value), 1);
@@ -45,8 +39,6 @@ function MetricRows({ title, subtitle, items, keyName, emptyText, previousItems,
     <div className={compact ? "mt-1.5 space-y-1.5" : "mt-3 space-y-2.5"}>
       {sorted.length ? sorted.map((item, i) => {
         const raw = item[keyName] || "Direct / unknown";
-        const prior=previousItems?.find(x=>(x[keyName] || "Direct / unknown")===raw);
-        const delta=previousItems && prior && value(prior)>0 ? changeLabel(value(item),value(prior)) : null;
         const label = keyName === "requestPath" ? pageLabel(raw) : keyName === "deviceType" ? raw === "mobile" ? "Phone" : raw === "desktop" ? "Computer" : raw : raw;
         return <div key={raw + i}>
           <div className="mb-1 flex items-baseline justify-between gap-4 font-body text-[13px]">
@@ -56,7 +48,6 @@ function MetricRows({ title, subtitle, items, keyName, emptyText, previousItems,
           <div className="h-1.5 overflow-hidden rounded-full bg-[#EAE4E0]">
             <div className="h-full rounded-full bg-[#9DB3A1]" style={{ width: `${Math.max(2, value(item) / max * 100)}%` }} />
           </div>
-          {delta && <p className="mt-1 text-[11px] leading-tight text-[#6D6057]">{delta}</p>}
         </div>;
       }) : <p className="text-[13px] text-[#6D6057]">{emptyText || "Nothing to show for these dates yet."}</p>}
     </div>
@@ -110,9 +101,6 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   const priorPoint = completedCoords[completedCoords.length-1];
   const currentPoint = current ? coords[coords.length-1] : null;
   const labelEvery = Math.max(1, Math.ceil(points.length/(compactChart ? Math.max(7,points.length) : 6)));
-  const previous = completed.length > 1 ? completed[completed.length-2] : null;
-  const latest = completed.length ? completed[completed.length-1] : null;
-  const change = previous && previous.visitors > 0 && latest ? (latest.visitors-previous.visitors)/previous.visitors*100 : null;
   return <div className="mt-2 border-0 bg-transparent py-2 sm:rounded-xl sm:border sm:border-[#E7DFDB] sm:bg-[#FFFCFB] sm:px-4 sm:py-3">
     <div className="flex items-center justify-between gap-2">
       <p className="text-[11px] font-medium leading-snug text-[#4A6E57] sm:text-[12px]">{isDaily ? "LAST 7 DAYS" : "WEEKLY HISTORY"}</p>
@@ -138,8 +126,7 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
     <div className="mt-2 h-[5px] w-full rounded-full bg-[#DEDCD8] sm:hidden" role="img" aria-label="Timeline scroll position">
       <div className="h-full rounded-full bg-[#959C97] transition-[width,left] duration-150" style={{width:`${scrollIndicator.width}%`,marginLeft:`${scrollIndicator.left}%`}} />
     </div>
-    <div className={`flex flex-wrap items-center gap-x-6 gap-y-1 text-[11px] text-[#6D6057] sm:text-[12px] ${!isDaily && ((latest && previous && change !== null) || current) ? "mt-2 border-t border-[#E7DFDB] pt-2" : "hidden"}`}>
-      {!isDaily && latest && previous && change !== null && <span>Latest completed week <strong className="font-medium text-[#1F3125]">{format(latest.visitors)}</strong> <span className={change>0?"text-[#4A6E57]":change<0?"text-[#9A5B55]":"text-[#6D6057]"}>({change>0?"+":""}{change.toFixed(1)}% vs prior week)</span></span>}
+    <div className={`flex flex-wrap items-center gap-x-6 gap-y-1 text-[11px] text-[#6D6057] sm:text-[12px] ${!isDaily && current ? "mt-2 border-t border-[#E7DFDB] pt-2" : "hidden"}`}>
       {!isDaily && current && <span>This week so far ({shortDate(current.start)}–{shortDate(current.end)}): <strong className="font-medium text-[#1F3125]">{format(current.visitors)} visitors</strong></span>}
     </div>
   </div>;
@@ -181,9 +168,6 @@ export default function AnalyticsPanel() {
   const signups = events.filter(x => x.eventName === "early_access_submission_accepted").reduce((s, x) => s + value(x), 0);
   const pages = data?.pages || [];
   const publicPages = pages.filter(row => !(row.requestPath || "").startsWith("/admin"));
-  const previousVisits=data?.previous?.visits;
-  const previousPageviews=previousVisits?.reduce((sum,row)=>sum+(row.pageviews||0),0);
-  const previousVisitors=previousVisits?.reduce((sum,row)=>sum+(row.visitors||0),0);
   return <div className="space-y-3">
     <section className="rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-3 sm:px-5 sm:py-4">
       <div className="flex flex-col gap-2.5 sm:flex-row sm:items-start sm:justify-between">
@@ -201,7 +185,7 @@ export default function AnalyticsPanel() {
       {!data ? <p className="mt-6 text-[14px] text-[#6D6057]">Gathering your latest numbers...</p> : !data.connected ? <p className="mt-6 rounded-lg bg-[#F4EFEC] p-4 text-[14px] text-[#6D6057]">{data.message || "Your site insights are temporarily unavailable."}</p> : <>
         <div className="mt-3 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
           {([
-            {eyebrow:"REACH",label:"Visitors",value:format(visits),note:"People exploring the site",detail:changeLabel(visits,previousVisitors),accent:"#597761"},
+            {eyebrow:"REACH",label:"Visitors",value:format(visits),note:"People exploring the site",detail:null,accent:"#597761"},
             {eyebrow:"BOOKING",label:"Checkout clicks",value:format(clicks),note:"Continue to booking actions",detail:null,accent:"#9C826B"},
             {eyebrow:"ENGAGEMENT",label:"Checkout click rate",value:visits>0?((clicks/visits)*100).toFixed(1)+"%":"—",note:"Checkout clicks ÷ visitors",detail:null,accent:"#82917B"},
             {eyebrow:"AUDIENCE",label:"Guests on the list",value:guestCount===null?"—":format(guestCount),note:"Stored contacts · all time",detail:null,accent:"#A18A78"}
@@ -213,7 +197,6 @@ export default function AnalyticsPanel() {
             <strong className="mt-2 block font-heading text-[30px] font-medium leading-none tracking-[-.035em] tabular-nums text-[#1F3125] sm:text-[36px]">{metric.value}</strong>
             <span className="mt-1.5 block font-body text-[12px] font-semibold leading-snug text-[#374A3D]">{metric.label}</span>
             <span className="mt-0.5 hidden font-body text-[10px] leading-snug text-[#786E65] sm:block sm:text-[11px]">{metric.note}</span>
-            {metric.detail && <span className="mt-1.5 block font-body text-[11px] leading-snug text-[#4A6E57]">{metric.detail}</span>}
           </div>)}
         </div>
                 <h3 className="mt-3 font-heading text-[18px] font-medium leading-tight text-[#1F3125] sm:mt-4 sm:text-[20px]">{days===7?"Daily visitor trend":"Weekly visitor trend"}</h3>
@@ -222,10 +205,10 @@ export default function AnalyticsPanel() {
       </>}
     </section>
     {data?.connected && <div className="grid items-start gap-3 lg:grid-cols-2">
-      <MetricRows title="Pages guests visit most" compact items={publicPages} keyName="requestPath" previousItems={data.previous?.pages} />
+      <MetricRows title="Pages guests visit most" compact items={publicPages} keyName="requestPath" />
       <div className="grid min-w-0 gap-3">
-        <MetricRows title="Referring websites and direct traffic" compact items={data.referrers || []} keyName="referrerHostname" previousItems={data.previous?.referrers} />
-        <MetricRows title="Visits by device type" compact items={data.devices || []} keyName="deviceType" previousItems={data.previous?.devices} />
+        <MetricRows title="Referring websites and direct traffic" compact items={data.referrers || []} keyName="referrerHostname" />
+        <MetricRows title="Visits by device type" compact items={data.devices || []} keyName="deviceType" />
       </div>
     </div>}
     {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 pb-3 pt-2.5 sm:px-5 sm:py-4">
@@ -238,10 +221,6 @@ export default function AnalyticsPanel() {
               <strong className="mt-0.5 block font-heading text-[25px] font-medium leading-none tabular-nums tracking-tight text-[#1F3125] sm:text-[27px]">{typeof val==="number"?format(val):val}</strong>
             </div>)}
           </div>
-          {search.previous && (search.previous.impressions||0)>0 && <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-[#597761]">
-            <span>Appearances: {changeLabel(search.impressions||0,search.previous.impressions)}</span>
-            {(search.previous.clicks||0)>0 && <span>Clicks: {changeLabel(search.clicks||0,search.previous.clicks)}</span>}
-          </div>}
           <div className="mt-3 grid gap-2.5 lg:grid-cols-[1fr_1fr_1.3fr] lg:gap-4">
           <div className="min-w-0 border-t border-[#E7DFDB] pt-2.5 lg:border-t-0 lg:border-r lg:pr-4 lg:pt-0">
             <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Google searches</h4>
