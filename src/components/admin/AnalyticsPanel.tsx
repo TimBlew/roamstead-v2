@@ -287,6 +287,5 @@ export default function AnalyticsPanel() {
 
         </>}
       </section>}
-    {data?.connected && <p className="px-1 text-[11px] leading-snug text-[#6D6057]">Site totals may include historical workspace visits.</p>}
   </div>;
 }
