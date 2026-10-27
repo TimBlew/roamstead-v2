@@ -7,7 +7,6 @@ import { getProperty } from "@/data/properties";
 const listingIds: Record<string, number> = {
   "hygge-house": 455635,
   granary: 455631,
-  daystar: 455634,
   lowell: 455632,
   "powder-room": 455633,
 };

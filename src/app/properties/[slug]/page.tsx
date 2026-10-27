@@ -7,6 +7,7 @@ import { CommunityCTA } from "@/components/sections/CommunityCTA";
 import { PropertyGallery } from "@/components/sections/PropertyGallery";
 import { RoamsteadBooking } from "@/components/booking/RoamsteadBooking";
 import { getProperty, properties } from "@/data/properties";
+import { jsonLdString, vacationRentalJsonLd } from "@/lib/structured-data";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -101,6 +102,7 @@ export default async function PropertyPage({ params }: PageProps) {
   if (!property) notFound();
 
   const { hero, stories, details, location, bookingUrl } = property;
+  const structuredData = vacationRentalJsonLd(property);
   const listingId = hostawayListingIds[slug];
   const highlights = propertyHighlights[slug] ?? { primary: [], secondary: [] };
   const isSenator = slug === "senator";
@@ -120,6 +122,9 @@ export default async function PropertyPage({ params }: PageProps) {
 
   return (
     <>
+      {structuredData ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(structuredData) }} />
+      ) : null}
       <section className="relative flex min-h-[500px] w-full items-end overflow-hidden md:min-h-[630px] md:items-center">
         <Image
           src={hero.image.src}
