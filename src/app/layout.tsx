@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: { images: [socialImage] },
   twitter: { card: "summary_large_image", images: [socialImage] },
   alternates: { canonical: "/" },
-  title: "Roamstead Collective | Wasatch Back Vacation Rentals in Midway & Park City",
+  title: "Roamstead Collective | Wasatch Back stays in Midway & Park City",
   robots: { index: launchIndexingEnabled, follow: launchIndexingEnabled },
   description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective.",
 };
