@@ -8,6 +8,10 @@ const nextConfig = {
       { source: '/listings/455631', destination: '/properties/granary', permanent: true },
       { source: '/listings/lowell-302', destination: '/properties/lowell', permanent: true },
       { source: '/listings/powder-room', destination: '/properties/powder-room', permanent: true },
+      // Daystar guest booking is closed on this site; send guests to the live Hostaway booking engine (listing 455634).
+      // The legacy bookingUrl (/listings/daystar-deer-valley) 404s on this domain, so it is redirected there too.
+      { source: '/book/daystar', destination: 'https://roamstead_ventures.holidayfuture.com/listings/455634', permanent: true },
+      { source: '/listings/daystar-deer-valley', destination: 'https://roamstead_ventures.holidayfuture.com/listings/455634', permanent: true },
     ];
   },
   images: {
