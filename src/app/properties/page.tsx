@@ -10,9 +10,9 @@ const order = ["hygge-house", "granary", "lowell", "powder-room"];
 export const metadata = {
   alternates: { canonical: "/properties" },
   title: "Midway & Park City stays | Roamstead Collective",
-  description: "Discover vacation rentals in Midway and Park City, Utah. Explore mountain homes, ski condos and unique stays, then book direct with Roamstead Collective.",
-  openGraph: { images: [socialImage], title: "Midway & Park City stays | Roamstead Collective", description: "Discover vacation rentals in Midway and Park City, Utah. Explore mountain homes, ski condos and unique stays, then book direct with Roamstead Collective." },
-  twitter: { card: "summary_large_image", images: [socialImage], title: "Midway & Park City stays | Roamstead Collective", description: "Discover vacation rentals in Midway and Park City, Utah. Explore mountain homes, ski condos and unique stays, then book direct with Roamstead Collective." },
+  description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective.",
+  openGraph: { images: [socialImage], title: "Midway & Park City stays | Roamstead Collective", description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective." },
+  twitter: { card: "summary_large_image", images: [socialImage], title: "Midway & Park City stays | Roamstead Collective", description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective." },
 };
 
 export default function PropertiesPage() {
