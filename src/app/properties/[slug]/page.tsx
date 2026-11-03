@@ -125,7 +125,8 @@ export default async function PropertyPage({ params }: PageProps) {
           alt={hero.image.alt}
           fill
           priority
-          quality={100}
+          fetchPriority="high"
+          quality={75}
           sizes="100vw"
           className={heroImageClass}
         />
