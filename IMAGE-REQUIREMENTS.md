@@ -43,11 +43,6 @@ Place all images in `/public/images/` directory.
   - Usage: Granary property card
   - Should show: Exterior of Granary
 
-- **daystar.jpg**
-  - Recommended: 800x600px
-  - Usage: Daystar property card
-  - Should show: Exterior of Daystar
-
 ## Image Optimization Tips
 
 1. **Format**: Use .jpg for photos, .png for graphics with transparency
@@ -67,8 +62,7 @@ public/
     ├── local-nature.jpg
     ├── senator-main.jpg
     ├── hugge-house.jpg
-    ├── granary.jpg
-    └── daystar.jpg
+    └── granary.jpg
 ```
 
 ## Next Steps

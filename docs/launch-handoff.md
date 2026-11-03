@@ -9,7 +9,7 @@ https://docs.google.com/document/d/1aGYZpYcrWBLMMKWGlCRwMnQoOl5wMWMa9lvOwkPVYpE
 
 - Verify tablet, 390px and 375px with real browser viewports. This QA environment exposed desktop only.
 - Complete a non-paid Hostaway checkout test for all four integrated properties. Confirm listing, dates, total guests, taxes, cleaning and guest-channel fees, final total and one personal-information form. Cloud Browser currently encounters a certificate hostname mismatch at the configured Hostaway domain.
-- Resolve Daystar: it remains visible on /book, live at 455634, with a four-person selector despite listing capacity twelve. Do not change capacity, inventory, rates or reservation rules without approval. Recommended interim treatment: remove it from booking discovery and retain an approved independent destination only after Chris confirms it.
+- Daystar is no longer a Roamstead property. It was removed from this site (pages, booking, sitemap, schema, and Hostaway redirects). Do not reintroduce it. Do not change capacity, inventory, rates, or reservation rules for the four remaining homes without approval.
 - Verify one controlled Collective capture in the Resend Roamstead segment and notification receipt. EARLY_ACCESS_RECIPIENT is unset, so notifications default to tim@castlehead.ai. Confirm notification owner and analytics destination.
 - Obtain Tim/Chris's production cutover approval and an external DNS-zone export.
 
@@ -63,4 +63,4 @@ For a regression on the preview, revert the specific offending commit on main, d
 
 ## Deferred work
 
-About is currently an approved redirect to home. Stay Longer and Groups/Retreats are deferred, not implemented. Collective is an embedded early-access signup, not a live membership product. Seasonal themes, approved property-specific reviews, occupancy/ADR insights, full-resolution gallery photography and broader Daystar integration remain phase-two work unless Chris explicitly changes scope.
+About is currently an approved redirect to home. Stay Longer and Groups/Retreats are deferred, not implemented. Collective is an embedded early-access signup, not a live membership product. Seasonal themes, approved property-specific reviews, occupancy/ADR insights, and full-resolution gallery photography remain phase-two work unless Chris explicitly changes scope.
