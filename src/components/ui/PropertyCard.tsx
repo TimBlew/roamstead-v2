@@ -10,6 +10,7 @@ interface PropertyCardProps {
   baths?: number;
   href: string;
   detailHref?: string;
+  locationHref?: string;
   eyebrow?: string;
   hook?: string;
   featureHighlight?: string;
@@ -24,6 +25,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   baths,
   href,
   detailHref,
+  locationHref,
   hook,
   featureHighlight,
 }) => {
@@ -50,7 +52,13 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
 
       <div className="mt-3 flex w-full flex-1 flex-col items-start md:mt-4">
         <p className="font-body text-[13px] font-medium leading-5 text-[#82766F] md:text-[14px]">
-          {location.replace(", Utah", "")}
+          {locationHref ? (
+            <a href={locationHref} className="underline-offset-2 hover:text-[#4A6E57] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
+              {location.replace(", Utah", "")}
+            </a>
+          ) : (
+            location.replace(", Utah", "")
+          )}
         </p>
         <h3
           className="mt-0.5 font-heading text-[27px] font-medium leading-[1.12] tracking-[-1.1px] text-[#1F3125] md:text-[36px] md:tracking-[-1.3px]"

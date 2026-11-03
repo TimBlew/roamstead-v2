@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { placePathForLabel } from "@/data/places";
 import { properties } from "@/data/properties";
 
 const order = ["hygge-house", "granary", "lowell", "powder-room"];
@@ -60,6 +61,7 @@ export default function BookPage() {
           {stays.map((property) => {
             const senator = property.slug === "senator";
             const href = senator && property.bookingUrl ? property.bookingUrl : `/book/${property.slug}`;
+            const placePath = placePathForLabel(property.hero.locationLabel);
             const facts = senator
               ? "Historic bed & breakfast · Heber City"
               : property.slug === "powder-room"
@@ -74,7 +76,15 @@ export default function BookPage() {
                   </div>
                 </a>
                 <div className="flex flex-1 flex-col px-[20px] pb-[20px] pt-[18px] md:px-[24px] md:pb-[24px] md:pt-[22px] lg:px-[28px] lg:pb-[26px] lg:pt-[23px]">
-                  <p className="font-body text-[12px] leading-5 text-[#8F7E73] lg:text-[13px]">{property.hero.locationLabel.replace(", Utah", "")}</p>
+                  <p className="font-body text-[12px] leading-5 text-[#8F7E73] lg:text-[13px]">
+                    {placePath ? (
+                      <a href={placePath} className="underline-offset-2 hover:text-[#4A6E57] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
+                        {property.hero.locationLabel.replace(", Utah", "")}
+                      </a>
+                    ) : (
+                      property.hero.locationLabel.replace(", Utah", "")
+                    )}
+                  </p>
                   <h3 className="mt-0.5 font-heading text-[26px] font-medium leading-[1.15] tracking-[-0.04em] text-[#1F3125] md:text-[29px] lg:text-[32px]">
                     <a href={href} {...(senator ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{property.hero.title}</a>
                   </h3>

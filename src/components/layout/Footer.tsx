@@ -41,6 +41,8 @@ export const Footer: React.FC = () => (
           <h2 className="mb-[12px] text-[14px] font-semibold tracking-[0.01em] md:mb-[18px]">Explore</h2>
           <div className="flex flex-col items-start gap-[8px] md:gap-[11px]">
             <a href="/properties" className="text-[13px] leading-[1.45] hover:underline md:text-[14px]">Properties</a>
+            <a href="/midway" className="text-[13px] leading-[1.45] hover:underline md:text-[14px]">Midway</a>
+            <a href="/park-city" className="text-[13px] leading-[1.45] hover:underline md:text-[14px]">Park City</a>
             <a href="/book" className="text-[13px] leading-[1.45] hover:underline md:text-[14px]">Book direct</a>
           </div>
         </nav>
