@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { HostawayBooking } from "./HostawayBooking";
 import { trackRoamsteadEvent } from "@/lib/analytics";
 
 type Day = { date: string; available: boolean; minimumStay: number; maximumStay: number; arrivalAllowed: boolean; departureAllowed: boolean };
@@ -17,11 +16,12 @@ function monthDays(month: Date) {
   const count = new Date(Date.UTC(month.getUTCFullYear(), month.getUTCMonth() + 1, 0)).getUTCDate();
   return [...Array(month.getUTCDay()).fill(null), ...Array.from({ length: count }, (_, index) => index + 1)] as (number | null)[];
 }
-export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number; fallbackUrl: string }) {
+export function RoamsteadBooking({ listingId }: { listingId: number }) {
   const today = useMemo(() => new Date(new Date().toISOString().slice(0, 10) + "T12:00:00Z"), []);
   const [month, setMonth] = useState(() => startMonth(new Date()));
   const [data, setData] = useState<Record<string, Day>>({});
-  const [mode, setMode] = useState<"checking" | "custom" | "fallback">("checking");
+  const [mode, setMode] = useState<"checking" | "custom" | "unavailable">("checking");
+  const [attempt, setAttempt] = useState(0);
   const [loading, setLoading] = useState(true);
   const [checkIn, setCheckIn] = useState<string | null>(null);
   const [checkOut, setCheckOut] = useState<string | null>(null);
@@ -38,7 +38,7 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
     const startDate = key(month);
     const endDate = key(addDays(shift(month, 2), -1));
     setLoading(true);
-    fetch(`/api/hostaway/availability?listingId=${listingId}&startDate=${startDate}&endDate=${endDate}`, { signal: controller.signal })
+    fetch(`/api/hostaway/availability?listingId=${listingId}&startDate=${startDate}&endDate=${endDate}`, { signal: controller.signal, cache: "no-store" })
       .then(async (response) => {
         const payload = await response.json() as CalendarResponse;
         if (!response.ok || !Array.isArray(payload.days)) throw new Error(payload.error || "Availability unavailable");
@@ -49,14 +49,14 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
         setMode("custom");
         setMessage("");
       })
-      .catch((error) => {
+      .catch(() => {
         if (controller.signal.aborted) return;
-        setMode("fallback");
-        setMessage(error instanceof Error ? error.message : "Availability unavailable");
+        setMode("unavailable");
+        setMessage("");
       })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
-  }, [listingId, month]);
+  }, [listingId, month, attempt]);
   const validDeparture = (start: string, end: string) => {
     const arrival = data[start], departure = data[end];
     if (!arrival || !departure || end <= start || !departure.departureAllowed) return false;
@@ -107,7 +107,16 @@ export function RoamsteadBooking({ listingId, fallbackUrl }: { listingId: number
       </div>
     </div>
   );
-  if (mode === "fallback") return <div><HostawayBooking listingId={listingId} fallbackUrl={fallbackUrl} /></div>;
+  if (mode === "unavailable") return (
+    <div className="mx-auto flex min-h-[350px] w-full max-w-[720px] flex-col items-center justify-center px-[8px] py-[24px] text-center">
+      <p role="status" className="max-w-[46ch] font-body text-[15px] leading-6 text-[#6D6057]">
+        The live calendar is unavailable right now. Refresh to try again, or{" "}
+        <a href="mailto:chris@roamstead-co.com" className="font-medium text-[#4A6E57] underline decoration-[#4A6E57]/40 underline-offset-4 transition-colors hover:text-[#1F3125] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">contact us</a>
+        {" "}and we will help with dates.
+      </p>
+      <button type="button" onClick={() => { setMessage(""); setMode("checking"); setAttempt((current) => current + 1); }} className="mt-[20px] inline-flex min-h-[44px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-[24px] font-body text-[14px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_13px_rgba(31,49,37,0.11)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3C6049] hover:shadow-[0_6px_17px_rgba(31,49,37,0.16)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">Try again</button>
+    </div>
+  );
   return (
     <div className="mx-auto w-full max-w-[720px]">
       {step > 0 && mode === "custom" ? <div className="space-y-[16px]">

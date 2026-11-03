@@ -101,7 +101,7 @@ export default async function PropertyPage({ params }: PageProps) {
   const listingId = hostawayListingIds[slug];
   const highlights = propertyHighlights[slug] ?? { primary: [], secondary: [] };
   const isSenator = slug === "senator";
-  const bookingHref = isSenator ? bookingUrl : "#availability";
+  const bookingHref = isSenator && bookingUrl ? bookingUrl : "#availability";
   const shortHeroSummaries: Record<string, string> = {
     "hygge-house": "A spacious Midway mountain home with a private sauna, office, and room to gather.",
     granary: "A cozy Midway condo with mountain views, a full kitchen, and an easy walk into town.",
@@ -200,7 +200,7 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
 
             <div className="rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 pb-3 pt-3 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-6 md:px-7 md:pb-6 md:pt-4">
-              <RoamsteadBooking listingId={listingId} fallbackUrl={bookingUrl} />
+              <RoamsteadBooking listingId={listingId} />
             </div>
           </div>
         </section>

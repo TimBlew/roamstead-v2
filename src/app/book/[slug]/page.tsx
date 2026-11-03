@@ -56,7 +56,7 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
             <p className="mt-[8px] font-body text-[14px] leading-6 text-[#6D6057] md:text-[16px]">Select check-in and check-out to continue your reservation.</p>
           </div>
           <div className="mx-auto mt-[16px] max-w-[620px] rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-[12px] pb-[20px] pt-[12px] shadow-[0_8px_28px_rgba(41,29,22,0.035)] sm:px-[24px] md:mt-[16px] md:px-[28px] md:pb-[24px] md:pt-[16px]">
-            <RoamsteadBooking listingId={listingId} fallbackUrl={property.bookingUrl} />
+            <RoamsteadBooking listingId={listingId} />
           </div>
           <div className="mt-[20px] flex flex-wrap items-center justify-between gap-[12px]">
             <Link href={`/properties/${slug}`} className="font-body text-[13px] font-medium text-[#4A6E57] underline underline-offset-4">

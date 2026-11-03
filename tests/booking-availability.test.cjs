@@ -23,4 +23,16 @@ data["2027-01-03"].departureAllowed = false;
 assert.equal(context.valid("2027-01-01", "2027-01-03"), false, "Closed departure");
 assert.equal(context.valid("2027-01-01", "2027-02-01"), false, "Missing calendar record");
 assert.equal(context.valid("2027-01-03", "2027-01-01"), false, "Reversed dates");
-console.log("PASS: nine production departure-validation cases");
+assert.equal(source.includes("HostawayBooking"), false, "Availability failure stays on the Roamstead calendar");
+assert.equal(source.includes("Check dates with Hostaway"), false, "No off-site date CTA");
+assert.equal(source.includes('setMode("fallback")'), false, "No Hostaway widget fallback mode");
+assert.equal(source.includes("holidayfuture.com/checkout/"), true, "Checkout handoff remains");
+assert.equal(source.includes("numberOfGuests"), true, "Checkout includes guests");
+assert.equal(fs.existsSync("src/components/booking/HostawayBooking.tsx"), false, "Unused Hostaway widget removed");
+for (const file of ["src/app/book/[slug]/page.tsx", "src/app/properties/[slug]/page.tsx", "src/app/book/page.tsx"]) {
+  assert.equal(fs.readFileSync(file, "utf8").includes("fallbackUrl"), false, file);
+}
+const properties = fs.readFileSync("src/data/properties.ts", "utf8");
+assert.equal(properties.includes("/listings/"), false, "Listing date links removed from property data");
+assert.equal(properties.includes("https://us2.cloudbeds.com/reservation/j0tTa0"), true, "Senator booking stays on Cloudbeds");
+console.log("PASS: departure validation and on-site calendar lock");

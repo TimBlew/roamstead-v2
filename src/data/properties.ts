@@ -41,7 +41,8 @@ export interface Property {
     // Map embed query: a street address for the Senator, town or resort base for homes
     mapQuery: string;
   };
-  bookingUrl: string;
+  // External reservation page for stays that do not use the on-site calendar. The Heber Senator only.
+  bookingUrl?: string;
 }
 
 export const properties: Property[] = [
@@ -279,7 +280,6 @@ export const properties: Property[] = [
       ],
       mapQuery: "Midway, UT",
     },
-    bookingUrl: "https://www.roamstead-co.com/listings/house-midway",
   },
   {
     slug: 'granary',
@@ -387,7 +387,6 @@ export const properties: Property[] = [
       ],
       mapQuery: "Midway, UT",
     },
-    bookingUrl: "https://www.roamstead-co.com/listings/granary-midway",
   },
   {
     slug: 'lowell',
@@ -504,7 +503,6 @@ export const properties: Property[] = [
       ],
       mapQuery: "Park City Mountain Resort, Park City, UT",
     },
-    bookingUrl: "https://www.roamstead-co.com/listings/lowell-302",
   },
   {
     slug: 'powder-room',
@@ -619,7 +617,6 @@ export const properties: Property[] = [
       ],
       mapQuery: "Park City Mountain Resort, Park City, UT",
     },
-    bookingUrl: "https://www.roamstead-co.com/listings/powder-room",
   },
 ];
 
