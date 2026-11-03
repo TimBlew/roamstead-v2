@@ -59,7 +59,7 @@ export default function BookPage() {
         <div className="mx-auto grid gap-[20px] sm:grid-cols-2 md:gap-x-[28px] md:gap-y-[32px] lg:max-w-[1180px] lg:gap-x-[32px] lg:gap-y-[34px]">
           {stays.map((property) => {
             const senator = property.slug === "senator";
-            const href = senator ? property.bookingUrl : `/book/${property.slug}`;
+            const href = senator && property.bookingUrl ? property.bookingUrl : `/book/${property.slug}`;
             const facts = senator
               ? "Historic bed & breakfast · Heber City"
               : property.slug === "powder-room"
