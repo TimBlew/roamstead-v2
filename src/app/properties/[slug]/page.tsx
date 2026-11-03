@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
 import { PropertyGallery } from "@/components/sections/PropertyGallery";
 import { RoamsteadBooking } from "@/components/booking/RoamsteadBooking";
+import { placeLinkLabel, placePathForLabel } from "@/data/places";
 import { getProperty, properties } from "@/data/properties";
 import { jsonLdString, vacationRentalJsonLd } from "@/lib/structured-data";
 
@@ -97,6 +98,8 @@ export default async function PropertyPage({ params }: PageProps) {
   if (!property) notFound();
 
   const { hero, stories, details, location, bookingUrl } = property;
+  const placePath = placePathForLabel(hero.locationLabel);
+  const placeLabel = placeLinkLabel(hero.locationLabel);
   const structuredData = vacationRentalJsonLd(property);
   const listingId = hostawayListingIds[slug];
   const highlights = propertyHighlights[slug] ?? { primary: [], secondary: [] };
@@ -294,6 +297,13 @@ export default async function PropertyPage({ params }: PageProps) {
               {location.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
+              {placePath && placeLabel ? (
+                <p className="pt-1">
+                  <a href={placePath} className="font-medium text-[#4A6E57] underline-offset-[3px] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
+                    {placeLabel}
+                  </a>
+                </p>
+              ) : null}
             </div>
           </div>
 

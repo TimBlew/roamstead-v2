@@ -3,6 +3,7 @@ import { socialImage } from "@/lib/site";
 import Image from "next/image";
 import { SenatorBand } from "@/components/sections/SenatorBand";
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
+import { placePathForLabel } from "@/data/places";
 import { properties } from "@/data/properties";
 
 const order = ["hygge-house", "granary", "lowell", "powder-room"];
@@ -77,6 +78,7 @@ export default function PropertiesPage() {
 
               const href = "/properties/" + property.slug + "#availability";
               const detailHref = "/properties/" + property.slug;
+              const placePath = placePathForLabel(property.hero.locationLabel);
               const facts = property.slug === "powder-room" ? ["Sleeps 4", "Studio", "1 Bath"] : property.stats.slice(0, 3).map((stat) => stat.label.toLowerCase() === "sleeps" ? "Sleeps " + stat.value : stat.value + " " + stat.label);
               const hooks: Record<string, string> = {
                 "hygge-house": copy.hooks["hygge-house"],
@@ -104,7 +106,13 @@ export default function PropertiesPage() {
 
                   <div className="flex min-w-0 flex-col px-4 pb-4 pt-3.5 md:justify-start md:px-0 md:pb-0 md:pt-3">
                     <p className="font-body text-[12px] font-medium leading-4 tracking-[-0.24px] text-[#8F7E73] md:text-[14px] md:leading-[20px] md:tracking-[-0.1px]">
-                      {property.hero.locationLabel.replace(", Utah", "")}
+                      {placePath ? (
+                        <a href={placePath} className="underline-offset-2 hover:text-[#4A6E57] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
+                          {property.hero.locationLabel.replace(", Utah", "")}
+                        </a>
+                      ) : (
+                        property.hero.locationLabel.replace(", Utah", "")
+                      )}
                     </p>
 
                     <div className="mt-0.5 md:mt-1.5 md:block">
