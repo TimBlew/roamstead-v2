@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState } from "react";
 
 type Photo = { src: string; alt: string };
@@ -10,65 +11,76 @@ const photo = (folder: string, file: string, alt: string): Photo => ({
 
 const galleries: Record<string, Photo[]> = {
   "hygge-house": [
-    photo("house-midway", "exterior-02", "Hygge House front exterior"),
-    photo("house-midway", "exterior-04", "Backyard patio and outdoor dining"),
-    photo("house-midway", "living-03", "Main living room and fireplace"),
-    photo("house-midway", "living-05", "Second living room and game table"),
-    photo("house-midway", "living-02", "Dedicated home office and seating"),
-    photo("house-midway", "kitchen-01", "Kitchen and island"),
-    photo("house-midway", "bedroom-01", "Bedroom with workspace"),
-    photo("house-midway", "bedroom-03", "Guest bedroom"),
-    photo("house-midway", "sauna-01", "Private sauna heater"),
-    photo("house-midway", "sauna-02", "View from inside the private sauna"),
-    photo("house-midway", "garage-01", "Garage gym and gear storage"),
-    photo("house-midway", "garage-03", "Garage weight training equipment"),
-    { src: "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/e4251f0c-76c0-4125-9077-c6d5063ae636.png", alt: "Aerial view of Hygge House and surrounding trees" },
+    photo("house-midway", "exterior-02", "Front of Hygge House, a white home with a dark garage door and covered entry"),
+    photo("house-midway", "exterior-04", "Backyard patio with an outdoor dining set, lounge chairs, and stairs"),
+    photo("house-midway", "living-03", "Living room with a light sofa, wooden coffee table, and white fireplace"),
+    photo("house-midway", "living-05", "Dining table and sectional sofa in the second living room"),
+    photo("house-midway", "living-02", "Home office with built-in shelves, a desk, and a loveseat"),
+    photo("house-midway", "kitchen-01", "Kitchen with a wood island, four stools, and green cabinets"),
+    photo("house-midway", "bedroom-01", "Bedroom with a dark bed, a desk by the window, and a ceiling fan"),
+    photo("house-midway", "bedroom-03", "Guest bedroom with white bedding, wood nightstands, and a bench"),
+    photo("house-midway", "sauna-01", "Wood sauna interior with a stone heater beside the glass door"),
+    photo("house-midway", "sauna-02", "View from the sauna bench through the glass door to the yard"),
+    photo("house-midway", "garage-01", "Garage gym with a squat rack, bench, and bikes stored on the wall"),
+    photo("house-midway", "garage-03", "Squat rack, barbell, and weight bench in the garage gym"),
+    { src: "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/e4251f0c-76c0-4125-9077-c6d5063ae636.png", alt: "Aerial view of Hygge House among the trees, with mountains behind" },
   ],
   granary: [
-    photo("granary", "living-01", "Living room and fireplace"),
-    photo("granary", "living-02", "Open-plan living and dining"),
-    photo("granary", "living-03", "Fireplace seating"),
-    photo("granary", "living-04", "Living room detail"),
-    photo("granary", "kitchen-01", "Kitchen and island"),
-    photo("granary", "dining-01", "Dining area"),
-    photo("granary", "bedroom-01", "King bedroom"),
-    photo("granary", "bath-01", "Bathroom"),
-    { src: "/images/granary/exterior.jpg", alt: "Granary building with mountain views" },
+    photo("granary", "living-01", "Open living room with a sofa, fireplace, and the kitchen beyond"),
+    photo("granary", "living-02", "Kitchen island, dining table, and living room in one open space"),
+    photo("granary", "living-03", "Fireplace seating with a sofa, armchair, and television"),
+    photo("granary", "living-04", "Living room centered on the fireplace, television, and two armchairs"),
+    photo("granary", "kitchen-01", "Kitchen with white cabinets, a granite island, and stainless appliances"),
+    photo("granary", "dining-01", "Wood dining table with chairs under a chandelier"),
+    photo("granary", "bedroom-01", "Bedroom with a white bed, metal headboard, and a window"),
+    photo("granary", "bath-01", "Bathroom with a granite vanity, toilet, and tub-shower"),
+    { src: "/images/granary/exterior.jpg", alt: "The Granary building along the street, with mountains behind" },
   ],
   lowell: [
-    photo("lowell-302", "living-01", "Living room"),
-    photo("lowell-302", "living-02", "Living space"),
-    photo("lowell-302", "kitchen-01", "Kitchen"),
-    photo("lowell-302", "dining-01", "Dining area"),
-    photo("lowell-302", "bedroom-01", "Primary bedroom"),
-    photo("lowell-302", "bedroom-02", "Second bedroom"),
-    photo("lowell-302", "bathroom-01", "Bathroom"),
-    photo("lowell-302", "bathroom-02", "Bathroom with steam shower"),
-    photo("lowell-302", "bathroom-03", "Bathroom details"),
-    photo("lowell-302", "gym-01", "Fitness center"),
-    photo("lowell-302", "pool-01", "Heated pool and hot tub"),
-    photo("lowell-302", "exterior-01", "Lowell building exterior"),
+    photo("lowell-302", "living-01", "Living room with a brown leather sectional and ottoman"),
+    photo("lowell-302", "living-02", "Open living and dining space with a kitchen island and large windows"),
+    photo("lowell-302", "kitchen-01", "Kitchen with a black stone island, wood cabinets, and leather stools"),
+    photo("lowell-302", "dining-01", "Long dining table set by windows looking onto the hillside"),
+    photo("lowell-302", "bedroom-01", "Bedroom with three beds beside a large window"),
+    photo("lowell-302", "bedroom-02", "Bedroom with a large bed, wood headboard, and two sofas"),
+    photo("lowell-302", "bathroom-01", "Bathroom with a vanity, toilet, and tiled walk-in shower"),
+    photo("lowell-302", "bathroom-02", "Bathroom with a soaking tub and glass-enclosed shower"),
+    photo("lowell-302", "bathroom-03", "Double vanity with a dark marble counter"),
+    photo("lowell-302", "gym-01", "Fitness center with treadmills, an elliptical, and dumbbells"),
+    photo("lowell-302", "pool-01", "Outdoor pool at night beside the stone resort building"),
+    photo("lowell-302", "exterior-01", "The Lowell, a multi-story stone and wood building"),
   ],
   "powder-room": [
-    photo("powder-room", "bedroom-01", "King bed and seating"),
-    photo("powder-room", "bathroom-01", "Bathroom"),
-    photo("powder-room", "bathroom-02", "Bathroom kitchenette and mountain view"),
-    photo("powder-room", "bathroom-03", "Bathroom vanity and details"),
-    photo("powder-room", "pool-01", "Outdoor pool"),
-    photo("powder-room", "pool-02", "Outdoor hot tub and pool at night"),
-    photo("powder-room", "gym-01", "Fitness center"),
-    photo("powder-room", "exterior-02", "Park City ski resort and building exterior"),
+    photo("powder-room", "bedroom-01", "Bedroom with a wood bed, white linens, and a sofa by the window"),
+    photo("powder-room", "bathroom-01", "Bathroom with a tub-shower, toilet, and dark vanity"),
+    photo("powder-room", "bathroom-02", "Kitchenette sink and coffee maker beside a window with a mountain view"),
+    photo("powder-room", "bathroom-03", "Bathroom vanity with a dark marble counter, mirror, and towel warmer"),
+    photo("powder-room", "pool-01", "Outdoor pool deck with lounge chairs and a view toward the hills"),
+    photo("powder-room", "pool-02", "Outdoor pool at night beside the stone resort building"),
+    photo("powder-room", "gym-01", "Fitness center with cardio machines, weights, and mirrored walls"),
+    photo("powder-room", "exterior-02", "Aerial view of snowy resort buildings and ski runs"),
   ],
 };
+
+const mainSizes = "(min-width: 1280px) 1180px, (min-width: 768px) calc(100vw - 48px), calc(100vw - 32px)";
+const thumbSizes = "(min-width: 768px) 126px, 88px";
 
 export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallback?: Photo[] }) {
   const photos = galleries[slug] ?? fallback;
   const [active, setActive] = useState(0);
+  const [shown, setShown] = useState(0);
+  const activeRef = useRef(0);
   const touchStart = useRef<number | null>(null);
 
   if (!photos.length) return null;
-  const previous = () => setActive((n) => (n - 1 + photos.length) % photos.length);
-  const next = () => setActive((n) => (n + 1) % photos.length);
+
+  const select = (index: number) => {
+    activeRef.current = index;
+    setActive(index);
+  };
+  const previous = () => select((active - 1 + photos.length) % photos.length);
+  const next = () => select((active + 1) % photos.length);
+  const frames = shown === active ? [shown] : [shown, active];
 
   return (
     <section aria-label="Property photo gallery" className="bg-[#FFFCFB] px-4 pb-3 pt-3 md:px-6 md:pb-14 md:pt-4">
@@ -95,8 +107,25 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
             touchStart.current = null;
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={photos[active].src} alt={photos[active].alt} className="h-full w-full object-cover" loading="lazy" />
+          {frames.map((index) => {
+            const item = photos[index];
+            const visible = index === shown;
+            return (
+              <Image
+                key={item.src}
+                src={item.src}
+                alt={visible ? item.alt : ""}
+                aria-hidden={visible ? undefined : true}
+                fill
+                sizes={mainSizes}
+                quality={100}
+                className={`object-cover ${visible ? "opacity-100" : "opacity-0"}`}
+                onLoad={() => {
+                  if (activeRef.current === index) setShown(index);
+                }}
+              />
+            );
+          })}
           {photos.length > 1 && (
             <>
               <button type="button" onClick={previous} aria-label="Previous photo" className="group absolute left-1 top-1/2 z-10 flex h-[44px] w-[44px] -translate-y-1/2 items-center justify-center md:left-3">
@@ -110,9 +139,8 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
         </div>
         <div className="mt-2.5 flex snap-x gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] md:gap-3">
           {photos.map((item, index) => (
-            <button key={item.src} type="button" onClick={() => setActive(index)} aria-label={`View photo ${index + 1}: ${item.alt}`} aria-current={index === active ? "true" : undefined} className={`relative h-[64px] w-[88px] shrink-0 snap-start overflow-hidden rounded-[9px] border-2 transition-opacity md:h-[84px] md:w-[126px] ${index === active ? "border-[#4A6E57] opacity-100" : "border-transparent opacity-70 hover:opacity-100"}`}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={item.src} alt="" loading="lazy" className="h-full w-full object-cover" />
+            <button key={item.src} type="button" onClick={() => select(index)} aria-label={`View photo ${index + 1}: ${item.alt}`} aria-current={index === active ? "true" : undefined} className={`relative h-[64px] w-[88px] shrink-0 snap-start overflow-hidden rounded-[9px] border-2 transition-opacity md:h-[84px] md:w-[126px] ${index === active ? "border-[#4A6E57] opacity-100" : "border-transparent opacity-70 hover:opacity-100"}`}>
+              <Image src={item.src} alt={item.alt} fill sizes={thumbSizes} quality={100} className="object-cover" />
             </button>
           ))}
         </div>

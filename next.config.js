@@ -11,6 +11,9 @@ const nextConfig = {
     ];
   },
   images: {
+    // WebP only. Next encodes AVIF at quality - 20, which reads softer than the
+    // production JPEGs and the quality-100 WebP heroes already on the live site.
+    formats: ['image/webp'],
     remotePatterns: [{ protocol: 'https', hostname: 'd2ol7oe51mr4n9.cloudfront.net' }],
   },
 }
