@@ -35,14 +35,6 @@ const galleries: Record<string, Photo[]> = {
     photo("granary", "bath-01", "Bathroom"),
     { src: "/images/granary/exterior.jpg", alt: "Granary building with mountain views" },
   ],
-  daystar: [
-    photo("daystar", "living-01", "Living room"),
-    photo("daystar", "kitchen-01", "Kitchen"),
-    photo("daystar", "bedroom-01", "Bedroom"),
-    photo("daystar", "patio-02", "Outdoor dining terrace"),
-    photo("daystar", "sauna-01", "Indoor sauna"),
-    photo("daystar", "recreation-01", "Indoor sport court"),
-  ],
   lowell: [
     photo("lowell-302", "living-01", "Living room"),
     photo("lowell-302", "living-02", "Living space"),

@@ -16,7 +16,6 @@ type PageProps = {
 const hostawayListingIds: Record<string, number> = {
   "hygge-house": 455635,
   granary: 455631,
-  daystar: 455634,
   lowell: 455632,
   "powder-room": 455633,
 };
@@ -29,10 +28,6 @@ const propertyHighlights: Record<string, { primary: string[]; secondary: string[
   granary: {
     primary: ["Sleeps 4", "1 Bedroom", "1 Bath", "Gas fireplace"],
     secondary: ["Mountain views", "Full kitchen", "In-unit laundry", "Walkable Midway location"],
-  },
-  daystar: {
-    primary: ["Sleeps 12", "6 Bedrooms", "6 Baths", "Hot tub"],
-    secondary: ["Indoor sauna", "Sport court", "Pool table", "Two living rooms"],
   },
   lowell: {
     primary: ["Sleeps 8", "2 Bedrooms", "2 Baths", "Steps from the snow"],
@@ -110,7 +105,6 @@ export default async function PropertyPage({ params }: PageProps) {
   const shortHeroSummaries: Record<string, string> = {
     "hygge-house": "A spacious Midway mountain home with a private sauna, office, and room to gather.",
     granary: "A cozy Midway condo with mountain views, a full kitchen, and an easy walk into town.",
-    daystar: "A generous Deer Valley retreat with a hot tub, sauna, and room for everyone.",
     lowell: "A welcoming Park City condo just steps from the mountain, with resort amenities.",
     "powder-room": "A comfortable studio at the base of Park City Mountain Resort.",
     senator: "A historic Heber City home with individually appointed rooms and breakfast included.",

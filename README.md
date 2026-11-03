@@ -111,7 +111,7 @@ Place your images in `/public/images/`:
 - `local-nature.jpg` - Value card 3
 - `senator-main.jpg` - Primary property main image
 - `senator-gallery-1.jpg`, `senator-gallery-2.jpg`, `senator-gallery-3.jpg`
-- `hugge-house.jpg`, `granary.jpg`, `daystar.jpg`
+- `hugge-house.jpg`, `granary.jpg`
 
 ### 3. Run Development Server
 ```bash
