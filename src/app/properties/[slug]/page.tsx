@@ -126,7 +126,7 @@ export default async function PropertyPage({ params }: PageProps) {
           fill
           priority
           fetchPriority="high"
-          quality={75}
+          quality={100}
           sizes="100vw"
           className={heroImageClass}
         />

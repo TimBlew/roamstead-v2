@@ -118,7 +118,7 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
                 aria-hidden={visible ? undefined : true}
                 fill
                 sizes={mainSizes}
-                quality={75}
+                quality={100}
                 className={`object-cover ${visible ? "opacity-100" : "opacity-0"}`}
                 onLoad={() => {
                   if (activeRef.current === index) setShown(index);
@@ -140,7 +140,7 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
         <div className="mt-2.5 flex snap-x gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] md:gap-3">
           {photos.map((item, index) => (
             <button key={item.src} type="button" onClick={() => select(index)} aria-label={`View photo ${index + 1}: ${item.alt}`} aria-current={index === active ? "true" : undefined} className={`relative h-[64px] w-[88px] shrink-0 snap-start overflow-hidden rounded-[9px] border-2 transition-opacity md:h-[84px] md:w-[126px] ${index === active ? "border-[#4A6E57] opacity-100" : "border-transparent opacity-70 hover:opacity-100"}`}>
-              <Image src={item.src} alt={item.alt} fill sizes={thumbSizes} quality={75} className="object-cover" />
+              <Image src={item.src} alt={item.alt} fill sizes={thumbSizes} quality={100} className="object-cover" />
             </button>
           ))}
         </div>
