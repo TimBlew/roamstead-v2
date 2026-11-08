@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { trackBookingEvent } from "@/lib/analytics";
 import { BOOKING_EVENTS, classifyAvailabilityResponse, hostawayCheckoutHref } from "@/lib/booking-analytics";
-import { GUIDE_HANDOFF_NOTE, calendarFailureLead, dateStepButtonLabel, dateStepNote, guideStatusCopy } from "@/lib/booking-path";
+import { BOOKING_CONTACT_EMAIL, BOOKING_CONTACT_PHONE_HREF, BOOKING_CONTACT_PHONE_LABEL, GUIDE_HANDOFF_NOTE, calendarFailureLead, dateStepButtonLabel, dateStepNote, guideStatusCopy } from "@/lib/booking-path";
 
 type Day = { date: string; available: boolean; minimumStay: number; maximumStay: number; arrivalAllowed: boolean; departureAllowed: boolean };
 type CalendarResponse = { days?: Day[]; configured?: boolean; error?: string };
@@ -158,24 +158,28 @@ export function RoamsteadBooking({ listingId, propertySlug, guide = false }: { l
     </div>
   );
   if (mode === "unavailable") return (
-    <div className="mx-auto flex min-h-[350px] w-full max-w-[720px] flex-col items-center justify-center px-[8px] py-[24px] text-center">
-      {guide ? <div className="mb-[16px] max-w-[46ch]">
-        <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.08em] text-[#8F7E73]">{guideStatusCopy(0).eyebrow}</p>
-        <p className="mt-[4px] font-body text-[13px] leading-5 text-[#6D6057]">{guideStatusCopy(0).body}</p>
+    <div className="mx-auto flex w-full max-w-[720px] flex-col items-center px-[8px] py-[12px] text-center md:py-[16px]">
+      {guide ? <div className="mb-[12px] max-w-[46ch]">
+        <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.08em] text-[#6D6057]">{guideStatusCopy(0).eyebrow}</p>
+        <p className="mt-[4px] font-body text-[13px] leading-5 text-[#5F534B]">{guideStatusCopy(0).body}</p>
       </div> : null}
-      <p role="status" className="max-w-[46ch] font-body text-[15px] leading-6 text-[#6D6057]">
+      <p role="status" className={`max-w-[46ch] font-body text-[15px] leading-6 ${guide ? "text-[#5F534B]" : "text-[#6D6057]"}`}>
         {calendarFailureLead(guide, failureKind)}{" "}
-        <a href="mailto:chris@roamstead-co.com" className="font-medium text-[#4A6E57] underline decoration-[#4A6E57]/40 underline-offset-4 transition-colors hover:text-[#1F3125] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">contact us</a>
+        <a href={`mailto:${BOOKING_CONTACT_EMAIL}`} className="font-medium text-[#4A6E57] underline decoration-[#4A6E57]/40 underline-offset-4 transition-colors hover:text-[#1F3125] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">contact us</a>
         {" "}and we will help with dates.
       </p>
-      <button type="button" onClick={() => { setMessage(""); setMode("checking"); setAttempt((current) => current + 1); }} className="mt-[20px] inline-flex min-h-[44px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-[24px] font-body text-[14px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_13px_rgba(31,49,37,0.11)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3C6049] hover:shadow-[0_6px_17px_rgba(31,49,37,0.16)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">Try again</button>
+      <button type="button" onClick={() => { setMessage(""); setMode("checking"); setAttempt((current) => current + 1); }} className="mt-[16px] inline-flex h-[44px] min-h-[44px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-[24px] font-body text-[14px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_13px_rgba(31,49,37,0.11)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3C6049] hover:shadow-[0_6px_17px_rgba(31,49,37,0.16)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">Try again</button>
+      {guide ? <div className="mt-[12px] flex w-full max-w-[320px] flex-col gap-[8px]">
+        <a href={`mailto:${BOOKING_CONTACT_EMAIL}`} className="inline-flex min-h-[44px] items-center justify-center rounded-[8px] border border-[#D8CCC4] bg-[#FFFCFB] px-[16px] font-body text-[14px] font-medium text-[#3C6049] transition-colors hover:border-[#9CAD9E] hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{BOOKING_CONTACT_EMAIL}</a>
+        <a href={BOOKING_CONTACT_PHONE_HREF} className="inline-flex min-h-[44px] items-center justify-center rounded-[8px] border border-[#D8CCC4] bg-[#FFFCFB] px-[16px] font-body text-[14px] font-medium text-[#3C6049] transition-colors hover:border-[#9CAD9E] hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">{BOOKING_CONTACT_PHONE_LABEL}</a>
+      </div> : null}
     </div>
   );
   return (
     <div className="mx-auto w-full max-w-[720px]">
       {guide ? <div className="mb-[12px] text-center">
-        <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.08em] text-[#8F7E73]">{guideStatusCopy(step).eyebrow}</p>
-        <p className="mt-[4px] font-body text-[13px] leading-5 text-[#6D6057]">{guideStatusCopy(step).body}</p>
+        <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.08em] text-[#6D6057]">{guideStatusCopy(step).eyebrow}</p>
+        <p className="mt-[4px] font-body text-[13px] leading-5 text-[#5F534B] md:text-[14px]">{guideStatusCopy(step).body}</p>
       </div> : null}
       {step > 0 && mode === "custom" ? <div className="space-y-[16px]">
         <button type="button" onClick={() => setStep(0)} className="rounded-[8px] font-body text-[13px] font-medium text-[#4A6E57] transition-colors hover:text-[#1F3125] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">← Edit dates</button>
@@ -203,7 +207,7 @@ export function RoamsteadBooking({ listingId, propertySlug, guide = false }: { l
           </div>
         </div>
         <a href={hostawayCheckoutUrl || undefined} aria-disabled={!checkIn || !checkOut || loading} onClick={event => { if (!checkIn || !checkOut || loading || !hostawayCheckoutUrl) { event.preventDefault(); return; } trackBookingEvent(BOOKING_EVENTS.checkoutHandoff, { propertySlug, listingId, nights: stayNights, guests: adults + children, dedupe: [checkIn, checkOut, String(adults + children)] }); }} className={`flex min-h-[48px] w-full items-center justify-center rounded-[8px] bg-[#4A6E57] px-[16px] text-center font-body text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_13px_rgba(31,49,37,0.11)] transition-[background-color,box-shadow] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${!checkIn || !checkOut || loading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049] hover:shadow-[0_6px_17px_rgba(31,49,37,0.16)]"}`}>Continue to booking →</a>
-        {guide ? <p className="text-center font-body text-[12px] leading-5 text-[#786D65]">{GUIDE_HANDOFF_NOTE}</p> : null}
+        {guide ? <p className="text-center font-body text-[12px] leading-5 text-[#5F534B] md:text-[14px]">{GUIDE_HANDOFF_NOTE}</p> : null}
       </div> : mode === "checking" ? <div role="status" className="flex min-h-[350px] items-center justify-center font-body text-[15px] text-[#6D6057]">Checking live availability…</div> : <>
         <div className="mb-[4px] flex items-center justify-between gap-[8px] md:mb-[8px] md:gap-[12px]">
           <button type="button" aria-label="Previous month" disabled={month <= startMonth(today)} onClick={() => setMonth(shift(month, -1))} className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[8px] border border-[#D8CCC4] bg-[#FFFCFB] text-[#1F3125] transition-[background-color,border-color] duration-200 hover:border-[#9CAD9E] hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:cursor-not-allowed disabled:opacity-25 disabled:hover:border-[#D8CCC4] disabled:hover:bg-[#FFFCFB]">‹</button>
@@ -229,7 +233,7 @@ export function RoamsteadBooking({ listingId, propertySlug, guide = false }: { l
             className={`inline-flex min-h-[44px] w-full flex-1 items-center justify-center whitespace-nowrap rounded-[8px] bg-[#4A6E57] px-[12px] text-center font-body text-[13px] md:min-h-[50px] md:px-[24px] md:text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_13px_rgba(31,49,37,0.11)] transition-[background-color,box-shadow] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${!checkOut || loading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049] hover:shadow-[0_6px_17px_rgba(31,49,37,0.16)]"}`}>{dateStepButtonLabel(guide)}</button>
           <button type="button" onClick={() => { setCheckIn(null); setCheckOut(null); setMessage(""); }} className="min-h-[44px] rounded-[8px] px-[20px] font-body text-[13px] font-medium text-[#4A6E57] transition-colors hover:bg-[#F4EFEC] hover:text-[#1F3125] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] md:text-[14px]">Clear dates</button>
         </div>
-        <p className="mt-0.5 text-center font-body text-[11px] leading-[1.45] md:mt-[8px] md:text-[12px] md:leading-5 text-[#786D65]">{dateStepNote(guide)}</p>
+        <p className={`mt-0.5 text-center font-body text-[12px] leading-5 md:mt-[8px] md:text-[14px] ${guide ? "text-[#5F534B]" : "text-[#786D65]"}`}>{dateStepNote(guide)}</p>
       </>}
     </div>
   );

@@ -3,9 +3,15 @@ export function isGuidedBookingPath(slug: string): boolean {
   return slug === "hygge-house" || slug === "granary";
 }
 
+/** Same destinations already shown in the site footer. */
+export const BOOKING_CONTACT_EMAIL = "chris@roamstead-co.com";
+export const BOOKING_CONTACT_PHONE_HREF = "tel:+14352435670";
+export const BOOKING_CONTACT_PHONE_LABEL = "(435) 243-5670";
+
 export function calendarFailureLead(guide: boolean, failureKind: "unavailable" | "error"): string {
-  if (guide && failureKind === "error") return "We couldn't check live availability just now. Try again, or";
-  return "The live calendar is unavailable right now. Refresh to try again, or";
+  if (!guide) return "The live calendar is unavailable right now. Refresh to try again, or";
+  if (failureKind === "error") return "We couldn't check live availability just now. Try again below, or";
+  return "The live calendar is unavailable right now. Try again below, or";
 }
 
 export function dateStepButtonLabel(guide: boolean): string {

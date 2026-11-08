@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import {
+  BOOKING_CONTACT_EMAIL,
+  BOOKING_CONTACT_PHONE_HREF,
+  BOOKING_CONTACT_PHONE_LABEL,
   GUIDE_HANDOFF_NOTE,
   GUIDE_HERO_NOTE,
   bookIntro,
@@ -24,8 +27,13 @@ assert.equal(isGuidedBookingPath("granary"), true);
 
 assert.equal(calendarFailureLead(false, "error"), originalLead);
 assert.equal(calendarFailureLead(false, "unavailable"), originalLead);
-assert.equal(calendarFailureLead(true, "unavailable"), originalLead);
-assert.equal(calendarFailureLead(true, "error"), "We couldn't check live availability just now. Try again, or");
+assert.equal(calendarFailureLead(true, "unavailable"), "The live calendar is unavailable right now. Try again below, or");
+assert.equal(calendarFailureLead(true, "error"), "We couldn't check live availability just now. Try again below, or");
+assert.equal(calendarFailureLead(true, "unavailable").includes("Refresh"), false);
+const footer = fs.readFileSync("src/components/layout/Footer.tsx", "utf8");
+assert.equal(footer.includes(`mailto:${BOOKING_CONTACT_EMAIL}`), true);
+assert.equal(footer.includes(BOOKING_CONTACT_PHONE_HREF), true);
+assert.equal(footer.includes(BOOKING_CONTACT_PHONE_LABEL), true);
 assert.equal(dateStepButtonLabel(false), originalButton);
 assert.equal(dateStepButtonLabel(true), "Continue to guests");
 assert.equal(dateStepNote(false), originalNote);
@@ -61,6 +69,15 @@ assert.equal(booking.includes("GUIDE_HANDOFF_NOTE"), true);
 assert.equal(booking.includes("Check dates with Hostaway"), false);
 assert.equal(booking.includes('setMode("fallback")'), false);
 assert.equal(booking.includes("/listings/"), false);
+const unavailableBlock = booking.slice(unavailableAt, booking.indexOf('mode === "checking"', unavailableAt));
+assert.equal(unavailableBlock.includes("min-h-[350px]"), false, "Unavailable card is not forced to a tall empty height");
+assert.equal(unavailableBlock.includes("h-[44px] min-h-[44px]"), true, "Try again stays at least 44px tall");
+assert.equal(unavailableBlock.includes("BOOKING_CONTACT_EMAIL"), true);
+assert.equal(unavailableBlock.includes("BOOKING_CONTACT_PHONE_HREF"), true);
+assert.equal(booking.includes("MOCK"), false, "No public mock calendar switch");
+assert.equal(booking.includes("fixture"), false);
+const propertyPage = fs.readFileSync("src/app/properties/[slug]/page.tsx", "utf8");
+assert.equal(propertyPage.includes('id="availability" className="scroll-mt-[120px]'), true);
 
 for (const file of ["src/app/properties/[slug]/page.tsx", "src/app/book/[slug]/page.tsx"]) {
   const source = fs.readFileSync(file, "utf8");
