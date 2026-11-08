@@ -2,10 +2,10 @@ import { track } from "@vercel/analytics";
 import {
   type Attribution,
   type BookingEventName,
+  acceptFunnelEvent,
   composeBookingProperties,
-  dedupeWindowMs,
+  ensureAnalyticsQueue,
   mergeAttribution,
-  shouldEmit,
 } from "@/lib/booking-analytics";
 
 type AnalyticsValue = string | number | boolean;
@@ -67,11 +67,12 @@ export function trackBookingEvent(
   },
 ) {
   if (typeof window === "undefined") return;
+  ensureAnalyticsQueue(window);
   try {
     const attribution = captureLandingAttribution();
     const properties = composeBookingProperties(input, attribution);
-    const key = [name, input.propertySlug, input.listingId ?? "", input.pageKind ?? "", ...(input.dedupe ?? [])].join("|");
-    if (!shouldEmit(recentEvents, key, Date.now(), dedupeWindowMs(name))) return;
+    const identity = [input.propertySlug, input.listingId ?? "", input.pageKind ?? "", ...(input.dedupe ?? [])].join("|");
+    if (!acceptFunnelEvent(recentEvents, name, identity, Date.now())) return;
     track(name, properties);
   } catch {
     // Analytics must not block choosing dates, guests, or the payment handoff.

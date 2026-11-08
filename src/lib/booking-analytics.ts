@@ -22,7 +22,6 @@ export type UtmKey = (typeof UTM_KEYS)[number];
 export type Attribution = Partial<Record<UtmKey | "source" | "referrer_host" | "funnel_ref", string>>;
 
 export const PAGE_VIEW_DEDUPE_MS = 1500;
-export const DATE_CHECK_DEDUPE_MS = 1500;
 export const ACTION_DEDUPE_MS = 1000;
 
 const TOKEN = /^[A-Za-z0-9][A-Za-z0-9._~-]{0,63}$/;
@@ -185,9 +184,32 @@ export function shouldEmit(store: Map<string, number>, key: string, now: number,
   return true;
 }
 
-export function dedupeWindowMs(name: BookingEventName): number {
-  if (name === BOOKING_EVENTS.pageView || name.startsWith("booking_date_check_")) return DATE_CHECK_DEDUPE_MS;
+/**
+ * Date-check attempt and outcome are not time-deduped. Their stamps would
+ * otherwise be taken at request start and response time, so a repeated month
+ * can drop the attempt and still send the success.
+ * Null means every call is emitted.
+ */
+export function dedupeWindowMs(name: BookingEventName): number | null {
+  if (name.startsWith("booking_date_check_")) return null;
+  if (name === BOOKING_EVENTS.pageView) return PAGE_VIEW_DEDUPE_MS;
   return ACTION_DEDUPE_MS;
+}
+
+export function acceptFunnelEvent(store: Map<string, number>, name: BookingEventName, identity: string, now: number): boolean {
+  const windowMs = dedupeWindowMs(name);
+  if (windowMs === null) return true;
+  return shouldEmit(store, `${name}|${identity}`, now, windowMs);
+}
+
+/** Same queue `@vercel/analytics` installs in `initQueue`. `track()` does not enqueue when `va` is missing. */
+export function ensureAnalyticsQueue(target: { va?: unknown; vaq?: unknown[][] }): void {
+  if (typeof target.va === "function") return;
+  const queue = (...params: unknown[]) => {
+    if (!target.vaq) target.vaq = [];
+    target.vaq.push(params);
+  };
+  target.va = queue;
 }
 
 export function composeBookingProperties(
