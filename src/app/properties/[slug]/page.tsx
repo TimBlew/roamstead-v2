@@ -7,6 +7,7 @@ import { CommunityCTA } from "@/components/sections/CommunityCTA";
 import { PropertyGallery } from "@/components/sections/PropertyGallery";
 import { BookingPageView } from "@/components/analytics/BookingPageView";
 import { RoamsteadBooking } from "@/components/booking/RoamsteadBooking";
+import { GUIDE_HERO_NOTE, isGuidedBookingPath } from "@/lib/booking-path";
 import { placeLinkLabel, placePathForLabel } from "@/data/places";
 import { getProperty, properties } from "@/data/properties";
 import { jsonLdString, vacationRentalJsonLd } from "@/lib/structured-data";
@@ -103,6 +104,7 @@ export default async function PropertyPage({ params }: PageProps) {
   const placeLabel = placeLinkLabel(hero.locationLabel);
   const structuredData = vacationRentalJsonLd(property);
   const listingId = hostawayListingIds[slug];
+  const guidedBooking = isGuidedBookingPath(slug);
   const highlights = propertyHighlights[slug] ?? { primary: [], secondary: [] };
   const isSenator = slug === "senator";
   const bookingHref = isSenator && bookingUrl ? bookingUrl : "#availability";
@@ -177,6 +179,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 Check dates
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-[17px] w-[17px] transition-transform group-hover:translate-x-[3px]"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
               </a>
+              {guidedBooking ? <p className="mt-[10px] text-center font-body text-[12px] leading-[18px] text-[#E6F0E5]">{GUIDE_HERO_NOTE}</p> : null}
             </div>
           </div>
         </div>
@@ -191,7 +194,7 @@ export default async function PropertyPage({ params }: PageProps) {
       <PropertyGallery slug={slug} fallback={stories.map((story) => ({ src: story.image.src, alt: story.image.alt }))} />
 
       {listingId ? (
-        <section id="availability" className="scroll-mt-24 bg-[#F4EFEC] px-4 pb-5 pt-5 md:px-6 md:py-11">
+        <section id="availability" className="scroll-mt-[120px] bg-[#F4EFEC] px-4 pb-5 pt-5 md:px-6 md:py-11">
           <div className="mx-auto max-w-[620px]">
             <div className="mb-2.5 md:mb-4">
               <p className="font-body text-[13px] font-medium uppercase leading-[18px] tracking-[0.08em] text-[#8F7E73]">
@@ -206,7 +209,7 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
 
             <div className="rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 pb-3 pt-3 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-6 md:px-7 md:pb-6 md:pt-4">
-              <RoamsteadBooking listingId={listingId} propertySlug={slug} />
+              <RoamsteadBooking listingId={listingId} propertySlug={slug} guide={guidedBooking} />
             </div>
           </div>
         </section>
