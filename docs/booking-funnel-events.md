@@ -28,21 +28,25 @@ Vercel may drop custom properties above the plan limit. The event name still rec
 
 ### `booking_page_view`
 
-Fires once when a property detail page or a `/book/[slug]` page is shown.
+Fires once when a property detail page or a `/book/[slug]` page is shown, after the analytics client queue exists.
 
-Does not fire for the home page, `/properties`, `/book`, or `/admin`. Does not fire again for the same slug and page kind inside 1.5 seconds (this collapses React strict-mode double mounts). A later visit outside that window counts again.
+`track()` in `@vercel/analytics` does not store the call when `window.va` is missing. The Next client installs that queue from `inject()`, and the Next component that calls `inject()` reads `useSearchParams()` inside `Suspense`, so it can mount after the property page effect. The page-view call is therefore handed to the same queue the package uses, instead of being dropped. It is not fired a second time to make up for a lost call.
+
+Does not fire for the home page, `/properties`, `/book`, or `/admin`. A second call for the same slug and page kind inside 1.5 seconds is dropped only after the first call was handed to the queue. A later visit outside that window counts again.
 
 This is not a second copy of Vercel's automatic page view. `@vercel/analytics` 2 page views cannot carry custom properties, so the listing id is sent on this custom event. Do not add these counts to traffic page views.
 
 ### `booking_date_check_attempt`
 
-Fires when the on-site calendar requests live availability for the visible month window. A month change or Try again starts another check. The dedupe key is the listing, the requested window, and the retry count, for 1.5 seconds.
+Fires when the on-site calendar starts a request for the visible month window. A month change or Try again starts another request and another attempt. These events are not dropped by a time window.
 
-Does not fire when a guest taps a date, and does not fire for an aborted request's result. A request cancelled by leaving the month still counts as an attempt if it started. It does not also count as success, unavailable, or error.
+Does not fire when a guest taps a date. A request cancelled by leaving the month still counts as an attempt if it started. It does not also count as success, unavailable, or error.
+
+Attempt and outcome used to be deduped separately, with the attempt stamped at the start and the outcome stamped when the response arrived. A return to a month inside 1.5 seconds of the first attempt could drop the new attempt while the slower response still sent a success. That split can make a success total higher than the attempt total. A query window can also omit an event that was sent, so a past count such as 3 successes and 2 attempts is consistent with these mechanisms but cannot be assigned to one of them after the fact. Each started request now keeps its attempt, and each accepted response keeps its one outcome.
 
 ### `booking_date_check_success`
 
-Fires when that same request returns HTTP 200 and a `days` array. An empty array is still success: the calendar loaded. It does not mean a stay is available, and it does not mean a booking exists.
+Fires when that same request returns HTTP 200 and a `days` array. An empty array is still success: the month data loaded. It does not mean a selected stay is available, it does not mean a unique person, and it does not mean a booking.
 
 ### `booking_date_check_unavailable`
 
@@ -54,7 +58,7 @@ Fires when the request fails any other way: network error, HTTP 400, or a 200 re
 
 ### `booking_guest_step`
 
-Fires when the guest clicks the date-step continue control with a check-out selected and the calendar is not loading. That click stays on roamstead-co.com and opens the guest step.
+Fires when the guest clicks the date-step continue control with a check-out selected and the calendar is not loading. That click stays on roamstead-co.com and opens the guest step. `guests` is the count at that click. The control starts at 2 adults and 0 children, so the event records 2 unless the guest changed it before leaving the date step. Adding adults on the guest step changes the handoff count, not this one.
 
 Does not fire on render, on an unavailable calendar, or on a second click inside 1 second for the same dates and guest count. It replaces the older `availability_dates_selected` event. Historical rows of that older name remain in Vercel. New guest steps are not also recorded under the old name.
 
@@ -66,13 +70,21 @@ Does not fire when the link is disabled. A second click inside 1 second for the 
 
 ## Automatic page views
 
-The existing `<Analytics>` page view still fires once per public page. `beforeSend` then:
+The existing `<Analytics>` page view still fires once per public page. The same sanitizer is registered at the front of the analytics queue before any custom event, and it is the only `beforeSend` registration. The hosted script replays that queue in order, so the first event's page URL goes through this sanitizer too. It then:
 
 - drops `/admin` URLs
 - removes every query parameter except the allowlisted `utm_*` and `source` values above
 - drops a second page view for the same sanitized URL inside 1.5 seconds
 
-Custom events use the same URL cleanup. Their names are not deduped there, because the page-view filter cannot see the event name. Custom-event dedupe happens before `track`.
+Custom events use the same URL cleanup. Their names are not deduped there, because the page-view filter cannot see the event name. Page views, the guest step, and the handoff are still deduped before `track`. Date-check attempt and outcome are not.
+
+## How to read totals
+
+`booking_page_view` is the property-identified custom event. Vercel traffic page views are separate and must not be added to it.
+
+For calendar checks, every started request emits one `booking_date_check_attempt`. An aborted request has no outcome. A finished request emits exactly one of success, unavailable, or error. Attempt totals can be higher than the sum of outcomes by the number of aborted requests. They should not be lower. A success total is the number of month payloads that loaded, not bookable stays and not bookings.
+
+A query window can still omit an event that was sent just outside the selected times. That is separate from the client accounting above. This site does not record whether Vercel stored an event.
 
 ## Attribution
 

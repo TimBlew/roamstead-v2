@@ -3,7 +3,8 @@ import fs from "node:fs";
 import {
   ACTION_DEDUPE_MS,
   BOOKING_EVENTS,
-  DATE_CHECK_DEDUPE_MS,
+  PAGE_VIEW_DEDUPE_MS,
+  acceptFunnelEvent,
   attributionFromSearch,
   classifyAvailabilityResponse,
   composeBookingProperties,
@@ -15,6 +16,9 @@ import {
   sanitizePageUrl,
   sanitizeToken,
   shouldEmit,
+  ensureAnalyticsQueue,
+  registerAnalyticsSanitizer,
+  sanitizeAnalyticsEvent,
 } from "../src/lib/booking-analytics.ts";
 
 const FUNNEL = "4f2c0a1e-6b7d-4c8e-8a1b-123456789abc";
@@ -29,10 +33,92 @@ assert.deepEqual(BOOKING_EVENTS, {
   guestStep: "booking_guest_step",
   checkoutHandoff: "hostaway_checkout_click",
 });
-assert.equal(dedupeWindowMs(BOOKING_EVENTS.pageView), DATE_CHECK_DEDUPE_MS);
-assert.equal(dedupeWindowMs(BOOKING_EVENTS.dateCheckAttempt), DATE_CHECK_DEDUPE_MS);
+assert.equal(dedupeWindowMs(BOOKING_EVENTS.pageView), PAGE_VIEW_DEDUPE_MS);
+assert.equal(dedupeWindowMs(BOOKING_EVENTS.dateCheckAttempt), null);
+assert.equal(dedupeWindowMs(BOOKING_EVENTS.dateCheckSuccess), null);
+assert.equal(dedupeWindowMs(BOOKING_EVENTS.dateCheckUnavailable), null);
+assert.equal(dedupeWindowMs(BOOKING_EVENTS.dateCheckError), null);
 assert.equal(dedupeWindowMs(BOOKING_EVENTS.guestStep), ACTION_DEDUPE_MS);
 assert.equal(dedupeWindowMs(BOOKING_EVENTS.checkoutHandoff), ACTION_DEDUPE_MS);
+
+const client = fs.readFileSync("node_modules/@vercel/analytics/dist/index.js", "utf8");
+assert.equal(client.includes('window.va) == null ? void 0 : _b.call(window, "event"'), true, "track() skips the call when window.va is missing");
+assert.equal(client.includes("if (!window.vaq) window.vaq = []"), true, "the package queues only after initQueue installs va");
+const nextClient = fs.readFileSync("node_modules/@vercel/analytics/dist/next/index.js", "utf8");
+assert.equal(nextClient.includes("useSearchParams"), true, "Next analytics reads search params");
+assert.equal(nextClient.includes("Suspense"), true, "Next analytics is behind Suspense");
+assert.equal(nextClient.includes("inject("), true);
+
+const dropped = {};
+const callIfReady = (host, name) => { host.va?.("event", { name }); };
+callIfReady(dropped, "booking_page_view");
+assert.equal(dropped.vaq, undefined, "A page view fired before the queue exists is not stored");
+ensureAnalyticsQueue(dropped);
+callIfReady(dropped, "booking_page_view");
+assert.equal(dropped.vaq.length, 1);
+assert.deepEqual(dropped.vaq[0], ["event", { name: "booking_page_view" }]);
+const already = { va() {}, vaq: [] };
+ensureAnalyticsQueue(already);
+assert.equal(already.vaq.length, 0, "An existing analytics client is left in place");
+
+const skewed = new Map();
+const windowMs = 1500;
+assert.equal(shouldEmit(skewed, "attempt|nov", 0, windowMs), true);
+assert.equal(shouldEmit(skewed, "success|nov", 200, windowMs), true);
+assert.equal(shouldEmit(skewed, "attempt|dec", 500, windowMs), true);
+assert.equal(shouldEmit(skewed, "success|dec", 700, windowMs), true);
+assert.equal(shouldEmit(skewed, "attempt|nov", 900, windowMs), false, "Repeat month attempt falls inside the first attempt's window");
+assert.equal(shouldEmit(skewed, "success|nov", 1800, windowMs), true, "Its later success falls outside the first success's window");
+
+const paired = new Map();
+const record = (name, identity, now) => acceptFunnelEvent(paired, name, identity, now);
+assert.equal(record(BOOKING_EVENTS.dateCheckAttempt, "granary|455631|0|2026-11-01|2026-12-31", 0), true);
+assert.equal(record(BOOKING_EVENTS.dateCheckSuccess, "granary|455631|0|2026-11-01|2026-12-31", 200), true);
+assert.equal(record(BOOKING_EVENTS.dateCheckAttempt, "granary|455631|0|2026-12-01|2027-01-31", 500), true);
+assert.equal(record(BOOKING_EVENTS.dateCheckSuccess, "granary|455631|0|2026-12-01|2027-01-31", 700), true);
+assert.equal(record(BOOKING_EVENTS.dateCheckAttempt, "granary|455631|0|2026-11-01|2026-12-31", 900), true);
+assert.equal(record(BOOKING_EVENTS.dateCheckSuccess, "granary|455631|0|2026-11-01|2026-12-31", 1800), true);
+assert.equal(record(BOOKING_EVENTS.pageView, "hygge-house|455635|property", 0), true);
+assert.equal(record(BOOKING_EVENTS.pageView, "hygge-house|455635|property", 200), false, "A second property view inside 1.5s is still one event");
+
+const cold = {};
+registerAnalyticsSanitizer(cold, sanitizeAnalyticsEvent);
+cold.va("event", { name: "booking_page_view" });
+cold.va("beforeSend", sanitizeAnalyticsEvent);
+registerAnalyticsSanitizer(cold, sanitizeAnalyticsEvent);
+assert.equal(cold.vaq.filter((entry) => entry[0] === "beforeSend").length, 1, "inject does not register the sanitizer twice");
+assert.equal(cold.vaq[0][0], "beforeSend");
+assert.equal(cold.vaq[0][1], sanitizeAnalyticsEvent);
+assert.equal(cold.vaq.filter((entry) => entry[0] === "event").length, 1, "The early event is kept once");
+
+const late = { vaq: [] };
+late.va = function packageQueue(...params) { late.vaq.push(params); };
+late.va("event", { name: "booking_page_view" });
+registerAnalyticsSanitizer(late, sanitizeAnalyticsEvent);
+assert.deepEqual(late.vaq.map((entry) => entry[0]), ["beforeSend", "event"], "A sanitizer that arrives after an event is moved ahead of it");
+
+const raw = "https://www.roamstead-co.com/properties/hygge-house?utm_source=qa&email=guest@example.com&gclid=abc#guest=secret";
+let sanitizer = (event) => event;
+const sent = [];
+for (const [type, payload] of cold.vaq) {
+  if (type === "beforeSend") sanitizer = payload;
+  if (type === "event") {
+    const result = sanitizer({ type: "event", url: raw });
+    if (result != null) sent.push(result.url);
+  }
+}
+assert.equal(sanitizer, sanitizeAnalyticsEvent);
+assert.deepEqual(sent, ["https://www.roamstead-co.com/properties/hygge-house?utm_source=qa"]);
+assert.equal(sanitizeAnalyticsEvent({ type: "event", url: "https://www.roamstead-co.com/admin/edit?utm_source=qa#secret" }, 50_000), null);
+
+const native = sanitizeAnalyticsEvent({ type: "pageview", url: "https://www.roamstead-co.com/properties/granary?utm_medium=acceptance&email=guest@example.com" }, 60_000);
+const nativeRepeat = sanitizeAnalyticsEvent({ type: "pageview", url: "https://www.roamstead-co.com/properties/granary?utm_medium=acceptance#guest" }, 60_100);
+assert.equal(native && native.url, "https://www.roamstead-co.com/properties/granary?utm_medium=acceptance");
+assert.equal(nativeRepeat, null, "The native page view is still one view inside the dedupe window");
+const publicAnalytics = fs.readFileSync("src/components/analytics/PublicAnalytics.tsx", "utf8");
+assert.equal(publicAnalytics.includes("<Analytics />"), true, "Native analytics page views stay enabled");
+assert.equal(publicAnalytics.includes("<Analytics beforeSend"), false, "inject() is not given a second sanitizer");
+assert.equal(nextClient.includes("pageview({"), true, "The Next client still sends its page view");
 
 assert.equal(sanitizeToken("instagram"), "instagram");
 assert.equal(sanitizeToken(" guest@example.com "), null);

@@ -22,7 +22,6 @@ export type UtmKey = (typeof UTM_KEYS)[number];
 export type Attribution = Partial<Record<UtmKey | "source" | "referrer_host" | "funnel_ref", string>>;
 
 export const PAGE_VIEW_DEDUPE_MS = 1500;
-export const DATE_CHECK_DEDUPE_MS = 1500;
 export const ACTION_DEDUPE_MS = 1000;
 
 const TOKEN = /^[A-Za-z0-9][A-Za-z0-9._~-]{0,63}$/;
@@ -149,6 +148,13 @@ export function prepareAnalyticsEvent<T extends { type: string; url: string }>(
   return { ...event, url };
 }
 
+const analyticsPageViews = new Map<string, number>();
+
+/** One sanitizer for native page views and custom events. Drops /admin, strips fragments, and keeps only allowlisted campaign params. */
+export function sanitizeAnalyticsEvent<T extends { type: string; url: string }>(event: T, now = Date.now()): T | null {
+  return prepareAnalyticsEvent(event, analyticsPageViews, now);
+}
+
 export function classifyAvailabilityResponse(input: {
   aborted: boolean;
   ok: boolean;
@@ -185,9 +191,73 @@ export function shouldEmit(store: Map<string, number>, key: string, now: number,
   return true;
 }
 
-export function dedupeWindowMs(name: BookingEventName): number {
-  if (name === BOOKING_EVENTS.pageView || name.startsWith("booking_date_check_")) return DATE_CHECK_DEDUPE_MS;
+/**
+ * Date-check attempt and outcome are not time-deduped. Their stamps would
+ * otherwise be taken at request start and response time, so a repeated month
+ * can drop the attempt and still send the success.
+ * Null means every call is emitted.
+ */
+export function dedupeWindowMs(name: BookingEventName): number | null {
+  if (name.startsWith("booking_date_check_")) return null;
+  if (name === BOOKING_EVENTS.pageView) return PAGE_VIEW_DEDUPE_MS;
   return ACTION_DEDUPE_MS;
+}
+
+export function acceptFunnelEvent(store: Map<string, number>, name: BookingEventName, identity: string, now: number): boolean {
+  const windowMs = dedupeWindowMs(name);
+  if (windowMs === null) return true;
+  return shouldEmit(store, `${name}|${identity}`, now, windowMs);
+}
+
+type AnalyticsHost = { va?: unknown; vaq?: unknown[][] };
+
+function promoteSanitizer(target: AnalyticsHost, sanitizer: (event: { type: string; url: string }) => unknown): void {
+  if (!target.vaq) target.vaq = [];
+  for (let index = target.vaq.length - 1; index >= 0; index -= 1) {
+    if (target.vaq[index][0] === "beforeSend") target.vaq.splice(index, 1);
+  }
+  target.vaq.unshift(["beforeSend", sanitizer]);
+}
+
+function isReplayQueue(va: unknown): boolean {
+  if (typeof va !== "function") return false;
+  if ("roamsteadQueue" in va && (va as { roamsteadQueue?: boolean }).roamsteadQueue === true) return true;
+  return Function.prototype.toString.call(va).includes("vaq");
+}
+
+/** Same queue `@vercel/analytics` installs in `initQueue`. `track()` does not enqueue when `va` is missing. */
+export function ensureAnalyticsQueue(target: AnalyticsHost): void {
+  if (typeof target.va === "function") return;
+  const queue = (...params: unknown[]) => {
+    if (params[0] === "beforeSend") {
+      promoteSanitizer(target, params[1] as (event: { type: string; url: string }) => unknown);
+      return;
+    }
+    if (!target.vaq) target.vaq = [];
+    target.vaq.push(params);
+  };
+  Object.assign(queue, { roamsteadQueue: true });
+  target.va = queue;
+}
+
+const registeredSanitizer = new WeakMap<object, unknown>();
+
+/**
+ * Put the shared sanitizer ahead of every queued command. A second registration
+ * of the same function does not add another queue entry.
+ */
+export function registerAnalyticsSanitizer(target: AnalyticsHost, sanitizer: (event: { type: string; url: string }) => unknown): void {
+  ensureAnalyticsQueue(target);
+  if (isReplayQueue(target.va) || typeof target.va !== "function") {
+    const alreadyFirst = target.vaq?.[0]?.[0] === "beforeSend" && target.vaq[0][1] === sanitizer
+      && target.vaq.filter((entry) => entry[0] === "beforeSend").length === 1;
+    if (!alreadyFirst) promoteSanitizer(target, sanitizer);
+    registeredSanitizer.set(target, sanitizer);
+    return;
+  }
+  if (registeredSanitizer.get(target) === sanitizer) return;
+  registeredSanitizer.set(target, sanitizer);
+  (target.va as (command: string, fn: unknown) => void)("beforeSend", sanitizer);
 }
 
 export function composeBookingProperties(
