@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { BookingPageView } from "@/components/analytics/BookingPageView";
 import { RoamsteadBooking } from "@/components/booking/RoamsteadBooking";
 import { getProperty } from "@/data/properties";
 
@@ -35,6 +36,7 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
 
   return (
     <div className="min-h-[70vh] bg-[#FFFCFB]">
+      <BookingPageView slug={slug} listingId={listingId} pageKind="book" />
       <section className="bg-[#F4EFEC] px-[16px] pb-[40px] pt-[28px] md:px-[32px] md:pb-16 md:pt-12">
         <div className="mx-auto max-w-[720px]">
           <Link href="/book#choose-your-stay" className="inline-flex items-center gap-[8px] font-body text-[13px] font-medium text-[#4A6E57] transition-colors hover:text-[#1F3125] md:text-[14px]">
@@ -56,7 +58,7 @@ export default async function BookingPropertyPage({ params }: { params: Promise<
             <p className="mt-[8px] font-body text-[14px] leading-6 text-[#6D6057] md:text-[16px]">Select check-in and check-out to continue your reservation.</p>
           </div>
           <div className="mx-auto mt-[16px] max-w-[620px] rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-[12px] pb-[20px] pt-[12px] shadow-[0_8px_28px_rgba(41,29,22,0.035)] sm:px-[24px] md:mt-[16px] md:px-[28px] md:pb-[24px] md:pt-[16px]">
-            <RoamsteadBooking listingId={listingId} />
+            <RoamsteadBooking listingId={listingId} propertySlug={slug} />
           </div>
           <div className="mt-[20px] flex flex-wrap items-center justify-between gap-[12px]">
             <Link href={`/properties/${slug}`} className="font-body text-[13px] font-medium text-[#4A6E57] underline underline-offset-4">

@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { trackRoamsteadEvent } from "@/lib/analytics";
+import { trackBookingEvent } from "@/lib/analytics";
+import { BOOKING_EVENTS, classifyAvailabilityResponse, hostawayCheckoutHref } from "@/lib/booking-analytics";
 
 type Day = { date: string; available: boolean; minimumStay: number; maximumStay: number; arrivalAllowed: boolean; departureAllowed: boolean };
-type CalendarResponse = { days: Day[]; configured?: boolean; error?: string };
+type CalendarResponse = { days?: Day[]; configured?: boolean; error?: string };
 const monthText = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
 const dateText = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 function key(date: Date) { return date.toISOString().slice(0, 10); }
@@ -16,7 +17,7 @@ function monthDays(month: Date) {
   const count = new Date(Date.UTC(month.getUTCFullYear(), month.getUTCMonth() + 1, 0)).getUTCDate();
   return [...Array(month.getUTCDay()).fill(null), ...Array.from({ length: count }, (_, index) => index + 1)] as (number | null)[];
 }
-export function RoamsteadBooking({ listingId }: { listingId: number }) {
+export function RoamsteadBooking({ listingId, propertySlug }: { listingId: number; propertySlug: string }) {
   const today = useMemo(() => new Date(new Date().toISOString().slice(0, 10) + "T12:00:00Z"), []);
   const [month, setMonth] = useState(() => startMonth(new Date()));
   const [data, setData] = useState<Record<string, Day>>({});
@@ -29,7 +30,14 @@ export function RoamsteadBooking({ listingId }: { listingId: number }) {
   const [step, setStep] = useState(0);
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
-  const hostawayCheckoutUrl = checkIn && checkOut ? `https://roamstead_ventures.holidayfuture.com/checkout/${listingId}?${new URLSearchParams({ start: checkIn, end: checkOut, numberOfGuests: String(adults + children) }).toString()}` : "";
+  let hostawayCheckoutUrl = "";
+  if (checkIn && checkOut) {
+    try {
+      hostawayCheckoutUrl = hostawayCheckoutHref(listingId, checkIn, checkOut, adults + children);
+    } catch {
+      hostawayCheckoutUrl = "";
+    }
+  }
   const maxGuests = ({ 455635: 10, 455631: 4, 455632: 8, 455633: 4 } as Record<number, number>)[listingId] ?? 4;
   const stayNights = checkIn && checkOut ? Math.round((parse(checkOut).getTime() - parse(checkIn).getTime()) / 86400000) : 0;
   const lastMonth = shift(startMonth(today), 11);
@@ -37,26 +45,63 @@ export function RoamsteadBooking({ listingId }: { listingId: number }) {
     const controller = new AbortController();
     const startDate = key(month);
     const endDate = key(addDays(shift(month, 2), -1));
+    const requestAttempt = attempt;
     setLoading(true);
+    trackBookingEvent(BOOKING_EVENTS.dateCheckAttempt, {
+      propertySlug,
+      listingId,
+      dedupe: [String(requestAttempt), startDate, endDate],
+    });
     fetch(`/api/hostaway/availability?listingId=${listingId}&startDate=${startDate}&endDate=${endDate}`, { signal: controller.signal, cache: "no-store" })
       .then(async (response) => {
-        const payload = await response.json() as CalendarResponse;
-        if (!response.ok || !Array.isArray(payload.days)) throw new Error(payload.error || "Availability unavailable");
+        let payload: CalendarResponse = {};
+        try {
+          payload = await response.json() as CalendarResponse;
+        } catch {
+          payload = {};
+        }
         if (controller.signal.aborted) return;
+        const days = Array.isArray(payload.days) ? payload.days : null;
+        const outcome = classifyAvailabilityResponse({
+          aborted: false,
+          ok: response.ok,
+          status: response.status,
+          hasDays: Boolean(days),
+        });
+        if (outcome !== "success" || !days) {
+          trackBookingEvent(outcome === "unavailable" ? BOOKING_EVENTS.dateCheckUnavailable : BOOKING_EVENTS.dateCheckError, {
+            propertySlug,
+            listingId,
+            dedupe: [String(requestAttempt), startDate, endDate],
+          });
+          setMode("unavailable");
+          setMessage("");
+          return;
+        }
+        trackBookingEvent(BOOKING_EVENTS.dateCheckSuccess, {
+          propertySlug,
+          listingId,
+          dedupe: [String(requestAttempt), startDate, endDate],
+        });
         const next: Record<string, Day> = {};
-        for (const day of payload.days) next[day.date] = day;
+        for (const day of days) next[day.date] = day;
         setData(previous => ({ ...previous, ...next }));
         setMode("custom");
         setMessage("");
       })
       .catch(() => {
         if (controller.signal.aborted) return;
+        trackBookingEvent(BOOKING_EVENTS.dateCheckError, {
+          propertySlug,
+          listingId,
+          dedupe: [String(requestAttempt), startDate, endDate],
+        });
         setMode("unavailable");
         setMessage("");
       })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
-  }, [listingId, month, attempt]);
+  }, [listingId, propertySlug, month, attempt]);
   const validDeparture = (start: string, end: string) => {
     const arrival = data[start], departure = data[end];
     if (!arrival || !departure || end <= start || !departure.departureAllowed) return false;
@@ -144,7 +189,7 @@ export function RoamsteadBooking({ listingId }: { listingId: number }) {
             </div>
           </div>
         </div>
-        <a href={hostawayCheckoutUrl || undefined} aria-disabled={!checkIn || !checkOut || loading} onClick={event => { if (!checkIn || !checkOut || loading) event.preventDefault(); else trackRoamsteadEvent("hostaway_checkout_click", { listing_id: String(listingId) }); }} className={`flex min-h-[48px] w-full items-center justify-center rounded-[8px] bg-[#4A6E57] px-[16px] text-center font-body text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_13px_rgba(31,49,37,0.11)] transition-[background-color,box-shadow] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${!checkIn || !checkOut || loading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049] hover:shadow-[0_6px_17px_rgba(31,49,37,0.16)]"}`}>Continue to booking →</a>
+        <a href={hostawayCheckoutUrl || undefined} aria-disabled={!checkIn || !checkOut || loading} onClick={event => { if (!checkIn || !checkOut || loading || !hostawayCheckoutUrl) { event.preventDefault(); return; } trackBookingEvent(BOOKING_EVENTS.checkoutHandoff, { propertySlug, listingId, nights: stayNights, guests: adults + children, dedupe: [checkIn, checkOut, String(adults + children)] }); }} className={`flex min-h-[48px] w-full items-center justify-center rounded-[8px] bg-[#4A6E57] px-[16px] text-center font-body text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_13px_rgba(31,49,37,0.11)] transition-[background-color,box-shadow] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${!checkIn || !checkOut || loading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049] hover:shadow-[0_6px_17px_rgba(31,49,37,0.16)]"}`}>Continue to booking →</a>
       </div> : mode === "checking" ? <div role="status" className="flex min-h-[350px] items-center justify-center font-body text-[15px] text-[#6D6057]">Checking live availability…</div> : <>
         <div className="mb-[4px] flex items-center justify-between gap-[8px] md:mb-[8px] md:gap-[12px]">
           <button type="button" aria-label="Previous month" disabled={month <= startMonth(today)} onClick={() => setMonth(shift(month, -1))} className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[8px] border border-[#D8CCC4] bg-[#FFFCFB] text-[#1F3125] transition-[background-color,border-color] duration-200 hover:border-[#9CAD9E] hover:bg-[#F4EFEC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:cursor-not-allowed disabled:opacity-25 disabled:hover:border-[#D8CCC4] disabled:hover:bg-[#FFFCFB]">‹</button>
@@ -166,7 +211,7 @@ export function RoamsteadBooking({ listingId }: { listingId: number }) {
         </div>
         {message && <p role="status" className="mt-[12px] font-body text-[13px] text-[#8C5641]">{message}</p>}
         <div className="mt-[8px] flex flex-col items-center gap-0 sm:flex-row sm:items-center md:gap-[8px]">
-          <button type="button" disabled={!checkOut || loading} onClick={() => { if (checkOut && !loading) { trackRoamsteadEvent("availability_dates_selected", { listing_id: String(listingId) }); setStep(1); } }}
+          <button type="button" disabled={!checkOut || loading} onClick={() => { if (checkOut && !loading) { trackBookingEvent(BOOKING_EVENTS.guestStep, { propertySlug, listingId, nights: stayNights, guests: adults + children, dedupe: [checkIn ?? "", checkOut] }); setStep(1); } }}
             className={`inline-flex min-h-[44px] w-full flex-1 items-center justify-center whitespace-nowrap rounded-[8px] bg-[#4A6E57] px-[12px] text-center font-body text-[13px] md:min-h-[50px] md:px-[24px] md:text-[15px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_13px_rgba(31,49,37,0.11)] transition-[background-color,box-shadow] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] ${!checkOut || loading ? "cursor-not-allowed opacity-50" : "hover:bg-[#3C6049] hover:shadow-[0_6px_17px_rgba(31,49,37,0.16)]"}`}>Continue to booking →</button>
           <button type="button" onClick={() => { setCheckIn(null); setCheckOut(null); setMessage(""); }} className="min-h-[44px] rounded-[8px] px-[20px] font-body text-[13px] font-medium text-[#4A6E57] transition-colors hover:bg-[#F4EFEC] hover:text-[#1F3125] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] md:text-[14px]">Clear dates</button>
         </div>
