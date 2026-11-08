@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
 import { PropertyGallery } from "@/components/sections/PropertyGallery";
+import { BookingPageView } from "@/components/analytics/BookingPageView";
 import { RoamsteadBooking } from "@/components/booking/RoamsteadBooking";
 import { placeLinkLabel, placePathForLabel } from "@/data/places";
 import { getProperty, properties } from "@/data/properties";
@@ -119,6 +120,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
   return (
     <>
+      <BookingPageView slug={slug} listingId={listingId} pageKind="property" />
       {structuredData ? (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(structuredData) }} />
       ) : null}
@@ -204,7 +206,7 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
 
             <div className="rounded-[14px] border border-[#E1D7D1] bg-[#FFFCFB] px-3 pb-3 pt-3 shadow-[0_8px_24px_rgba(41,29,22,0.04)] sm:px-6 md:px-7 md:pb-6 md:pt-4">
-              <RoamsteadBooking listingId={listingId} />
+              <RoamsteadBooking listingId={listingId} propertySlug={slug} />
             </div>
           </div>
         </section>

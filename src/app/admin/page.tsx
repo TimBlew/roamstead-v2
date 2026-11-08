@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Roamstead | Private management", rob
 
 const reports = [
   { title: "Website traffic", description: "Visitors, page views, top properties, traffic sources, and devices.", url: "https://vercel.com/tim-blewitts-projects/roamstead-v2/analytics", action: "Open traffic report" },
-  { title: "Booking interest", description: "Track availability_dates_selected and hostaway_checkout_click events. Checkout clicks are not confirmed reservations.", url: "https://vercel.com/tim-blewitts-projects/roamstead-v2/analytics", action: "View booking events" },
+  { title: "Booking interest", description: "Funnel events: booking_page_view, booking_date_check_attempt, booking_date_check_success, booking_date_check_unavailable, booking_date_check_error, booking_guest_step, and hostaway_checkout_click. A checkout click is a payment handoff, not a confirmed reservation or revenue.", url: "https://vercel.com/tim-blewitts-projects/roamstead-v2/analytics", action: "View booking events" },
   { title: "Google search", description: "Google search queries, impressions, indexed pages, and your search visibility.", url: "https://search.google.com/search-console", action: "Open Search Console" },
   { title: "Site health", description: "Inspect production deployment errors and availability or signup API logs.", url: "https://vercel.com/tim-blewitts-projects/roamstead-v2/logs", action: "Open production logs" },
   { title: "Guest interest", description: "Review email signups and audience records in Resend. Confirm stored contacts independently of email notifications.", url: "https://resend.com/audiences", action: "Open audience" },

@@ -8,8 +8,14 @@ type WeeklyPoint = {start:string;end:string;visitors:number};
 type Weekly = {weeks:WeeklyPoint[];current:WeeklyPoint|null};
 type Payload = { connected?: boolean; message?: string; visits?: Metric[]; previous?:{visits:Metric[];pages:Metric[];referrers:Metric[];devices:Metric[]}|null; weekly?: Weekly; events?: Metric[]; pages?: Metric[]; referrers?: Metric[]; devices?: Metric[] };
 const actionNames: Record<string, string> = {
-  availability_dates_selected: "Dates selected",
-  hostaway_checkout_click: "Continue to booking",
+  availability_dates_selected: "Dates selected (earlier event)",
+  booking_page_view: "Property page view",
+  booking_date_check_attempt: "Date check started",
+  booking_date_check_success: "Date check loaded",
+  booking_date_check_unavailable: "Date check unavailable",
+  booking_date_check_error: "Date check error",
+  booking_guest_step: "Guest step",
+  hostaway_checkout_click: "Checkout handoff",
   early_access_submission_accepted: "Signup submissions"
 };
 const format = (n: number) => new Intl.NumberFormat("en-US").format(n);
@@ -164,7 +170,6 @@ export default function AnalyticsPanel() {
   const pageviews = useMemo(() => daily.reduce((s, d) => s + (d.pageviews || 0), 0), [daily]);
   const visits = useMemo(() => daily.reduce((s, d) => s + (d.visitors || 0), 0), [daily]);
   const clicks = events.filter(x => x.eventName === "hostaway_checkout_click").reduce((s, x) => s + value(x), 0);
-  const dateSelections = events.filter(x => x.eventName === "availability_dates_selected").reduce((s, x) => s + value(x), 0);
   const signups = events.filter(x => x.eventName === "early_access_submission_accepted").reduce((s, x) => s + value(x), 0);
   const pages = data?.pages || [];
   const publicPages = pages.filter(row => !(row.requestPath || "").startsWith("/admin"));
@@ -186,8 +191,8 @@ export default function AnalyticsPanel() {
         <div className="mt-3 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
           {([
             {eyebrow:"REACH",label:"Visitors",value:format(visits),note:"People exploring the site",detail:null,accent:"#597761"},
-            {eyebrow:"BOOKING",label:"Checkout clicks",value:format(clicks),note:"Continue to booking actions",detail:null,accent:"#9C826B"},
-            {eyebrow:"ENGAGEMENT",label:"Checkout click rate",value:visits>0?((clicks/visits)*100).toFixed(1)+"%":"—",note:"Checkout clicks ÷ visitors",detail:null,accent:"#82917B"},
+            {eyebrow:"BOOKING",label:"Checkout clicks",value:format(clicks),note:"Handoff taps, not bookings",detail:null,accent:"#9C826B"},
+            {eyebrow:"ENGAGEMENT",label:"Checkout click rate",value:visits>0?((clicks/visits)*100).toFixed(1)+"%":"—",note:"Handoff taps ÷ visitors",detail:null,accent:"#82917B"},
             {eyebrow:"AUDIENCE",label:"Guests on the list",value:guestCount===null?"—":format(guestCount),note:"Stored contacts · all time",detail:null,accent:"#A18A78"}
           ] as const).map((metric) => <div key={metric.label} className="relative flex min-w-0 flex-col rounded-xl border border-[#E8DFD8] bg-[#F8F5F2] px-3 pb-2.5 pt-3 sm:px-4 sm:pb-2.5 sm:pt-3">
             <div className="flex items-center gap-2">
@@ -201,7 +206,7 @@ export default function AnalyticsPanel() {
         </div>
                 <h3 className="mt-3 font-heading text-[18px] font-medium leading-tight text-[#1F3125] sm:mt-4 sm:text-[20px]">{days===7?"Daily visitor trend":"Weekly visitor trend"}</h3>
         <VisitsChart weekly={data.weekly} daily={daily} days={days} />
-        <div className="mt-3 border-t border-[#E7DFDB] pt-3 sm:mt-4"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div></div>
+        <div className="mt-3 border-t border-[#E7DFDB] pt-3 sm:mt-4"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div><p className="mt-2 font-body text-[11px] leading-snug text-[#80766E]">A checkout handoff is a tap toward payment. It is not a confirmed reservation or revenue. Property page views are separate from automatic traffic page views.</p></div>
       </>}
     </section>
     {data?.connected && <div className="grid items-start gap-3 lg:grid-cols-2">
