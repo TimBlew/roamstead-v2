@@ -52,6 +52,10 @@ assert.equal(rendered.includes("Hostaway"), false, "Guest copy does not send peo
 
 const booking = fs.readFileSync("src/components/booking/RoamsteadBooking.tsx", "utf8");
 assert.equal(booking.includes("dateStepButtonLabel(guide)"), true);
+const unavailableAt = booking.indexOf('if (mode === "unavailable")');
+const failureCopyAt = booking.indexOf("calendarFailureLead(guide, failureKind)");
+assert.ok(unavailableAt > 0 && failureCopyAt > unavailableAt, "Guided path copy stays on the unavailable screen");
+assert.ok(booking.slice(unavailableAt, failureCopyAt).includes("guideStatusCopy(0)"), "Unavailable screen explains the on-site steps");
 assert.equal(booking.includes("calendarFailureLead(guide, failureKind)"), true);
 assert.equal(booking.includes("GUIDE_HANDOFF_NOTE"), true);
 assert.equal(booking.includes("Check dates with Hostaway"), false);

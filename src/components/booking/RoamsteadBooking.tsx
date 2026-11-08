@@ -159,6 +159,10 @@ export function RoamsteadBooking({ listingId, propertySlug, guide = false }: { l
   );
   if (mode === "unavailable") return (
     <div className="mx-auto flex min-h-[350px] w-full max-w-[720px] flex-col items-center justify-center px-[8px] py-[24px] text-center">
+      {guide ? <div className="mb-[16px] max-w-[46ch]">
+        <p className="font-body text-[12px] font-medium uppercase leading-5 tracking-[0.08em] text-[#8F7E73]">{guideStatusCopy(0).eyebrow}</p>
+        <p className="mt-[4px] font-body text-[13px] leading-5 text-[#6D6057]">{guideStatusCopy(0).body}</p>
+      </div> : null}
       <p role="status" className="max-w-[46ch] font-body text-[15px] leading-6 text-[#6D6057]">
         {calendarFailureLead(guide, failureKind)}{" "}
         <a href="mailto:chris@roamstead-co.com" className="font-medium text-[#4A6E57] underline decoration-[#4A6E57]/40 underline-offset-4 transition-colors hover:text-[#1F3125] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">contact us</a>
