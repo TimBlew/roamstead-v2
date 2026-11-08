@@ -4,8 +4,9 @@ import {
   type BookingEventName,
   acceptFunnelEvent,
   composeBookingProperties,
-  ensureAnalyticsQueue,
   mergeAttribution,
+  registerAnalyticsSanitizer,
+  sanitizeAnalyticsEvent,
 } from "@/lib/booking-analytics";
 
 type AnalyticsValue = string | number | boolean;
@@ -67,7 +68,7 @@ export function trackBookingEvent(
   },
 ) {
   if (typeof window === "undefined") return;
-  ensureAnalyticsQueue(window);
+  registerAnalyticsSanitizer(window, sanitizeAnalyticsEvent);
   try {
     const attribution = captureLandingAttribution();
     const properties = composeBookingProperties(input, attribution);

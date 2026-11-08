@@ -42,7 +42,7 @@ Fires when the on-site calendar starts a request for the visible month window. A
 
 Does not fire when a guest taps a date. A request cancelled by leaving the month still counts as an attempt if it started. It does not also count as success, unavailable, or error.
 
-Attempt and outcome used to be deduped separately, with the attempt stamped at the start and the outcome stamped when the response arrived. A return to a month inside 1.5 seconds of the first attempt could drop the new attempt while the slower response still sent a success. That made success totals higher than attempt totals. Each started request now keeps its attempt, and each accepted response keeps its one outcome.
+Attempt and outcome used to be deduped separately, with the attempt stamped at the start and the outcome stamped when the response arrived. A return to a month inside 1.5 seconds of the first attempt could drop the new attempt while the slower response still sent a success. That split can make a success total higher than the attempt total. A query window can also omit an event that was sent, so a past count such as 3 successes and 2 attempts is consistent with these mechanisms but cannot be assigned to one of them after the fact. Each started request now keeps its attempt, and each accepted response keeps its one outcome.
 
 ### `booking_date_check_success`
 
@@ -70,7 +70,7 @@ Does not fire when the link is disabled. A second click inside 1 second for the 
 
 ## Automatic page views
 
-The existing `<Analytics>` page view still fires once per public page. `beforeSend` then:
+The existing `<Analytics>` page view still fires once per public page. The same sanitizer is registered at the front of the analytics queue before any custom event, and it is the only `beforeSend` registration. The hosted script replays that queue in order, so the first event's page URL goes through this sanitizer too. It then:
 
 - drops `/admin` URLs
 - removes every query parameter except the allowlisted `utm_*` and `source` values above

@@ -17,6 +17,8 @@ import {
   sanitizeToken,
   shouldEmit,
   ensureAnalyticsQueue,
+  registerAnalyticsSanitizer,
+  sanitizeAnalyticsEvent,
 } from "../src/lib/booking-analytics.ts";
 
 const FUNNEL = "4f2c0a1e-6b7d-4c8e-8a1b-123456789abc";
@@ -78,6 +80,45 @@ assert.equal(record(BOOKING_EVENTS.dateCheckAttempt, "granary|455631|0|2026-11-0
 assert.equal(record(BOOKING_EVENTS.dateCheckSuccess, "granary|455631|0|2026-11-01|2026-12-31", 1800), true);
 assert.equal(record(BOOKING_EVENTS.pageView, "hygge-house|455635|property", 0), true);
 assert.equal(record(BOOKING_EVENTS.pageView, "hygge-house|455635|property", 200), false, "A second property view inside 1.5s is still one event");
+
+const cold = {};
+registerAnalyticsSanitizer(cold, sanitizeAnalyticsEvent);
+cold.va("event", { name: "booking_page_view" });
+cold.va("beforeSend", sanitizeAnalyticsEvent);
+registerAnalyticsSanitizer(cold, sanitizeAnalyticsEvent);
+assert.equal(cold.vaq.filter((entry) => entry[0] === "beforeSend").length, 1, "inject does not register the sanitizer twice");
+assert.equal(cold.vaq[0][0], "beforeSend");
+assert.equal(cold.vaq[0][1], sanitizeAnalyticsEvent);
+assert.equal(cold.vaq.filter((entry) => entry[0] === "event").length, 1, "The early event is kept once");
+
+const late = { vaq: [] };
+late.va = function packageQueue(...params) { late.vaq.push(params); };
+late.va("event", { name: "booking_page_view" });
+registerAnalyticsSanitizer(late, sanitizeAnalyticsEvent);
+assert.deepEqual(late.vaq.map((entry) => entry[0]), ["beforeSend", "event"], "A sanitizer that arrives after an event is moved ahead of it");
+
+const raw = "https://www.roamstead-co.com/properties/hygge-house?utm_source=qa&email=guest@example.com&gclid=abc#guest=secret";
+let sanitizer = (event) => event;
+const sent = [];
+for (const [type, payload] of cold.vaq) {
+  if (type === "beforeSend") sanitizer = payload;
+  if (type === "event") {
+    const result = sanitizer({ type: "event", url: raw });
+    if (result != null) sent.push(result.url);
+  }
+}
+assert.equal(sanitizer, sanitizeAnalyticsEvent);
+assert.deepEqual(sent, ["https://www.roamstead-co.com/properties/hygge-house?utm_source=qa"]);
+assert.equal(sanitizeAnalyticsEvent({ type: "event", url: "https://www.roamstead-co.com/admin/edit?utm_source=qa#secret" }, 50_000), null);
+
+const native = sanitizeAnalyticsEvent({ type: "pageview", url: "https://www.roamstead-co.com/properties/granary?utm_medium=acceptance&email=guest@example.com" }, 60_000);
+const nativeRepeat = sanitizeAnalyticsEvent({ type: "pageview", url: "https://www.roamstead-co.com/properties/granary?utm_medium=acceptance#guest" }, 60_100);
+assert.equal(native && native.url, "https://www.roamstead-co.com/properties/granary?utm_medium=acceptance");
+assert.equal(nativeRepeat, null, "The native page view is still one view inside the dedupe window");
+const publicAnalytics = fs.readFileSync("src/components/analytics/PublicAnalytics.tsx", "utf8");
+assert.equal(publicAnalytics.includes("<Analytics />"), true, "Native analytics page views stay enabled");
+assert.equal(publicAnalytics.includes("<Analytics beforeSend"), false, "inject() is not given a second sanitizer");
+assert.equal(nextClient.includes("pageview({"), true, "The Next client still sends its page view");
 
 assert.equal(sanitizeToken("instagram"), "instagram");
 assert.equal(sanitizeToken(" guest@example.com "), null);
