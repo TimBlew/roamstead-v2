@@ -7,7 +7,39 @@ export type PlaceSlug = "midway" | "park-city";
 export interface PlaceStay {
   slug: string;
   summary: string;
+  /** Replaces the property stat line when the hub should not repeat an occupancy figure. */
+  facts?: string;
   image: { src: string; alt: string };
+}
+
+export interface PlaceComparisonStay {
+  slug: string;
+  kind: string;
+  points: readonly string[];
+}
+
+export interface PlaceComparison {
+  heading: string;
+  intro: string;
+  stays: readonly [PlaceComparisonStay, PlaceComparisonStay];
+}
+
+export interface PlacePlanningBlock {
+  title: string;
+  paragraphs: readonly string[];
+  sourceLabel: string;
+  sourceHref: string;
+}
+
+export interface PlacePlanning {
+  heading: string;
+  reviewed: string;
+  blocks: readonly PlacePlanningBlock[];
+}
+
+export interface PlaceLodgingNote {
+  heading: string;
+  body: string;
 }
 
 export interface Place {
@@ -28,6 +60,9 @@ export interface Place {
   staysHeading: string;
   staysIntro: string;
   stays: [PlaceStay, PlaceStay];
+  comparison?: PlaceComparison;
+  planning?: PlacePlanning;
+  lodgingNotes?: readonly PlaceLodgingNote[];
   otherSlug: PlaceSlug;
   other: { title: string; body: string; cta: string };
 }
@@ -40,12 +75,12 @@ export const places: Record<PlaceSlug, Place> = {
     seo: {
       title: "Midway stays | Roamstead Collective",
       description:
-        "Two homes in Midway, Utah. Hygge House sleeps ten, with a private sauna and a garage for bikes, skis, and boards. Granary is a one-bedroom condo, walkable to town.",
+        "Compare Hygge House, a four-bedroom home in Midway, Utah, with an office, sauna, and laundry, and Granary, a one-bedroom condo with a kitchen and gas fireplace.",
     },
     eyebrow: "Utah",
     title: "Midway",
     deck: "The valley, mountains in view.",
-    lede: "Two homes here. A house among the trees, and a ground-floor condo you can walk from into town.",
+    lede: "A four-bedroom home and a one-bedroom condo, both in Midway.",
     hero: {
       src: "/images/book-direct-sunset.png",
       alt: "Hygge House surrounded by trees beneath the mountains and warm sunset sky in Midway, Utah",
@@ -53,16 +88,17 @@ export const places: Record<PlaceSlug, Place> = {
       caption: "Hygge House, Midway",
     },
     essay: [
-      "Hygge House sits among the trees, with the valley out past the deck and mountain air off it. The upstairs queen bedroom looks out at the mountains. Granary is the smaller stay, a ground-floor condo with those mountains in view from inside, and Midway's restaurants and shops within walking distance.",
-      "They are sized for different weeks. Hygge House sleeps ten: an island for eight, a private four-person sauna, a fenced yard, and a garage that takes bikes, skis, boards, and a gym. Granary sleeps four, with a gas fireplace and a full kitchen, when the group is smaller.",
+      "Hygge House is a four-bedroom home. Granary is a one-bedroom condo. Both are in Midway, and they suit different trips.",
+      "The comparison uses bedroom counts and amenities already published on each stay. Open the stay that fits, then check dates there.",
     ],
     staysHeading: "Hygge House and Granary.",
-    staysIntro: "A house for a full group. A condo for a quieter week.",
+    staysIntro: "The house for more bedrooms. The condo for a smaller stay.",
     stays: [
       {
         slug: "hygge-house",
         summary:
-          "The office is set up for a longer stay. The day can end in the yard, with a four-person sauna, a five-chair fire pit, and the grill on the deck. Pets are allowed.",
+          "Four bedrooms, a dedicated office and desks, a sauna, laundry, gear storage, and two living spaces.",
+        facts: "4 bedrooms · Office and desks · Sauna",
         image: {
           src: "/images/hygge-house/kitchen.jpg",
           alt: "Open kitchen with a large butcher-block island and stools",
@@ -71,11 +107,74 @@ export const places: Record<PlaceSlug, Place> = {
       {
         slug: "granary",
         summary:
-          "A king bed, a pull-out couch, and a gas fireplace when you come in. The kitchen has a Keurig, a dishwasher, and a table for four. One covered parking spot comes with the condo.",
+          "One bedroom with a king bed and a sofa bed, a kitchen, laundry, and a gas fireplace.",
+        facts: "1 bedroom · King and sofa bed · Gas fireplace",
         image: {
           src: "/images/granary/fireplace.jpg",
           alt: "Living room seating around the gas fireplace",
         },
+      },
+    ],
+    comparison: {
+      heading: "Two ways to stay in Midway.",
+      intro:
+        "Hygge House is a four-bedroom home. Granary is a one-bedroom condo. Compare the amenities, then check dates for the stay that fits.",
+      stays: [
+        {
+          slug: "hygge-house",
+          kind: "Home",
+          points: [
+            "Four bedrooms",
+            "Dedicated office and desks",
+            "Sauna",
+            "Laundry, gear storage, and two living spaces",
+          ],
+        },
+        {
+          slug: "granary",
+          kind: "Condo",
+          points: [
+            "One bedroom",
+            "King bed and a sofa bed",
+            "Kitchen and laundry",
+            "Gas fireplace",
+          ],
+        },
+      ],
+    },
+    planning: {
+      heading: "Planning a Midway activity",
+      reviewed: "Activity details last reviewed November 9, 2026.",
+      blocks: [
+        {
+          title: "Soldier Hollow",
+          paragraphs: [
+            "Soldier Hollow Nordic Center is in Midway. The official FAQ says the center is closed until the winter season starts, and that the opening date depends on snow. Nordic skiing and tubing there are snow-dependent.",
+            "That FAQ also includes an undated December 21 tubing note. The note is not a current opening date. Check the official page for operating status before you go.",
+            "Tickets and activities are booked with Soldier Hollow. A stay at Hygge House or Granary does not include admission, gear, or a reserved time.",
+          ],
+          sourceLabel: "Soldier Hollow FAQ",
+          sourceHref: "https://utaholympiclegacy.org/faq/soldier-hollow/",
+        },
+        {
+          title: "Homestead Crater",
+          paragraphs: [
+            "The Crater is at Homestead in Midway. Reservations and admission are separate, and they are booked with Homestead.",
+            "The official Crater page says it will be closed for renovations in April and May 2027. Neither stay includes Crater access.",
+          ],
+          sourceLabel: "Homestead Crater page",
+          sourceHref: "https://homesteadmidwayutah.com/adventures/crater/",
+        },
+      ],
+    },
+    lodgingNotes: [
+      {
+        heading: "Wedding guests",
+        body: "Wedding guests can book Hygge House or Granary for overnight lodging. Roamstead does not operate a wedding venue, and this page does not represent a venue partnership.",
+      },
+      {
+        heading: "Work trips",
+        body: "Hygge House has a dedicated office and desks for someone working during a stay. Granary is the one-bedroom condo. Both are overnight lodging. Meetings and events belong at a separate place with permission to host them.",
       },
     ],
     otherSlug: "park-city",
