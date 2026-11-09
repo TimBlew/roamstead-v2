@@ -88,13 +88,21 @@ A query window can still omit an event that was sent just outside the selected t
 
 ## Attribution
 
-Values are kept for the browser tab, first touch wins, and they are stored only after sanitizing.
+Allowlisted campaign fields are kept in `sessionStorage` under `rs_booking_attr` for the current browser tab. A new tab starts empty and gets its own `funnel_ref`. Closing the tab clears the store.
 
-A safe token is 1 to 64 characters of letters, numbers, `.`, `_`, `~`, and `-`. Values that look like an email address or a phone number are dropped. Unknown query keys, including click ids and guest fields, are dropped.
+First touch is per field, not per visit. The first accepted value of `utm_source` stays even if a later page in that tab has a different `utm_source`. A field that was missing or invalid can still be filled by a later page. The stored object can therefore mix `utm_source` from one landing with `utm_campaign` from another. Do not report that object as one campaign visit.
 
-`referrer_host` is the hostname of an external `document.referrer`. Same-site hosts, including `www.roamstead-co.com`, `roamstead-co.com`, and Roamstead Vercel hosts, are not stored. The path and query of the referrer are not stored.
+A safe token is 1 to 64 characters of letters, numbers, `.`, `_`, `~`, and `-`. An email-like value, a phone-like value, a click id (`gclid` and similar), or any other query key is dropped and does not block a later valid value for an allowlisted field.
 
-`funnel_ref` is `crypto.randomUUID()`, saved in `sessionStorage` under `rs_booking_attr`. A stored value that is not a UUID is ignored and replaced. The reference is not written into the address bar.
+`referrer_host` is the hostname of the first external `document.referrer`. A later move inside roamstead, such as `/midway` to `/properties/hygge-house`, does not replace it. The path and query of the referrer are not stored.
+
+`funnel_ref` is `crypto.randomUUID()` for the tab. It is not a Hostaway or partner code. It is not written into the address bar and it is not added to the checkout URL. The checkout query stays `start`, `end`, and `numberOfGuests`.
+
+Native page views already record the path, including `/midway` and `/park-city`, and they keep allowlisted campaign parameters only when those parameters are on that page's URL. They do not carry `funnel_ref`. Booking events carry the stored fields and `funnel_ref`, and their page URL is the property or book URL after the same sanitizer. They do not carry the earlier hub path.
+
+Those two records cannot be joined. A `/midway` page view does not prove that a later `hostaway_checkout_click` came from that hub. A landing enum was not added to booking events. Vercel documents custom event properties as limited by plan, and this project's property cap was not verified. An extra field could drop properties or the event, so the limitation is documented instead of sent.
+
+`booking_date_check_success` means the month payload loaded. It is not the guest's selected dates and it is not a booking.
 
 ## Hostaway handoff
 
