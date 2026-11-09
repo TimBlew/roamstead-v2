@@ -18,15 +18,24 @@ assert.match(places, /alt: "Hygge House surrounded by trees beneath the mountain
 assert.match(places, /caption: "Hygge House, Midway"/);
 assert.match(places, /title: "Midway stays \| Roamstead Collective"/);
 assert.match(places, /heading: "Two ways to stay in Midway\."/);
-assert.match(places, /not a current opening date/);
+assert.match(places, /snow-dependent/);
+assert.match(places, /Check the Soldier Hollow FAQ for current operating status/);
 assert.match(places, /April and May 2027/);
-assert.match(places, /Activity details last reviewed November 9, 2026\./);
+assert.doesNotMatch(places, /December\s*21/);
+assert.doesNotMatch(hub, /December\s*21/);
+assert.match(places, /reviewedOn: "2026-11-08"/);
+assert.doesNotMatch(places, /November 9, 2026/);
+assert.doesNotMatch(hub, /November 9, 2026/);
+assert.match(hub, /dateTime=\{place\.planning\.reviewedOn\}/);
+assert.match(hub, /November 8, 2026/);
+assert.match(hub, /Mountain Time/);
+assert.match(structured, /dateModified: place\.planning\.reviewedOn/);
 assert.match(places, /https:\/\/utaholympiclegacy\.org\/faq\/soldier-hollow\//);
 assert.match(places, /https:\/\/homesteadmidwayutah\.com\/adventures\/crater\//);
 assert.match(places, /heading: "Wedding guests"/);
 assert.match(places, /heading: "Work trips"/);
 assert.match(places, /overnight lodging/);
-assert.doesNotMatch(places, /sleeps ten|Sleeps 10|walkable|walking distance|Pets are allowed|covered parking|Sundance|Deer Valley|utm_|FAQPage|opens December 21/i);
+assert.doesNotMatch(places, /sleeps ten|Sleeps 10|walkable|walking distance|Pets are allowed|covered parking|Sundance|Deer Valley|utm_|FAQPage/i);
 assert.match(places, /The Lowell and Powder Room both sit at the resort base\./);
 
 assert.match(hub, /\/properties\/\$\{property\.slug\}/);
@@ -104,6 +113,15 @@ if (base) {
   const collection = jsonLdBlocks(cleanHtml).find((block) => block["@type"] === "CollectionPage");
   assert.ok(collection, "missing CollectionPage");
   assert.equal(collection.name, "Two ways to stay in Midway.");
+  assert.equal(collection.dateModified, "2026-11-08");
+  assert.match(cleanHtml, /<time dateTime="2026-11-08">November 8, 2026<\/time>, Mountain Time\./);
+  assert.match(cleanHtml, /Nordic skiing and tubing there are snow-dependent/);
+  assert.match(cleanHtml, /Check the Soldier Hollow FAQ for current operating status/);
+  assert.match(cleanHtml, /closed for renovations in April and May 2027/);
+  assert.doesNotMatch(cleanHtml, /December\s*21/);
+  for (const point of ["Four bedrooms", "Dedicated office and desks", "Sauna", "Laundry, gear storage, and two living spaces", "One bedroom", "King bed and a sofa bed", "Kitchen and laundry", "Gas fireplace"]) {
+    assert.match(cleanHtml, new RegExp(point.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
   assert.match(cleanHtml, new RegExp(collection.description.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.equal(collection.mainEntity.itemListElement.length, 2);
   assert.deepEqual(collection.mainEntity.itemListElement.map((item) => item.name), ["Hygge House", "Granary"]);

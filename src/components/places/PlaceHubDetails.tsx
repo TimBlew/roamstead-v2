@@ -141,7 +141,9 @@ export function PlaceHubDetails({ place }: { place: Place }) {
             >
               {place.planning.heading}
             </h2>
-            <p className="mt-4 font-body text-[14px] leading-6 text-[#6D6057] md:text-[15px]">{place.planning.reviewed}</p>
+            <p className="mt-4 font-body text-[14px] leading-6 text-[#6D6057] md:text-[15px]">
+              Activity details last reviewed <time dateTime={place.planning.reviewedOn}>November 8, 2026</time>, Mountain Time.
+            </p>
             <div className="mt-8 grid gap-8 md:grid-cols-2 md:gap-12">
               {place.planning.blocks.map((block) => (
                 <PlanningBlock key={block.title} block={block} />

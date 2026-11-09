@@ -33,7 +33,8 @@ export interface PlacePlanningBlock {
 
 export interface PlacePlanning {
   heading: string;
-  reviewed: string;
+  /** Date-only review stamp for this pass, America/Denver calendar date (YYYY-MM-DD). */
+  reviewedOn: string;
   blocks: readonly PlacePlanningBlock[];
 }
 
@@ -144,14 +145,13 @@ export const places: Record<PlaceSlug, Place> = {
     },
     planning: {
       heading: "Planning a Midway activity",
-      reviewed: "Activity details last reviewed November 9, 2026.",
+      reviewedOn: "2026-11-08",
       blocks: [
         {
           title: "Soldier Hollow",
           paragraphs: [
-            "Soldier Hollow Nordic Center is in Midway. The official FAQ says the center is closed until the winter season starts, and that the opening date depends on snow. Nordic skiing and tubing there are snow-dependent.",
-            "That FAQ also includes an undated December 21 tubing note. The note is not a current opening date. Check the official page for operating status before you go.",
-            "Tickets and activities are booked with Soldier Hollow. A stay at Hygge House or Granary does not include admission, gear, or a reserved time.",
+            "Soldier Hollow Nordic Center is in Midway. Nordic skiing and tubing there are snow-dependent. The official FAQ says the center is closed until the winter season starts, and that opening depends on snow.",
+            "Check the Soldier Hollow FAQ for current operating status before you go. Tickets and activities are booked with Soldier Hollow. A stay at Hygge House or Granary does not include admission, gear, or a reserved time.",
           ],
           sourceLabel: "Soldier Hollow FAQ",
           sourceHref: "https://utaholympiclegacy.org/faq/soldier-hollow/",

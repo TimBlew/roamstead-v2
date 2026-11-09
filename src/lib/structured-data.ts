@@ -82,6 +82,7 @@ export function midwayCollectionJsonLd(place: Place) {
     name: place.comparison.heading,
     url: canonical(place.path),
     description: place.comparison.intro,
+    ...(place.planning ? { dateModified: place.planning.reviewedOn } : {}),
     mainEntity: {
       "@type": "ItemList",
       numberOfItems: itemListElement.length,
