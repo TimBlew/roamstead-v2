@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { propertyImageQuality } from "@/lib/property-image-quality";
 
 type Photo = { src: string; alt: string };
 const photo = (folder: string, file: string, alt: string): Photo => ({
@@ -81,6 +82,7 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
   const previous = () => select((active - 1 + photos.length) % photos.length);
   const next = () => select((active + 1) % photos.length);
   const frames = shown === active ? [shown] : [shown, active];
+  const quality = propertyImageQuality(slug, 100);
 
   return (
     <section aria-label="Property photo gallery" className="bg-[#FFFCFB] px-4 pb-3 pt-3 md:px-6 md:pb-14 md:pt-4">
@@ -118,7 +120,7 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
                 aria-hidden={visible ? undefined : true}
                 fill
                 sizes={mainSizes}
-                quality={100}
+                quality={quality}
                 className={`object-cover ${visible ? "opacity-100" : "opacity-0"}`}
                 onLoad={() => {
                   if (activeRef.current === index) setShown(index);
@@ -140,7 +142,7 @@ export function PropertyGallery({ slug, fallback = [] }: { slug: string; fallbac
         <div className="mt-2.5 flex snap-x gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] md:gap-3">
           {photos.map((item, index) => (
             <button key={item.src} type="button" onClick={() => select(index)} aria-label={`View photo ${index + 1}: ${item.alt}`} aria-current={index === active ? "true" : undefined} className={`relative h-[64px] w-[88px] shrink-0 snap-start overflow-hidden rounded-[9px] border-2 transition-opacity md:h-[84px] md:w-[126px] ${index === active ? "border-[#4A6E57] opacity-100" : "border-transparent opacity-70 hover:opacity-100"}`}>
-              <Image src={item.src} alt={item.alt} fill sizes={thumbSizes} quality={100} className="object-cover" />
+              <Image src={item.src} alt={item.alt} fill sizes={thumbSizes} quality={quality} className="object-cover" />
             </button>
           ))}
         </div>

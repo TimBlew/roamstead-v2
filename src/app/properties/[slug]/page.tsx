@@ -8,6 +8,7 @@ import { PropertyGallery } from "@/components/sections/PropertyGallery";
 import { BookingPageView } from "@/components/analytics/BookingPageView";
 import { RoamsteadBooking } from "@/components/booking/RoamsteadBooking";
 import { GUIDE_HERO_NOTE, isGuidedBookingPath } from "@/lib/booking-path";
+import { propertyImageQuality } from "@/lib/property-image-quality";
 import { placeLinkLabel, placePathForLabel } from "@/data/places";
 import { getProperty, properties } from "@/data/properties";
 import { jsonLdString, vacationRentalJsonLd } from "@/lib/structured-data";
@@ -133,7 +134,7 @@ export default async function PropertyPage({ params }: PageProps) {
           fill
           priority
           fetchPriority="high"
-          quality={100}
+          quality={propertyImageQuality(slug, 100)}
           sizes="100vw"
           className={heroImageClass}
         />
@@ -259,7 +260,7 @@ export default async function PropertyPage({ params }: PageProps) {
                       src={story.image.src}
                       alt={story.image.alt}
                       fill
-                      quality={95}
+                      quality={propertyImageQuality(slug, 95)}
                       sizes="(min-width: 768px) 55vw, 100vw"
                       className="object-cover"
                     />
