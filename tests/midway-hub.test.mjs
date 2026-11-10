@@ -47,12 +47,12 @@ assert.match(midwayPage, /midwayCollectionJsonLd/);
 assert.doesNotMatch(midwayPage, /FAQPage|utm_/);
 
 assert.match(structured, /identifier: property\.slug/);
-assert.match(structured, /if \(property\.slug === "granary"\) occupancyValue\.value = occupancy/);
+assert.match(structured, /property\.slug === "granary" \|\| property\.slug === "hygge-house"/);
 assert.match(structured, /"@type": "CollectionPage"/);
 assert.doesNotMatch(structured, /latitude|longitude|streetAddress|postalCode|FAQPage/);
 assert.match(robots, /disallow: \["\/api\/", "\/book\/"\]/);
 assert.match(sitemap, /"\/", "\/properties", \.\.\.placePaths, "\/book"/);
-assert.match(propertyPage, /quality=\{100\}/);
+assert.match(propertyPage, /quality=\{propertyImageQuality\(slug, 100\)\}/);
 assert.match(propertyPage, /placePath && placeLabel/);
 assert.doesNotMatch(layout, /google-site-verification|content="[^"]*token/i);
 assert.match(layout, /googleSiteVerification\(\)/);
@@ -137,8 +137,8 @@ if (base) {
   const granaryLd = jsonLdBlocks(granaryHtml).find((block) => block["@type"] === "VacationRental");
   const lowellLd = jsonLdBlocks(lowellHtml).find((block) => block["@type"] === "VacationRental");
   assert.equal(hyggeLd.identifier, "hygge-house");
+  assert.equal(hyggeLd.containsPlace.occupancy.value, 10);
   assert.equal(hyggeLd.containsPlace.occupancy.maxValue, 10);
-  assert.equal("value" in hyggeLd.containsPlace.occupancy, false);
   assert.equal(hyggeLd.containsPlace.numberOfBedrooms, 4);
   assert.equal(hyggeLd.image.length, 4);
   assert.equal(granaryLd.identifier, "granary");
