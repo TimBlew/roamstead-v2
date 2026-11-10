@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { PlaceHubDetails } from "@/components/places/PlaceHubDetails";
 import { CommunityCTA } from "@/components/sections/CommunityCTA";
 import { getProperty } from "@/data/properties";
 import { getPlace, stayFacts, type Place, type PlaceStay } from "@/data/places";
@@ -43,7 +44,7 @@ function StayFeature({ stay, index }: { stay: PlaceStay; index: number }) {
             {stay.summary}
           </p>
           <p className="mt-4 font-body text-[13px] leading-5 tracking-[-0.1px] text-[#6D6057] md:text-[15px]">
-            {stayFacts(property)}
+            {stay.facts ?? stayFacts(property)}
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
             <a
@@ -142,6 +143,8 @@ export function PlacePage({ place }: { place: Place }) {
           ))}
         </div>
       </section>
+
+      <PlaceHubDetails place={place} />
 
       <section id="stays" className="scroll-mt-[72px] bg-[#FFFCFB] px-4 pb-12 pt-10 md:px-8 md:pb-20 md:pt-14 lg:px-12">
         <div className="mx-auto max-w-[1280px]">

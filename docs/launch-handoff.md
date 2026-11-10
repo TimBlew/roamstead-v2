@@ -31,6 +31,8 @@ ROAMSTEAD_SITE_URL defaults to https://roamstead-v2.vercel.app.
 ROAMSTEAD_LAUNCH_APPROVED is unset and indexing stays off.
 Only after approved cutover: set ROAMSTEAD_SITE_URL=https://www.roamstead-co.com and ROAMSTEAD_LAUNCH_APPROVED=true, then deploy and verify. The launch flag enables indexing only for the approved apex/www hostnames. Preview aliases keep an X-Robots-Tag noindex header. Verify response headers and robots/sitemap after changing configuration.
 
+ROAMSTEAD_GOOGLE_SITE_VERIFICATION is an optional Search Console HTML-tag token. Leave it unset until Tim/Ops supplies the exact Google-issued content value. Set it only in the approved deployment environment and redeploy. The site prints the google-site-verification meta tag only when that value is non-empty. Adding the tag does not verify a property, grant a user, or change DNS. Do not commit the token.
+
 ## Cutover checklist
 
 1. Record main SHA, READY deployment, environment names, existing apex-to-www redirect and both projects' domain assignments.

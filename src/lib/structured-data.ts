@@ -1,4 +1,5 @@
-import type { Property } from "@/data/properties";
+import type { Place } from "@/data/places";
+import { getProperty, type Property } from "@/data/properties";
 import { canonical } from "@/lib/site";
 
 // Public, indexable property pages that get VacationRental JSON-LD (mirrors sitemap.ts).
@@ -24,7 +25,14 @@ export function vacationRentalJsonLd(property: Property) {
   const bathrooms = statNumber(property, ["bath", "baths"]);
 
   const accommodation: Record<string, unknown> = { "@type": "Accommodation", name: property.hero.title };
-  if (occupancy) accommodation.occupancy = { "@type": "QuantitativeValue", maxValue: occupancy };
+  if (occupancy) {
+    const occupancyValue: Record<string, unknown> = { "@type": "QuantitativeValue", maxValue: occupancy };
+    // Google requires occupancy.value. Granary's published count of 4 matches a king
+    // plus a sofa bed for two more guests. Hygge's advertised 10 does not match the
+    // listed beds, so its value stays unset. Other homes are unchanged here.
+    if (property.slug === "granary") occupancyValue.value = occupancy;
+    accommodation.occupancy = occupancyValue;
+  }
   if (bedrooms) accommodation.numberOfBedrooms = bedrooms;
   if (bathrooms) accommodation.numberOfBathroomsTotal = bathrooms;
 
@@ -32,6 +40,7 @@ export function vacationRentalJsonLd(property: Property) {
     "@context": "https://schema.org",
     "@type": "VacationRental",
     "@id": `${url}#vacation-rental`,
+    identifier: property.slug,
     name: property.hero.title,
     url,
     description: property.seo.description,
@@ -49,4 +58,35 @@ export function vacationRentalJsonLd(property: Property) {
 
 export function jsonLdString(data: unknown) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
+export function midwayCollectionJsonLd(place: Place) {
+  if (place.slug !== "midway" || !place.comparison) return null;
+
+  const itemListElement = place.comparison.stays.map((stay, index) => {
+    const property = getProperty(stay.slug);
+    const url = canonical(`/properties/${stay.slug}`);
+    return {
+      "@type": "ListItem",
+      position: index + 1,
+      name: property?.hero.title ?? stay.slug,
+      url,
+      item: { "@id": `${url}#vacation-rental` },
+    };
+  });
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${canonical(place.path)}#collection`,
+    name: place.comparison.heading,
+    url: canonical(place.path),
+    description: place.comparison.intro,
+    ...(place.planning ? { dateModified: place.planning.reviewedOn } : {}),
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: itemListElement.length,
+      itemListElement,
+    },
+  };
 }

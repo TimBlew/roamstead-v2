@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { PublicAnalytics } from "@/components/analytics/PublicAnalytics";
 import "./globals.css";
-import { siteUrl, launchIndexingEnabled, socialImage } from "@/lib/site";
+import { siteUrl, launchIndexingEnabled, socialImage, googleSiteVerification } from "@/lib/site";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+
+const googleVerification = googleSiteVerification();
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
@@ -13,6 +15,7 @@ export const metadata: Metadata = {
   title: "Roamstead Collective | Wasatch Back stays in Midway & Park City",
   robots: { index: launchIndexingEnabled, follow: launchIndexingEnabled },
   description: "Homes across Utah's Wasatch Back, from Heber Valley to Park City. Ski, ride, float, then settle in. Book direct with Roamstead Collective.",
+  ...(googleVerification ? { verification: { google: googleVerification } } : {}),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
