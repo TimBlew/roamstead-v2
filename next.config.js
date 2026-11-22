@@ -6,6 +6,10 @@ const nextConfig = {
       { source: '/listings/granary-midway', destination: '/properties/granary', permanent: true },
       // Legacy listing URL discovered by Google Search Console (Granary / Hostaway 455631).
       { source: '/listings/455631', destination: '/properties/granary', permanent: true },
+      // Legacy Hostaway listing IDs (Hygge House, Powder Room, Lowell).
+      { source: '/listings/455635', destination: '/properties/hygge-house', permanent: true },
+      { source: '/listings/455633', destination: '/properties/powder-room', permanent: true },
+      { source: '/listings/455632', destination: '/properties/lowell', permanent: true },
       { source: '/listings/lowell-302', destination: '/properties/lowell', permanent: true },
       { source: '/listings/powder-room', destination: '/properties/powder-room', permanent: true },
     ];
