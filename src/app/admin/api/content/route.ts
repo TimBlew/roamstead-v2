@@ -3,6 +3,7 @@ import { adminAuthenticated } from "@/lib/admin-auth";
 import initial from "@/data/admin-copy.json";
 
 export const dynamic = "force-dynamic";
+const renewalMessage = "Editor access to GitHub needs renewal. Ask the site owner to rotate the editor token.";
 const owner = "TimBlew", repository = "roamstead-v2";
 const file = "src/data/admin-copy.json";
 const base = `https://api.github.com/repos/${owner}/${repository}/contents/${file}`;
@@ -39,7 +40,7 @@ function validOrigin(req: NextRequest) {
 async function fetchFile() {
   const token = getToken(); if (!token) return null;
   const r = await fetch(base + "?ref=main", { headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" }, cache: "no-store" });
-  if (!r.ok) throw new Error(`GitHub read failed: ${r.status}`);
+  if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? renewalMessage : `GitHub read failed: ${r.status}`);
   const j = await r.json();
   return { sha: String(j.sha), copy: JSON.parse(Buffer.from(String(j.content).replace(/\\n/g, ""), "base64").toString("utf8")) };
 }
@@ -48,7 +49,7 @@ export async function GET() {
   try {
     const remote = await fetchFile();
     return response(remote ? { ...remote, editing: true } : { copy: initial, editing: false, message: "Content editing requires a repository-scoped GitHub token." });
-  } catch { return response({ error: "Editor source temporarily unavailable." }, 503); }
+  } catch (error) { return response({ error: error instanceof Error && error.message === renewalMessage ? renewalMessage : "Editor source temporarily unavailable." }, 503); }
 }
 export async function PUT(req: NextRequest) {
   if (!await adminAuthenticated()) return response({ error: "Unauthorized" }, 401);
@@ -75,8 +76,8 @@ export async function PUT(req: NextRequest) {
     const content = Buffer.from(JSON.stringify(copy, null, 2) + "\n").toString("base64");
     const r = await fetch(base, { method: "PUT", headers: { Authorization: `Bearer ${getToken()}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", "Content-Type": "application/json" }, body: JSON.stringify({ message: "Update approved Roamstead website copy via admin editor", content, sha: current.sha, branch: "main" }), cache: "no-store" });
     if (r.status === 409 || r.status === 422) return response({ error: "Concurrent change detected. Reload and try again." }, 409);
-    if (!r.ok) return response({ error: "Publishing service rejected the save." }, 503);
+    if (!r.ok) return response({ error: r.status === 401 || r.status === 403 ? renewalMessage : "Publishing service rejected the save." }, 503);
     const saved = await r.json();
     return response({ saved: true, sha: saved.content?.sha, commit: saved.commit?.sha, message: "Saved to GitHub. Vercel is deploying the change." });
-  } catch { return response({ error: "Unable to save at this time." }, 503); }
+  } catch (error) { return response({ error: error instanceof Error && error.message === renewalMessage ? renewalMessage : "Unable to save at this time." }, 503); }
 }
