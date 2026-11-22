@@ -1,25 +1,14 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type Metric = { timestamp?: string; visitors?: number; pageviews?: number; count?: number; total?: number; eventName?: string; requestPath?: string; referrerHostname?: string; deviceType?: string };
+import { deriveAdminAnalytics, metricValue as value, type AnalyticsMetric as Metric, type AnalyticsBreakdowns } from "@/lib/admin-analytics";
+
 type SearchData = {connected?:boolean;message?:string;clicks?:number;impressions?:number;ctr?:number;position?:number;endDate?:string;previous?:{clicks?:number;impressions?:number;ctr?:number;position?:number}|null;queries?:{query:string;clicks:number;impressions:number;position:number;ctr:number}[];pages?:{page:string;clicks:number;impressions:number;position:number;ctr:number}[]};
 type InspectionData = {connected?:boolean;inspection?:boolean;launchIndexingEnabled?:boolean;siteMap?:string;results?:{path:string;url:string;status:string;reason:string;lastCrawlTime?:string|null}[]};
 type WeeklyPoint = {start:string;end:string;visitors:number};
 type Weekly = {weeks:WeeklyPoint[];current:WeeklyPoint|null};
-type Payload = { connected?: boolean; message?: string; visits?: Metric[]; previous?:{visits:Metric[];pages:Metric[];referrers:Metric[];devices:Metric[]}|null; weekly?: Weekly; events?: Metric[]; pages?: Metric[]; referrers?: Metric[]; devices?: Metric[] };
-const actionNames: Record<string, string> = {
-  availability_dates_selected: "Dates selected (earlier event)",
-  booking_page_view: "Property page view",
-  booking_date_check_attempt: "Date check started",
-  booking_date_check_success: "Date check loaded",
-  booking_date_check_unavailable: "Date check unavailable",
-  booking_date_check_error: "Date check error",
-  booking_guest_step: "Guest step",
-  hostaway_checkout_click: "Checkout handoff",
-  early_access_submission_accepted: "Signup submissions"
-};
+type Payload = AnalyticsBreakdowns & { connected?: boolean; message?: string; visits?: Metric[]; previous?:{visits:Metric[];pages:Metric[];referrers:Metric[];devices:Metric[]}|null; weekly?: Weekly; weeklyError?: string };
 const format = (n: number) => new Intl.NumberFormat("en-US").format(n);
-const value = (row: Metric) => Number(row.pageviews ?? row.count ?? row.total ?? row.visitors ?? 0);
 const shortDate = (date: string) => {
   const d = new Date(date.slice(0, 10) + "T12:00:00");
   return Number.isNaN(d.getTime()) ? date : d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
@@ -33,10 +22,10 @@ function pageLabel(raw: string) {
   return raw;
 }
 const pct = (part:number,total:number) => total > 0 ? Math.round(100*part/total)+"%" : "—";
-function MetricRows({ title, subtitle, items, keyName, emptyText, compact = false }: {
-  title: string; subtitle?: string; items: Metric[]; keyName: "requestPath" | "referrerHostname" | "deviceType"; emptyText?: string; compact?:boolean;
+function MetricRows({ title, subtitle, items, keyName, emptyText, available = true, compact = false }: {
+  title: string; subtitle?: string; items: Metric[]; keyName: "requestPath" | "referrerHostname" | "deviceType"; emptyText?: string; available?: boolean; compact?:boolean;
 }) {
-  const sorted = [...items].sort((a, b) => value(b) - value(a)).slice(0, 6);
+  const sorted = (available ? [...items] : []).sort((a, b) => value(b) - value(a)).slice(0, 6);
   const max = Math.max(...sorted.map(value), 1);
   const total = items.reduce((sum,item)=>sum+value(item),0);
   return <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-3 sm:px-5 sm:py-4">
@@ -55,7 +44,7 @@ function MetricRows({ title, subtitle, items, keyName, emptyText, compact = fals
             <div className="h-full rounded-full bg-[#9DB3A1]" style={{ width: `${Math.max(2, value(item) / max * 100)}%` }} />
           </div>
         </div>;
-      }) : <p className="text-[13px] text-[#6D6057]">{emptyText || "Nothing to show for these dates yet."}</p>}
+      }) : <p className="text-[13px] text-[#6D6057]">{!available ? "Temporarily unavailable." : emptyText || "Nothing to show for these dates yet."}</p>}
     </div>
   </section>;
 }
@@ -166,11 +155,10 @@ export default function AnalyticsPanel() {
       .catch(() => { if (active) setGuestCount(null); });
     return () => { active = false; };
   }, []);
-  const daily = data?.visits || [], events = data?.events || [];
+  const daily = data?.visits || [];
   const pageviews = useMemo(() => daily.reduce((s, d) => s + (d.pageviews || 0), 0), [daily]);
   const visits = useMemo(() => daily.reduce((s, d) => s + (d.visitors || 0), 0), [daily]);
-  const clicks = events.filter(x => x.eventName === "hostaway_checkout_click").reduce((s, x) => s + value(x), 0);
-  const signups = events.filter(x => x.eventName === "early_access_submission_accepted").reduce((s, x) => s + value(x), 0);
+  const { clicks, rate, eventsAvailable, exploredRows, pagesAvailable, referrersAvailable, devicesAvailable } = deriveAdminAnalytics(data, visits);
   const pages = data?.pages || [];
   const publicPages = pages.filter(row => !(row.requestPath || "").startsWith("/admin"));
   return <div className="space-y-3">
@@ -191,8 +179,8 @@ export default function AnalyticsPanel() {
         <div className="mt-3 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
           {([
             {eyebrow:"REACH",label:"Visitors",value:format(visits),note:"People exploring the site",detail:null,accent:"#597761"},
-            {eyebrow:"BOOKING",label:"Checkout clicks",value:format(clicks),note:"Handoff taps, not bookings",detail:null,accent:"#9C826B"},
-            {eyebrow:"ENGAGEMENT",label:"Checkout click rate",value:visits>0?((clicks/visits)*100).toFixed(1)+"%":"—",note:"Handoff taps ÷ visitors",detail:null,accent:"#82917B"},
+            {eyebrow:"BOOKING",label:"Checkout clicks",value:clicks===null?"—":format(clicks),note:eventsAvailable?"Handoff taps, not bookings":"Unavailable right now",detail:null,accent:"#9C826B"},
+            {eyebrow:"ENGAGEMENT",label:"Checkout click rate",value:rate,note:eventsAvailable?"Handoff taps ÷ visitors":"Unavailable right now",detail:null,accent:"#82917B"},
             {eyebrow:"AUDIENCE",label:"Guests on the list",value:guestCount===null?"—":format(guestCount),note:"Stored contacts · all time",detail:null,accent:"#A18A78"}
           ] as const).map((metric) => <div key={metric.label} className="relative flex min-w-0 flex-col rounded-xl border border-[#E8DFD8] bg-[#F8F5F2] px-3 pb-2.5 pt-3 sm:px-4 sm:pb-2.5 sm:pt-3">
             <div className="flex items-center gap-2">
@@ -206,14 +194,15 @@ export default function AnalyticsPanel() {
         </div>
                 <h3 className="mt-3 font-heading text-[18px] font-medium leading-tight text-[#1F3125] sm:mt-4 sm:text-[20px]">{days===7?"Daily visitor trend":"Weekly visitor trend"}</h3>
         <VisitsChart weekly={data.weekly} daily={daily} days={days} />
-        <div className="mt-3 border-t border-[#E7DFDB] pt-3 sm:mt-4"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{events.length ? events.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{actionNames[e.eventName || ""] || e.eventName || "Other action"}</span><strong className="font-medium tabular-nums">{format(value(e))}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">No tracked actions yet.</p>}</div><p className="mt-2 font-body text-[11px] leading-snug text-[#80766E]">A checkout handoff is a tap toward payment. It is not a confirmed reservation or revenue. Property page views are separate from automatic traffic page views.</p></div>
+        {data.weeklyError && <p className="mt-2 text-[13px] text-[#6D6057]">{data.weeklyError}</p>}
+        <div className="mt-3 border-t border-[#E7DFDB] pt-3 sm:mt-4"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{exploredRows?.length ? exploredRows.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{e.label}</span><strong className="font-medium tabular-nums">{format(e.value)}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">{eventsAvailable ? "No tracked actions yet." : "Guest actions are temporarily unavailable."}</p>}</div><p className="mt-2 font-body text-[11px] leading-snug text-[#80766E]">A checkout handoff is a tap toward payment. It is not a confirmed reservation or revenue. Property page views are separate from automatic traffic page views.</p></div>
       </>}
     </section>
     {data?.connected && <div className="grid items-start gap-3 lg:grid-cols-2">
-      <MetricRows title="Pages guests visit most" compact items={publicPages} keyName="requestPath" />
+      <MetricRows title="Pages guests visit most" compact available={pagesAvailable} items={publicPages} keyName="requestPath" />
       <div className="grid min-w-0 gap-3">
-        <MetricRows title="Referring websites and direct traffic" compact items={data.referrers || []} keyName="referrerHostname" />
-        <MetricRows title="Visits by device type" compact items={data.devices || []} keyName="deviceType" />
+        <MetricRows title="Referring websites and direct traffic" compact available={referrersAvailable} items={data.referrers || []} keyName="referrerHostname" />
+        <MetricRows title="Visits by device type" compact available={devicesAvailable} items={data.devices || []} keyName="deviceType" />
       </div>
     </div>}
     {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 pb-3 pt-2.5 sm:px-5 sm:py-4">

@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuthenticated } from "@/lib/admin-auth";
 
+import { analyticsQueryParams } from "@/lib/admin-analytics";
+
 export const dynamic = "force-dynamic";
 const projectId = "prj_CjF9I7Fk1MyrSkKgcPAPogf6NAvD";
 const endpoint = "https://api.vercel.com/v1/query/web-analytics";
 const teamId = "team_GQt5Mp5AL3n7sjv7QSTNQPig";
 async function query(token:string,resource:string,params:Record<string,string>){
   const u=new URL(endpoint+resource);
-  for(const [key,value] of Object.entries({...params,projectId,teamId}))u.searchParams.set(key,value);
+  u.search = analyticsQueryParams(resource,{...params,projectId,teamId}).toString();
   const r=await fetch(u,{headers:{Authorization:`Bearer ${token}`},cache:"no-store",signal:AbortSignal.timeout(9000)});
   if(!r.ok)throw new Error("Analytics API unavailable: "+r.status);
   return r.json();
@@ -87,7 +89,7 @@ export async function GET(req:NextRequest){
     optional.forEach((result,index) => {
       if(result.status==="rejected") console.warn("Roamstead analytics optional query failed",index,String(result.reason));
     });
-    return NextResponse.json({connected:true,period:`Past ${range} days`,visits,previous,weekly:weeklySeries(yearRows || visits,now),weeklyError:yearRows ? undefined : "Full-year history is temporarily unavailable; showing the available reporting period.",events:events?.data||[],pages:pages?.data||[],referrers:referrers?.data||[],devices:devices?.data||[]},{headers:{"Cache-Control":"private, no-store"}});
+    return NextResponse.json({connected:true,period:`Past ${range} days`,visits,previous,weekly:weeklySeries(yearRows || visits,now),weeklyError:yearRows ? undefined : "Full-year history is temporarily unavailable; showing the available reporting period.",events:events ? events.data||[] : null,eventsAvailable:events!==null,pages:pages ? pages.data||[] : null,pagesAvailable:pages!==null,referrers:referrers ? referrers.data||[] : null,referrersAvailable:referrers!==null,devices:devices ? devices.data||[] : null,devicesAvailable:devices!==null},{headers:{"Cache-Control":"private, no-store"}});
   }catch(error){
     const detail=error instanceof Error ? error.message : "Unknown analytics error";
     console.error("Roamstead analytics main query failed",detail);

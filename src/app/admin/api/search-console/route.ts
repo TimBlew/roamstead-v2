@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuthenticated } from "@/lib/admin-auth";
 import { canonical, launchIndexingEnabled } from "@/lib/site";
+import { SEARCH_CONSOLE_DIAGNOSTIC } from "@/lib/admin-analytics";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 const site = "sc-domain:roamstead-co.com";
@@ -44,7 +45,7 @@ async function token(request: NextRequest) {
 type Row={keys?:string[];clicks?:number;impressions?:number;ctr?:number;position?:number};
 async function query(access:string,startDate:string,endDate:string,dimensions:string[],rowLimit:number):Promise<Row[]>{
  const resp=await fetch("https://www.googleapis.com/webmasters/v3/sites/"+encodeURIComponent(site)+"/searchAnalytics/query",{method:"POST",headers:{Authorization:"Bearer "+access,"Content-Type":"application/json"},body:JSON.stringify({startDate,endDate,dimensions,rowLimit,type:"web"}),cache:"no-store",signal:AbortSignal.timeout(12000)});
- if(!resp.ok)throw Error("GSC status "+resp.status);
+ if(!resp.ok)throw Error("search_console_"+resp.status);
  return (await resp.json() as {rows?:Row[]}).rows||[];
 }
 export async function GET(request:NextRequest){
@@ -75,5 +76,5 @@ export async function GET(request:NextRequest){
   const [totals,queries,pages,previousRows]=await Promise.all([query(access,date(start),date(end),[],1),query(access,date(start),date(end),["query"],35),query(access,date(start),date(end),["page"],20),query(access,date(previousStart),date(previousEnd),[],1).catch(()=>[] as Row[])]);
   const total=totals[0]||{};
   return NextResponse.json({connected:true,startDate:date(start),endDate:date(end),clicks:total.clicks||0,impressions:total.impressions||0,ctr:total.ctr||0,position:total.position||0,previous:previousRows[0]||null,queries:queries.map(r=>({query:r.keys?.[0]||"",clicks:r.clicks||0,impressions:r.impressions||0,position:r.position||0,ctr:r.ctr||0})),pages:pages.map(r=>({page:r.keys?.[0]||"",clicks:r.clicks||0,impressions:r.impressions||0,position:r.position||0,ctr:r.ctr||0}))},{headers});
- }catch(error){ const raw=error instanceof Error ? error.message : "unknown"; const diagnostic=/^(federation_exchange|service_account_impersonation|search_console)_[0-9]{3}(?:_[A-Za-z0-9_]{1,80})?$/.test(raw) ? raw : "unexpected_error"; console.error("Roamstead Search Console reporting failed", diagnostic); return NextResponse.json({connected:false,diagnostic,message:"Google reporting connection is not yet ready ("+diagnostic.replaceAll("_"," ")+")."},{headers});}
+ }catch(error){ const raw=error instanceof Error ? error.message : "unknown"; const diagnostic=SEARCH_CONSOLE_DIAGNOSTIC.test(raw) ? raw : "unexpected_error"; console.error("Roamstead Search Console reporting failed", diagnostic); return NextResponse.json({connected:false,diagnostic,message:diagnostic==="search_console_403" ? "The Google service account needs access to the Search Console property." : "Google reporting connection is not yet ready ("+diagnostic.replaceAll("_"," ")+")."},{headers});}
 }
