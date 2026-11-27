@@ -55,11 +55,11 @@ Verified against `next.config.js` redirects, public booking routes, and `docs/la
 
 The old chart built dates with `getUTCDate()` and aggregated UTC days; it could display November 27 during November 26 in Utah/New Jersey. Its rolling headline period also differed from the seven displayed calendar days, and longer charts queried a separate full year.
 
-All website analytics and reservation ranges now begin at local midnight on the first of N calendar days including today, in `America/Denver`, and end at the request instant. The daily/weekly chart uses that same period and server-produced calendar dates. Weeks run Sunday–Saturday, clipped at period boundaries; partial first/current weeks are disclosed. No browser timezone-dependent current-day reconstruction.
+All website analytics and reservation ranges now begin at local midnight on the first of N calendar days including today, in `America/Denver`, and end at the request instant. The daily/weekly/monthly chart uses that same period and server-produced calendar dates. Weeks run Sunday–Saturday, clipped at period boundaries; partial first/current weeks are disclosed. No browser timezone-dependent current-day reconstruction.
 
 Each chart point is queried directly for its Mountain Time interval using `by=environment` (filtered to production). **No sum of hourly unique visitor counts and no relabeling of UTC daily buckets.** Live verification confirmed `2026-11-25T07:00Z` through `2026-11-26T06:59:59.999Z` returns a query ending at `2026-11-26T07:00Z`. Vercel rounds inclusive `until` to the next hour; subtracting 1ms from exclusive endpoints avoids requesting the next hour at midnight. Current-hour data is naturally partial and may be delayed. DST tests cover both 23-hour and 25-hour days.
 
-Headline visitors are a direct period aggregate, not a sum of daily/weekly unique counts. Vercel visitors are estimates based on daily identifiers; returning visitors can count again on another day. The 365-day chart can require up to 54 queries, at most four concurrent, plus breakdown queries. Live end-to-end latency through the authenticated route remains an acceptance check.
+Headline visitors are a direct period aggregate, not a sum of daily/weekly unique counts. Vercel visitors are estimates based on daily identifiers; returning visitors can count again on another day. The 365-day chart uses at most 13 calendar-month queries, with at most eight chart requests concurrent, plus seven headline/breakdown queries. Live end-to-end latency through the authenticated route remains an acceptance check.
 
 Google Search Console retains Pacific Time calendar dates and the existing three-day lag, now anchored to the Pacific date rather than UTC. Its fixed semantics are explicitly labeled; it is not relabeled Mountain Time.
 
@@ -79,7 +79,7 @@ Reference: [Vercel API grouping, inclusive bounds and filters](https://vercel.co
 
 Baseline: 12/13 test files passed; existing `tests/early-access.test.cjs` fails with `SyntaxError: Cannot use import statement outside a module` in its VM harness. This was reproduced before edits; the legacy test is unchanged.
 
-Final: 15/16 test files pass. Added tests cover all four periods, DST, UTC midnight, contiguous chart windows, exact exclusion predicates, source/property mappings, zero/unavailable responses, malformed metrics, Hostaway duplicate/conflicting records, and authorization isolation. Existing booking, availability, attribution, PII sanitization and checkout URL tests pass. A separate module-aware signup regression test covers acceptance, attribution ledger, existing opt-out preservation, validation, and provider/storage failures with all external integrations stubbed.
+Final follow-up: 18/19 test files pass. Added tests cover all four periods, DST, UTC midnight, contiguous chart windows, exact exclusion predicates, source/property mappings, zero/unavailable responses, malformed metrics, Hostaway duplicate/conflicting records, and authorization isolation. Existing booking, availability, attribution, PII sanitization and checkout URL tests pass. A separate module-aware signup regression test covers acceptance, attribution ledger, existing opt-out preservation, validation, and provider/storage failures with all external integrations stubbed.
 
 Production build and TypeScript check pass; `git diff --check` passes. The first sandboxed build failed solely on blocked Google Fonts DNS; retry with network access passed. Existing Browserslist data-age warning remains.
 
@@ -92,3 +92,47 @@ Browser fixture checks: 1440×1000 desktop, 768×1024 tablet, 390×844 mobile; n
 3. Historical visitor/page-view QA filtering unavailable on existing plan; unknown-source origins and Park City Sport human/scanner status unresolved. Do not suppress more sources without evidence.
 4. Full booking/signup integration acceptance remains fixture-based. No reservation, payment, live signup, notification, or outreach operation was submitted.
 5. Review the PR and protected preview; merge/production deployment require Tim's approval.
+
+
+## Final safe readiness review — November 26, 2026
+
+### Performance and request budgets
+
+Offline benchmark of the actual route handlers, fixed at Nov 26 Mountain Time. External fetches were simulated at 100 ms and 250 ms per request; Hostaway was stubbed as a two-request zero-result response. No production credentials, reservation data or network calls were used. These are handler timings, not browser paint, live network, cold-start or rate-limit measurements. Reproduce with `node --import ./tests/register-ts.mjs --test tests/analytics-performance.test.cjs`.
+
+| Window | Production Vercel calls | Revised Vercel calls | Production / revised at 100 ms | Production / revised at 250 ms |
+|---|---:|---:|---:|---:|
+| 7 days | 19 | 14 | 307 / 203 ms | 754 / 507 ms |
+| 30 days | 19 | 12 | 303 / 204 ms | 753 / 503 ms |
+| 90 days | 21 | 21 | 305 / 207 ms | 753 / 510 ms |
+| 365 days | 33 | 20 | 305 / 205 ms | 753 / 506 ms |
+
+The initial draft made 60 annual queries on this date and took 3,783 ms at 250 ms simulated latency. Annual monthly buckets remove that regression while retaining exact Mountain Time boundaries and direct unique-visitor aggregation. Chart requests begin alongside the headline query, in batches of eight. Maximum Vercel calls over calendar alignments: 14 / 13 / 21 / 20. Peak concurrent Vercel requests in the benchmark: 8 / 6 / 12 / 11 (production: 18 / 18 / 19 / 25); scheduling ceiling is 14. No retries, polling or chart-point hover requests.
+
+Browser requests: three on initial mount (website analytics, Google reporting, guest count), then two per reporting-window change. Google URL inspection is only requested by its button. Stale website/Google browser requests are aborted on period change; active-state guards prevent stale results. Browser cancellation does not guarantee that already-started server calls stop.
+
+Google reporting remains six upstream requests when available: federation, impersonation, then four concurrent report queries. Missing identity makes zero upstream requests. Hostaway remains one auth request plus one to five reservation-page GETs. Hostaway's existing sequential timeout ceiling (~53 seconds) and Google's (~32 seconds) remain limitations; real integration slowness cannot be ruled out by this offline benchmark. No cache of reservation data or credentials was added.
+
+### Production Hostaway unchanged
+
+Read-only deployment metadata confirms production is still READY at `da1410d4b2c845cdda8a508f3a58b20e718fd15c`, deployment `dpl_9UaDCAs8S3BCsdrMTzUzVjRrQLud`. No new credential lookup or Hostaway request was attempted. Public booking/availability/quote API code is unchanged. The draft intentionally changes admin aggregation validation/deduplication and its reporting date boundaries; it does not change credential names, token endpoint/scope, reservation endpoint/channel, page size/cap, or reservation write behavior. This follow-up makes no further Hostaway code changes.
+
+### Zero, unavailable, loading and Google failures
+
+Rendered-component fixtures verify loading indicators, successful zero, unavailable dashes (without verified labels), and Google reporting independent of website-traffic availability. Google errors now have a generic fallback when no message is returned. Route tests cover missing OIDC, federation failure, permission denial, report/network failure, optional previous-period failure, successful zero and all four windows. Failed Google reporting never becomes zero clicks. Monthly title, accessible chart label and current-month wording are verified. No live GSC verification is claimed.
+
+Build, TypeScript and diff checks pass. All 18 applicable test files pass; the sole failure remains the unchanged legacy `early-access.test.cjs` VM import-parser failure. Module-aware signup, booking, availability and attribution tests pass. This follow-up uses rendered component tests; previous responsive browser fixture checks predate the annual monthly adjustment, which remains a visual acceptance item.
+
+### PR #21 coordination / merge gate
+
+PR #21 remains separate. Its shared file is `src/lib/booking-analytics.ts`; both branches add a guard at the start of `sanitizeAnalyticsEvent`. At integration, preserve both `isAnalyticsBlocked()` (DNT/GPC/opt-out, PR #21) and `suppressInternalAnalytics()` (internal/webdriver, PR #22), plus both imports/helpers. Do not resolve by selecting one branch wholesale. Keep all PR #21 attribution-storage and checkout privacy gates. No PR #21 branch files were edited or merged. Before either final combined production release, rebase/resolve the shared guard and run both branches' privacy, attribution, booking and admin tests. Merge order and owner privacy placeholders remain approval gates, not completed coordination.
+
+### Post-deployment verification — only after explicit approval
+
+1. Authorized owner signs in; record real load/settle times for 7/30/90/365 days, including cold and warm loads. Confirm three initial browser data requests and two per switch, no polling/request loops; inspect provider 429s/timeouts without copying secrets or guest payloads.
+2. Confirm selected Mountain Time dates, daily/weekly/monthly titles, partial first/current buckets, keyboard chart interaction and mobile overflow. Switch periods rapidly and verify only the latest result displays.
+3. With existing server-side access, distinguish successful Hostaway zero from unavailable; reconcile aggregate count/status/date/deduplication and totalPrice fee/tax components with authorized account records. Do not create or change reservations.
+4. Check live GSC totals/date lag and unavailable behavior independently of website traffic. Preview production-scoped identity may legitimately be unavailable. Do not buy a connector subscription for this check.
+5. Check booking navigation and checkout URL without submitting a reservation, payment or live signup. After PR #21 integration, verify DNT/GPC/opt-out and internal-session guards together with mocked events.
+
+Live Hostaway reconciliation, authenticated dashboard latency, account-specific revenue components and live GSC remain manual limitations. No more production credentials or Chris access will be pursued. No merge or deployment is authorized. Local follow-up changes are intentionally not pushed because this repository automatically creates a preview deployment on push; the existing protected preview still represents `1593693` until deployment is authorized.

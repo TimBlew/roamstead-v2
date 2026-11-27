@@ -25,9 +25,9 @@ async function query(token:string,resource:string,params:Record<string,string|st
 async function trafficWindows(token: string, range: number, now: Date) {
   const windows = chartWindows(range, now);
   const points: {start:string;end:string;visitors:number;pageviews:number;partial:boolean}[] = [];
-  // Bound concurrent requests; 365 days requires at most 54 weekly buckets.
-  for (let i = 0; i < windows.length; i += 4) {
-    points.push(...await Promise.all(windows.slice(i, i + 4).map(async w => {
+  // Bound concurrent requests; annual reporting uses at most 13 monthly buckets.
+  for (let i = 0; i < windows.length; i += 8) {
+    points.push(...await Promise.all(windows.slice(i, i + 8).map(async w => {
       const result = await query(token, "/visits/aggregate", { since:w.since, until:w.until, by:"environment", limit:"100" });
       return { start:w.start, end:w.end, partial:w.partial, visitors:result.data.reduce((s:number,r:any)=>s+(r.visitors||0),0), pageviews:result.data.reduce((s:number,r:any)=>s+(r.pageviews||0),0) };
     })));
@@ -44,6 +44,7 @@ export async function GET(req:NextRequest){
   const reservationResult = websiteReservations(since, until);
   if(!token)return NextResponse.json({connected:false,reporting,verifiedReservations:await reservationResult,message:"Website traffic is temporarily unavailable."},{headers:{"Cache-Control":"private, no-store"}});
   try{
+    const chartResult = trafficWindows(token, range, now).then(value => ({value}), () => ({value:null}));
     const totals = await query(token,"/visits/aggregate",{since,until,by:"environment",limit:"100"});
     const visits = totals.data;
     // Keep essential traffic visible if a breakdown, event aggregation, or
@@ -57,7 +58,7 @@ export async function GET(req:NextRequest){
       query(token,"/visits/aggregate",{since,until,by:"requestPath",limit:"15"}),
       query(token,"/visits/aggregate",{since,until,by:"referrerHostname",limit:"12"}),
       query(token,"/visits/aggregate",{since,until,by:"deviceType",limit:"8"}),
-      trafficWindows(token, range, now),
+      chartResult.then(result => result.value),
       acquisition("utm_source"),
       acquisition("utm_campaign"),
       reservationResult

@@ -7,8 +7,10 @@ assert.equal(businessDate(new Date('2026-11-27T02:00:00Z')), '2026-11-26');
 assert.equal(businessMidnight('2026-11-26').toISOString(), '2026-11-26T07:00:00.000Z');
 assert.equal((businessMidnight('2026-03-09')-businessMidnight('2026-03-08'))/3600000,23);
 assert.equal((businessMidnight('2026-11-02')-businessMidnight('2026-11-01'))/3600000,25);
-for(const days of [7,30,90,365]) for(const date of ['2026-11-27T02:00:00Z','2026-03-09T08:00:00Z','2026-11-02T08:00:00Z']) {
+for(const days of [7,30,90,365]) for(const date of ['2026-11-27T02:00:00Z','2026-03-09T08:00:00Z','2026-11-02T08:00:00Z','2028-03-01T12:00:00Z']) {
  const now=new Date(date), period=reportingPeriod(days,now), windows=chartWindows(days,now);
+ assert.ok(windows.length <= (days === 7 ? 7 : days === 30 ? 6 : days === 90 ? 14 : 13));
+ if(days===365) for(const w of windows.slice(1)) assert.ok(w.start.endsWith("-01"));
  assert.equal(windows[0].since,period.since);
  assert.equal(windows.at(-1).until,period.until);
  assert.equal(windows.at(-1).end,period.endDate);

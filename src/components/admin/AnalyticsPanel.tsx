@@ -43,6 +43,7 @@ function MetricRows({ title, subtitle, items, keyName, emptyText, available = tr
 }
 function VisitsChart({ chart, days }: { chart?: WeeklyPoint[] | null; days:number }) {
   const isDaily = days === 7;
+  const unit = days === 365 ? "month" : "week";
   const points = chart || [];
   const current = points.at(-1) || null;
   const completed = points.slice(0, -1);
@@ -85,11 +86,11 @@ function VisitsChart({ chart, days }: { chart?: WeeklyPoint[] | null; days:numbe
   const labelEvery = Math.max(1, Math.ceil(points.length/(compactChart ? Math.max(7,points.length) : 6)));
   return <div className="mt-2 border-0 bg-transparent py-2 sm:rounded-xl sm:border sm:border-[#E7DFDB] sm:bg-[#FFFCFB] sm:px-4 sm:py-3">
     <div className="flex items-center justify-between gap-2">
-      <p className="text-[11px] font-medium leading-snug text-[#4A6E57] sm:text-[12px]">{isDaily ? "LAST 7 DAYS" : "SELECTED PERIOD · WEEKLY"}</p>
-      <p className="text-right text-[10px] leading-snug tabular-nums text-[#4A6E57] sm:text-[12px]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${points[active].partial ? (active === points.length-1 ? (isDaily ? " (today, partial)" : " (this week, partial)") : " (partial week)") : ""}` : <span className="hidden sm:inline">Select a point for details</span>}</p>
+      <p className="text-[11px] font-medium leading-snug text-[#4A6E57] sm:text-[12px]">{isDaily ? "LAST 7 DAYS" : days === 365 ? "SELECTED PERIOD · MONTHLY" : "SELECTED PERIOD · WEEKLY"}</p>
+      <p className="text-right text-[10px] leading-snug tabular-nums text-[#4A6E57] sm:text-[12px]">{active !== null && points[active] ? `${shortDate(points[active].start)}–${shortDate(points[active].end)} · ${format(points[active].visitors)} visitors${points[active].partial ? (active === points.length-1 ? (isDaily ? " (today, partial)" : ` (this ${unit}, partial)`) : ` (partial ${unit})`) : ""}` : <span className="hidden sm:inline">Select a point for details</span>}</p>
     </div>
     <div ref={timelineRef} className="relative mt-3 overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mt-0 sm:overflow-visible sm:pb-0" aria-label="Scrollable visitor timeline" tabIndex={0} onScroll={(event) => syncScrollIndicator(event.currentTarget)}>
-    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : "Weekly visitors; current week is outlined"} viewBox={`0 0 ${width} ${height}`} className="block h-auto max-w-none sm:mt-2 sm:w-full" style={compactChart ? {width:`${width}px`} : {width:"100%"}} onMouseLeave={() => setActive(null)}>
+    {points.length > 0 ? <svg role="img" aria-label={isDaily ? "Daily visitors over the last 7 days; today is outlined" : `${days === 365 ? "Monthly" : "Weekly"} visitors; current ${unit} is outlined`} viewBox={`0 0 ${width} ${height}`} className="block h-auto max-w-none sm:mt-2 sm:w-full" style={compactChart ? {width:`${width}px`} : {width:"100%"}} onMouseLeave={() => setActive(null)}>
       <path d={fill} fill="#4A6E57" fillOpacity=".08"/>
       <line x1={left} x2={width-right} y1={baseline} y2={baseline} stroke="#E7DFDB" />
       <path d={completePath} fill="none" stroke="#4A6E57" strokeWidth={compactChart ? 2.3 : 2} strokeLinecap="round" strokeLinejoin="round" />
@@ -100,16 +101,16 @@ function VisitsChart({ chart, days }: { chart?: WeeklyPoint[] | null; days:numbe
           <circle cx={p.x} cy={p.y} r={compactChart ? (isCurrent ? 4 : 3.5) : (isCurrent ? 3.5 : 3)} fill={isCurrent ? "#FFFCFB" : "#4A6E57"} stroke={isCurrent ? "#4A6E57" : "none"} strokeWidth={isCurrent ? 1.75 : 0}/>
           {(points.length <= 8 || i === points.length-1) && <text x={p.x} y={Math.max(12,p.y-11)} fontSize={compactChart ? 10 : 10} textAnchor={points.length===1?"middle":i===0?"start":i===points.length-1?"end":"middle"} fill="#1F3125">{format(p.visitors)}</text>}
           {(i%labelEvery===0 || i===points.length-1) && <text x={p.x} y={height-9} fontSize="10" textAnchor={points.length===1?"middle":i===0?"start":i===points.length-1?"end":"middle"} fill="#6D6057">{shortDate(p.start)}</text>}
-          <circle cx={p.x} cy={p.y} r="11" fill="transparent" tabIndex={0} role="button" aria-label={`${shortDate(p.start)} to ${shortDate(p.end)}: ${p.visitors} visitors${isCurrent ? (isDaily ? ", today" : ", current incomplete week") : ""}`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)} />
+          <circle cx={p.x} cy={p.y} r="11" fill="transparent" tabIndex={0} role="button" aria-label={`${shortDate(p.start)} to ${shortDate(p.end)}: ${p.visitors} visitors${isCurrent ? (isDaily ? ", today" : `, current incomplete ${unit}`) : ""}`} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} onClick={() => setActive(i)} />
         </g>;
       })}
-    </svg> : <p className="py-5 text-[13px] text-[#6D6057]">{points.length === 1 ? `${current ? "This week so far" : "First complete week"}: ${format(points[0].visitors)} visitors (${shortDate(points[0].start)}–${shortDate(points[0].end)}).` : "Weekly history will appear once tracking has a full week of data."}</p>}
+    </svg> : <p className="py-5 text-[13px] text-[#6D6057]">Visitor history is not available for these dates.</p>}
     </div>
     <div className="mt-2 h-[5px] w-full rounded-full bg-[#DEDCD8] sm:hidden" role="img" aria-label="Timeline scroll position">
       <div className="h-full rounded-full bg-[#959C97] transition-[width,left] duration-150" style={{width:`${scrollIndicator.width}%`,marginLeft:`${scrollIndicator.left}%`}} />
     </div>
     <div className={`flex flex-wrap items-center gap-x-6 gap-y-1 text-[11px] text-[#6D6057] sm:text-[12px] ${!isDaily && current ? "mt-2 border-t border-[#E7DFDB] pt-2" : "hidden"}`}>
-      {!isDaily && current && <span>This week so far ({shortDate(current.start)}–{shortDate(current.end)}): <strong className="font-medium text-[#1F3125]">{format(current.visitors)} visitors</strong></span>}
+      {!isDaily && current && <span>This {unit} so far ({shortDate(current.start)}–{shortDate(current.end)}): <strong className="font-medium text-[#1F3125]">{format(current.visitors)} visitors</strong></span>}
     </div>
   </div>;
 }
@@ -122,16 +123,16 @@ export default function AnalyticsPanel() {
   const [inspecting, setInspecting] = useState(false);
   const [guestCount, setGuestCount] = useState<number | null>(null);
   useEffect(() => {
-    let active = true; setData(null);
-    fetch(`/admin/api/analytics?days=${days}`, { cache: "no-store" })
+    let active = true; const controller = new AbortController(); setData(null);
+    fetch(`/admin/api/analytics?days=${days}`, { cache: "no-store", signal: controller.signal })
       .then(r => r.json()).then(x => { if (active) setData(x); })
       .catch(() => { if (active) setData({ connected: false, message: "Reporting is temporarily unavailable." }); });
-    return () => { active = false; };
+    return () => { active = false; controller.abort(); };
   }, [days]);
   useEffect(() => {
-    let active = true; setSearch(null);
-    fetch(`/admin/api/search-console?days=${days}`, { cache: "no-store" }).then(r => r.json()).then(x => { if(active)setSearch(x); }).catch(() => { if(active)setSearch({connected:false,message:"Google Search reporting is temporarily unavailable."}); });
-    return () => { active = false; };
+    let active = true; const controller = new AbortController(); setSearch(null);
+    fetch(`/admin/api/search-console?days=${days}`, { cache: "no-store", signal: controller.signal }).then(r => r.json()).then(x => { if(active)setSearch(x); }).catch(() => { if(active)setSearch({connected:false,message:"Google Search reporting is temporarily unavailable."}); });
+    return () => { active = false; controller.abort(); };
   }, [days]);
   useEffect(() => {
     let active = true;
@@ -181,10 +182,10 @@ export default function AnalyticsPanel() {
             <span className="mt-0.5 hidden font-body text-[10px] leading-snug text-[#786E65] sm:block sm:text-[11px]">{metric.note}</span>
           </div>)}
         </div>
-                <h3 className="mt-3 font-heading text-[18px] font-medium leading-tight text-[#1F3125] sm:mt-4 sm:text-[20px]">{days===7?"Daily visitor trend":"Weekly visitor trend"}</h3>
+                <h3 className="mt-3 font-heading text-[18px] font-medium leading-tight text-[#1F3125] sm:mt-4 sm:text-[20px]">{days===7?"Daily visitor trend":days===365?"Monthly visitor trend":"Weekly visitor trend"}</h3>
         <p className="mt-1 text-[11px] text-[#6D6057]">{data.reporting ? `${data.reporting.startDate} – ${data.reporting.endDate} · Mountain Time · Today is partial` : ""}</p>
         {data.chart && <VisitsChart chart={data.chart} days={days} />}
-        <details className="mt-2 text-[11px] leading-relaxed text-[#6D6057]"><summary className="cursor-pointer">About visitor counts</summary><p className="mt-2">Vercel estimates visitors using daily identifiers. Returning visitors can count again on another day. Each chart point is queried for its Mountain Time window; the first and last weeks may be partial. Counts can differ from a sum of shorter windows. Historical QA page views remain included because the current analytics plan cannot filter their campaign tags. Booking activity and campaign counts exclude known tagged test activity.</p></details>
+        <details className="mt-2 text-[11px] leading-relaxed text-[#6D6057]"><summary className="cursor-pointer">About visitor counts</summary><p className="mt-2">Vercel estimates visitors using daily identifiers. Returning visitors can count again on another day. Each chart point is queried for its Mountain Time window; the first and last buckets may be partial. The annual view uses months; 30- and 90-day views use weeks. Counts can differ from a sum of shorter windows. Historical QA page views remain included because the current analytics plan cannot filter their campaign tags. Booking activity and campaign counts exclude known tagged test activity.</p></details>
         {data.weeklyError && <p className="mt-2 text-[13px] text-[#6D6057]">{data.weeklyError}</p>}
         <div className="mt-3 border-t border-[#E7DFDB] pt-3 sm:mt-4"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">Booking activity</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{exploredRows?.length ? exploredRows.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{e.label}</span><strong className="font-medium tabular-nums">{format(e.value)}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">{eventsAvailable ? "No tracked actions yet." : "Guest actions are temporarily unavailable."}</p>}</div><p className="mt-2 font-body text-[11px] leading-snug text-[#80766E]">A checkout handoff is a tap toward payment. It is not a confirmed reservation or revenue. Property page views are separate from automatic traffic page views.</p></div>
       </>}
@@ -244,9 +245,9 @@ export default function AnalyticsPanel() {
         <MetricRows title="Visits by device type" compact available={devicesAvailable} items={data.devices || []} keyName="deviceType" />
       </div>
     </div>}
-    {data?.connected && <section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 pb-3 pt-2.5 sm:px-5 sm:py-4">
+    {<section className="min-w-0 rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 pb-3 pt-2.5 sm:px-5 sm:py-4">
         <h3 className="font-heading text-[19px] font-medium leading-tight text-[#1F3125]">Google search performance</h3>
-        {!search ? <p className="mt-3 text-[13px] text-[#6D6057]">Loading Google search data…</p> : !search.connected ? <p className="mt-3 text-[13px] text-[#6D6057]">{search.message}</p> : <>
+        {!search ? <p className="mt-3 text-[13px] text-[#6D6057]">Loading Google search data…</p> : !search.connected ? <p className="mt-3 text-[13px] text-[#6D6057]">{search.message || "Google Search reporting is temporarily unavailable."}</p> : <>
           <div className="mt-2 grid grid-cols-2 gap-2 lg:grid-cols-4">
             {([["Search clicks",search.clicks||0],["Appearances",search.impressions||0],["Click rate",((search.ctr||0)*100).toFixed(1)+"%"],["Average position",(search.position||0)>0?(search.position||0).toFixed(1):"—"]] as const).map(([name,val],index)=><div key={name} className="relative min-w-0 overflow-hidden rounded-xl border border-[#E5DDD5] bg-[#F7F4F0] px-3 pb-2 pt-2.5 sm:px-3.5 sm:pb-2.5 sm:pt-3">
               <div className={`absolute inset-x-0 top-0 h-[2px] ${index<2?"bg-[#75947D]":"bg-[#B29C88]"}`} />

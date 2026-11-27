@@ -26,9 +26,12 @@ export function chartWindows(days: number, now = new Date()) {
   const windows: { start: string; end: string; since: string; until: string; partial: boolean }[] = [];
   for (let start = period.startDate; start <= period.endDate;) {
     const weekday = new Date(start + "T12:00:00Z").getUTCDay();
-    const next = addDays(start, days === 7 ? 1 : 7 - weekday);
+    const monthly = days === 365;
+    const next = monthly
+      ? new Date(Date.UTC(Number(start.slice(0, 4)), Number(start.slice(5, 7)), 1)).toISOString().slice(0, 10)
+      : addDays(start, days === 7 ? 1 : 7 - weekday);
     const end = next > period.endDate ? period.endDate : addDays(next, -1);
-    windows.push({ start, end, since: businessMidnight(start).toISOString(), until: next > period.endDate ? period.until : businessMidnight(next).toISOString(), partial: next > period.endDate || (days !== 7 && weekday !== 0) });
+    windows.push({ start, end, since: businessMidnight(start).toISOString(), until: next > period.endDate ? period.until : businessMidnight(next).toISOString(), partial: next > period.endDate || (monthly ? !start.endsWith("-01") : days !== 7 && weekday !== 0) });
     start = next;
   }
   return windows;

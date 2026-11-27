@@ -38,7 +38,9 @@ const {pathToFileURL}=require('node:url');
    assert.match(u.searchParams.get('filter'),/requestPath ne '\/admin'/);
    if(u.pathname.includes('/events/'))assert.match(u.searchParams.get('filter'),/pr20_live_check/);
   }
-  const chartCalls=calls.filter(u=>u.searchParams.get('by')==='environment').slice(1);
+  const isHeadline=u=>u.searchParams.get('by')==='environment' && u.searchParams.get('since')===result.body.reporting.since && Date.parse(u.searchParams.get('until'))+1===Date.parse(result.body.reporting.until);
+  assert.equal(calls.filter(isHeadline).length,1);
+  const chartCalls=calls.filter(u=>u.searchParams.get('by')==='environment'&&!isHeadline(u)).sort((a,b)=>a.searchParams.get('since').localeCompare(b.searchParams.get('since')));
   for(let i=1;i<chartCalls.length;i++)assert.equal(Date.parse(chartCalls[i-1].searchParams.get('until'))+1,Date.parse(chartCalls[i].searchParams.get('since')));
  }
  for(const fail of ['all','malformed'])assert.equal((await run(7,{fail})).result.body.connected,false);
