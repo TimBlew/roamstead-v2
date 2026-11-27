@@ -20,7 +20,7 @@ export type BookingEventName = (typeof BOOKING_EVENTS)[keyof typeof BOOKING_EVEN
 export const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
 export type UtmKey = (typeof UTM_KEYS)[number];
 
-export type Attribution = Partial<Record<UtmKey | "source" | "referrer_host" | "funnel_ref" | "landing_path", string>>;
+export type Attribution = Partial<Record<UtmKey | "googleVR" | "source" | "referrer_host" | "funnel_ref" | "landing_path", string>>;
 
 export const PAGE_VIEW_DEDUPE_MS = 1500;
 export const ACTION_DEDUPE_MS = 1000;
@@ -56,6 +56,7 @@ export function attributionFromSearch(search: string): Attribution {
     const safe = sanitizeToken(params.get(key));
     if (safe) result[key] = safe;
   }
+  if (params.get("googleVR") === "1") result.googleVR = "1";
   if (!result.utm_source) {
     const source = sanitizeToken(params.get("source"));
     if (source) result.source = source;
@@ -104,6 +105,7 @@ export function mergeAttribution(
     const value = sanitizeToken(prior[key]) || incoming[key];
     if (value) next[key] = value;
   }
+  if (prior.googleVR === "1" || incoming.googleVR === "1") next.googleVR = "1";
   if (!next.utm_source) {
     const source = sanitizeToken(prior.source) || incoming.source;
     if (source) next.source = source;
@@ -134,6 +136,7 @@ export function sanitizePageUrl(raw: string): string | null {
     const value = safe[key];
     if (value) clean.searchParams.set(key, value);
   }
+  if (safe.googleVR === "1") clean.searchParams.set("googleVR", "1");
   if (!safe.utm_source && safe.source) clean.searchParams.set("source", safe.source);
   return clean.toString();
 }
@@ -183,6 +186,7 @@ export function hostawayCheckoutHref(listingId: number, checkIn: string, checkOu
     end: checkOut,
     numberOfGuests: String(guests),
   });
+  if (firstTouch?.googleVR === "1") params.append("googleVR", "1");
   for (const key of ["utm_source", "utm_medium", "utm_campaign"] as const) {
     const value = sanitizeToken(firstTouch?.[key]);
     if (value) params.append(key, value);
@@ -298,11 +302,12 @@ export function composeBookingProperties(
     const source = sanitizeToken(attribution.source);
     if (source) properties.source = source;
   }
+  if (attribution.googleVR === "1") properties.googleVR = "1";
   const host = storedHost(attribution.referrer_host);
   if (host) properties.referrer_host = host;
   const path = sanitizeLandingPath(attribution.landing_path);
   if (path) properties.landing_path = path;
-  for (const key of ["utm_term", "utm_content", "landing_path"]) {
+  for (const key of ["utm_term", "utm_content", "landing_path", "referrer_host"]) {
     if (Object.keys(properties).length > 10) delete properties[key];
   }
   return properties;
@@ -327,6 +332,7 @@ export function sanitizeFirstTouchFields(value: unknown): Attribution {
     const safe = sanitizeToken(input[key]);
     if (safe) result[key] = safe;
   }
+  if (input.googleVR === "1") result.googleVR = "1";
   if (result.utm_source) delete result.source;
   const host = storedHost(input.referrer_host), path = sanitizeLandingPath(input.landing_path);
   if (host) result.referrer_host = host;

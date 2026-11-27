@@ -258,3 +258,24 @@ assert.ok(bookingSource.lastIndexOf("onClick", guestAt) > guestAt - 400, "Guest 
 assert.ok(bookingSource.lastIndexOf("onClick", handoffAt) > handoffAt - 500, "Handoff fires from the checkout click");
 
 console.log("PASS: booking funnel events, dedupe, and safe attribution");
+
+assert.deepEqual(attributionFromSearch('?googleVR=1&currency=USD&total=555.34&taxes=70.36'), { googleVR: '1' });
+assert.equal(mergeAttribution(null, '?googleVR=1', '', '', FUNNEL).googleVR, '1');
+assert.equal(mergeAttribution({ googleVR: '1' }, '', '', '', FUNNEL).googleVR, '1');
+const vrUrl = 'https://www.roamstead-co.com/properties/granary?googleVR=1&utm_source=google&utm_medium=vacation_rentals&currency=USD&total=555.34&taxes=70.36&start=2026-12-14&end=2026-12-17&numberOfGuests=2#discard';
+assert.equal(sanitizePageUrl(vrUrl), 'https://www.roamstead-co.com/properties/granary?utm_source=google&utm_medium=vacation_rentals&googleVR=1');
+assert.equal(sanitizeAnalyticsEvent({ type: 'event', url: vrUrl }).url, sanitizePageUrl(vrUrl));
+for (const invalid of ['true', '0', 'yes', '', ' 1 ']) {
+  const search = `?googleVR=${encodeURIComponent(invalid)}`;
+  assert.deepEqual(attributionFromSearch(search), {});
+  assert.equal(mergeAttribution({ googleVR: invalid }, search, '', '', FUNNEL).googleVR, undefined);
+  assert.equal(sanitizePageUrl(`https://www.roamstead-co.com/${search}`), 'https://www.roamstead-co.com/');
+}
+
+// A valid VR landing must still be suppressed for browser automation/internal traffic.
+globalThis.window = { location: { search: '?googleVR=1' }, sessionStorage: { getItem() { return null; }, setItem() {} } };
+Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { webdriver: true } });
+assert.equal(sanitizeAnalyticsEvent({ type: 'event', url: vrUrl }), null);
+window.location.search = '?googleVR=1&rs_analytics=internal';
+navigator.webdriver = false;
+assert.equal(sanitizeAnalyticsEvent({ type: 'pageview', url: vrUrl }), null);

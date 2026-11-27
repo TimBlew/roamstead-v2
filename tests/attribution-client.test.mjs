@@ -4,7 +4,7 @@ import { BOOKING_EVENTS, hostawayCheckoutHref } from "../src/lib/booking-analyti
 const local = new Map(), session = new Map();
 let writes = 0, reads = 0;
 globalThis.window = {
-  location: { pathname: "/properties/granary", search: "?utm_source=gohebervalley&utm_medium=email&utm_campaign=castlehead_sprint1", hostname: "roamstead-co.com" },
+  location: { pathname: "/properties/granary", search: "?googleVR=1&utm_source=gohebervalley&utm_medium=email&utm_campaign=castlehead_sprint1", hostname: "roamstead-co.com" },
   localStorage: { getItem: key => { reads++; return local.get(key); }, setItem(key, value) { writes++; local.set(key, value); } },
   sessionStorage: { getItem: key => session.get(key), setItem: (key, value) => session.set(key, value) },
 };
@@ -12,6 +12,7 @@ globalThis.document = { referrer: "" };
 Object.defineProperty(globalThis, "navigator", { configurable: true, value: { globalPrivacyControl: false } });
 const first = captureLandingAttribution();
 assert.equal(first.utm_source, "gohebervalley");
+assert.equal(first.googleVR, "1");
 window.location.search = "?utm_source=other&utm_term=later";
 assert.deepEqual(captureLandingAttribution(), first);
 trackBookingEvent(BOOKING_EVENTS.pageView, { propertySlug: "granary", pageKind: "property" });
@@ -27,6 +28,7 @@ for (const [, event] of events) {
   assert.equal(event.data.utm_term, undefined);
 }
 assert.equal(events[2][1].data.funnel_ref, undefined);
+for (const [, event] of events.slice(0, 2)) assert.equal(event.data.googleVR, "1");
 window.location.pathname = "/admin/analytics";
 const before = JSON.stringify([...local]);
 assert.deepEqual(captureLandingAttribution(), {});

@@ -1,17 +1,13 @@
 const fs = require("node:fs");
-const vm = require("node:vm");
+const { validBookingDeparture } = require("../src/lib/booking-prefill.ts");
 const assert = require("node:assert/strict");
 const source = fs.readFileSync("src/components/booking/RoamsteadBooking.tsx", "utf8");
-const match = source.match(/const validDeparture = \(start: string, end: string\) => \{([\s\S]*?)\n  \};/);
-assert.ok(match, "Locate production departure validation");
 const data = {};
 for (let day = 1; day <= 10; day++) {
   const date = "2027-01-" + String(day).padStart(2, "0");
-  data[date] = { available: true, departureAllowed: true, minimumStay: 2, maximumStay: 5 };
+  data[date] = { available: true, arrivalAllowed: true, departureAllowed: true, minimumStay: 2, maximumStay: 5 };
 }
-const context = { data, Math, parse: value => new Date(value + "T12:00:00Z"), addDays: (date, days) => new Date(date.getTime() + days * 86400000), key: date => date.toISOString().slice(0, 10) };
-vm.createContext(context);
-vm.runInContext("this.valid = (start, end) => {" + match[1] + "};", context);
+const context = { valid: (start, end) => validBookingDeparture(data, start, end) };
 assert.equal(context.valid("2027-01-01", "2027-01-02"), false, "Minimum stay");
 assert.equal(context.valid("2027-01-01", "2027-01-03"), true, "Exact minimum");
 assert.equal(context.valid("2027-01-01", "2027-01-06"), true, "Exact maximum");

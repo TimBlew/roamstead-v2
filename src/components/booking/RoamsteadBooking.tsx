@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { getFirstTouchAttribution, trackBookingEvent } from "@/lib/analytics";
 import { BOOKING_EVENTS, classifyAvailabilityResponse, hostawayCheckoutHref } from "@/lib/booking-analytics";
 import { BOOKING_CONTACT_EMAIL, BOOKING_CONTACT_PHONE_HREF, BOOKING_CONTACT_PHONE_LABEL, GUIDE_HANDOFF_NOTE, calendarFailureLead, dateStepButtonLabel, dateStepNote, guideStatusCopy } from "@/lib/booking-path";
+import { parseBookingPrefill, validBookingDeparture, type BookingDay as Day, type BookingPrefill } from "@/lib/booking-prefill";
 
-type Day = { date: string; available: boolean; minimumStay: number; maximumStay: number; arrivalAllowed: boolean; departureAllowed: boolean };
 type CalendarResponse = { days?: Day[]; configured?: boolean; error?: string };
 const monthText = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
 const dateText = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
@@ -43,10 +43,27 @@ export function RoamsteadBooking({ listingId, propertySlug, guide = false }: { l
   const maxGuests = ({ 455635: 10, 455631: 4, 455632: 8, 455633: 4 } as Record<number, number>)[listingId] ?? 4;
   const stayNights = checkIn && checkOut ? Math.round((parse(checkOut).getTime() - parse(checkIn).getTime()) / 86400000) : 0;
   const lastMonth = shift(startMonth(today), 11);
+  const prefillInitialized = useRef(false);
+  const pendingPrefill = useRef<BookingPrefill | null>(null);
+  useEffect(() => {
+    if (prefillInitialized.current) return;
+    prefillInitialized.current = true;
+    getFirstTouchAttribution();
+    const prefill = parseBookingPrefill(window.location.search, key(today), maxGuests);
+    if (prefill.guests !== undefined) { setAdults(prefill.guests); setChildren(0); }
+    if (prefill.start && prefill.end) {
+      pendingPrefill.current = prefill;
+      setMonth(startMonth(parse(prefill.start)));
+    }
+  }, [today, maxGuests]);
   useEffect(() => {
     const controller = new AbortController();
     const startDate = key(month);
-    const endDate = key(addDays(shift(month, 2), -1));
+    const prefill = pendingPrefill.current;
+    const isPrefillMonth = !!prefill?.start && key(startMonth(parse(prefill.start))) === startDate;
+    // Fetch every night for longer itineraries too, while retaining the normal two-month window.
+    const windowEnd = key(addDays(shift(month, 2), -1));
+    const endDate = isPrefillMonth && prefill?.end && prefill.end > windowEnd ? prefill.end : windowEnd;
     const requestAttempt = attempt;
     setLoading(true);
     trackBookingEvent(BOOKING_EVENTS.dateCheckAttempt, {
@@ -54,7 +71,22 @@ export function RoamsteadBooking({ listingId, propertySlug, guide = false }: { l
       listingId,
       dedupe: [String(requestAttempt), startDate, endDate],
     });
-    fetch(`/api/hostaway/availability?listingId=${listingId}&startDate=${startDate}&endDate=${endDate}`, { signal: controller.signal, cache: "no-store" })
+    const loadCalendar = async () => {
+      const days: Day[] = [];
+      // The existing read-only route allows at most 75 days per request.
+      for (let cursor = startDate; cursor <= endDate;) {
+        const chunkEnd = key(addDays(parse(cursor), 74));
+        const until = chunkEnd < endDate ? chunkEnd : endDate;
+        const response = await fetch(`/api/hostaway/availability?listingId=${listingId}&startDate=${cursor}&endDate=${until}`, { signal: controller.signal, cache: "no-store" });
+        if (!response.ok) return response;
+        const payload = await response.json() as CalendarResponse;
+        if (!Array.isArray(payload.days)) return Response.json({}, { status: 500 });
+        days.push(...payload.days);
+        cursor = key(addDays(parse(until), 1));
+      }
+      return Response.json({ days });
+    };
+    loadCalendar()
       .then(async (response) => {
         let payload: CalendarResponse = {};
         try {
@@ -77,6 +109,7 @@ export function RoamsteadBooking({ listingId, propertySlug, guide = false }: { l
             listingId,
             dedupe: [String(requestAttempt), startDate, endDate],
           });
+          if (isPrefillMonth) pendingPrefill.current = null;
           setFailureKind(kind);
           setMode("unavailable");
           setMessage("");
@@ -89,6 +122,13 @@ export function RoamsteadBooking({ listingId, propertySlug, guide = false }: { l
         });
         const next: Record<string, Day> = {};
         for (const day of days) next[day.date] = day;
+        if (isPrefillMonth && pendingPrefill.current === prefill) {
+          pendingPrefill.current = null;
+          if (prefill?.start && prefill.end && validBookingDeparture(next, prefill.start, prefill.end)) {
+            setCheckIn(prefill.start);
+            setCheckOut(prefill.end);
+          }
+        }
         setData(previous => ({ ...previous, ...next }));
         setMode("custom");
         setMessage("");
@@ -100,6 +140,7 @@ export function RoamsteadBooking({ listingId, propertySlug, guide = false }: { l
           listingId,
           dedupe: [String(requestAttempt), startDate, endDate],
         });
+        if (isPrefillMonth) pendingPrefill.current = null;
         setFailureKind("error");
         setMode("unavailable");
         setMessage("");
@@ -107,15 +148,9 @@ export function RoamsteadBooking({ listingId, propertySlug, guide = false }: { l
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
   }, [listingId, propertySlug, month, attempt]);
-  const validDeparture = (start: string, end: string) => {
-    const arrival = data[start], departure = data[end];
-    if (!arrival || !departure || end <= start || !departure.departureAllowed) return false;
-    const nights = Math.round((parse(end).getTime() - parse(start).getTime()) / 86400000);
-    if (nights < Math.max(1, arrival.minimumStay || 1) || (arrival.maximumStay > 0 && nights > arrival.maximumStay)) return false;
-    for (let n = 0; n < nights; n++) if (!data[key(addDays(parse(start), n))]?.available) return false;
-    return true;
-  };
+  const validDeparture = (start: string, end: string) => validBookingDeparture(data, start, end);
   const selectDate = (value: string) => {
+    pendingPrefill.current = null;
     const day = data[value];
     if (!day) return;
     if (!checkIn || checkOut || value <= checkIn) {
