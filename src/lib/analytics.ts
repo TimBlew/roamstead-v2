@@ -1,6 +1,9 @@
 import { track } from "@vercel/analytics";
 import {
   captureFirstTouch,
+  ANALYTICS_OPTOUT_KEY,
+  FIRST_TOUCH_KEY,
+  isAnalyticsOptedOut,
   isAdminPath,
   sanitizeFirstTouchFields,
   type Attribution,
@@ -19,11 +22,27 @@ const ATTR_KEY = "rs_booking_attr";
 const recentEvents = new Map<string, number>();
 let memoryAttribution: Attribution = {};
 
+/** Clear each store independently, even if another store is unavailable. */
+export function setAnalyticsOptOut(optOut: boolean): boolean {
+  memoryAttribution = {};
+  recentEvents.clear();
+  if (typeof window === "undefined") return false;
+  try {
+    if (optOut) window.localStorage.setItem(ANALYTICS_OPTOUT_KEY, "1");
+    else window.localStorage.removeItem(ANALYTICS_OPTOUT_KEY);
+  } catch { /* Storage is optional. */ }
+  if (optOut) {
+    try { window.localStorage.removeItem(FIRST_TOUCH_KEY); } catch { /* Best effort. */ }
+    try { window.sessionStorage.removeItem(ATTR_KEY); } catch { /* Best effort. */ }
+  }
+  return isAnalyticsOptedOut();
+}
+
 /** Record a non-booking event; early access carries first touch without a funnel ID. */
 export function trackRoamsteadEvent(name: string, data?: AnalyticsDetails) {
   if (typeof window === "undefined") return;
   try {
-    if (isAdminPath(window.location.pathname)) return;
+    if (isAnalyticsOptedOut() || isAdminPath(window.location.pathname)) return;
     registerAnalyticsSanitizer(window, sanitizeAnalyticsEvent);
     const fields = getFirstTouchAttribution();
     const attribution: AnalyticsDetails = {};
@@ -61,6 +80,10 @@ export function captureLandingAttribution(): Attribution {
   if (typeof window === "undefined") return memoryAttribution;
   try {
     if (isAdminPath(window.location.pathname)) return {};
+    if (isAnalyticsOptedOut()) {
+      memoryAttribution = {};
+      return {};
+    }
     const stored = readStoredAttribution();
     const funnel = stored.funnel_ref || crypto.randomUUID();
     const next = mergeAttribution(stored, window.location.search, document.referrer, window.location.hostname, funnel);
@@ -87,7 +110,7 @@ export function trackBookingEvent(
 ) {
   if (typeof window === "undefined") return;
   try {
-    if (isAdminPath(window.location.pathname)) return;
+    if (isAnalyticsOptedOut() || isAdminPath(window.location.pathname)) return;
     registerAnalyticsSanitizer(window, sanitizeAnalyticsEvent);
     const attribution = captureLandingAttribution();
     const properties = composeBookingProperties(input, attribution);
@@ -101,7 +124,7 @@ export function trackBookingEvent(
 
 export function getFirstTouchAttribution(): Attribution | null {
   try {
-    if (typeof window === "undefined" || isAdminPath(window.location.pathname)) return null;
+    if (typeof window === "undefined" || isAnalyticsOptedOut() || isAdminPath(window.location.pathname)) return null;
     const optOut = (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true
       || navigator.doNotTrack === "1"
       || (window as Window & { doNotTrack?: string }).doNotTrack === "1";
