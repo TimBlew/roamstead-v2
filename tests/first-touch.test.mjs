@@ -74,3 +74,20 @@ for (const value of [undefined, null, {}, first, { utm_source: "=SUM(A1)", sourc
   assert.ok(source.length <= 100);
   assert.doesNotMatch(source, /^[=+@-]/);
 }
+
+const vrStorage = store();
+const vr = captureFirstTouch(vrStorage, { ...landing, search: '?googleVR=1&utm_source=google&utm_medium=vacation_rentals&utm_campaign=something-valid&currency=USD&total=555.34&taxes=70.36&unknown=drop' }, now);
+assert.equal(vr.googleVR, '1');
+assert.deepEqual(captureFirstTouch(vrStorage, { ...landing, search: '' }, now + 1), vr);
+for (const key of ['currency', 'total', 'taxes', 'unknown']) assert.equal(vr[key], undefined);
+assert.equal(sanitizeFirstTouchFields(vr).googleVR, '1');
+const vrHref = new URL(hostawayCheckoutHref(455631, '2026-12-14', '2026-12-17', 2, vr));
+assert.equal(vrHref.origin + vrHref.pathname, 'https://roamstead_ventures.holidayfuture.com/checkout/455631');
+assert.deepEqual(Object.fromEntries(vrHref.searchParams), { start: '2026-12-14', end: '2026-12-17', numberOfGuests: '2', googleVR: '1', utm_source: 'google', utm_medium: 'vacation_rentals', utm_campaign: 'something-valid' });
+const fullVrProps = composeBookingProperties({ propertySlug: 'granary', listingId: 455631, pageKind: 'property', nights: 3, guests: 2 }, { ...vr, funnel_ref: '11111111-1111-4111-8111-111111111111', utm_content: 'hero', utm_term: 'stay', referrer_host: 'www.google.com' });
+assert.deepEqual(Object.keys(fullVrProps).sort(), ['property_slug', 'listing_id', 'page_kind', 'nights', 'guests', 'funnel_ref', 'googleVR', 'utm_source', 'utm_medium', 'utm_campaign'].sort());
+for (const invalid of ['true', '0', 'yes', '', ' 1 ', 1]) {
+  assert.equal(sanitizeFirstTouchFields({ googleVR: invalid }).googleVR, undefined);
+  assert.equal(composeBookingProperties({ propertySlug: 'granary' }, { googleVR: invalid }).googleVR, undefined);
+  assert.deepEqual([...new URL(hostawayCheckoutHref(455631, '2026-12-14', '2026-12-17', 2, { googleVR: invalid })).searchParams.keys()], ['start', 'end', 'numberOfGuests']);
+}
