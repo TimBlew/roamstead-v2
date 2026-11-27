@@ -25,6 +25,19 @@ export default function PrivacyPage() {
             <p>You can reach us about privacy at [OWNER TO CONFIRM: privacy contact email].</p>
             <p>Effective date: [OWNER TO CONFIRM: effective date]</p>
           </PrivacySection>
+          <PrivacySection title="Castlehead, the website operator">
+            <p>Castlehead operates roamstead-co.com and provides website services for Roamstead.</p>
+            <p>Because of that role, Castlehead can access:</p>
+            <ul className="list-disc space-y-4 pl-6">
+              <li>Copies of early-access signup notifications. Those copies are sent as a BCC so Castlehead can see new signups and monitor how people find the site.</li>
+              <li>Vercel Web Analytics for this site, including the page views and the booking and signup events described on this page.</li>
+              <li>The private /admin dashboard, after signing in, which can show early-access contacts and site analytics.</li>
+              <li>Vercel request and runtime logs for this site.</li>
+              <li>The Roamstead early-access contact list in Resend, which stores email, preferred season and home area.</li>
+              <li>A private Google Sheet of early-access signups, which Castlehead owns. An automated service writes new signups to that sheet.</li>
+            </ul>
+            <p>Castlehead uses this access to run and maintain the website, send signup notifications, and monitor acquisition. How long signup notification copies, Resend contacts and the Google Sheet are kept is listed under “How long information stays” and needs owner confirmation.</p>
+          </PrivacySection>
           <PrivacySection title="What we save in your browser">
             <p>We don’t set advertising cookies or cookies that track you across other sites.</p>
             <ul className="list-disc space-y-4 pl-6">
