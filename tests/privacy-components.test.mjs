@@ -76,5 +76,6 @@ assert.equal(iframe.props.loading, "lazy");
 assert.equal(iframe.props.className, "h-[300px] w-full rounded-[18px] border-0 md:h-[420px] md:rounded-[20px]");
 const layout = fs.readFileSync(new URL("../src/app/layout.tsx", import.meta.url), "utf8");
 assert.doesNotMatch(layout, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
-for (const font of ["Bricolage_Grotesque", "Funnel_Sans"]) assert.ok(layout.includes(font));
+for (const font of ["bricolage-grotesque", "funnel-sans"]) assert.ok(layout.includes(font));
+assert.ok(layout.includes('from "next/font/local"'));
 console.log("PASS: mount-safe analytics script gating, click-to-load map and self-hosted font wiring");

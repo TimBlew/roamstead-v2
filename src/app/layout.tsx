@@ -1,4 +1,4 @@
-import { Bricolage_Grotesque, Funnel_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import type { Metadata } from "next";
 import { PublicAnalytics } from "@/components/analytics/PublicAnalytics";
 import "./globals.css";
@@ -6,8 +6,21 @@ import { siteUrl, launchIndexingEnabled, socialImage, googleSiteVerification } f
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 
-const headingFont = Bricolage_Grotesque({ subsets: ["latin"], weight: ["400", "500"], display: "swap", variable: "--font-bricolage", fallback: ["sans-serif"], adjustFontFallback: false });
-const bodyFont = Funnel_Sans({ subsets: ["latin"], weight: ["400", "500"], display: "swap", variable: "--font-funnel", fallback: ["sans-serif"], adjustFontFallback: false });
+const headingFont = localFont({
+  src: [
+    { path: "./fonts/bricolage-grotesque/vietnamese.woff2", weight: "400 500", style: "normal" },
+    { path: "./fonts/bricolage-grotesque/latin-ext.woff2", weight: "400 500", style: "normal" },
+    { path: "./fonts/bricolage-grotesque/latin.woff2", weight: "400 500", style: "normal" },
+  ],
+  display: "swap", variable: "--font-bricolage", fallback: ["sans-serif"], adjustFontFallback: false,
+});
+const bodyFont = localFont({
+  src: [
+    { path: "./fonts/funnel-sans/latin-ext.woff2", weight: "400 500", style: "normal" },
+    { path: "./fonts/funnel-sans/latin.woff2", weight: "400 500", style: "normal" },
+  ],
+  display: "swap", variable: "--font-funnel", fallback: ["sans-serif"], adjustFontFallback: false,
+});
 
 const googleVerification = googleSiteVerification();
 
