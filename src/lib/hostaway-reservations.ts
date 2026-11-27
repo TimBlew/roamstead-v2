@@ -6,10 +6,21 @@ export type ReservationSummary = { available: false } | {
 
 export function aggregateReservations(rows: Record<string, unknown>[], since: string, until: string): ReservationSummary {
   const start = Date.parse(since), end = Date.parse(until);
-  if (!Number.isFinite(start) || !Number.isFinite(end)) return { available: false };
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return { available: false };
   const revenue: Record<string, number> = {}, byListing: Record<string, number> = {};
   let count = 0;
+  const unique = new Map<string, Record<string, unknown>>();
   for (const row of rows) {
+    const id = String(row.id ?? "");
+    if (!/^\d+$/.test(id)) return { available: false };
+    const previous = unique.get(id);
+    if (previous) {
+      // Identical pagination repeats are harmless; conflicting snapshots are not safe totals.
+      const keys = ["channelId", "status", "reservationDate", "totalPrice", "currency", "listingMapId"];
+      if (keys.some(key => String(previous[key]) !== String(row[key]))) return { available: false };
+    } else unique.set(id, row);
+  }
+  for (const row of unique.values()) {
     if (Number(row.channelId) !== 2013) continue;
     const status = typeof row.status === "string" ? row.status.toLowerCase().trim() : "";
     if (status !== "new" && status !== "modified") continue;
@@ -20,7 +31,7 @@ export function aggregateReservations(rows: Record<string, unknown>[], since: st
     if (date < start || date >= end) continue;
     const amount = Number(row.totalPrice), currency = row.currency;
     const listing = String(row.listingMapId);
-    if (!Number.isFinite(amount) || row.totalPrice == null || typeof currency !== "string" || !/^[A-Z]{3}$/.test(currency) || !/^\d+$/.test(listing)) return { available: false };
+    if (!Number.isFinite(amount) || (typeof row.totalPrice !== "number" && (typeof row.totalPrice !== "string" || !/^-?\d+(?:\.\d+)?$/.test(row.totalPrice))) || typeof currency !== "string" || !/^[A-Z]{3}$/.test(currency) || !/^\d+$/.test(listing)) return { available: false };
     count++;
     revenue[currency] = (revenue[currency] || 0) + amount;
     byListing[listing] = (byListing[listing] || 0) + 1;
@@ -56,7 +67,7 @@ export async function websiteReservations(since: string, until: string, options:
       });
       if (!response.ok) return { available: false };
       const payload = await response.json();
-      if (!Array.isArray(payload.result) || payload.result.some((row: unknown) => !row || typeof row !== "object" || Array.isArray(row))) return { available: false };
+      if ((payload.status !== undefined && payload.status !== "success") || !Array.isArray(payload.result) || payload.result.some((row: unknown) => !row || typeof row !== "object" || Array.isArray(row))) return { available: false };
       rows.push(...payload.result);
       if (payload.result.length < 100) return aggregateReservations(rows, since, until);
     }

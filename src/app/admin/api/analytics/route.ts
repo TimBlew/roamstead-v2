@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { adminAuthenticated } from "@/lib/admin-auth";
 
 import { websiteReservations } from "@/lib/hostaway-reservations";
+import { chartWindows, reportingPeriod } from "@/lib/analytics-period";
 import { analyticsQueryParams } from "@/lib/admin-analytics";
 
 export const dynamic = "force-dynamic";
@@ -10,65 +11,42 @@ const endpoint = "https://api.vercel.com/v1/query/web-analytics";
 const teamId = "team_GQt5Mp5AL3n7sjv7QSTNQPig";
 async function query(token:string,resource:string,params:Record<string,string|string[]>){
   const u=new URL(endpoint+resource);
-  u.search = analyticsQueryParams(resource,{...params,projectId,teamId}).toString();
+  // Vercel rounds inclusive until up to the next hour; subtract 1ms at boundaries.
+  const until = new Date(Date.parse(String(params.until)) - 1).toISOString();
+  u.search = analyticsQueryParams(resource,{...params,until,projectId,teamId}).toString();
   const r=await fetch(u,{headers:{Authorization:`Bearer ${token}`},cache:"no-store",signal:AbortSignal.timeout(9000)});
   if(!r.ok)throw new Error("Analytics API unavailable: "+r.status);
-  return r.json();
+  const payload = await r.json();
+  const measure = resource === "/events/aggregate" ? "count" : "pageviews";
+  if (!Array.isArray(payload.data) || payload.data.some((row:any) => !row || typeof row !== "object" || !Number.isFinite(row[measure]) || row[measure] < 0 || !Number.isFinite(row.visitors) || row.visitors < 0)) throw new Error("Malformed analytics response");
+  return payload;
 }
-type Daily = {timestamp?:string;visitors?:number;pageviews?:number};
-const DAY = 86400000;
-const iso = (d:Date) => d.toISOString().slice(0,10);
-const utcDay = (date:string) => new Date(date.slice(0,10)+"T00:00:00.000Z");
-async function dailyRows(token:string,start:Date,end:Date) {
-  const windows:{since:string;until:string}[]=[];
-  for(let cursor=start.getTime();cursor<end.getTime();cursor+=50*DAY){
-    windows.push({since:new Date(cursor).toISOString(),until:new Date(Math.min(cursor+50*DAY,end.getTime())).toISOString()});
+// Aggregate each calendar window directly. Summing hourly visitors double-counts people.
+async function trafficWindows(token: string, range: number, now: Date) {
+  const windows = chartWindows(range, now);
+  const points: {start:string;end:string;visitors:number;pageviews:number;partial:boolean}[] = [];
+  // Bound concurrent requests; annual reporting uses at most 13 monthly buckets.
+  for (let i = 0; i < windows.length; i += 8) {
+    points.push(...await Promise.all(windows.slice(i, i + 8).map(async w => {
+      const result = await query(token, "/visits/aggregate", { since:w.since, until:w.until, by:"environment", limit:"100" });
+      return { start:w.start, end:w.end, partial:w.partial, visitors:result.data.reduce((s:number,r:any)=>s+(r.visitors||0),0), pageviews:result.data.reduce((s:number,r:any)=>s+(r.pageviews||0),0) };
+    })));
   }
-  const batches=await Promise.all(windows.map(w=>query(token,"/visits/aggregate",{...w,by:"day",limit:"100"})));
-  const byDay=new Map<string,Daily>();
-  for(const batch of batches)for(const row of (batch.data||[]) as Daily[]){
-    if(!row.timestamp)continue;
-    const date=row.timestamp.slice(0,10);
-    const previous=byDay.get(date);
-    // Shared boundary dates can be returned by neighboring windows.
-    // Retain the newer result instead of counting the boundary twice.
-    if(!previous || (row.timestamp||"")>=(previous.timestamp||""))byDay.set(date,{...row,timestamp:date});
-  }
-  return [...byDay.values()].sort((a,b)=>(a.timestamp||"").localeCompare(b.timestamp||""));
-}
-function weeklySeries(rows:Daily[],now:Date){
-  const map=new Map(rows.map(d=>[d.timestamp?.slice(0,10)||"",d]));
-  const first=rows.find(d=>(d.pageviews||0)>0 || (d.visitors||0)>0)?.timestamp;
-  if(!first)return {weeks:[],current:null};
-  const firstDay=utcDay(first);
-  const firstSunday=new Date(firstDay);
-  firstSunday.setUTCDate(firstSunday.getUTCDate()+((7-firstSunday.getUTCDay())%7));
-  const today=utcDay(iso(now));
-  const currentSunday=new Date(today);
-  currentSunday.setUTCDate(currentSunday.getUTCDate()-currentSunday.getUTCDay());
-  const weeks:{start:string;end:string;visitors:number}[]=[];
-  for(let cursor=firstSunday.getTime();cursor+6*DAY<currentSunday.getTime();cursor+=7*DAY){
-    let visitors=0;
-    for(let i=0;i<7;i++)visitors+=map.get(iso(new Date(cursor+i*DAY)))?.visitors||0;
-    weeks.push({start:iso(new Date(cursor)),end:iso(new Date(cursor+6*DAY)),visitors});
-  }
-  // The partial launch week isn't a completed week, but the current week should
-  // always be visible as a live outlined point even before the first Sunday.
-  let currentVisitors=0;
-  for(let cursor=currentSunday.getTime();cursor<=today.getTime();cursor+=DAY)
-    currentVisitors+=map.get(iso(new Date(cursor)))?.visitors||0;
-  return {weeks,current:{start:iso(currentSunday),end:iso(today),visitors:currentVisitors}};
+  return points;
 }
 export async function GET(req:NextRequest){
   if(!await adminAuthenticated())return NextResponse.json({error:"Unauthorized"},{status:401});
   const token=process.env.ROAMSTEAD_ANALYTICS_VERCEL_TOKEN;
-  if(!token)return NextResponse.json({connected:false,message:"Vercel reporting token not yet configured. The external Analytics dashboard remains available."},{headers:{"Cache-Control":"private, no-store"}});
   const days=Number(req.nextUrl.searchParams.get("days"));
   const range=days===7||days===90||days===365?days:30;
-  const now=new Date(), since=new Date(now.getTime()-range*DAY).toISOString(),until=now.toISOString();
-  const previousSince=new Date(now.getTime()-2*range*DAY).toISOString();
+  const now = new Date(), reporting = reportingPeriod(range, now);
+  const { since, until } = reporting;
+  const reservationResult = websiteReservations(since, until);
+  if(!token)return NextResponse.json({connected:false,reporting,verifiedReservations:await reservationResult,message:"Website traffic is temporarily unavailable."},{headers:{"Cache-Control":"private, no-store"}});
   try{
-    const visits = await dailyRows(token,new Date(since),now);
+    const chartResult = trafficWindows(token, range, now).then(value => ({value}), () => ({value:null}));
+    const totals = await query(token,"/visits/aggregate",{since,until,by:"environment",limit:"100"});
+    const visits = totals.data;
     // Keep essential traffic visible if a breakdown, event aggregation, or
     // independent historical query is temporarily unavailable.
     const acquisition = (dimension: string) => query(token, "/events/aggregate", {
@@ -80,28 +58,22 @@ export async function GET(req:NextRequest){
       query(token,"/visits/aggregate",{since,until,by:"requestPath",limit:"15"}),
       query(token,"/visits/aggregate",{since,until,by:"referrerHostname",limit:"12"}),
       query(token,"/visits/aggregate",{since,until,by:"deviceType",limit:"8"}),
-      dailyRows(token,new Date(now.getTime()-364*DAY),new Date(now.getTime()+DAY)),
-      Promise.all([
-        dailyRows(token,new Date(previousSince),new Date(since)),
-        query(token,"/visits/aggregate",{since:previousSince,until:since,by:"requestPath",limit:"15"}),
-        query(token,"/visits/aggregate",{since:previousSince,until:since,by:"referrerHostname",limit:"12"}),
-        query(token,"/visits/aggregate",{since:previousSince,until:since,by:"deviceType",limit:"8"})
-      ]).then(([daily,p,r,d])=>({visits:daily,pages:p.data||[],referrers:r.data||[],devices:d.data||[]})),
+      chartResult.then(result => result.value),
       acquisition("utm_source"),
       acquisition("utm_campaign"),
-      websiteReservations(since, until)
+      reservationResult
     ]);
     const available = (index:number) => optional[index].status==="fulfilled" ? (optional[index] as PromiseFulfilledResult<any>).value : null;
     const events=available(0), pages=available(1), referrers=available(2), devices=available(3);
-    const yearRows=available(4), previous=available(5);
+    const points=available(4);
     optional.forEach((result,index) => {
       if(result.status==="rejected") console.warn("Roamstead analytics optional query failed",index,String(result.reason));
     });
-    return NextResponse.json({connected:true,inferredAcquisitionSource:available(6)?.data ?? null,inferredAcquisitionCampaign:available(7)?.data ?? null,verifiedReservations:available(8) ?? {available:false},period:`Past ${range} days`,visits,previous,weekly:weeklySeries(yearRows || visits,now),weeklyError:yearRows ? undefined : "Full-year history is temporarily unavailable; showing the available reporting period.",events:events ? events.data||[] : null,eventsAvailable:events!==null,pages:pages ? pages.data||[] : null,pagesAvailable:pages!==null,referrers:referrers ? referrers.data||[] : null,referrersAvailable:referrers!==null,devices:devices ? devices.data||[] : null,devicesAvailable:devices!==null},{headers:{"Cache-Control":"private, no-store"}});
+    return NextResponse.json({connected:true,inferredAcquisitionSource:available(5)?.data ?? null,inferredAcquisitionCampaign:available(6)?.data ?? null,verifiedReservations:available(7) ?? {available:false},reporting,period:`Past ${range} days`,visits,chart:points,weeklyError:points ? undefined : "Visitor trend is temporarily unavailable.",events:events ? events.data||[] : null,eventsAvailable:events!==null,pages:pages ? pages.data||[] : null,pagesAvailable:pages!==null,referrers:referrers ? referrers.data||[] : null,referrersAvailable:referrers!==null,devices:devices ? devices.data||[] : null,devicesAvailable:devices!==null},{headers:{"Cache-Control":"private, no-store"}});
   }catch(error){
     const detail=error instanceof Error ? error.message : "Unknown analytics error";
     console.error("Roamstead analytics main query failed",detail);
     const accessDenied=/\b(401|403)\b/.test(detail);
-    return NextResponse.json({connected:false,message:accessDenied ? "Analytics reporting access needs attention. The reporting token may have expired or lost permission." : "Analytics reporting is temporarily unavailable. Please try again shortly."},{headers:{"Cache-Control":"private, no-store"}});
+    return NextResponse.json({connected:false,reporting,verifiedReservations:await reservationResult,message:accessDenied ? "Analytics reporting access needs attention. The reporting token may have expired or lost permission." : "Analytics reporting is temporarily unavailable. Please try again shortly."},{headers:{"Cache-Control":"private, no-store"}});
   }
 }

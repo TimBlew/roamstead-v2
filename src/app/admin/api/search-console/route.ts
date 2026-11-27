@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuthenticated } from "@/lib/admin-auth";
 import { canonical, launchIndexingEnabled } from "@/lib/site";
+import { businessDate, addDays } from "@/lib/analytics-period";
 import { SEARCH_CONSOLE_DIAGNOSTIC } from "@/lib/admin-analytics";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -51,7 +52,7 @@ async function query(access:string,startDate:string,endDate:string,dimensions:st
 export async function GET(request:NextRequest){
  if(!await adminAuthenticated())return NextResponse.json({error:"Unauthorized"},{status:401,headers});
  const n=Number(request.nextUrl.searchParams.get("days")),days=n===7||n===90||n===365?n:30;
- const end=new Date(Date.now()-3*86400000),start=new Date(end.getTime()-(days-1)*86400000),date=(d:Date)=>d.toISOString().slice(0,10);
+ const end=new Date(addDays(businessDate(new Date(), "America/Los_Angeles"), -3)+"T12:00:00Z"),start=new Date(end.getTime()-(days-1)*86400000),date=(d:Date)=>d.toISOString().slice(0,10);
  try{
   const access=await token(request);
   if(!access)return NextResponse.json({connected:false,message:"Production OIDC identity token is unavailable. Check Vercel federation configuration."},{headers});

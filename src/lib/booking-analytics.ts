@@ -1,3 +1,4 @@
+import { suppressInternalAnalytics } from "@/lib/analytics-traffic";
 /**
  * Pure booking-funnel analytics helpers.
  * Event names and trigger rules live in docs/booking-funnel-events.md.
@@ -152,6 +153,7 @@ const analyticsPageViews = new Map<string, number>();
 
 /** One sanitizer for native page views and custom events. Drops /admin, strips fragments, and keeps only allowlisted campaign params. */
 export function sanitizeAnalyticsEvent<T extends { type: string; url: string }>(event: T, now = Date.now()): T | null {
+  if (suppressInternalAnalytics()) return null;
   return prepareAnalyticsEvent(event, analyticsPageViews, now);
 }
 

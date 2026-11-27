@@ -5,7 +5,13 @@ export function analyticsQueryParams(resource: string, params: Record<string, st
   for (const [key, value] of Object.entries(params)) {
     for (const entry of Array.isArray(value) ? value : [value]) result.append(key, entry);
   }
-  if (resource === "/visits/aggregate") result.set("filter", ADMIN_TRAFFIC_FILTER);
+  if (resource === "/visits/aggregate" || resource === "/events/aggregate") {
+    // Exact source + explicitly named PR live-check campaign observed together in production.
+    // Unknown sources stay included. Raw historical records are never deleted.
+    const firstTouchQA = resource === "/events/aggregate" ? "not (eventData/utm_source eq 'qa_attrib' and eventData/utm_campaign eq 'pr20_live_check')" : null;
+    const filters = [ADMIN_TRAFFIC_FILTER, "environment eq 'production'", firstTouchQA, result.get("filter")].filter(Boolean);
+    result.set("filter", filters.map(filter => `(${filter})`).join(" and "));
+  }
   return result;
 }
 
