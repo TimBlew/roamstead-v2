@@ -19,10 +19,11 @@ Every booking event may include:
 | `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term` | Present only when the landing query had a safe value. |
 | `source` | Present only when `utm_source` is absent and the landing query had a safe `source` value. |
 | `referrer_host` | External referrer hostname only, such as `www.google.com`. |
+| `landing_path` | First public landing pathname, at most 120 characters; no query or hash. |
 
 Not sent: guest name, email, phone, full referrer URL, raw query string, stay dates, or payment details.
 
-Vercel may drop custom properties above the plan limit. The event name still records the step.
+Events have a hard cap of 10 custom properties. If needed, drop `utm_term`, then `utm_content`, then `landing_path` until within the cap.
 
 ## Events
 
@@ -88,31 +89,34 @@ A query window can still omit an event that was sent just outside the selected t
 
 ## Attribution
 
-Allowlisted campaign fields are kept in `sessionStorage` under `rs_booking_attr` for the current browser tab. A new tab starts empty and gets its own `funnel_ref`. Closing the tab clears the store.
+The first public landing captures a whole record in first-party localStorage key `rs_first_touch`: version `v:1`, allowlisted attribution fields, optional `landing_path`, ISO `captured_at`, and `expires_at` exactly 90 days later. Later visits never overwrite or fill missing fields. A direct landing also creates a record; absent source tags report as Direct / unknown. Expired or malformed records are replaced on the next public landing. `/admin` and its descendants never create or alter the record.
 
-First touch is per field, not per visit. The first accepted value of `utm_source` stays even if a later page in that tab has a different `utm_source`. A field that was missing or invalid can still be filled by a later page. The stored object can therefore mix `utm_source` from one landing with `utm_campaign` from another. Do not report that object as one campaign visit.
+Safe campaign tokens are 1–64 letters, numbers, `.`, `_`, `~`, or `-`, beginning with a letter or number. Email-like and phone-like values are rejected. Only allowlisted keys are accepted; click IDs, email, phone, and full referrer URLs are not stored or sent. Referrers are external hostnames only. Landing paths contain only slash-separated safe alphanumeric/underscore/hyphen segments, at most 120 characters, with no query or hash.
 
-A safe token is 1 to 64 characters of letters, numbers, `.`, `_`, `~`, and `-`. An email-like value, a phone-like value, a click id (`gclid` and similar), or any other query key is dropped and does not block a later valid value for an allowlisted field.
+When `navigator.globalPrivacyControl === true`, `navigator.doNotTrack === "1"`, or `window.doNotTrack === "1"`, localStorage is neither read nor written for attribution. These opt-out signals also omit first-touch UTMs from checkout links. Blocked storage also falls back to the existing session/in-memory attribution. That fallback remains per-field within the tab. `rs_booking_attr` and the opaque per-tab `funnel_ref` remain unchanged. First touch supplies the entire attribution record when available, including an empty/direct record; it is never merged with later session campaign fields.
 
-`referrer_host` is the hostname of the first external `document.referrer`. A later move inside roamstead, such as `/midway` to `/properties/hygge-house`, does not replace it. The path and query of the referrer are not stored.
+Booking events include first touch and the per-tab funnel reference, subject to the 10-property cap (drop `utm_term`, `utm_content`, then `landing_path`). The existing `early_access_submission_accepted` event includes only first-touch source, medium, campaign, referrer host, and landing path. Native traffic page views keep their existing URL sanitizer and dedupe behavior.
 
-`funnel_ref` is `crypto.randomUUID()` for the tab. It is not a Hostaway or partner code. It is not written into the address bar and it is not added to the checkout URL. The checkout query stays `start`, `end`, and `numberOfGuests`.
+The inquiry POST carries sanitized first-touch fields; the server independently revalidates them. The existing sheet Source column uses `roamstead-co.com|s=source|m=medium|c=campaign|r=host|l=/path`, capped at 100 characters. Whole segments are dropped in landing, referrer, campaign, medium, source order if necessary. No attribution remains exactly `roamstead-co.com`. Sheet columns and the separately deployed Apps Script are unchanged. The owner email and admin directory label these tags “First touch (inferred)”. Legacy Source values, including exactly `roamstead-co.com`, show no first-touch summary. Formatted Source values always start with `roamstead-co.com`, never a spreadsheet formula prefix.
 
-Native page views already record the path, including `/midway` and `/park-city`, and they keep allowlisted campaign parameters only when those parameters are on that page's URL. They do not carry `funnel_ref`. Booking events carry the stored fields and `funnel_ref`, and their page URL is the property or book URL after the same sanitizer. They do not carry the earlier hub path.
-
-Those two records cannot be joined. A `/midway` page view does not prove that a later `hostaway_checkout_click` came from that hub. A landing enum was not added to booking events. Vercel documents custom event properties as limited by plan, and this project's property cap was not verified. An extra field could drop properties or the event, so the limitation is documented instead of sent.
-
-`booking_date_check_success` means the month payload loaded. It is not the guest's selected dates and it is not a booking.
+Tag future campaigns with lowercase safe tokens, for example:
+`/properties/granary?utm_source=gohebervalley&utm_medium=email&utm_campaign=castlehead_sprint1`.
+Never put guest identifiers or click IDs in campaign values.
 
 ## Hostaway handoff
 
-The checkout URL stays:
+The checkout starts with the existing ordered parameters:
+`https://roamstead_ventures.holidayfuture.com/checkout/{listingId}?start=YYYY-MM-DD&end=YYYY-MM-DD&numberOfGuests={adults+children}`.
 
-`https://roamstead_ventures.holidayfuture.com/checkout/{listingId}?start=YYYY-MM-DD&end=YYYY-MM-DD&numberOfGuests={adults+children}`
+When first touch exists, sanitized `utm_source`, `utm_medium`, and `utm_campaign` are appended in that order when present. No referrer, landing path, or funnel reference is sent. With no first touch, the original URL is unchanged.
 
-`docs/launch-handoff.md` says Roamstead sends dates and the combined guest total only. There is no documented Hostaway parameter for a booking reference, and adding one is not verified to leave checkout behavior unchanged. The funnel reference is tracked only in Vercel events on this site.
+Operator-verified: Holiday Future returns 200 with those extra UTMs, without redirect or page changes. Its JavaScript does not read them into the reservation body, which contains dates, guests, ages, coupon id, fee components and, for Google VR only, channelId. Hostaway does not store these UTMs on reservations. They only help if booking-engine analytics is later enabled. A checkout click is a booking attempt, not a reservation; this site has no reliable completion event.
 
-Completion after the guest leaves for Hostaway is unverified. Do not read a handoff as a reservation.
+Admin acquisition queries use repeated `by=eventName&by=eventData/utm_source` (or `utm_campaign`), supported on the current plan per operator verification, limited to 100 groups. Empty tags appear as Direct / unknown, including historical events without attribution. Counts are events, not unique guests. The API names these groups `inferredAcquisitionSource` and `inferredAcquisitionCampaign`; the panel labels them “Campaign interest (inferred from first-touch tags)”. They are not linked to reservations and do not establish that a campaign generated a booking.
+
+The admin-only Hostaway reader exchanges a token and GETs reservations with `channelId=2013` (bookingengine). Channel 2000 is direct and 2022 is Google. It filters `reservationDate` to the selected period locally, counts only confirmed reservations with status `new` or `modified` (case-insensitive), counts by listing, and sums totalPrice separately per currency. All other statuses (including pending, awaitingPayment, ownerStay, cancelled, declined, expired, inquiry, unknown and empty) are excluded without making the summary unavailable. It scans at most five pages of 100; missing configuration, failures, malformed data or reaching the cap return unavailable, not a partial total. Only aggregates leave the server; no guest PII, reservation IDs, or individual dates are returned. The API returns these aggregates as `verifiedReservations`. The panel displays “Website reservations (verified in Hostaway)” first, separately from inferred campaign interest. Revenue covers confirmed website checkout reservations from all sources and is not linked to any campaign.
+
+Campaign-level reservation attribution would need Hostaway booking-engine analytics, per-campaign coupon codes, or an owner-set custom field. Those require Hostaway account changes and are out of scope. No live checkout was submitted to implement or test this change.
 
 ## Where this runs
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { captureLandingAttribution } from "@/lib/analytics";
@@ -12,12 +13,13 @@ import { registerAnalyticsSanitizer, sanitizeAnalyticsEvent } from "@/lib/bookin
  * append that registration after any events already queued.
  */
 export function PublicAnalytics() {
+  const pathname = usePathname();
   if (typeof window !== "undefined") {
-    registerAnalyticsSanitizer(window, sanitizeAnalyticsEvent);
+    try { registerAnalyticsSanitizer(window, sanitizeAnalyticsEvent); } catch { /* Best effort. */ }
   }
   useEffect(() => {
     captureLandingAttribution();
-  }, []);
+  }, [pathname]);
 
   return <Analytics />;
 }

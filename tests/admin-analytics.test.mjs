@@ -40,3 +40,22 @@ assert.equal(SEARCH_CONSOLE_DIAGNOSTIC.test("service_account_impersonation_403_P
 assert.equal(SEARCH_CONSOLE_DIAGNOSTIC.test("GSC status 403"), false);
 assert.equal(SEARCH_CONSOLE_DIAGNOSTIC.test("unexpected details"), false);
 console.log("Admin analytics tests passed");
+
+// Keep verified reservation aggregates distinct from inferred action counts.
+const fs = await import("node:fs");
+const route = fs.readFileSync("src/app/admin/api/analytics/route.ts", "utf8");
+const panel = fs.readFileSync("src/components/admin/AnalyticsPanel.tsx", "utf8");
+for (const key of ["verifiedReservations", "inferredAcquisitionSource", "inferredAcquisitionCampaign"]) {
+  assert.ok(route.includes(key + ":"), key + " is returned by the API");
+  assert.ok(panel.includes(key), key + " is consumed by the panel");
+}
+for (const oldKey of ["reservations", "acquisitionSource", "acquisitionCampaign"]) {
+  assert.doesNotMatch(route, new RegExp("\\b" + oldKey + ":"));
+  assert.doesNotMatch(panel, new RegExp("\\b" + oldKey + "\\??:"));
+}
+const verifiedHeading = "Website reservations (verified in Hostaway)";
+const inferredHeading = "Campaign interest (inferred from first-touch tags)";
+assert.ok(panel.indexOf(verifiedHeading) >= 0 && panel.indexOf(verifiedHeading) < panel.indexOf(inferredHeading));
+assert.ok(panel.includes("First touch (inferred)"));
+assert.ok(panel.includes("Confirmed reservations made through the website checkout, from all sources. Hostaway does not record campaign tags, so these are not linked to any campaign."));
+assert.ok(panel.includes("Counts of on-site actions grouped by the visitor's first-touch tags. These are inferred, are not linked to reservations, and do not show that a campaign generated a booking. A checkout handoff is not a reservation. Missing tags appear as Direct / unknown."));

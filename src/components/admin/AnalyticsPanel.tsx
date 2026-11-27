@@ -1,13 +1,14 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { deriveAdminAnalytics, metricValue as value, type AnalyticsMetric as Metric, type AnalyticsBreakdowns } from "@/lib/admin-analytics";
+import type { ReservationSummary } from "@/lib/hostaway-reservations";
+import { deriveAcquisition, type AcquisitionMetric, deriveAdminAnalytics, metricValue as value, type AnalyticsMetric as Metric, type AnalyticsBreakdowns } from "@/lib/admin-analytics";
 
 type SearchData = {connected?:boolean;message?:string;clicks?:number;impressions?:number;ctr?:number;position?:number;endDate?:string;previous?:{clicks?:number;impressions?:number;ctr?:number;position?:number}|null;queries?:{query:string;clicks:number;impressions:number;position:number;ctr:number}[];pages?:{page:string;clicks:number;impressions:number;position:number;ctr:number}[]};
 type InspectionData = {connected?:boolean;inspection?:boolean;launchIndexingEnabled?:boolean;siteMap?:string;results?:{path:string;url:string;status:string;reason:string;lastCrawlTime?:string|null}[]};
 type WeeklyPoint = {start:string;end:string;visitors:number};
 type Weekly = {weeks:WeeklyPoint[];current:WeeklyPoint|null};
-type Payload = AnalyticsBreakdowns & { connected?: boolean; message?: string; visits?: Metric[]; previous?:{visits:Metric[];pages:Metric[];referrers:Metric[];devices:Metric[]}|null; weekly?: Weekly; weeklyError?: string };
+type Payload = AnalyticsBreakdowns & { inferredAcquisitionSource?: AcquisitionMetric[] | null; inferredAcquisitionCampaign?: AcquisitionMetric[] | null; verifiedReservations?: ReservationSummary; connected?: boolean; message?: string; visits?: Metric[]; previous?:{visits:Metric[];pages:Metric[];referrers:Metric[];devices:Metric[]}|null; weekly?: Weekly; weeklyError?: string };
 const format = (n: number) => new Intl.NumberFormat("en-US").format(n);
 const shortDate = (date: string) => {
   const d = new Date(date.slice(0, 10) + "T12:00:00");
@@ -127,6 +128,7 @@ function VisitsChart({ weekly, daily, days }: { weekly?: Weekly; daily:Metric[];
   </div>;
 }
 export default function AnalyticsPanel() {
+  const [acquisitionDimension, setAcquisitionDimension] = useState<"utm_source" | "utm_campaign">("utm_source");
   const [days, setDays] = useState<7 | 30 | 90 | 365>(7);
   const [data, setData] = useState<Payload | null>(null);
   const [search, setSearch] = useState<SearchData | null>(null);
@@ -159,6 +161,7 @@ export default function AnalyticsPanel() {
   const pageviews = useMemo(() => daily.reduce((s, d) => s + (d.pageviews || 0), 0), [daily]);
   const visits = useMemo(() => daily.reduce((s, d) => s + (d.visitors || 0), 0), [daily]);
   const { clicks, rate, eventsAvailable, exploredRows, pagesAvailable, referrersAvailable, devicesAvailable } = deriveAdminAnalytics(data, visits);
+  const acquisitionRows = deriveAcquisition(acquisitionDimension === "utm_source" ? data?.inferredAcquisitionSource : data?.inferredAcquisitionCampaign, acquisitionDimension);
   const pages = data?.pages || [];
   const publicPages = pages.filter(row => !(row.requestPath || "").startsWith("/admin"));
   return <div className="space-y-3">
@@ -198,6 +201,42 @@ export default function AnalyticsPanel() {
         <div className="mt-3 border-t border-[#E7DFDB] pt-3 sm:mt-4"><h3 className="font-heading text-[20px] font-medium text-[#1F3125]">How guests explored your site</h3><div className="mt-1 divide-y divide-[#E7DFDB]">{exploredRows?.length ? exploredRows.map((e, i) => <div key={i} className="flex justify-between gap-4 py-1.5 text-[13px]"><span>{e.label}</span><strong className="font-medium tabular-nums">{format(e.value)}</strong></div>) : <p className="py-2 text-[13px] text-[#6D6057]">{eventsAvailable ? "No tracked actions yet." : "Guest actions are temporarily unavailable."}</p>}</div><p className="mt-2 font-body text-[11px] leading-snug text-[#80766E]">A checkout handoff is a tap toward payment. It is not a confirmed reservation or revenue. Property page views are separate from automatic traffic page views.</p></div>
       </>}
     </section>
+    {data?.connected && <section className="rounded-2xl border border-[#D8CCC4] bg-[#FFFCFB] px-4 py-3 sm:px-5 sm:py-4">
+      <h3 className="font-heading text-[19px] font-medium text-[#1F3125]">Bookings and campaign interest</h3>
+      <div className="mt-3">
+        <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Website reservations (verified in Hostaway)</h4>
+        <p className="mt-2 text-[13px] text-[#1F3125]">{data.verifiedReservations?.available ? <>{format(data.verifiedReservations.count)} {data.verifiedReservations.count === 1 ? "reservation" : "reservations"}{data.verifiedReservations.count > 0 && <> · {Object.entries(data.verifiedReservations.revenue).map(([currency, amount]) => new Intl.NumberFormat("en-US", { style: "currency", currency, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount)).join(" · ") || "No revenue"}</>}</> : "Temporarily unavailable."}</p>
+        <p className="mt-2 text-[11px] leading-snug text-[#80766E]">Confirmed reservations made through the website checkout, from all sources. Hostaway does not record campaign tags, so these are not linked to any campaign.</p>
+      </div>
+      <div className="mt-3 border-t border-[#E7DFDB] pt-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h4 className="font-heading text-[16px] font-medium text-[#1F3125]">Campaign interest (inferred from first-touch tags)</h4>
+        <select aria-label="Acquisition breakdown" value={acquisitionDimension} onChange={event => setAcquisitionDimension(event.target.value as "utm_source" | "utm_campaign")} className="rounded-lg border border-[#D8CCC4] bg-[#FFFCFB] px-3 py-2 text-[13px]">
+          <option value="utm_source">Source</option><option value="utm_campaign">Campaign</option>
+        </select>
+      </div>
+      <div className="mt-3 sm:overflow-x-auto">
+        {acquisitionRows?.length ? <>
+        <div className="divide-y divide-[#E7DFDB] sm:hidden">
+          {acquisitionRows.map(row => <div key={row.label} className="py-3">
+            <p className="break-words text-[13px] font-medium">{row.label}</p>
+            <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2">
+              {([["Property page views", row.views], ["Guest steps", row.guests], ["Checkout handoffs", row.handoffs], ["Signups", row.signups]] as const).map(([label, count]) => <div key={label} className="min-w-0">
+                <dt className="text-[11px] text-[#6D6057]">{label}</dt>
+                <dd className="text-[13px] tabular-nums">{format(count)}</dd>
+              </div>)}
+            </dl>
+          </div>)}
+        </div>
+        <table className="hidden w-full text-left text-[13px] sm:table">
+          <thead className="text-[#6D6057]"><tr>{["First touch (inferred)", "Property page views", "Guest steps", "Checkout handoffs", "Signups"].map(label => <th key={label} className="px-2 py-2 font-medium">{label}</th>)}</tr></thead>
+          <tbody className="divide-y divide-[#E7DFDB]">{acquisitionRows.map(row => <tr key={row.label}><td className="break-words px-2 py-2">{row.label}</td>{[row.views, row.guests, row.handoffs, row.signups].map((n, i) => <td key={i} className="px-2 py-2 tabular-nums">{format(n)}</td>)}</tr>)}</tbody>
+        </table>
+        </> : <p className="text-[13px] text-[#6D6057]">{acquisitionRows ? "No tracked actions yet." : "Acquisition reporting is temporarily unavailable."}</p>}
+      </div>
+      <p className="mt-2 text-[11px] leading-snug text-[#80766E]">Counts of on-site actions grouped by the visitor's first-touch tags. These are inferred, are not linked to reservations, and do not show that a campaign generated a booking. A checkout handoff is not a reservation. Missing tags appear as Direct / unknown.</p>
+      </div>
+    </section>}
     {data?.connected && <div className="grid items-start gap-3 lg:grid-cols-2">
       <MetricRows title="Pages guests visit most" compact available={pagesAvailable} items={publicPages} keyName="requestPath" />
       <div className="grid min-w-0 gap-3">

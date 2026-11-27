@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuthenticated } from "@/lib/admin-auth";
 
+import { websiteReservations } from "@/lib/hostaway-reservations";
 import { analyticsQueryParams } from "@/lib/admin-analytics";
 
 export const dynamic = "force-dynamic";
 const projectId = "prj_CjF9I7Fk1MyrSkKgcPAPogf6NAvD";
 const endpoint = "https://api.vercel.com/v1/query/web-analytics";
 const teamId = "team_GQt5Mp5AL3n7sjv7QSTNQPig";
-async function query(token:string,resource:string,params:Record<string,string>){
+async function query(token:string,resource:string,params:Record<string,string|string[]>){
   const u=new URL(endpoint+resource);
   u.search = analyticsQueryParams(resource,{...params,projectId,teamId}).toString();
   const r=await fetch(u,{headers:{Authorization:`Bearer ${token}`},cache:"no-store",signal:AbortSignal.timeout(9000)});
@@ -70,6 +71,10 @@ export async function GET(req:NextRequest){
     const visits = await dailyRows(token,new Date(since),now);
     // Keep essential traffic visible if a breakdown, event aggregation, or
     // independent historical query is temporarily unavailable.
+    const acquisition = (dimension: string) => query(token, "/events/aggregate", {
+      since, until, by: ["eventName", `eventData/${dimension}`], limit: "100",
+      filter: "eventName in ('booking_page_view','booking_guest_step','hostaway_checkout_click','early_access_submission_accepted')",
+    });
     const optional = await Promise.allSettled([
       query(token,"/events/aggregate",{since,until,by:"eventName",limit:"30"}),
       query(token,"/visits/aggregate",{since,until,by:"requestPath",limit:"15"}),
@@ -81,7 +86,10 @@ export async function GET(req:NextRequest){
         query(token,"/visits/aggregate",{since:previousSince,until:since,by:"requestPath",limit:"15"}),
         query(token,"/visits/aggregate",{since:previousSince,until:since,by:"referrerHostname",limit:"12"}),
         query(token,"/visits/aggregate",{since:previousSince,until:since,by:"deviceType",limit:"8"})
-      ]).then(([daily,p,r,d])=>({visits:daily,pages:p.data||[],referrers:r.data||[],devices:d.data||[]}))
+      ]).then(([daily,p,r,d])=>({visits:daily,pages:p.data||[],referrers:r.data||[],devices:d.data||[]})),
+      acquisition("utm_source"),
+      acquisition("utm_campaign"),
+      websiteReservations(since, until)
     ]);
     const available = (index:number) => optional[index].status==="fulfilled" ? (optional[index] as PromiseFulfilledResult<any>).value : null;
     const events=available(0), pages=available(1), referrers=available(2), devices=available(3);
@@ -89,7 +97,7 @@ export async function GET(req:NextRequest){
     optional.forEach((result,index) => {
       if(result.status==="rejected") console.warn("Roamstead analytics optional query failed",index,String(result.reason));
     });
-    return NextResponse.json({connected:true,period:`Past ${range} days`,visits,previous,weekly:weeklySeries(yearRows || visits,now),weeklyError:yearRows ? undefined : "Full-year history is temporarily unavailable; showing the available reporting period.",events:events ? events.data||[] : null,eventsAvailable:events!==null,pages:pages ? pages.data||[] : null,pagesAvailable:pages!==null,referrers:referrers ? referrers.data||[] : null,referrersAvailable:referrers!==null,devices:devices ? devices.data||[] : null,devicesAvailable:devices!==null},{headers:{"Cache-Control":"private, no-store"}});
+    return NextResponse.json({connected:true,inferredAcquisitionSource:available(6)?.data ?? null,inferredAcquisitionCampaign:available(7)?.data ?? null,verifiedReservations:available(8) ?? {available:false},period:`Past ${range} days`,visits,previous,weekly:weeklySeries(yearRows || visits,now),weeklyError:yearRows ? undefined : "Full-year history is temporarily unavailable; showing the available reporting period.",events:events ? events.data||[] : null,eventsAvailable:events!==null,pages:pages ? pages.data||[] : null,pagesAvailable:pages!==null,referrers:referrers ? referrers.data||[] : null,referrersAvailable:referrers!==null,devices:devices ? devices.data||[] : null,devicesAvailable:devices!==null},{headers:{"Cache-Control":"private, no-store"}});
   }catch(error){
     const detail=error instanceof Error ? error.message : "Unknown analytics error";
     console.error("Roamstead analytics main query failed",detail);

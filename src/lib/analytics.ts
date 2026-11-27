@@ -1,5 +1,8 @@
 import { track } from "@vercel/analytics";
 import {
+  captureFirstTouch,
+  isAdminPath,
+  sanitizeFirstTouchFields,
   type Attribution,
   type BookingEventName,
   acceptFunnelEvent,
@@ -16,10 +19,21 @@ const ATTR_KEY = "rs_booking_attr";
 const recentEvents = new Map<string, number>();
 let memoryAttribution: Attribution = {};
 
-/** Record a non-booking event, such as early access, without funnel attribution. */
+/** Record a non-booking event; early access carries first touch without a funnel ID. */
 export function trackRoamsteadEvent(name: string, data?: AnalyticsDetails) {
   if (typeof window === "undefined") return;
-  track(name, data);
+  try {
+    if (isAdminPath(window.location.pathname)) return;
+    registerAnalyticsSanitizer(window, sanitizeAnalyticsEvent);
+    const fields = getFirstTouchAttribution();
+    const attribution: AnalyticsDetails = {};
+    if (name === "early_access_submission_accepted") {
+      for (const key of ["utm_source", "utm_medium", "utm_campaign", "referrer_host", "landing_path"] as const) {
+        if (fields?.[key]) attribution[key] = fields[key]!;
+      }
+    }
+    track(name, { ...data, ...attribution });
+  } catch { /* Analytics must never interrupt signup. */ }
 }
 
 function readStoredAttribution(): Attribution {
@@ -45,11 +59,15 @@ function persistAttribution(value: Attribution) {
 /** First-touch allowlisted attribution for this tab. Safe to call more than once. */
 export function captureLandingAttribution(): Attribution {
   if (typeof window === "undefined") return memoryAttribution;
-  const stored = readStoredAttribution();
-  const funnel = stored.funnel_ref || crypto.randomUUID();
-  const next = mergeAttribution(stored, window.location.search, document.referrer, window.location.hostname, funnel);
-  persistAttribution(next);
-  return next;
+  try {
+    if (isAdminPath(window.location.pathname)) return {};
+    const stored = readStoredAttribution();
+    const funnel = stored.funnel_ref || crypto.randomUUID();
+    const next = mergeAttribution(stored, window.location.search, document.referrer, window.location.hostname, funnel);
+    persistAttribution(next);
+    const first = getFirstTouchAttribution();
+    return first ? { ...first, funnel_ref: next.funnel_ref } : next;
+  } catch { return memoryAttribution; }
 }
 
 /**
@@ -68,8 +86,9 @@ export function trackBookingEvent(
   },
 ) {
   if (typeof window === "undefined") return;
-  registerAnalyticsSanitizer(window, sanitizeAnalyticsEvent);
   try {
+    if (isAdminPath(window.location.pathname)) return;
+    registerAnalyticsSanitizer(window, sanitizeAnalyticsEvent);
     const attribution = captureLandingAttribution();
     const properties = composeBookingProperties(input, attribution);
     const identity = [input.propertySlug, input.listingId ?? "", input.pageKind ?? "", ...(input.dedupe ?? [])].join("|");
@@ -78,4 +97,19 @@ export function trackBookingEvent(
   } catch {
     // Analytics must not block choosing dates, guests, or the payment handoff.
   }
+}
+
+export function getFirstTouchAttribution(): Attribution | null {
+  try {
+    if (typeof window === "undefined" || isAdminPath(window.location.pathname)) return null;
+    const optOut = (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true
+      || navigator.doNotTrack === "1"
+      || (window as Window & { doNotTrack?: string }).doNotTrack === "1";
+    const record = captureFirstTouch(optOut ? null : window.localStorage, {
+      optOut,
+      pathname: window.location.pathname, search: window.location.search,
+      hostname: window.location.hostname, referrer: document.referrer,
+    });
+    return record ? sanitizeFirstTouchFields(record) : null;
+  } catch { return null; }
 }

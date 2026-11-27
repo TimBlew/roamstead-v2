@@ -1,3 +1,4 @@
+import { parseInquirySource } from "@/lib/inquiry-attribution";
 import { readSignups, sheetConfigured } from "@/lib/signup-sheet";
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuthenticated } from "@/lib/admin-auth";
@@ -10,7 +11,7 @@ function mapLedger(stored:Awaited<ReturnType<typeof readSignups>>){
   return stored.sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).map(r=>({
     id:r.id,email:r.email,createdAt:r.createdAt,season:r.season,home:r.home,
     unsubscribed:false,subscriptionKnown:false,notificationStatus:r.notificationStatus,contactStatus:r.contactStatus,
-    preferencesUnavailable:false
+    firstTouch:parseInquirySource(r.source),preferencesUnavailable:false
   }));
 }
 async function getLedgerEntries(refresh:boolean){

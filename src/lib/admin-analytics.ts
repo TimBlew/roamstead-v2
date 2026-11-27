@@ -1,7 +1,10 @@
 export const ADMIN_TRAFFIC_FILTER = "requestPath ne '/admin' and not startswith(requestPath,'/admin/')";
 
-export function analyticsQueryParams(resource: string, params: Record<string, string>) {
-  const result = new URLSearchParams(params);
+export function analyticsQueryParams(resource: string, params: Record<string, string | string[]>) {
+  const result = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    for (const entry of Array.isArray(value) ? value : [value]) result.append(key, entry);
+  }
   if (resource === "/visits/aggregate") result.set("filter", ADMIN_TRAFFIC_FILTER);
   return result;
 }
@@ -41,4 +44,20 @@ export function deriveAdminAnalytics(data: AnalyticsBreakdowns | null, visitors:
     referrersAvailable: data?.referrersAvailable !== false && Array.isArray(data?.referrers),
     devicesAvailable: data?.devicesAvailable !== false && Array.isArray(data?.devices),
   };
+}
+
+export type AcquisitionMetric = AnalyticsMetric & { "eventData/utm_source"?: string; "eventData/utm_campaign"?: string };
+export function deriveAcquisition(rows: AcquisitionMetric[] | null | undefined, dimension: "utm_source" | "utm_campaign" = "utm_source") {
+  if (!Array.isArray(rows)) return null;
+  const result = new Map<string, { label: string; views: number; guests: number; handoffs: number; signups: number }>();
+  const columns = { booking_page_view: "views", booking_guest_step: "guests", hostaway_checkout_click: "handoffs", early_access_submission_accepted: "signups" } as const;
+  for (const row of rows) {
+    const column = columns[row.eventName as keyof typeof columns];
+    if (!column) continue;
+    const label = row[`eventData/${dimension}`] || "Direct / unknown";
+    const entry = result.get(label) || { label, views: 0, guests: 0, handoffs: 0, signups: 0 };
+    entry[column] += metricValue(row);
+    result.set(label, entry);
+  }
+  return [...result.values()].sort((a, b) => b.handoffs - a.handoffs || b.views - a.views || a.label.localeCompare(b.label));
 }

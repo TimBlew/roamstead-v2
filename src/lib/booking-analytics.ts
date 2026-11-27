@@ -19,7 +19,7 @@ export type BookingEventName = (typeof BOOKING_EVENTS)[keyof typeof BOOKING_EVEN
 export const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
 export type UtmKey = (typeof UTM_KEYS)[number];
 
-export type Attribution = Partial<Record<UtmKey | "source" | "referrer_host" | "funnel_ref", string>>;
+export type Attribution = Partial<Record<UtmKey | "source" | "referrer_host" | "funnel_ref" | "landing_path", string>>;
 
 export const PAGE_VIEW_DEDUPE_MS = 1500;
 export const ACTION_DEDUPE_MS = 1000;
@@ -168,11 +168,11 @@ export function classifyAvailabilityResponse(input: {
 }
 
 /**
- * Documented Hostaway handoff. Query keys are only start, end, and numberOfGuests.
- * Do not add a funnel token: no existing contract says Hostaway will keep it,
- * and an extra parameter is not verified as checkout-neutral.
+ * Holiday Future accepts campaign params without changing checkout, but Hostaway
+ * does not store them on reservations. Useful only for future booking-engine analytics.
+ * A checkout click is an attempt, not a reservation.
  */
-export function hostawayCheckoutHref(listingId: number, checkIn: string, checkOut: string, guests: number): string {
+export function hostawayCheckoutHref(listingId: number, checkIn: string, checkOut: string, guests: number, firstTouch: Attribution | null = null): string {
   if (!Number.isInteger(listingId) || listingId <= 0) throw new Error("Invalid listing");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(checkIn) || !/^\d{4}-\d{2}-\d{2}$/.test(checkOut)) throw new Error("Invalid dates");
   if (!Number.isInteger(guests) || guests < 1 || guests > 30) throw new Error("Invalid guests");
@@ -181,6 +181,10 @@ export function hostawayCheckoutHref(listingId: number, checkIn: string, checkOu
     end: checkOut,
     numberOfGuests: String(guests),
   });
+  for (const key of ["utm_source", "utm_medium", "utm_campaign"] as const) {
+    const value = sanitizeToken(firstTouch?.[key]);
+    if (value) params.append(key, value);
+  }
   return `https://roamstead_ventures.holidayfuture.com/checkout/${listingId}?${params.toString()}`;
 }
 
@@ -294,5 +298,68 @@ export function composeBookingProperties(
   }
   const host = storedHost(attribution.referrer_host);
   if (host) properties.referrer_host = host;
+  const path = sanitizeLandingPath(attribution.landing_path);
+  if (path) properties.landing_path = path;
+  for (const key of ["utm_term", "utm_content", "landing_path"]) {
+    if (Object.keys(properties).length > 10) delete properties[key];
+  }
   return properties;
+}
+
+export const FIRST_TOUCH_KEY = "rs_first_touch";
+export const FIRST_TOUCH_TTL = 90 * 86400000;
+export type FirstTouch = Attribution & { v: 1; captured_at: string; expires_at: string };
+export const isAdminPath = (path: string) => path === "/admin" || path.startsWith("/admin/");
+
+export function sanitizeLandingPath(value: unknown): string | null {
+  if (typeof value !== "string" || value.length > 120 || !/^\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]*$/.test(value) || isAdminPath(value)) return null;
+  if (value.split("/").some(segment => segment && !sanitizeToken(segment))) return null;
+  return value;
+}
+
+/** Shared client/server allowlist; metadata and funnel IDs are never accepted here. */
+export function sanitizeFirstTouchFields(value: unknown): Attribution {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  const input = value as Attribution, result: Attribution = {};
+  for (const key of [...UTM_KEYS, "source"] as const) {
+    const safe = sanitizeToken(input[key]);
+    if (safe) result[key] = safe;
+  }
+  if (result.utm_source) delete result.source;
+  const host = storedHost(input.referrer_host), path = sanitizeLandingPath(input.landing_path);
+  if (host) result.referrer_host = host;
+  if (path) result.landing_path = path;
+  return result;
+}
+
+export function readFirstTouch(raw: string | null, now = Date.now()): FirstTouch | null {
+  try {
+    if (!raw) return null;
+    const value = JSON.parse(raw);
+    if (!value || value.v !== 1) return null;
+    const captured = Date.parse(value.captured_at), expires = Date.parse(value.expires_at);
+    if (!Number.isFinite(captured) || captured > now || expires !== captured + FIRST_TOUCH_TTL || expires <= now) return null;
+    const fields = sanitizeFirstTouchFields(value);
+    const allowed = new Set(["v", "captured_at", "expires_at", ...Object.keys(fields)]);
+    if (Object.keys(value).some(key => !allowed.has(key))) return null;
+    return { ...fields, v: 1, captured_at: new Date(captured).toISOString(), expires_at: new Date(expires).toISOString() };
+  } catch { return null; }
+}
+
+export function captureFirstTouch(storage: Pick<Storage, "getItem" | "setItem"> | null, input: {
+  pathname: string; search: string; referrer: string; hostname: string; optOut?: boolean;
+}, now = Date.now()): FirstTouch | null {
+  try {
+    if (isAdminPath(input.pathname) || input.optOut || !storage) return null;
+    const prior = readFirstTouch(storage.getItem(FIRST_TOUCH_KEY), now);
+    if (prior) return prior;
+    const fields = attributionFromSearch(input.search);
+    const host = referrerHost(input.referrer, [input.hostname]);
+    if (host) fields.referrer_host = host;
+    const path = sanitizeLandingPath(input.pathname);
+    if (path) fields.landing_path = path;
+    const record: FirstTouch = { ...fields, v: 1, captured_at: new Date(now).toISOString(), expires_at: new Date(now + FIRST_TOUCH_TTL).toISOString() };
+    storage.setItem(FIRST_TOUCH_KEY, JSON.stringify(record));
+    return record;
+  } catch { return null; }
 }
