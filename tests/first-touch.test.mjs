@@ -53,7 +53,7 @@ assert.equal(firstTouchSummary({}), "Direct");
 assert.ok(inquirySource({ utm_source: "a".repeat(64), utm_medium: "b".repeat(64), utm_campaign: "c".repeat(64), referrer_host: "www.google.com", landing_path: "/properties/granary" }).length <= 100);
 const params = analyticsQueryParams("/events/aggregate", { by: ["eventName", "eventData/utm_source"], filter: "eventName in ('booking_page_view')" });
 assert.deepEqual(params.getAll("by"), ["eventName", "eventData/utm_source"]);
-assert.equal(params.get("filter"), "eventName in ('booking_page_view')");
+assert.equal(params.get("filter"), "(requestPath ne '/admin' and not startswith(requestPath,'/admin/')) and (environment eq 'production') and (not (eventData/utm_source eq 'qa_attrib' and eventData/utm_campaign eq 'pr20_live_check')) and (eventName in ('booking_page_view'))");
 assert.deepEqual(deriveAcquisition([{ eventName: "booking_page_view", "eventData/utm_source": "", count: 2 }, { eventName: "hostaway_checkout_click", "eventData/utm_source": "", count: 1 }]), [{ label: "Direct / unknown", views: 2, guests: 0, handoffs: 1, signups: 0 }]);
 assert.equal(deriveAcquisition(null), null);
 assert.equal(deriveAcquisition([{ eventName: "early_access_submission_accepted", "eventData/utm_campaign": "sprint", count: 3 }], "utm_campaign")[0].signups, 3);

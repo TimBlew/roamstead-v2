@@ -5,11 +5,11 @@ assert.equal(ADMIN_TRAFFIC_FILTER, "requestPath ne '/admin' and not startswith(r
 for (const by of ["day", "requestPath", "referrerHostname", "deviceType"]) {
   const params = { since: "2026-10-01", until: "2026-11-01", by, limit: "100" };
   const result = analyticsQueryParams("/visits/aggregate", params);
-  assert.equal(result.get("filter"), ADMIN_TRAFFIC_FILTER);
+  assert.equal(result.get("filter"), `(${ADMIN_TRAFFIC_FILTER}) and (environment eq 'production')`);
   for (const [key, value] of Object.entries(params)) assert.equal(result.get(key), value);
   assert.equal(params.filter, undefined);
 }
-assert.equal(analyticsQueryParams("/events/aggregate", { by: "eventName" }).has("filter"), false);
+assert.equal(analyticsQueryParams("/events/aggregate", { by: "eventName" }).get("filter"), `(${ADMIN_TRAFFIC_FILTER}) and (environment eq 'production') and (not (eventData/utm_source eq 'qa_attrib' and eventData/utm_campaign eq 'pr20_live_check'))`);
 for (const data of [null, {}, { events: null, eventsAvailable: false }, { events: [], eventsAvailable: false }]) {
   const result = deriveAdminAnalytics(data, 100);
   assert.equal(result.clicks, null);
@@ -53,9 +53,9 @@ for (const oldKey of ["reservations", "acquisitionSource", "acquisitionCampaign"
   assert.doesNotMatch(route, new RegExp("\\b" + oldKey + ":"));
   assert.doesNotMatch(panel, new RegExp("\\b" + oldKey + "\\??:"));
 }
-const verifiedHeading = "Website reservations (verified in Hostaway)";
-const inferredHeading = "Campaign interest (inferred from first-touch tags)";
+const verifiedHeading = "Website bookings";
+const inferredHeading = "Campaign performance";
 assert.ok(panel.indexOf(verifiedHeading) >= 0 && panel.indexOf(verifiedHeading) < panel.indexOf(inferredHeading));
-assert.ok(panel.includes("First touch (inferred)"));
+assert.ok(panel.includes("How campaign activity is counted"));
 assert.ok(panel.includes("Confirmed reservations made through the website checkout, from all sources. Hostaway does not record campaign tags, so these are not linked to any campaign."));
-assert.ok(panel.includes("Counts of on-site actions grouped by the visitor's first-touch tags. These are inferred, are not linked to reservations, and do not show that a campaign generated a booking. A checkout handoff is not a reservation. Missing tags appear as Direct / unknown."));
+assert.ok(panel.includes("Counts of on-site actions grouped by the visitor's first-touch tags. These are inferred, are not linked to reservations, and do not show that a campaign generated a booking. A checkout handoff is not a reservation. Missing tags appear as Direct / Unknown."));
