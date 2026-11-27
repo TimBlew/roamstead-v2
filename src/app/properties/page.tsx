@@ -10,10 +10,10 @@ const order = ["hygge-house", "granary", "lowell", "powder-room"];
 
 export const metadata = {
   alternates: { canonical: "/properties" },
-  title: "Midway & Park City Mountain Base Rentals | The Lowell and Powder Room",
+  title: "Midway and Park City, Utah Vacation Rentals | Roamstead",
   description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective.",
-  openGraph: { images: [socialImage], title: "Midway & Park City Mountain Base Rentals | The Lowell and Powder Room", description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective." },
-  twitter: { card: "summary_large_image", images: [socialImage], title: "Midway & Park City Mountain Base Rentals | The Lowell and Powder Room", description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective." },
+  openGraph: { images: [socialImage], title: "Midway and Park City, Utah Vacation Rentals | Roamstead", description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective." },
+  twitter: { card: "summary_large_image", images: [socialImage], title: "Midway and Park City, Utah Vacation Rentals | Roamstead", description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective." },
 };
 
 export default function PropertiesPage() {
