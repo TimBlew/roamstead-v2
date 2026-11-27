@@ -110,7 +110,7 @@ export const CommunityCTA = () => {
             <button type="submit" disabled={status === "sending"} className="inline-flex h-[48px] min-w-[192px] items-center justify-center rounded-[8px] bg-[#4A6E57] px-[28px] font-body text-[15px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.13),0_4px_12px_rgba(31,49,37,0.12)] transition-[background-color,box-shadow] duration-200 hover:bg-[#3C6049] hover:shadow-[0_6px_16px_rgba(31,49,37,0.16)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57] disabled:cursor-not-allowed disabled:opacity-60 md:h-[52px] md:min-w-[206px]">{status === "sending" ? "Sending…" : "Get early access"}</button>
             <div className="mx-auto mt-[8px] max-w-[620px] font-body text-[11.5px] leading-[1.45] md:text-[12px] text-[#6D6057]">
               <p>Free to join the list. Unsubscribe anytime.</p>
-              <p>By joining, you agree to receive early-access news and member offers by email.</p>
+              <p>By joining, you agree to receive early-access news and member offers by email. See our <a href="/privacy" className="underline">Privacy policy</a>.</p>
             </div>
           </div>
         </form>

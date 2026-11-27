@@ -43,6 +43,7 @@ export const Footer: React.FC = () => (
             <a href="/properties" className="text-[13px] leading-[1.45] hover:underline md:text-[14px]">Properties</a>
             <a href="/midway" className="text-[13px] leading-[1.45] hover:underline md:text-[14px]">Midway</a>
             <a href="/park-city" className="text-[13px] leading-[1.45] hover:underline md:text-[14px]">Park City</a>
+            <a href="/privacy" className="text-[13px] leading-[1.45] hover:underline md:text-[14px]">Privacy</a>
             <a href="/book" className="text-[13px] leading-[1.45] hover:underline md:text-[14px]">Book direct</a>
           </div>
         </nav>
@@ -65,6 +66,7 @@ export const Footer: React.FC = () => (
       </div>
     </div>
     <div className="mx-auto mt-[22px] max-w-[1320px] border-t border-white/20 pt-[16px] md:mt-[28px] md:pt-[14px]">
+      <p className="mb-2 text-sm leading-[1.5] text-[#F4EFEC]/80">We use privacy-friendly analytics on our own site to see which links bring you here. <a href="/privacy#choices" className="underline">Your privacy and choices</a></p>
       <div className="flex flex-col gap-[8px] sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <p className="text-sm leading-[1.5] text-[#F4EFEC]/80">© Roamstead Collective 2026. All rights reserved.</p>
         <a href="https://castlehead.ai" target="_blank" rel="noopener noreferrer" aria-label="Site powered by Castlehead" className="group mx-auto mt-[8px] inline-flex w-fit items-baseline justify-center gap-[5px] whitespace-nowrap text-[11px] sm:mx-0 sm:mt-0 leading-[1.5] text-[#F4EFEC]/65 transition-colors hover:text-[#FFFCFB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"><span className={`${creditSans.className} font-normal`}>Site powered by</span><span className={`${creditSerif.className} text-xs font-normal tracking-normal text-[#FFFCFB]`}>Castlehead<span className="text-[#00D4FF]">.</span></span></a>

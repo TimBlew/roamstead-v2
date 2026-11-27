@@ -1,3 +1,4 @@
+import { PropertyMap } from "@/components/properties/PropertyMap";
 import { socialImage } from "@/lib/site";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -314,13 +315,7 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
           </div>
 
-          <iframe
-            title={`Map of ${location.mapQuery}`}
-            src={`https://www.google.com/maps?q=${encodeURIComponent(location.mapQuery)}&output=embed`}
-            className="h-[300px] w-full rounded-[18px] border-0 md:h-[420px] md:rounded-[20px]"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          <PropertyMap mapQuery={location.mapQuery} />
         </div>
       </section>
 

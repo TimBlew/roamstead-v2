@@ -1,10 +1,10 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { captureLandingAttribution } from "@/lib/analytics";
-import { registerAnalyticsSanitizer, sanitizeAnalyticsEvent } from "@/lib/booking-analytics";
+import { isAnalyticsBlocked, registerAnalyticsSanitizer, sanitizeAnalyticsEvent } from "@/lib/booking-analytics";
 
 /**
  * The owner workspace is a private management surface, not guest traffic.
@@ -14,12 +14,15 @@ import { registerAnalyticsSanitizer, sanitizeAnalyticsEvent } from "@/lib/bookin
  */
 export function PublicAnalytics() {
   const pathname = usePathname();
-  if (typeof window !== "undefined") {
+  const [enabled, setEnabled] = useState(false);
+  if (typeof window !== "undefined" && !isAnalyticsBlocked()) {
     try { registerAnalyticsSanitizer(window, sanitizeAnalyticsEvent); } catch { /* Best effort. */ }
   }
   useEffect(() => {
+    setEnabled(!isAnalyticsBlocked());
     captureLandingAttribution();
   }, [pathname]);
 
-  return <Analytics />;
+  // Wait for the client privacy check before injecting the analytics script.
+  return enabled && !isAnalyticsBlocked() ? <Analytics /> : null;
 }

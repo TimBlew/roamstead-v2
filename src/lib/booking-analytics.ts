@@ -5,6 +5,32 @@ import { suppressInternalAnalytics } from "@/lib/analytics-traffic";
  * Nothing here talks to Hostaway or to the network.
  */
 
+export const ANALYTICS_OPTOUT_KEY = "rs_analytics_optout";
+
+/** Storage can be blocked; in that case preserve the existing analytics behavior. */
+export function isAnalyticsOptedOut(): boolean {
+  try {
+    return typeof window !== "undefined" && window.localStorage.getItem(ANALYTICS_OPTOUT_KEY) === "1";
+  } catch { return false; }
+}
+
+/** Browser privacy signals take precedence even when localStorage is unavailable. */
+export function hasBrowserPrivacySignal(): boolean {
+  try {
+    if (typeof navigator !== "undefined" && (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true) return true;
+  } catch { /* Check the other signals independently. */ }
+  try {
+    if (typeof navigator !== "undefined" && navigator.doNotTrack === "1") return true;
+  } catch { /* Check the window signal independently. */ }
+  try {
+    return typeof window !== "undefined" && (window as Window & { doNotTrack?: string }).doNotTrack === "1";
+  } catch { return false; }
+}
+
+export function isAnalyticsBlocked(): boolean {
+  return hasBrowserPrivacySignal() || isAnalyticsOptedOut();
+}
+
 export const BOOKING_EVENTS = {
   pageView: "booking_page_view",
   dateCheckAttempt: "booking_date_check_attempt",
@@ -153,6 +179,8 @@ const analyticsPageViews = new Map<string, number>();
 
 /** One sanitizer for native page views and custom events. Drops /admin, strips fragments, and keeps only allowlisted campaign params. */
 export function sanitizeAnalyticsEvent<T extends { type: string; url: string }>(event: T, now = Date.now()): T | null {
+  // Privacy signals first so DNT/GPC/opt-out never touch session storage used by the internal-traffic guard.
+  if (isAnalyticsBlocked()) return null;
   if (suppressInternalAnalytics()) return null;
   return prepareAnalyticsEvent(event, analyticsPageViews, now);
 }
@@ -184,7 +212,7 @@ export function hostawayCheckoutHref(listingId: number, checkIn: string, checkOu
     numberOfGuests: String(guests),
   });
   for (const key of ["utm_source", "utm_medium", "utm_campaign"] as const) {
-    const value = sanitizeToken(firstTouch?.[key]);
+    const value = sanitizeToken(isAnalyticsBlocked() ? null : firstTouch?.[key]);
     if (value) params.append(key, value);
   }
   return `https://roamstead_ventures.holidayfuture.com/checkout/${listingId}?${params.toString()}`;
@@ -352,7 +380,7 @@ export function captureFirstTouch(storage: Pick<Storage, "getItem" | "setItem"> 
   pathname: string; search: string; referrer: string; hostname: string; optOut?: boolean;
 }, now = Date.now()): FirstTouch | null {
   try {
-    if (isAdminPath(input.pathname) || input.optOut || !storage) return null;
+    if (isAnalyticsBlocked() || isAdminPath(input.pathname) || input.optOut || !storage) return null;
     const prior = readFirstTouch(storage.getItem(FIRST_TOUCH_KEY), now);
     if (prior) return prior;
     const fields = attributionFromSearch(input.search);
