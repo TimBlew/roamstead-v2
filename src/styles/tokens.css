@@ -2,8 +2,8 @@
 
 /* Typography - Font Families */
 :root {
-  --font-heading: 'Bricolage Grotesque', sans-serif;
-  --font-body: 'Funnel Sans', sans-serif;
+  --font-heading: var(--font-bricolage), sans-serif;
+  --font-body: var(--font-funnel), sans-serif;
   
   /* Font Weights */
   --font-regular: 400;

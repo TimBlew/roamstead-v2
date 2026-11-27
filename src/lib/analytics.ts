@@ -4,6 +4,7 @@ import {
   ANALYTICS_OPTOUT_KEY,
   FIRST_TOUCH_KEY,
   isAnalyticsOptedOut,
+  isAnalyticsBlocked,
   isAdminPath,
   sanitizeFirstTouchFields,
   type Attribution,
@@ -42,7 +43,7 @@ export function setAnalyticsOptOut(optOut: boolean): boolean {
 export function trackRoamsteadEvent(name: string, data?: AnalyticsDetails) {
   if (typeof window === "undefined") return;
   try {
-    if (isAnalyticsOptedOut() || isAdminPath(window.location.pathname)) return;
+    if (isAnalyticsBlocked() || isAdminPath(window.location.pathname)) return;
     registerAnalyticsSanitizer(window, sanitizeAnalyticsEvent);
     const fields = getFirstTouchAttribution();
     const attribution: AnalyticsDetails = {};
@@ -80,7 +81,7 @@ export function captureLandingAttribution(): Attribution {
   if (typeof window === "undefined") return memoryAttribution;
   try {
     if (isAdminPath(window.location.pathname)) return {};
-    if (isAnalyticsOptedOut()) {
+    if (isAnalyticsBlocked()) {
       memoryAttribution = {};
       return {};
     }
@@ -110,7 +111,7 @@ export function trackBookingEvent(
 ) {
   if (typeof window === "undefined") return;
   try {
-    if (isAnalyticsOptedOut() || isAdminPath(window.location.pathname)) return;
+    if (isAnalyticsBlocked() || isAdminPath(window.location.pathname)) return;
     registerAnalyticsSanitizer(window, sanitizeAnalyticsEvent);
     const attribution = captureLandingAttribution();
     const properties = composeBookingProperties(input, attribution);
@@ -124,12 +125,8 @@ export function trackBookingEvent(
 
 export function getFirstTouchAttribution(): Attribution | null {
   try {
-    if (typeof window === "undefined" || isAnalyticsOptedOut() || isAdminPath(window.location.pathname)) return null;
-    const optOut = (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true
-      || navigator.doNotTrack === "1"
-      || (window as Window & { doNotTrack?: string }).doNotTrack === "1";
-    const record = captureFirstTouch(optOut ? null : window.localStorage, {
-      optOut,
+    if (typeof window === "undefined" || isAnalyticsBlocked() || isAdminPath(window.location.pathname)) return null;
+    const record = captureFirstTouch(window.localStorage, {
       pathname: window.location.pathname, search: window.location.search,
       hostname: window.location.hostname, referrer: document.referrer,
     });

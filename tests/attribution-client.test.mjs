@@ -42,8 +42,11 @@ for (const signal of ["gpc", "navigatorDnt", "windowDnt"]) {
   const priorReads = reads;
   assert.equal(getFirstTouchAttribution(), null);
   const fallback = captureLandingAttribution();
-  assert.equal(fallback.funnel_ref, first.funnel_ref);
-  assert.equal(fallback.utm_source, first.utm_source);
+  assert.deepEqual(fallback, {});
+  const eventCount = window.vaq.length;
+  trackRoamsteadEvent("early_access_submission_accepted");
+  trackBookingEvent(BOOKING_EVENTS.dateCheckAttempt, { propertySlug: "granary" });
+  assert.equal(window.vaq.length, eventCount);
   const checkout = new URL(hostawayCheckoutHref(455631, "2026-12-01", "2026-12-03", 2, getFirstTouchAttribution()));
   assert.deepEqual([...checkout.searchParams.keys()], ["start", "end", "numberOfGuests"]);
   assert.equal(reads, priorReads, signal + " must not read first-touch localStorage");

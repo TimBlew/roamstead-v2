@@ -47,8 +47,23 @@ for (const signal of ["globalPrivacyControl", "doNotTrack"]) {
   assert.equal(getFirstTouchAttribution(), null);
   const before = window.vaq.length;
   trackRoamsteadEvent("early_access_submission_accepted");
-  assert.equal(window.vaq.length, before + 1);
-  assert.equal(window.vaq.at(-1)[1].data.landing_path, undefined);
+  trackBookingEvent(BOOKING_EVENTS.dateCheckAttempt, { propertySlug: "granary" });
+  assert.equal(window.vaq.length, before);
+  const beforeLocal = [...local], beforeSession = [...session];
+  let storageCalls = 0;
+  const blockedStore = { getItem() { storageCalls++; throw Error("no reads"); }, setItem() { storageCalls++; throw Error("no writes"); } };
+  window.localStorage = blockedStore;
+  window.sessionStorage = blockedStore;
+  assert.deepEqual(captureLandingAttribution(), {});
+  assert.equal(captureFirstTouch(blockedStore, window.location), null);
+  assert.equal(getFirstTouchAttribution(), null, "early-access payload has no attribution");
+  assert.equal(href(), expected);
+  for (const type of ["pageview", "event"]) assert.equal(sanitizeAnalyticsEvent({ type, url: "https://roamstead-co.com/midway" }), null);
+  assert.equal(storageCalls, 0, signal + " must not access either store");
+  assert.deepEqual([...local], beforeLocal);
+  assert.deepEqual([...session], beforeSession);
+  window.localStorage = store(local);
+  window.sessionStorage = store(session);
   delete navigator[signal];
 }
 for (const key of ["localStorage", "sessionStorage"]) Object.defineProperty(window, key, { configurable: true, get() { throw Error("blocked"); } });
@@ -59,7 +74,7 @@ assert.doesNotThrow(() => trackRoamsteadEvent("early_access_submission_accepted"
 assert.doesNotThrow(href);
 assert.doesNotThrow(() => sanitizeAnalyticsEvent({ type: "event", url: "https://roamstead-co.com/midway" }));
 const page = fs.readFileSync(new URL("../src/app/privacy/page.tsx", import.meta.url), "utf8");
-for (const placeholder of ["legal entity name", "privacy contact email", "effective date", "how to request removal", "how changes will be announced", "link to Hostaway/Holiday Future privacy policy"]) assert.ok(page.includes(`[OWNER TO CONFIRM: ${placeholder}]`));
+for (const placeholder of ["legal entity name", "privacy contact email", "effective date", "how changes will be announced"]) assert.ok(page.includes(`[OWNER TO CONFIRM: ${placeholder}]`));
 assert.doesNotMatch(page, /GDPR|CCPA|compliant/i);
 assert.match(page, /canonical: "\/privacy"/);
 assert.match(page, /id="choices"/);

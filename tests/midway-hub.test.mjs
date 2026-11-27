@@ -51,7 +51,7 @@ assert.match(structured, /property\.slug === "granary" \|\| property\.slug === "
 assert.match(structured, /"@type": "CollectionPage"/);
 assert.doesNotMatch(structured, /streetAddress|postalCode|FAQPage/);
 assert.match(robots, /disallow: \["\/api\/", "\/book\/"\]/);
-assert.match(sitemap, /"\/", "\/properties", \.\.\.placePaths, "\/book"/);
+assert.match(sitemap, /"\/", "\/properties", "\/privacy", \.\.\.placePaths, "\/book"/);
 assert.match(propertyPage, /quality=\{propertyImageQuality\(slug, 100\)\}/);
 assert.match(propertyPage, /placePath && placeLabel/);
 assert.doesNotMatch(layout, /google-site-verification|content="[^"]*token/i);

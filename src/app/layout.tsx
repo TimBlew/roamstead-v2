@@ -1,9 +1,13 @@
+import { Bricolage_Grotesque, Funnel_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import { PublicAnalytics } from "@/components/analytics/PublicAnalytics";
 import "./globals.css";
 import { siteUrl, launchIndexingEnabled, socialImage, googleSiteVerification } from "@/lib/site";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
+
+const headingFont = Bricolage_Grotesque({ subsets: ["latin"], weight: ["400", "500"], display: "swap", variable: "--font-bricolage", fallback: ["sans-serif"], adjustFontFallback: false });
+const bodyFont = Funnel_Sans({ subsets: ["latin"], weight: ["400", "500"], display: "swap", variable: "--font-funnel", fallback: ["sans-serif"], adjustFontFallback: false });
 
 const googleVerification = googleSiteVerification();
 
@@ -20,15 +24,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="base">
+    <html lang="en" data-theme="base" className={`${headingFont.variable} ${bodyFont.variable}`}>
       <head>
         <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" sizes="any" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500&family=Funnel+Sans:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
       </head>
       <body>
         <PublicAnalytics />
