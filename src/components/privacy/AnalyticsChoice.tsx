@@ -22,12 +22,12 @@ export function AnalyticsChoice() {
 
   return (
     <div className="space-y-4">
-      <p role="status">{ready ? (off ? "Analytics off in this browser" : "Analytics on") : "Checking this browser’s analytics choice…"}</p>
-      {signal && <p>Your browser&apos;s privacy signal is on, so campaign attribution is already off.</p>}
+      <p role="status">{ready ? (off ? "Analytics off in this browser" : "Analytics on") : "Checking your choice in this browser…"}</p>
+      {signal && <p>Your browser’s privacy signal is on. We’re already not saving the note about how you first found us.</p>}
       <Button type="button" disabled={!ready} onClick={() => setOff(setAnalyticsOptOut(!off))}>
         {off ? "Turn analytics back on" : "Turn off analytics"}
       </Button>
-      <p className="text-sm">This choice needs local storage. If your browser blocks it, the choice cannot be saved.</p>
+      <p className="text-sm">We need to save a small note in your browser to remember this choice. If your browser blocks saved notes, we can’t remember it.</p>
     </div>
   );
 }
