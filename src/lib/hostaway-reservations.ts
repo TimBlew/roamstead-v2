@@ -12,7 +12,7 @@ export function aggregateReservations(rows: Record<string, unknown>[], since: st
   for (const row of rows) {
     if (Number(row.channelId) !== 2013) continue;
     const status = typeof row.status === "string" ? row.status.toLowerCase().trim() : "";
-    if (!status || /^(cancelled|canceled|declined|expired|inquiry)/.test(status)) continue;
+    if (status !== "new" && status !== "modified") continue;
     // Hostaway timestamps without an offset are treated as UTC, consistently across servers.
     const raw = typeof row.reservationDate === "string" ? row.reservationDate : "";
     const date = Date.parse(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(raw) ? raw.replace(" ", "T") + "Z" : raw);
