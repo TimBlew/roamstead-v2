@@ -13,7 +13,7 @@ function Paragraph({ text }: { text: string }) {
 
 export function SeasonalPage({ page }: { page: SeasonalPageData }) {
   return (
-    <main className="bg-[#FFFCFB]">
+    <article className="bg-[#FFFCFB]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(seasonalPageJsonLd(page)) }} />
       <section className="bg-[#F4EFEC] px-5 py-12 md:px-8 md:py-20">
         <div className="mx-auto grid max-w-[1180px] items-center gap-8 lg:grid-cols-2 lg:gap-14">
@@ -40,6 +40,6 @@ export function SeasonalPage({ page }: { page: SeasonalPageData }) {
           {page.faq.map(item => <div key={item.question}><h2 className="font-heading text-[26px] text-[#1F3125]">{item.question}</h2><Paragraph text={item.answer} /></div>)}
         </section>}
       </div>
-    </main>
+    </article>
   );
 }

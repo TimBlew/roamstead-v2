@@ -41,6 +41,13 @@ assert.ok(collection.mainEntity.itemListElement.every(i => i.image.startsWith("h
 const component = fs.readFileSync("src/components/seasonal/SeasonalPage.tsx", "utf8");
 assert.match(component, /RoamsteadBooking listingId=\{section.listingId\} propertySlug=\{section.slug\}/);
 assert.match(component, /jsonLdString\(seasonalPageJsonLd\(page\)\)/);
+assert.doesNotMatch(component, /<main\b/);
+assert.match(component, /<article\b/);
+assert.match(JSON.stringify(seasonalPages.parkCity), /The Lowell, also at the Park City Mountain base, is a 2-bedroom condo that sleeps 8/);
+assert.match(JSON.stringify(seasonalPages.parkCity), /Sleeps 4: 1 California King and 1 full\/queen futon/);
+assert.doesNotMatch(JSON.stringify(seasonalPages), /same building|\(sleeps 2\)|You only leave to pay/);
+assert.match(JSON.stringify(seasonalPages.midway), /Room for the whole group:/);
+assert.match(JSON.stringify(seasonalPages.parkCity), /Pick your dates here, then finish payment securely with our booking partner/);
 console.log("PASS: seasonal metadata, copy, calendars, sitemap, and JSON-LD");
 
 // Run after npm run build with SEO_RENDERED_HTML=1 to inspect Next's output.
@@ -51,6 +58,7 @@ if (process.env.SEO_RENDERED_HTML === "1") {
     assert.equal(decode(html.match(/<title>(.*?)<\/title>/)[1]), page.title);
     assert.equal(decode(html.match(/<meta name="description" content="([^"]*)"/)[1]), page.description);
     assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
+    assert.equal((html.match(/<main\b/g) ?? []).length, 1);
     const schemas = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].map(match => JSON.parse(match[1]));
     assert.ok(schemas.some(schema => schema["@graph"]?.some(node => node["@type"] === "WebPage")));
     for (const section of page.sections.filter(section => section.cta)) assert.ok(html.includes(`href="/properties/${section.slug}"`));

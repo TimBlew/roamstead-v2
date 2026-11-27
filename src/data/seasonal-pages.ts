@@ -22,7 +22,7 @@ export const seasonalPages = {
       {
         heading: "The studio",
         paragraphs: [
-          "1 California King and 1 full/queen futon (sleeps 2). Best fit: 2 adults and 2 small children, or 3 adults.",
+          "Sleeps 4: 1 California King and 1 full/queen futon. Best fit: 2 adults and 2 small children, or 3 adults.",
           "1 private full bath. Kitchenette with microwave, mini fridge, coffee maker, and kettle. Outdoor BBQ grill.",
           "Elevator and underground parking. Host reachable by call or text 24/7.",
           "Optional daily maid and concierge services, extra cost, subject to availability.",
@@ -30,12 +30,12 @@ export const seasonalPages = {
       },
       {
         heading: "Need more room?",
-        paragraphs: ["The Lowell is a 2-bedroom condo in the same building that sleeps 8. Check dates on the calendar, or see The Lowell."],
+        paragraphs: ["The Lowell, also at the Park City Mountain base, is a 2-bedroom condo that sleeps 8. Check dates on the calendar, or see The Lowell."],
         listingId: 455632, slug: "lowell",
       },
       {
         heading: "Booking",
-        paragraphs: ["Pick dates and guests on this page. You only leave to pay with our booking partner."],
+        paragraphs: ["Pick your dates here, then finish payment securely with our booking partner."],
         cta: "Check Christmas and New Year dates", slug: "powder-room",
       },
     ],
@@ -63,7 +63,7 @@ export const seasonalPages = {
       },
       {
         heading: "Hygge House, for families and groups up to 10",
-        paragraphs: ["Four bedrooms, three baths, a private 4-person sauna, a dedicated office, a garage gym with ski and bike storage, a fenced yard with a fire pit, and a kitchen island that seats 8. Pets allowed."],
+        paragraphs: ["Room for the whole group:", "Four bedrooms, three baths, a private 4-person sauna, a dedicated office, a garage gym with ski and bike storage, a fenced yard with a fire pit, and a kitchen island that seats 8. Pets allowed."],
         listingId: 455635, slug: "hygge-house", cta: "Check Hygge House dates",
       },
       {
