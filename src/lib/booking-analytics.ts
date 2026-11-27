@@ -347,10 +347,10 @@ export function readFirstTouch(raw: string | null, now = Date.now()): FirstTouch
 }
 
 export function captureFirstTouch(storage: Pick<Storage, "getItem" | "setItem"> | null, input: {
-  pathname: string; search: string; referrer: string; hostname: string; gpc?: boolean;
+  pathname: string; search: string; referrer: string; hostname: string; optOut?: boolean;
 }, now = Date.now()): FirstTouch | null {
   try {
-    if (isAdminPath(input.pathname) || input.gpc || !storage) return null;
+    if (isAdminPath(input.pathname) || input.optOut || !storage) return null;
     const prior = readFirstTouch(storage.getItem(FIRST_TOUCH_KEY), now);
     if (prior) return prior;
     const fields = attributionFromSearch(input.search);

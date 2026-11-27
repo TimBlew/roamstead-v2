@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { captureLandingAttribution, getFirstTouchAttribution, trackBookingEvent, trackRoamsteadEvent } from "../src/lib/analytics.ts";
-import { BOOKING_EVENTS } from "../src/lib/booking-analytics.ts";
+import { BOOKING_EVENTS, hostawayCheckoutHref } from "../src/lib/booking-analytics.ts";
 const local = new Map(), session = new Map();
-let writes = 0;
+let writes = 0, reads = 0;
 globalThis.window = {
   location: { pathname: "/properties/granary", search: "?utm_source=gohebervalley&utm_medium=email&utm_campaign=castlehead_sprint1", hostname: "roamstead-co.com" },
-  localStorage: { getItem: key => local.get(key), setItem(key, value) { writes++; local.set(key, value); } },
+  localStorage: { getItem: key => { reads++; return local.get(key); }, setItem(key, value) { writes++; local.set(key, value); } },
   sessionStorage: { getItem: key => session.get(key), setItem: (key, value) => session.set(key, value) },
 };
 globalThis.document = { referrer: "" };
@@ -34,10 +34,25 @@ trackBookingEvent(BOOKING_EVENTS.pageView, { propertySlug: "admin" });
 assert.equal(window.vaq.filter(entry => entry[0] === "event").length, 3);
 assert.equal(JSON.stringify([...local]), before);
 window.location.pathname = "/properties/granary";
-navigator.globalPrivacyControl = true;
-assert.equal(getFirstTouchAttribution(), null);
-assert.equal(captureLandingAttribution().funnel_ref, first.funnel_ref);
-assert.equal(writes, 1);
+
+for (const signal of ["gpc", "navigatorDnt", "windowDnt"]) {
+  navigator.globalPrivacyControl = signal === "gpc";
+  navigator.doNotTrack = signal === "navigatorDnt" ? "1" : "0";
+  window.doNotTrack = signal === "windowDnt" ? "1" : "0";
+  const priorReads = reads;
+  assert.equal(getFirstTouchAttribution(), null);
+  const fallback = captureLandingAttribution();
+  assert.equal(fallback.funnel_ref, first.funnel_ref);
+  assert.equal(fallback.utm_source, first.utm_source);
+  const checkout = new URL(hostawayCheckoutHref(455631, "2026-12-01", "2026-12-03", 2, getFirstTouchAttribution()));
+  assert.deepEqual([...checkout.searchParams.keys()], ["start", "end", "numberOfGuests"]);
+  assert.equal(reads, priorReads, signal + " must not read localStorage");
+  assert.equal(writes, 1, signal + " must not write localStorage");
+}
+navigator.globalPrivacyControl = false;
+navigator.doNotTrack = "0";
+window.doNotTrack = "0";
+assert.equal(getFirstTouchAttribution().utm_source, first.utm_source);
 Object.defineProperty(window, "localStorage", { get() { throw Error("blocked"); } });
 assert.doesNotThrow(() => captureLandingAttribution());
-console.log("PASS: client re-renders, checkout dedupe, GPC, storage fallback");
+console.log("PASS: client re-renders, checkout dedupe, GPC/DNT, storage fallback");

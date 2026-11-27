@@ -102,8 +102,11 @@ export function trackBookingEvent(
 export function getFirstTouchAttribution(): Attribution | null {
   try {
     if (typeof window === "undefined" || isAdminPath(window.location.pathname)) return null;
-    if ((navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true) return null;
-    const record = captureFirstTouch(window.localStorage, {
+    const optOut = (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true
+      || navigator.doNotTrack === "1"
+      || (window as Window & { doNotTrack?: string }).doNotTrack === "1";
+    const record = captureFirstTouch(optOut ? null : window.localStorage, {
+      optOut,
       pathname: window.location.pathname, search: window.location.search,
       hostname: window.location.hostname, referrer: document.referrer,
     });

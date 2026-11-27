@@ -30,7 +30,7 @@ for (const raw of ["broken", "null", "[]", '{"v":1}', JSON.stringify({ ...first,
   assert.equal(captureFirstTouch(store(raw), landing, now).utm_source, "gohebervalley");
 }
 const privateStore = store();
-assert.equal(captureFirstTouch(privateStore, { ...landing, gpc: true }, now), null);
+assert.equal(captureFirstTouch(privateStore, { ...landing, optOut: true }, now), null);
 assert.equal(privateStore.writes, 0);
 assert.equal(captureFirstTouch({ getItem() { throw Error(); } }, landing, now), null);
 assert.equal(captureFirstTouch({ getItem() { return null; }, setItem() { throw Error(); } }, landing, now), null);
@@ -66,3 +66,11 @@ assert.equal(parseInquirySource("roamstead-co.com|s=guest@example.com"), null);
 assert.equal(sanitizeLandingPath("/" + "a".repeat(118) + "!"), null);
 assert.equal(sanitizeLandingPath("/properties/granary/"), "/properties/granary/");
 assert.equal(sanitizeLandingPath("/" + "a".repeat(120)), null);
+
+assert.equal(parseInquirySource("legacy newsletter signup"), null);
+for (const value of [undefined, null, {}, first, { utm_source: "=SUM(A1)", source: "+formula", utm_medium: "-test", utm_campaign: "@test" }, { utm_source: "a".repeat(64), utm_medium: "b".repeat(64), utm_campaign: "c".repeat(64) }]) {
+  const source = inquirySource(value);
+  assert.ok(source.startsWith("roamstead-co.com"));
+  assert.ok(source.length <= 100);
+  assert.doesNotMatch(source, /^[=+@-]/);
+}
