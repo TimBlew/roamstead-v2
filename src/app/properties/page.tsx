@@ -10,10 +10,10 @@ const order = ["hygge-house", "granary", "lowell", "powder-room"];
 
 export const metadata = {
   alternates: { canonical: "/properties" },
-  title: "Midway & Park City stays | Roamstead Collective",
+  title: "Midway & Park City Mountain Base Rentals | The Lowell and Powder Room",
   description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective.",
-  openGraph: { images: [socialImage], title: "Midway & Park City stays | Roamstead Collective", description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective." },
-  twitter: { card: "summary_large_image", images: [socialImage], title: "Midway & Park City stays | Roamstead Collective", description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective." },
+  openGraph: { images: [socialImage], title: "Midway & Park City Mountain Base Rentals | The Lowell and Powder Room", description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective." },
+  twitter: { card: "summary_large_image", images: [socialImage], title: "Midway & Park City Mountain Base Rentals | The Lowell and Powder Room", description: "Homes in Midway and Park City across Utah's Wasatch Back. Ski, ride, then settle in. Book direct with Roamstead Collective." },
 };
 
 export default function PropertiesPage() {
@@ -108,7 +108,7 @@ export default function PropertiesPage() {
                     <p className="font-body text-[12px] font-medium leading-4 tracking-[-0.24px] text-[#8F7E73] md:text-[14px] md:leading-[20px] md:tracking-[-0.1px]">
                       {placePath ? (
                         <a href={placePath} className="underline-offset-2 hover:text-[#4A6E57] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
-                          {property.hero.locationLabel.replace(", Utah", "")}
+                          {placePath === "/midway" ? "Midway, Utah vacation rentals" : property.hero.locationLabel.replace(", Utah", "")}
                         </a>
                       ) : (
                         property.hero.locationLabel.replace(", Utah", "")

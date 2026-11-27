@@ -144,6 +144,12 @@ export function PlacePage({ place }: { place: Place }) {
         </div>
       </section>
 
+      <p className="mx-auto max-w-[1280px] px-5 pt-6 font-body text-[16px] text-[#4A6E57] md:px-8">
+        <a className="underline underline-offset-4" href={place.slug === "midway" ? "/midway/december" : "/park-city/christmas-new-year"}>
+          {place.slug === "midway" ? "Plan a December stay in Midway" : "Plan Christmas and New Year's at Park City Mountain"}
+        </a>
+      </p>
+
       <PlaceHubDetails place={place} />
 
       <section id="stays" className="scroll-mt-[72px] bg-[#FFFCFB] px-4 pb-12 pt-10 md:px-8 md:pb-20 md:pt-14 lg:px-12">

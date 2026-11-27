@@ -391,9 +391,9 @@ export const properties: Property[] = [
   {
     slug: 'lowell',
     seo: {
-      title: "The Lowell | Park City Ski Condo Near the Slopes | Roamstead",
+      title: "The Lowell Park City | 2BR Condo at Park City Mountain Base",
       description:
-        "A brand-new two-bedroom condo at the base of Park City Mountain Resort, about thirty steps from the snow, with a steam shower, heated pool and hot tub.",
+        "Stay at The Lowell in Park City: a 2-bedroom condo about thirty steps from the snow at Park City Mountain. Sleeps 8, heated pool, hot tub. Book direct.",
     },
     hero: {
       image: {
@@ -401,7 +401,7 @@ export const properties: Property[] = [
         alt: "The Lowell building at the base of Park City Mountain Resort",
       },
       locationLabel: "Park City, Utah",
-      title: "The Lowell",
+      title: "The Lowell, Park City",
       subtitle:
         "Brand-new condo at the base of Park City Mountain Resort, walk about 30 steps and you're on the snow. Enjoy a steam shower and bathtub, a piano and chess table, and a full kitchen. Building amenities include a fitness center, hot tub, heated pool, underground parking, ski storage, and an on-site rental and tuning shop. Easy access to Main Street via the resort bus hub.",
     },
@@ -507,9 +507,9 @@ export const properties: Property[] = [
   {
     slug: 'powder-room',
     seo: {
-      title: "Powder Room | Park City Mountain Studio Stay | Roamstead",
+      title: "Powder Room | Studio at Park City Mountain Base, Utah",
       description:
-        "A hotel-style studio at the base of Park City Mountain Resort, steps from the snow, with a king bed, an outdoor pool and hot tub, and a fitness center.",
+        "A studio steps from the snow at Park City Mountain Resort, with a pool, hot tub, fitness center and on-site ski rental. Sleeps 4. Book direct.",
     },
     hero: {
       image: {
