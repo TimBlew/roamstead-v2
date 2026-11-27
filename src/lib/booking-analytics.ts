@@ -179,8 +179,9 @@ const analyticsPageViews = new Map<string, number>();
 
 /** One sanitizer for native page views and custom events. Drops /admin, strips fragments, and keeps only allowlisted campaign params. */
 export function sanitizeAnalyticsEvent<T extends { type: string; url: string }>(event: T, now = Date.now()): T | null {
-  if (suppressInternalAnalytics()) return null;
+  // Privacy signals first so DNT/GPC/opt-out never touch session storage used by the internal-traffic guard.
   if (isAnalyticsBlocked()) return null;
+  if (suppressInternalAnalytics()) return null;
   return prepareAnalyticsEvent(event, analyticsPageViews, now);
 }
 
