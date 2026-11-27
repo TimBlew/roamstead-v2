@@ -56,4 +56,3 @@ export const galleries: Record<string, Photo[]> = {
     photo("powder-room", "exterior-02", "Aerial view of snowy resort buildings and ski runs"),
   ],
 };
-
