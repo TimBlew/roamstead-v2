@@ -1,20 +1,34 @@
 const fs = require("node:fs");
 const vm = require("node:vm");
 const assert = require("node:assert/strict");
-let source = fs.readFileSync("src/app/api/early-access/route.ts", "utf8")
-  .replace('import { NextResponse } from "next/server";', "")
-  .replace("export async function POST(request: Request)", "async function POST(request)")
-  .replace("let payload: { email?: unknown; season?: unknown; home?: unknown; consent?: unknown };", "let payload;")
-  .replace(/ as \{ name\?: string; message\?: string; statusCode\?: number \}/g, "");
+const ts = require("typescript");
+const source = ts.transpileModule(fs.readFileSync("src/app/api/early-access/route.ts", "utf8"), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+}).outputText;
 const environment = { RESEND_API_KEY: "mock-send-only", EARLY_ACCESS_FROM: "mock@example.invalid", RESEND_CONTACTS_API_KEY: "mock-contact", RESEND_ROAMSTEAD_SEGMENT_ID: "mock-segment" };
 async function run(statuses, payload = { email: "qa@example.invalid", season: "Winter", home: "", consent: true }, env = environment) {
   const calls = [];
-  const context = { process: { env }, console: { error() {}, info() {} }, encodeURIComponent,
+  const booking = await import('../src/lib/booking-analytics.ts');
+  const inquiry = await import('../src/lib/inquiry-attribution.ts');
+  const exports = {};
+  const context = { exports, URL, AbortSignal, Date,
+    require(name) {
+      if (name === 'next/server') return { NextResponse: { json: (body, opts) => ({ body, status: opts?.status || 200 }) } };
+      if (name === '@/lib/booking-analytics') return booking;
+      if (name === '@/lib/inquiry-attribution') return inquiry;
+      if (name === 'node:crypto') return { randomUUID: () => 'fixture-id' };
+      if (name === '@/lib/signup-sheet') return { sheetConfigured: () => true, appendSignup: async () => {} };
+      if (name === '@/data/early-access-settings.json') return { default: { notificationEmail: 'fixture@example.invalid' } };
+      throw Error(name);
+    },
+    process: { env }, console: { error() {}, info() {} }, encodeURIComponent,
     NextResponse: { json: (body, opts) => ({ body, status: opts?.status || 200 }) },
-    fetch: async (url, options) => { calls.push({ url, options }); const status = statuses.shift(); assert.ok(status, "Unexpected external request"); return { ok: status >= 200 && status < 300, status, json: async () => ({}) }; }
+    fetch: async (url, options) => {
+      if (url.includes('/contact-properties')) return { ok: true, status: 200, json: async () => ({ data: [{ key: 'roamstead_season' }, { key: 'roamstead_home_area' }] }) };
+      calls.push({ url, options }); const status = statuses.shift(); assert.ok(status, "Unexpected external request"); return { ok: status >= 200 && status < 300, status, json: async () => ({}) }; }
   };
-  vm.createContext(context); vm.runInContext(source + "\nthis.POST = POST;", context);
-  const result = await context.POST({ json: async () => payload });
+  vm.createContext(context); vm.runInContext(source, context);
+  const result = await exports.POST({ json: async () => payload });
   return { result, calls };
 }
 (async () => {

@@ -7,6 +7,7 @@ import settings from "@/data/early-access-settings.json";
 
 const RECIPIENT = settings.notificationEmail;
 const BCC_RECIPIENT = "tim@castlehead.ai";
+const LEDGER_ALERT_RECIPIENT = "tim@castlehead.ai";
 const ALLOWED_SEASONS = ["", "Winter", "Spring", "Summer", "Fall", "All Four", "All 4"];
 const ALLOWED_HOMES = ["", "Heber Valley / Wasatch Back", "Salt Lake or Provo area", "Somewhere else"];
 
@@ -148,17 +149,40 @@ export async function POST(request: Request) {
       console.error("Roamstead signup requires follow-up: contact storage not configured; notification email delivered");
     }
     if (!audienceStored) console.error("Roamstead signup requires follow-up: notification delivered but list storage unconfirmed");
+    const submissionId = randomUUID();
+    const now = new Date().toISOString();
+    let ledgerStored = false;
+    let ledgerFailure = "Ledger not configured";
     if (sheetConfigured()) {
-      const now=new Date().toISOString();
       try {
-        await appendSignup({id:randomUUID(),createdAt:now,email,season,home,consent,notificationStatus:"sent",contactStatus:audienceStored?"stored":"unconfirmed",contactId:"",source:inquirySource(attribution),updatedAt:now});
-      } catch (error) {
-        console.error("Roamstead permanent signup ledger append failed",error instanceof Error?error.message:"unknown");
+        await appendSignup({id:submissionId,createdAt:now,email,season,home,consent,notificationStatus:"sent",contactStatus:audienceStored?"stored":"unconfirmed",contactId:"",source:inquirySource(attribution),updatedAt:now});
+        ledgerStored = true;
+      } catch {
+        ledgerFailure = "Ledger append failed; storage unconfirmed";
+        console.error("Roamstead permanent signup ledger append failed", { submissionId });
       }
     } else {
-      console.error("Roamstead permanent signup ledger is not connected; Resend continues as current contact source");
+      console.error("Roamstead permanent signup ledger is not configured; notification email delivered", { submissionId });
     }
-    return NextResponse.json({ ok: true, audienceStored });
+    if (!ledgerStored) {
+      try {
+        const alertResponse = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+          signal: AbortSignal.timeout(8000),
+          body: JSON.stringify({
+            from: sender, to: [LEDGER_ALERT_RECIPIENT], subject: "Roamstead early-access ledger append failed",
+            text: `${ledgerFailure}\n\nSubmission id: ${submissionId}\nTimestamp (UTC): ${now}\nContact storage: ${audienceStored ? "confirmed" : "unconfirmed"}\n\nThe signup notification was already sent with subject "Roamstead early access signup".\nEmail: ${email}\nPreferred season: ${season || "Not provided"}\nHome area: ${home || "Not provided"}\n\nPlease check the ledger before manually adding a row; an append failure may have occurred after storage. The guest received success.`,
+          }),
+        });
+        if (!alertResponse.ok) {
+          console.error("Roamstead signup ledger failure alert rejected", { submissionId, status: alertResponse.status });
+        }
+      } catch {
+        console.error("Roamstead signup ledger failure alert could not be sent", { submissionId });
+      }
+    }
+    return NextResponse.json({ ok: true, audienceStored, ledgerStored });
   } catch (error) {
     console.error("Early access email request failed", error instanceof Error ? error.message : "Unknown network error");
     return NextResponse.json({ error: "Email service connection failed", code: "network_error" }, { status: 502 });
