@@ -7,6 +7,7 @@ import settings from "@/data/early-access-settings.json";
 
 const RECIPIENT = settings.notificationEmail;
 const BCC_RECIPIENT = "tim@castlehead.ai";
+const LEDGER_ALERT_RECIPIENT = "tim@castlehead.ai";
 const ALLOWED_SEASONS = ["", "Winter", "Spring", "Summer", "Fall", "All Four", "All 4"];
 const ALLOWED_HOMES = ["", "Heber Valley / Wasatch Back", "Salt Lake or Provo area", "Somewhere else"];
 
@@ -170,7 +171,7 @@ export async function POST(request: Request) {
           headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
           signal: AbortSignal.timeout(8000),
           body: JSON.stringify({
-            from: sender, to: [RECIPIENT], subject: "Roamstead early-access ledger append failed",
+            from: sender, to: [LEDGER_ALERT_RECIPIENT], subject: "Roamstead early-access ledger append failed",
             text: `${ledgerFailure}\n\nSubmission id: ${submissionId}\nTimestamp (UTC): ${now}\nContact storage: ${audienceStored ? "confirmed" : "unconfirmed"}\n\nThe signup notification was already sent with subject "Roamstead early access signup".\nEmail: ${email}\nPreferred season: ${season || "Not provided"}\nHome area: ${home || "Not provided"}\n\nPlease check the ledger before manually adding a row; an append failure may have occurred after storage. The guest received success.`,
           }),
         });

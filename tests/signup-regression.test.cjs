@@ -38,7 +38,13 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
   assert.equal(failed.result.status,200);assert.equal(failed.result.body.ok,true);assert.equal(failed.result.body.ledgerStored,false);
   const [notification,alert]=emailBodies(failed);assert.equal(emailBodies(failed).length,2);
   assert.deepEqual(notification,emailBodies(good)[0], 'Original notification must remain unchanged');
-  assert.deepEqual(alert.to,notification.to);assert.equal(alert.from,notification.from);
+  assert.deepEqual(notification.to,['fixture@example.invalid']);
+  assert.deepEqual(notification.bcc,['tim@castlehead.ai']);
+  assert.deepEqual(alert.to,['tim@castlehead.ai']);
+  assert.equal(alert.to.length,1);
+  assert.equal('bcc' in alert,false);
+  assert.notDeepEqual(alert.to,notification.to);
+  assert.equal(alert.from,notification.from);
   assert.equal(alert.subject,'Roamstead early-access ledger append failed');
   assert.match(alert.text,/Submission id: fixture-id/);assert.match(alert.text,/Timestamp \(UTC\): \d{4}-\d{2}-\d{2}T/);
   assert.ok(alert.text.includes(`Contact storage: ${failed.result.body.audienceStored?'confirmed':'unconfirmed'}`));
