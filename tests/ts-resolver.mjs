@@ -12,6 +12,8 @@ function withTypeScriptExtension(file) {
 }
 
 export async function resolve(specifier, context, nextResolve) {
+  // Next enforces this marker at build time; unit fixtures execute server helpers in Node.
+  if (specifier === "server-only") return { url: "data:text/javascript,export {};", shortCircuit: true };
   if (specifier.startsWith("@/")) {
     const file = withTypeScriptExtension(path.join(srcRoot, specifier.slice(2)));
     return nextResolve(pathToFileURL(file).href, context);

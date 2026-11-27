@@ -1,7 +1,7 @@
 "use client";
 // Deployment trigger: rebuild corrected early-access directory from current main.
 import {useCallback,useEffect,useMemo,useState} from "react";
-type Entry={id:string;email:string;createdAt:string;unsubscribed:boolean;season:string;home:string;preferencesUnavailable?:boolean;subscriptionKnown?:boolean;notificationStatus?:string;contactStatus?:string};
+type Entry={firstTouch?:string|null;id:string;email:string;createdAt:string;unsubscribed:boolean;season:string;home:string;preferencesUnavailable?:boolean;subscriptionKnown?:boolean;notificationStatus?:string;contactStatus?:string};
 type Response={connected?:boolean;source?:"sheets"|"resend";entries?:Entry[];hasMore?:boolean;nextCursor?:string|null;message?:string};
 let cachedDirectory: Response | null = null;
 export default function EarlyAccessDirectory(){
@@ -90,7 +90,7 @@ export default function EarlyAccessDirectory(){
       <div className="mt-2.5 overflow-hidden rounded-lg border border-[#E7DFDB]">
         <div className="hidden grid-cols-[minmax(0,1.6fr)_1fr_1fr_90px] gap-3 bg-[#F4EFEC] px-3 py-2 text-[11px] font-semibold text-[#6D6057] sm:grid"><span>Email</span><span>Preferred season</span><span>Home area</span><span>Added</span></div>
         {filtered.map(e=><button key={e.id} type="button" onClick={()=>setSelected(selected===e.id?null:e.id)} className={"block w-full border-t border-[#E7DFDB] px-3 py-3 text-left hover:bg-[#F7F3F0] sm:grid sm:grid-cols-[minmax(0,1.6fr)_1fr_1fr_90px] sm:gap-3 sm:py-2.5 "+(selected===e.id?"bg-[#F4EFEC]":"")}>
-          <span className="block min-w-0 break-all text-[13px] font-medium text-[#1F3125]">{e.email}</span>
+          <span className="block min-w-0 break-all text-[13px] font-medium text-[#1F3125]">{e.email}{e.firstTouch&&<span className="mt-0.5 block break-words text-[11px] font-normal text-[#6D6057]">First touch: {e.firstTouch}</span>}</span>
           <span className="mt-1 block text-[11px] text-[#6D6057] sm:mt-0 sm:text-[12px]">{e.preferencesUnavailable?"Unavailable":e.season||"Not provided"}</span>
           <span className="block text-[11px] text-[#6D6057] sm:text-[12px]">{e.preferencesUnavailable?"Unavailable":e.home||"Not provided"}</span>
           <span className="block text-[11px] text-[#6D6057] sm:text-[12px]">{displayDate(e.createdAt)}</span>

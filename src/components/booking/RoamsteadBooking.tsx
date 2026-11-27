@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { trackBookingEvent } from "@/lib/analytics";
+import { getFirstTouchAttribution, trackBookingEvent } from "@/lib/analytics";
 import { BOOKING_EVENTS, classifyAvailabilityResponse, hostawayCheckoutHref } from "@/lib/booking-analytics";
 import { BOOKING_CONTACT_EMAIL, BOOKING_CONTACT_PHONE_HREF, BOOKING_CONTACT_PHONE_LABEL, GUIDE_HANDOFF_NOTE, calendarFailureLead, dateStepButtonLabel, dateStepNote, guideStatusCopy } from "@/lib/booking-path";
 
@@ -35,7 +35,7 @@ export function RoamsteadBooking({ listingId, propertySlug, guide = false }: { l
   let hostawayCheckoutUrl = "";
   if (checkIn && checkOut) {
     try {
-      hostawayCheckoutUrl = hostawayCheckoutHref(listingId, checkIn, checkOut, adults + children);
+      hostawayCheckoutUrl = hostawayCheckoutHref(listingId, checkIn, checkOut, adults + children, getFirstTouchAttribution());
     } catch {
       hostawayCheckoutUrl = "";
     }

@@ -1,3 +1,5 @@
+import { sanitizeFirstTouchFields } from "@/lib/booking-analytics";
+import { firstTouchSummary, inquirySource } from "@/lib/inquiry-attribution";
 import { randomUUID } from "node:crypto";
 import { appendSignup, sheetConfigured } from "@/lib/signup-sheet";
 import { NextResponse } from "next/server";
@@ -44,20 +46,21 @@ const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (character) => (
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 })[character] || character);
 
-function signupEmailHtml(email: string, season: string, home: string) {
+function signupEmailHtml(email: string, season: string, home: string, attribution: unknown) {
   const safeEmail = escapeHtml(email);
   const safeSeason = escapeHtml(season || "Not provided");
   const safeHome = escapeHtml(home || "Not provided");
   const row = (label: string, value: string) => `<tr><td style="padding:15px 20px 5px;color:#7A7168;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;font-weight:700;">${label}</td></tr><tr><td style="padding:0 20px 16px;color:#1F3125;font-size:17px;line-height:1.45;">${value}</td></tr>`;
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:0;background:#F4EFEC;font-family:Arial,Helvetica,sans-serif;color:#1F3125;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#F4EFEC;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:560px;background:#FFFCFB;border:1px solid #E7DFDB;border-radius:12px;"><tr><td style="padding:28px 28px 22px;background:#1F3125;border-radius:11px 11px 0 0;"><img src="${EMAIL_LOGO_URL}" alt="Roamstead Collective" width="190" height="57" style="display:block;width:190px;height:auto;max-width:100%;margin:0 0 18px;border:0;outline:0;text-decoration:none;color:#FFFCFB;font-size:16px;font-weight:700;" /><h1 style="margin:12px 0 0;font-size:26px;line-height:1.2;font-weight:600;color:#FFFCFB;">New early access signup</h1><p style="margin:10px 0 0;font-size:14px;line-height:1.5;color:#E2E9E0;">A guest is interested in staying connected.</p></td></tr><tr><td style="padding:24px 24px 12px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #E7DFDB;border-radius:8px;background:#FBF8F7;">${row("Email", `<a href="mailto:${safeEmail}" style="color:#365E47;text-decoration:underline;overflow-wrap:anywhere;">${safeEmail}</a>`)}${row("Preferred season", safeSeason)}${row("Home area", safeHome)}</table><p style="margin:20px 4px 8px;font-size:12px;line-height:1.5;color:#8F7E73;">Early access interest · Roamstead Collective</p></td></tr></table></td></tr></table></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:0;background:#F4EFEC;font-family:Arial,Helvetica,sans-serif;color:#1F3125;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#F4EFEC;"><tr><td align="center" style="padding:32px 16px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:560px;background:#FFFCFB;border:1px solid #E7DFDB;border-radius:12px;"><tr><td style="padding:28px 28px 22px;background:#1F3125;border-radius:11px 11px 0 0;"><img src="${EMAIL_LOGO_URL}" alt="Roamstead Collective" width="190" height="57" style="display:block;width:190px;height:auto;max-width:100%;margin:0 0 18px;border:0;outline:0;text-decoration:none;color:#FFFCFB;font-size:16px;font-weight:700;" /><h1 style="margin:12px 0 0;font-size:26px;line-height:1.2;font-weight:600;color:#FFFCFB;">New early access signup</h1><p style="margin:10px 0 0;font-size:14px;line-height:1.5;color:#E2E9E0;">A guest is interested in staying connected.</p></td></tr><tr><td style="padding:24px 24px 12px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #E7DFDB;border-radius:8px;background:#FBF8F7;">${row("Email", `<a href="mailto:${safeEmail}" style="color:#365E47;text-decoration:underline;overflow-wrap:anywhere;">${safeEmail}</a>`)}${row("Preferred season", safeSeason)}${row("Home area", safeHome)}${row("First touch", escapeHtml(firstTouchSummary(attribution)))}</table><p style="margin:20px 4px 8px;font-size:12px;line-height:1.5;color:#8F7E73;">Early access interest · Roamstead Collective</p></td></tr></table></td></tr></table></body></html>`;
 }
 
 export async function POST(request: Request) {
-  let payload: { email?: unknown; season?: unknown; home?: unknown; consent?: unknown };
+  let payload: { email?: unknown; season?: unknown; home?: unknown; consent?: unknown; attribution?: unknown };
   try { payload = await request.json(); } catch { return NextResponse.json({ error: "Invalid request" }, { status: 400 }); }
   const email = typeof payload.email === "string" ? payload.email.trim() : "";
   const season = typeof payload.season === "string" ? payload.season : "";
   const home = typeof payload.home === "string" ? payload.home : "";
+  const attribution = sanitizeFirstTouchFields(payload.attribution);
   const consent = payload.consent === true;
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !ALLOWED_SEASONS.includes(season) || !ALLOWED_HOMES.includes(home) || !consent) {
     return NextResponse.json({ error: "Invalid fields" }, { status: 400 });
@@ -74,8 +77,8 @@ export async function POST(request: Request) {
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         from: sender, to: [RECIPIENT], bcc: [BCC_RECIPIENT], subject: "Roamstead early access signup",
-        text: `New early access signup\n\nEmail: ${email}\nPreferred season: ${season || "Not provided"}\nHome area: ${home || "Not provided"}\n\nRoamstead Collective`,
-        html: signupEmailHtml(email, season, home),
+        text: `New early access signup\n\nEmail: ${email}\nPreferred season: ${season || "Not provided"}\nHome area: ${home || "Not provided"}\nFirst touch: ${firstTouchSummary(attribution)}\n\nRoamstead Collective`,
+        html: signupEmailHtml(email, season, home, attribution),
         reply_to: email,
       }),
     });
@@ -148,7 +151,7 @@ export async function POST(request: Request) {
     if (sheetConfigured()) {
       const now=new Date().toISOString();
       try {
-        await appendSignup({id:randomUUID(),createdAt:now,email,season,home,consent,notificationStatus:"sent",contactStatus:audienceStored?"stored":"unconfirmed",contactId:"",source:"roamstead-co.com",updatedAt:now});
+        await appendSignup({id:randomUUID(),createdAt:now,email,season,home,consent,notificationStatus:"sent",contactStatus:audienceStored?"stored":"unconfirmed",contactId:"",source:inquirySource(attribution),updatedAt:now});
       } catch (error) {
         console.error("Roamstead permanent signup ledger append failed",error instanceof Error?error.message:"unknown");
       }

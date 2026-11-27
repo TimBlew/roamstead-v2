@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { trackRoamsteadEvent } from "@/lib/analytics";
+import { getFirstTouchAttribution, trackRoamsteadEvent } from "@/lib/analytics";
 import copy from "@/data/admin-copy.json";
 
 export const CommunityCTA = () => {
@@ -49,7 +49,7 @@ export const CommunityCTA = () => {
     try {
       const response = await fetch("/api/early-access", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, season: values.get("season"), home: values.get("home"), consent: true }),
+        body: JSON.stringify({ email, season: values.get("season"), home: values.get("home"), consent: true, attribution: getFirstTouchAttribution() }),
       });
       if (!response.ok) {
         throw new Error(response.status === 400 ? "Please check your selections and try again." : "We couldn't complete your signup. Please try again.");
