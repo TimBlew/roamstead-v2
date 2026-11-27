@@ -79,7 +79,7 @@ export default function BookPage() {
                   <p className="font-body text-[12px] leading-5 text-[#8F7E73] lg:text-[13px]">
                     {placePath ? (
                       <a href={placePath} className="underline-offset-2 hover:text-[#4A6E57] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4A6E57]">
-                        {property.hero.locationLabel.replace(", Utah", "")}
+                        {placePath === "/midway" ? "Midway, Utah vacation rentals" : property.hero.locationLabel.replace(", Utah", "")}
                       </a>
                     ) : (
                       property.hero.locationLabel.replace(", Utah", "")

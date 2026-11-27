@@ -1,0 +1,59 @@
+export type Photo = { src: string; alt: string };
+const photo = (folder: string, file: string, alt: string): Photo => ({
+  src: `/listings/${folder}/${file}.jpg`,
+  alt,
+});
+
+export const galleries: Record<string, Photo[]> = {
+  "hygge-house": [
+    photo("house-midway", "exterior-02", "Front of Hygge House, a white home with a dark garage door and covered entry"),
+    photo("house-midway", "exterior-04", "Backyard patio with an outdoor dining set, lounge chairs, and stairs"),
+    photo("house-midway", "living-03", "Living room with a light sofa, wooden coffee table, and white fireplace"),
+    photo("house-midway", "living-05", "Dining table and sectional sofa in the second living room"),
+    photo("house-midway", "living-02", "Home office with built-in shelves, a desk, and a loveseat"),
+    photo("house-midway", "kitchen-01", "Kitchen with a wood island, four stools, and green cabinets"),
+    photo("house-midway", "bedroom-01", "Bedroom with a dark bed, a desk by the window, and a ceiling fan"),
+    photo("house-midway", "bedroom-03", "Guest bedroom with white bedding, wood nightstands, and a bench"),
+    photo("house-midway", "sauna-01", "Wood sauna interior with a stone heater beside the glass door"),
+    photo("house-midway", "sauna-02", "View from the sauna bench through the glass door to the yard"),
+    photo("house-midway", "garage-01", "Garage gym with a squat rack, bench, and bikes stored on the wall"),
+    photo("house-midway", "garage-03", "Squat rack, barbell, and weight bench in the garage gym"),
+    { src: "https://d2ol7oe51mr4n9.cloudfront.net/user_3JhtTKjJmo2R3mPhsBJElt2FRYV/e4251f0c-76c0-4125-9077-c6d5063ae636.png", alt: "Aerial view of Hygge House among the trees, with mountains behind" },
+  ],
+  granary: [
+    photo("granary", "living-01", "Open living room with a sofa, fireplace, and the kitchen beyond"),
+    photo("granary", "living-02", "Kitchen island, dining table, and living room in one open space"),
+    photo("granary", "living-03", "Fireplace seating with a sofa, armchair, and television"),
+    photo("granary", "living-04", "Living room centered on the fireplace, television, and two armchairs"),
+    photo("granary", "kitchen-01", "Kitchen with white cabinets, a granite island, and stainless appliances"),
+    photo("granary", "dining-01", "Wood dining table with chairs under a chandelier"),
+    photo("granary", "bedroom-01", "Bedroom with a white bed, metal headboard, and a window"),
+    photo("granary", "bath-01", "Bathroom with a granite vanity, toilet, and tub-shower"),
+    { src: "/images/granary/exterior.jpg", alt: "The Granary building along the street, with mountains behind" },
+  ],
+  lowell: [
+    photo("lowell-302", "living-01", "Living room with a brown leather sectional and ottoman"),
+    photo("lowell-302", "living-02", "Open living and dining space with a kitchen island and large windows"),
+    photo("lowell-302", "kitchen-01", "Kitchen with a black stone island, wood cabinets, and leather stools"),
+    photo("lowell-302", "dining-01", "Long dining table set by windows looking onto the hillside"),
+    photo("lowell-302", "bedroom-01", "Bedroom with three beds beside a large window"),
+    photo("lowell-302", "bedroom-02", "Bedroom with a large bed, wood headboard, and two sofas"),
+    photo("lowell-302", "bathroom-01", "Bathroom with a vanity, toilet, and tiled walk-in shower"),
+    photo("lowell-302", "bathroom-02", "Bathroom with a soaking tub and glass-enclosed shower"),
+    photo("lowell-302", "bathroom-03", "Double vanity with a dark marble counter"),
+    photo("lowell-302", "gym-01", "Fitness center with treadmills, an elliptical, and dumbbells"),
+    photo("lowell-302", "pool-01", "Outdoor pool at night beside the stone resort building"),
+    photo("lowell-302", "exterior-01", "The Lowell, a multi-story stone and wood building"),
+  ],
+  "powder-room": [
+    photo("powder-room", "bedroom-01", "Bedroom with a wood bed, white linens, and a sofa by the window"),
+    photo("powder-room", "bathroom-01", "Bathroom with a tub-shower, toilet, and dark vanity"),
+    photo("powder-room", "bathroom-02", "Kitchenette sink and coffee maker beside a window with a mountain view"),
+    photo("powder-room", "bathroom-03", "Bathroom vanity with a dark marble counter, mirror, and towel warmer"),
+    photo("powder-room", "pool-01", "Outdoor pool deck with lounge chairs and a view toward the hills"),
+    photo("powder-room", "pool-02", "Outdoor pool at night beside the stone resort building"),
+    photo("powder-room", "gym-01", "Fitness center with cardio machines, weights, and mirrored walls"),
+    photo("powder-room", "exterior-02", "Aerial view of snowy resort buildings and ski runs"),
+  ],
+};
+

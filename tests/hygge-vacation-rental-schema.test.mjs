@@ -29,12 +29,12 @@ function validateHygge(data) {
   assert.equal(data.address.addressCountry, "US");
   assert.equal("streetAddress" in data.address, false);
   assert.equal("postalCode" in data.address, false);
-  assert.equal(data.latitude, undefined);
-  assert.equal(data.longitude, undefined);
+  assert.equal(data.latitude, 40.51138);
+  assert.equal(data.longitude, -111.45804);
   assert.equal(data.aggregateRating, undefined);
   assert.equal(data.priceRange, undefined);
   assert.equal(data.offers, undefined);
-  assert.ok(Array.isArray(data.image) && data.image.length === 4, "existing Hygge image count");
+  assert.ok(Array.isArray(data.image) && data.image.length === 13, "full Hygge gallery");
 
   const place = data.containsPlace;
   assert.equal(place["@type"], "Accommodation");
@@ -90,7 +90,48 @@ const granary = vacationRentalJsonLd(getProperty("granary"));
 assert.equal(granary.checkinTime, undefined);
 assert.equal(granary.containsPlace.petsAllowed, undefined);
 assert.equal(granary.containsPlace.bed, undefined);
-assert.equal(granary.containsPlace.amenityFeature, undefined);
+
 assert.equal(granary.containsPlace.occupancy.value, 4);
 
 console.log("PASS: Hygge VacationRental JSON-LD");
+
+const { galleries } = await import("../src/data/property-galleries.ts");
+const { canonical } = await import("../src/lib/site.ts");
+const expected = {
+  "hygge-house": [40.51138, -111.45804, 13, ["wifi", "ac", "kitchen", "gymFitnessEquipment", "fireplace", "washerDryer", "heating", "parkingType", "balcony", "outdoorGrill", "tv"]],
+  granary: [40.51224, -111.45758, 10, ["fireplace", "kitchen", "washerDryer", "wifi", "tv", "parkingType"]],
+  lowell: [40.65144, -111.50651, 13, ["kitchen", "washerDryer", "wifi", "ac", "heating", "tv", "pool", "hotTub", "gymFitnessEquipment", "elevator", "selfCheckinCheckout", "parkingType"]],
+  "powder-room": [40.65144, -111.50651, 9, ["wifi", "ac", "heating", "pool", "hotTub", "gymFitnessEquipment", "elevator", "microwave", "outdoorGrill", "parkingType"]],
+};
+for (const [slug, [latitude, longitude, count, amenities]] of Object.entries(expected)) {
+  const property = getProperty(slug);
+  const rental = JSON.parse(jsonLdString(vacationRentalJsonLd(property)));
+  assert.equal(rental["@type"], "VacationRental");
+  assert.equal(rental.latitude, latitude);
+  assert.equal(rental.longitude, longitude);
+  assert.deepEqual(rental.geo, { "@type": "GeoCoordinates", latitude, longitude });
+  const images = [...new Set([property.hero.image.src, ...galleries[slug].map(photo => photo.src)].map(src => src.startsWith("http") ? src : canonical(src)))];
+  assert.deepEqual(rental.image, images);
+  assert.equal(rental.image.length, count);
+  const features = rental.containsPlace.amenityFeature;
+  assert.deepEqual(features.map(item => item.name), amenities);
+  for (const item of features) {
+    assert.equal(item["@type"], "LocationFeatureSpecification");
+    assert.ok(supportedAmenityNames.has(item.name));
+    assert.equal(item.value, item.name === "parkingType" ? "Free" : true);
+  }
+  for (const forbidden of ["aggregateRating", "review", "offers", "priceRange", "streetAddress", "postalCode"]) {
+    assert.ok(!JSON.stringify(rental).includes(`"${forbidden}":`));
+  }
+  if (slug !== "hygge-house") {
+    assert.equal(rental.checkinTime, undefined);
+    assert.equal(rental.checkoutTime, undefined);
+    assert.equal(rental.containsPlace.petsAllowed, undefined);
+  }
+  if (slug === "powder-room") {
+    assert.equal(rental.additionalType, "https://schema.org/Apartment");
+    assert.equal(rental.containsPlace.numberOfBedrooms, undefined);
+    assert.equal(rental.containsPlace.occupancy.maxValue, 4);
+    assert.ok(!JSON.stringify(rental).includes('"Hotel"'));
+  }
+}

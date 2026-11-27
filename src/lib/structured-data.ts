@@ -1,5 +1,6 @@
 import type { Place } from "@/data/places";
 import { getProperty, type Property } from "@/data/properties";
+import { galleries } from "@/data/property-galleries";
 import { canonical } from "@/lib/site";
 
 // Public, indexable property pages that get VacationRental JSON-LD (mirrors sitemap.ts).
@@ -16,7 +17,7 @@ export function vacationRentalJsonLd(property: Property) {
 
   const [locality] = property.hero.locationLabel.replace(/,\s*Utah$/, "").split(",").map((part) => part.trim()).slice(-1);
   const url = canonical(`/properties/${property.slug}`);
-  const images = [property.hero.image.src, ...property.stories.map((story) => story.image.src)]
+  const images = [property.hero.image.src, ...(galleries[property.slug] ?? []).map((photo) => photo.src)]
     .map((src) => (src.startsWith("http") ? src : canonical(src)))
     .filter((src, index, all) => all.indexOf(src) === index);
 
@@ -32,15 +33,34 @@ export function vacationRentalJsonLd(property: Property) {
     if (property.slug === "granary" || property.slug === "hygge-house") occupancyValue.value = occupancy;
     accommodation.occupancy = occupancyValue;
   }
-  if (bedrooms) accommodation.numberOfBedrooms = bedrooms;
+  if (bedrooms && property.slug !== "powder-room") accommodation.numberOfBedrooms = bedrooms;
   if (bathrooms) accommodation.numberOfBathroomsTotal = bathrooms;
   if (property.slug === "hygge-house") applyHyggeAccommodation(accommodation);
 
+  const coordinates: Record<string, [number, number]> = {
+    "hygge-house": [40.51138, -111.45804],
+    granary: [40.51224, -111.45758],
+    lowell: [40.65144, -111.50651],
+    "powder-room": [40.65144, -111.50651],
+  };
+  const amenities: Record<string, string[]> = {
+    granary: ["fireplace", "kitchen", "washerDryer", "wifi", "tv"],
+    lowell: ["kitchen", "washerDryer", "wifi", "ac", "heating", "tv", "pool", "hotTub", "gymFitnessEquipment", "elevator", "selfCheckinCheckout"],
+    "powder-room": ["wifi", "ac", "heating", "pool", "hotTub", "gymFitnessEquipment", "elevator", "microwave", "outdoorGrill"],
+  };
+  if (amenities[property.slug]) {
+    accommodation.amenityFeature = [...amenities[property.slug].map((name) => feature(name, true)), feature("parkingType", "Free")];
+  }
+  const [latitude, longitude] = coordinates[property.slug];
   const rental: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "VacationRental",
     "@id": `${url}#vacation-rental`,
     identifier: property.slug,
+    latitude,
+    longitude,
+    geo: { "@type": "GeoCoordinates", latitude, longitude },
+    ...(property.slug === "powder-room" ? { additionalType: "https://schema.org/Apartment" } : {}),
     name: property.hero.title,
     url,
     description: property.seo.description,
@@ -96,9 +116,16 @@ export function jsonLdString(data: unknown) {
 }
 
 export function midwayCollectionJsonLd(place: Place) {
-  if (place.slug !== "midway" || !place.comparison) return null;
+  return placeCollectionJsonLd(place);
+}
 
-  const itemListElement = place.comparison.stays.map((stay, index) => {
+export function parkCityCollectionJsonLd(place: Place) {
+  return placeCollectionJsonLd(place);
+}
+
+function placeCollectionJsonLd(place: Place) {
+
+  const itemListElement = (place.comparison?.stays ?? place.stays).map((stay, index) => {
     const property = getProperty(stay.slug);
     const url = canonical(`/properties/${stay.slug}`);
     return {
@@ -106,6 +133,7 @@ export function midwayCollectionJsonLd(place: Place) {
       position: index + 1,
       name: property?.hero.title ?? stay.slug,
       url,
+      image: property ? absoluteImage(property.hero.image.src) : undefined,
       item: { "@id": `${url}#vacation-rental` },
     };
   });
@@ -114,14 +142,46 @@ export function midwayCollectionJsonLd(place: Place) {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "@id": `${canonical(place.path)}#collection`,
-    name: place.comparison.heading,
+    name: place.comparison?.heading ?? place.staysHeading,
     url: canonical(place.path),
-    description: place.comparison.intro,
+    description: place.comparison?.intro ?? place.staysIntro,
     ...(place.planning ? { dateModified: place.planning.reviewedOn } : {}),
     mainEntity: {
       "@type": "ItemList",
       numberOfItems: itemListElement.length,
       itemListElement,
     },
+  };
+}
+
+function absoluteImage(src: string) {
+  return src.startsWith("http") ? src : canonical(src);
+}
+
+export function seasonalPageJsonLd(page: { path: string; town: string; townPath: string; heading: string; description: string; slugs: string[]; image: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage", "@id": canonical(page.path), url: canonical(page.path),
+        name: page.heading, description: page.description, image: absoluteImage(page.image),
+        breadcrumb: { "@id": `${canonical(page.path)}#breadcrumbs` },
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: page.slugs.map((slug, index) => ({
+            "@type": "ListItem", position: index + 1,
+            item: { "@id": `${canonical(`/properties/${slug}`)}#vacation-rental` },
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList", "@id": `${canonical(page.path)}#breadcrumbs`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: canonical("/") },
+          { "@type": "ListItem", position: 2, name: page.town, item: canonical(page.townPath) },
+          { "@type": "ListItem", position: 3, name: page.heading, item: canonical(page.path) },
+        ],
+      },
+    ],
   };
 }

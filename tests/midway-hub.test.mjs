@@ -16,7 +16,7 @@ assert.match(places, /src: "\/images\/book-direct-sunset\.png"/);
 assert.match(places, /className: "object-cover object-\[68%_center\]"/);
 assert.match(places, /alt: "Hygge House surrounded by trees beneath the mountains and warm sunset sky in Midway, Utah"/);
 assert.match(places, /caption: "Hygge House, Midway"/);
-assert.match(places, /title: "Midway stays \| Roamstead Collective"/);
+assert.match(places, /title: "Midway, Utah Vacation Rentals \| Hygge House and Granary"/);
 assert.match(places, /heading: "Two ways to stay in Midway\."/);
 assert.match(places, /snow-dependent/);
 assert.match(places, /Check the Soldier Hollow FAQ for current operating status/);
@@ -35,7 +35,7 @@ assert.match(places, /https:\/\/homesteadmidwayutah\.com\/adventures\/crater\//)
 assert.match(places, /heading: "Wedding guests"/);
 assert.match(places, /heading: "Work trips"/);
 assert.match(places, /overnight lodging/);
-assert.doesNotMatch(places, /sleeps ten|Sleeps 10|walkable|walking distance|Pets are allowed|covered parking|Sundance|Deer Valley|utm_|FAQPage/i);
+assert.doesNotMatch(places, /sleeps ten|Sleeps 10|walking distance|Pets are allowed|covered parking|Sundance|Deer Valley|utm_|FAQPage/i);
 assert.match(places, /The Lowell and Powder Room both sit at the resort base\./);
 
 assert.match(hub, /\/properties\/\$\{property\.slug\}/);
@@ -49,7 +49,7 @@ assert.doesNotMatch(midwayPage, /FAQPage|utm_/);
 assert.match(structured, /identifier: property\.slug/);
 assert.match(structured, /property\.slug === "granary" \|\| property\.slug === "hygge-house"/);
 assert.match(structured, /"@type": "CollectionPage"/);
-assert.doesNotMatch(structured, /latitude|longitude|streetAddress|postalCode|FAQPage/);
+assert.doesNotMatch(structured, /streetAddress|postalCode|FAQPage/);
 assert.match(robots, /disallow: \["\/api\/", "\/book\/"\]/);
 assert.match(sitemap, /"\/", "\/properties", \.\.\.placePaths, "\/book"/);
 assert.match(propertyPage, /quality=\{propertyImageQuality\(slug, 100\)\}/);
@@ -140,17 +140,17 @@ if (base) {
   assert.equal(hyggeLd.containsPlace.occupancy.value, 10);
   assert.equal(hyggeLd.containsPlace.occupancy.maxValue, 10);
   assert.equal(hyggeLd.containsPlace.numberOfBedrooms, 4);
-  assert.equal(hyggeLd.image.length, 4);
+  assert.equal(hyggeLd.image.length, 13);
   assert.equal(granaryLd.identifier, "granary");
   assert.equal(granaryLd.containsPlace.occupancy.value, 4);
   assert.equal(granaryLd.containsPlace.occupancy.maxValue, 4);
   assert.equal(granaryLd.containsPlace.numberOfBedrooms, 1);
-  assert.equal(granaryLd.image.length, 3);
+  assert.equal(granaryLd.image.length, 10);
   assert.equal(lowellLd.identifier, "lowell");
   assert.equal("value" in lowellLd.containsPlace.occupancy, false);
   for (const block of [hyggeLd, granaryLd, lowellLd]) {
-    assert.equal(block.latitude, undefined);
-    assert.equal(block.longitude, undefined);
+    assert.equal(typeof block.latitude, "number");
+    assert.equal(typeof block.longitude, "number");
     assert.equal(block.address.streetAddress, undefined);
     assert.equal(block.address.postalCode, undefined);
     assert.equal(block.address.addressLocality === "Midway" || block.address.addressLocality === "Park City", true);

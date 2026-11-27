@@ -74,9 +74,9 @@ export const places: Record<PlaceSlug, Place> = {
     slug: "midway",
     path: "/midway",
     seo: {
-      title: "Midway stays | Roamstead Collective",
+      title: "Midway, Utah Vacation Rentals | Hygge House and Granary",
       description:
-        "Compare Hygge House, a four-bedroom home in Midway, Utah, with an office, sauna, and laundry, and Granary, a one-bedroom condo with a kitchen and gas fireplace.",
+        "Two Midway stays booked direct: Hygge House, a 4-bedroom home with a sauna and office, and Granary, a 1-bedroom condo with a fireplace, walkable to town.",
     },
     eyebrow: "Utah",
     title: "Midway",
@@ -188,9 +188,9 @@ export const places: Record<PlaceSlug, Place> = {
     slug: "park-city",
     path: "/park-city",
     seo: {
-      title: "Park City stays | Roamstead Collective",
+      title: "Park City Mountain Base Rentals | The Lowell and Powder Room",
       description:
-        "The Lowell and Powder Room sit at the base of Park City Mountain Resort. A two-bedroom about thirty steps from the snow, and a studio in the same building.",
+        "Two stays at the base of Park City Mountain Resort: The Lowell, a 2-bedroom condo that sleeps 8, and Powder Room, a studio that sleeps up to 4. Book direct.",
     },
     eyebrow: "Utah",
     title: "Park City",
